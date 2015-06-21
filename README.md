@@ -1,6 +1,6 @@
 # SharpFileDB
-SharpFileDB is a micro database library that uses no SQL, files as storage form and totally C# to implement a CRUD system. SharpFileDB是一个纯C#的无SQL的支持CRUD的小型文件数据库，目标是支持万人级别的应用程序。
-
+SharpFileDB is a micro database library that uses no SQL, files as storage form and totally C# to implement a CRUD system. 
+SharpFileDB是一个纯C#的无SQL的支持CRUD的小型文件数据库，目标是支持万人级别的应用程序。
 <p style="text-align: center;"><span style="font-size: 16pt;"><strong>小型文件数据库 (a file database for small apps) SharpFileDB </strong></span></p>
 <p>For english version of this article, please click <a href="http://www.cnblogs.com/bitzhuwei/p/SharpFileDB-eng.html" target="_blank">here</a>.</p>
 <p>我并不擅长数据库，如有不当之处，请多多指教。</p>
@@ -14,7 +14,7 @@ SharpFileDB is a micro database library that uses no SQL, files as storage form 
 <p><span style="color: #ff0000;">不使用SQL</span>，客观原因我不擅长SQL，主观原因我不喜欢SQL，情景原因没有必要。</p>
 <p>直接<span style="color: #ff0000;">用文本文件或二进制文件存储数据</span>。开发时用文本文件，便于调试；发布时用二进制文件，比较安全。</p>
 <p>简单来说，就是纯C#、小型、无SQL。此类库就命名为<strong>SharpFileDB</strong>。</p>
-<p>为了便于共同开发，我把这个项目放到<a href="https://github.com/bitzhuwei/SharpFileDB/">Github</a>上，并且所有类库代码的注释都是中英文双语的。中文便于理解，英文便于今后国际化。也许我想的太多了。</p>
+<p>为了便于共同开发，所有类库代码的注释都是中英文双语的。中文便于理解，英文便于今后国际化。也许我想的太多了。</p>
 <h1>设计草图(sketch)</h1>
 <h2>使用场景(User Scene)</h2>
 <p>SharpFileDB库的典型使用场景如下。</p>
@@ -294,9 +294,6 @@ SharpFileDB is a micro database library that uses no SQL, files as storage form 
 <p>在数据库目录下，SharpFileDB为每个表类型创建一个文件夹，在各自文件夹内存储每个对象。每个对象都占用一个XML文件。暂时用XML格式，因为是.NET内置的格式，省的再找外部序列化工具。XML文件名与其对应的对象Id相同。</p>
 <p><img src="http://images0.cnblogs.com/blog2015/383191/201506/220150025954911.png" alt="" /></p>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<h1>下载(Download)</h1>
-<p>我已将源码放到（<a href="https://github.com/bitzhuwei/SharpFileDB/" target="_blank">https://github.com/bitzhuwei/SharpFileDB/</a>），欢迎试用、提建议或Fork此项目。</p>
-<p>&nbsp;</p>
-<p>PS：我国大多数县的人口为几万到几十万。目前，县里各种政府部门急需实现信息化网络化办公办事，但他们一般用不起那种月薪上万的开发者和高端软件公司。我注意到，一个县级政府部门日常应对的人群数量就是万人左右，甚至常常是千人左右。所以他们不需要太高端复杂的系统设计，用支持万人级别的数据库就可以了。另一方面，初级开发者也不能充分利用那些看似高端复杂的数据库的优势。做个小型系统而已，还是简单一点好。</p>
+
+<p>PS：我国大多数县的人口为几万到几十万。目前，县里各种政府部门急需实现信息化网络化办公办事，但他们一般用不起那种月薪上万的开发者和高端软件公司。我注意到，一个县级政府部门日常应对的人群数量就是<span style="color: #ff0000;">万人</span>左右，甚至常常是千人左右。所以他们不需要太高端复杂的系统设计，用支持万人级别的数据库就可以了。另一方面，初级开发者也不能充分利用那些看似高端复杂的数据库的优势。做个小型系统而已，还是简单一点好。</p>
 <p>所以我就想做这样一个小型文件数据库，我相信这会帮助很多人。能以己所学惠及大众，才是我们的价值所在。</p>
