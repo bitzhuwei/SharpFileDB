@@ -3,7 +3,7 @@
   <Class Name="SharpFileDB.FileDBContext">
     <Position X="0.5" Y="0.5" Width="5.5" />
     <TypeIdentifier>
-      <HashCode>AIQAABAAAAAAAAAEAAAAAAAAACFAAEAAAAAAAABAAAQ=</HashCode>
+      <HashCode>AIQAABAAAAAAAAAEAAAAAAAAAAEEAEAAAAAAAABAAAQ=</HashCode>
       <FileName>FileDBContext.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -28,5 +28,12 @@
       <FileName>InvalidFileName.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Interface Name="SharpFileDB.IPersistence">
+    <Position X="6.25" Y="2.5" Width="4.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>IPersistence.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="微软雅黑" Size="9" />
 </ClassDiagram>
