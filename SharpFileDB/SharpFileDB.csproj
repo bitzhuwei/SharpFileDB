@@ -39,7 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="FileDBContext.cs" />
     <Compile Include="FileObject.cs" />
     <Compile Include="InvalidFileName.cs" />
