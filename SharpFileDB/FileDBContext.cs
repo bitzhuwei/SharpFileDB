@@ -15,20 +15,19 @@ namespace SharpFileDB
     /// </summary>
     public class FileDBContext
     {
-        #region Fields
-
         /// <summary>
-        /// 文件数据库操作锁
+        /// 文件数据库操作锁，
         /// <para>database operation lock.</para>
         /// </summary>
         protected static readonly object operationLock = new object();
 
         /// <summary>
-        /// 文件数据库
+        /// 文件数据库。
         /// <para>Represents a file database.</para>
         /// </summary>
-        /// <param name="directory">数据库文件所在目录<para>Directory for all files of database.</para></param>
-        public FileDBContext(string directory = null)
+        /// <param name="directory">数据库文件所在目录。<para>Directory for all files of database.</para></param>
+        /// <param name="persistence">持久化方式。<para>The <see cref="IPersistence"/> instance.</para></param>
+        public FileDBContext(string directory = null, IPersistence persistence = null)
         {
             if (directory == null)
             {
@@ -38,13 +37,20 @@ namespace SharpFileDB
             {
                 Directory = directory;
             }
-        }
 
-        #endregion
+            if (persistence == null)
+            {
+                this.persistence = new XmlPersistence();
+            }
+            else
+            {
+                this.persistence = persistence;
+            }
+        }
 
         public override string ToString()
         {
-            return string.Format("@: {0}", Directory);
+            return string.Format("@: {0}, IPersistence: {1}", Directory, persistence);
         }
 
         #region Properties
@@ -55,43 +61,14 @@ namespace SharpFileDB
         /// </summary>
         public virtual string Directory { get; protected set; }
 
+        /// <summary>
+        /// 文件数据库使用此接口进行持久化相关的操作。
+        /// <para>FIle database executes persistence operations via this interface.</para>
+        /// </summary>
+        public virtual IPersistence persistence { get; set; }
+
         #endregion
 
-
-        protected string Serialize(FileObject item)
-        {
-            using (StringWriterWithEncoding sw = new StringWriterWithEncoding(Encoding.UTF8))
-            {
-                XmlSerializer serializer = new XmlSerializer(item.GetType());
-                serializer.Serialize(sw, item);
-                string serializedString = sw.ToString();
-
-                return serializedString;
-            }
-        }
-
-        /// <summary>
-        /// 将字符串反序列化成文档对象
-        /// </summary>
-        /// <typeparam name="TDocument">文档类型</typeparam>
-        /// <param name="serializedFileObject">字符串</param>
-        /// <returns>
-        /// 文档对象
-        /// </returns>
-        protected TFileObject Deserialize<TFileObject>(string serializedFileObject)
-            where TFileObject : FileObject
-        {
-            if (string.IsNullOrEmpty(serializedFileObject))
-                throw new ArgumentNullException("data");
-
-            using (StringReader sr = new StringReader(serializedFileObject))
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(TFileObject));
-                object deserializedObj = serializer.Deserialize(sr);
-                TFileObject fileObject = deserializedObj as TFileObject;
-                return fileObject;
-            }
-        }
 
         protected string GenerateFileFullPath(FileObject item)
         {
@@ -122,7 +99,7 @@ namespace SharpFileDB
         public virtual void Create(FileObject item)
         {
             string fileName = GenerateFileFullPath(item);
-            string output = Serialize(item);
+            string output = this.persistence.Serialize(item);
 
             lock (operationLock)
             {
@@ -146,11 +123,13 @@ namespace SharpFileDB
             if (predicate != null)
             {
                 string path = GenerateFilePath(typeof(TFileObject));
-                string[] files = System.IO.Directory.GetFiles(path, "*.xml", SearchOption.AllDirectories);
+                string[] files = System.IO.Directory.GetFiles(
+                    path, "*." + this.persistence.Extension, SearchOption.AllDirectories);
                 foreach (var item in files)
                 {
                     string fileContent = File.ReadAllText(item);
-                    TFileObject deserializedFileObject = Deserialize<TFileObject>(fileContent);
+                    TFileObject deserializedFileObject =
+                        this.persistence.Deserialize<TFileObject>(fileContent);
                     if (predicate(deserializedFileObject))
                     {
                         result.Add(deserializedFileObject);
@@ -169,7 +148,7 @@ namespace SharpFileDB
         public virtual void Update(FileObject item)
         {
             string fileName = GenerateFileFullPath(item);
-            string output = Serialize(item);
+            string output = this.persistence.Serialize(item);
 
             lock (operationLock)
             {
