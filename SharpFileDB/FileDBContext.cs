@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SharpFileDB
 {
@@ -17,21 +18,15 @@ namespace SharpFileDB
 
         /// <summary>
         /// 文件数据库操作锁
+        /// <para>database operation lock.</para>
         /// </summary>
         protected static readonly object operationLock = new object();
-        private static HashSet<char> invalidFileNameChars;
-
-        static FileDBContext()
-        {
-            invalidFileNameChars = new HashSet<char>() { '\0', ' ', '.', '$', '/', '\\' };
-            foreach (var c in Path.GetInvalidPathChars()) { invalidFileNameChars.Add(c); }
-            foreach (var c in Path.GetInvalidFileNameChars()) { invalidFileNameChars.Add(c); }
-        }
 
         /// <summary>
         /// 文件数据库
+        /// <para>Represents a file database.</para>
         /// </summary>
-        /// <param name="directory">数据库文件所在目录</param>
+        /// <param name="directory">数据库文件所在目录<para>Directory for all files of database.</para></param>
         public FileDBContext(string directory = null)
         {
             if (directory == null)
@@ -48,58 +43,161 @@ namespace SharpFileDB
 
         public override string ToString()
         {
-            return string.Format("{0}\\*.{1}", Directory, FileExtension);
-            //return base.ToString();
+            return string.Format("@: {0}", Directory);
         }
 
         #region Properties
 
         /// <summary>
         /// 数据库文件所在目录
+        /// <para>Directory of database files.</para>
         /// </summary>
-        public virtual string Directory { get; private set; }
-
-        /// <summary>
-        /// 是否输出缩进
-        /// </summary>
-        public virtual bool OutputIndent { get; set; }
-
-        /// <summary>
-        /// 文件扩展名
-        /// </summary>
-        public virtual string FileExtension { get; set; }
+        public virtual string Directory { get; protected set; }
 
         #endregion
 
-        #region CRUD
 
-        public void Create(FileObject item)
+        protected string Serialize(FileObject item)
         {
-            throw new NotImplementedException();
+            using (StringWriterWithEncoding sw = new StringWriterWithEncoding(Encoding.UTF8))
+            {
+                XmlSerializer serializer = new XmlSerializer(item.GetType());
+                serializer.Serialize(sw, item);
+                string serializedString = sw.ToString();
+
+                return serializedString;
+            }
         }
 
-        public IList<TFileObject> Retrieve<TFileObject>(Predicate<TFileObject> pre)
+        /// <summary>
+        /// 将字符串反序列化成文档对象
+        /// </summary>
+        /// <typeparam name="TDocument">文档类型</typeparam>
+        /// <param name="serializedFileObject">字符串</param>
+        /// <returns>
+        /// 文档对象
+        /// </returns>
+        protected TFileObject Deserialize<TFileObject>(string serializedFileObject)
+            where TFileObject : FileObject
+        {
+            if (string.IsNullOrEmpty(serializedFileObject))
+                throw new ArgumentNullException("data");
+
+            using (StringReader sr = new StringReader(serializedFileObject))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(TFileObject));
+                object deserializedObj = serializer.Deserialize(sr);
+                TFileObject fileObject = deserializedObj as TFileObject;
+                return fileObject;
+            }
+        }
+
+        protected string GenerateFileFullPath(FileObject item)
+        {
+            string path = GenerateFilePath(item.GetType());
+            string name = item.GenerateFileName();
+            string fullname = Path.Combine(path, name);
+            return fullname;
+        }
+
+        /// <summary>
+        /// 生成文件路径
+        /// </summary>
+        /// <typeparam name="TDocument">文档类型</typeparam>
+        /// <returns>文件路径</returns>
+        protected string GenerateFilePath(Type type)
+        {
+            string path = Path.Combine(this.Directory, type.Name);
+            return path;
+        }
+
+        #region CRUD
+
+        /// <summary>
+        /// 增加一个<see cref="FileObject"/>到数据库。这实际上创建了一个文件。
+        /// <para>Create a new <see cref="FileObject"/> into database. This operation will create a new file.</para>
+        /// </summary>
+        /// <param name="item"></param>
+        public virtual void Create(FileObject item)
+        {
+            string fileName = GenerateFileFullPath(item);
+            string output = Serialize(item);
+
+            lock (operationLock)
+            {
+                System.IO.FileInfo info = new System.IO.FileInfo(fileName);
+                System.IO.Directory.CreateDirectory(info.Directory.FullName);
+                System.IO.File.WriteAllText(fileName, output);
+            }
+        }
+
+        /// <summary>
+        /// 检索符合给定条件的所有<paramref name="TFileObject"/>。
+        /// <para>Retrives all <paramref name="TFileObject"/> that satisfies the specified condition.</para>
+        /// </summary>
+        /// <typeparam name="TFileObject"></typeparam>
+        /// <param name="predicate">检索出的对象应满足的条件。<para>THe condition that should be satisfied by retrived object.</para></param>
+        /// <returns></returns>
+        public virtual IList<TFileObject> Retrieve<TFileObject>(Predicate<TFileObject> predicate)
             where TFileObject : FileObject
         {
             IList<TFileObject> result = new List<TFileObject>();
-            if (pre != null)
+            if (predicate != null)
             {
-                throw new NotImplementedException();
+                string path = GenerateFilePath(typeof(TFileObject));
+                string[] files = System.IO.Directory.GetFiles(path, "*.xml", SearchOption.AllDirectories);
+                foreach (var item in files)
+                {
+                    string fileContent = File.ReadAllText(item);
+                    TFileObject deserializedFileObject = Deserialize<TFileObject>(fileContent);
+                    if (predicate(deserializedFileObject))
+                    {
+                        result.Add(deserializedFileObject);
+                    }
+                }
             }
 
             return result;
         }
 
-
-
-        public void Update(FileObject cat)
+        /// <summary>
+        /// 更新给定的对象。
+        /// <para>Update specified <paramref name="FileObject"/>.</para>
+        /// </summary>
+        /// <param name="item">要被更新的对象。<para>The object to be updated.</para></param>
+        public virtual void Update(FileObject item)
         {
-            throw new NotImplementedException();
+            string fileName = GenerateFileFullPath(item);
+            string output = Serialize(item);
+
+            lock (operationLock)
+            {
+                System.IO.FileInfo info = new System.IO.FileInfo(fileName);
+                System.IO.Directory.CreateDirectory(info.Directory.FullName);
+                System.IO.File.WriteAllText(fileName, output);
+            }
         }
 
-        public void Delete(FileObject cat)
+        /// <summary>
+        /// 删除指定的对象。
+        /// <para>Delete specified <paramref name="FileObject"/>.</para>
+        /// </summary>
+        /// <param name="item">要被删除的对象。<para>The object to be deleted.</para></param>
+        public virtual void Delete(FileObject item)
         {
-            throw new NotImplementedException();
+            if (item == null)
+            {
+                throw new ArgumentNullException(item.ToString());
+            }
+
+            string filename = GenerateFileFullPath(item);
+            if (File.Exists(filename))
+            {
+                lock (operationLock)
+                {
+                    File.Delete(filename);
+                }
+            }
         }
 
         #endregion CRUD

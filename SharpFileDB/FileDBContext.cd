@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="SharpFileDB.FileDBContext">
+    <Position X="0.5" Y="0.5" Width="5.5" />
+    <TypeIdentifier>
+      <HashCode>AIQAABAAAAAAAAAEAAAAAAAAACFAAEAAAAAAAABAAAQ=</HashCode>
+      <FileName>FileDBContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SharpFileDB.FileObject">
+    <Position X="6.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>FileObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SharpFileDB.StringWriterWithEncoding">
+    <Position X="0.5" Y="4.5" Width="6.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>StringWriterWithEncoding.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SharpFileDB.InvalidFileName">
+    <Position X="7.25" Y="4.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>InvalidFileName.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>
