@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 namespace SharpFileDB
 {
     /// <summary>
+    /// 文件数据库。
     /// Represents a file database.
     /// </summary>
     public class FileDBContext
