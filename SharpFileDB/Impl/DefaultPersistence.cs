@@ -43,7 +43,7 @@ namespace SharpFileDB
         private string extension;
         public string Extension
         {
-            get { return "bin"; }
+            get { return this.extension; }
             private set { this.extension = value; }
         }
 
