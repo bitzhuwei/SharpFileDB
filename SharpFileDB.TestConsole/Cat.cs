@@ -6,7 +6,7 @@ namespace SharpFileDB.TestConsole
     /// <summary>
     /// demo file object
     /// </summary>
-    //[Serializable]
+    [Serializable]
     public class Cat : FileObject
     {
         public string Name { get; set; }
