@@ -55,11 +55,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ByteArrayHelper.cs" />
-    <Compile Include="DefaultPersistence.cs" />
+    <Compile Include="Helper\ByteArrayHelper.cs" />
+    <Compile Include="Impl\DefaultPersistence.cs" />
     <Compile Include="FileDBContext.cs" />
     <Compile Include="FileObject.cs" />
-    <Compile Include="ImageHelper.cs" />
+    <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="IPersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

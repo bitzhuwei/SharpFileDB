@@ -25,13 +25,13 @@
     <NestedTypes>
       <Enum Name="SharpFileDB.DefaultPersistence.PersistenceFormat">
         <TypeIdentifier>
-          <NewMemberFileName>DefaultPersistence.cs</NewMemberFileName>
+          <NewMemberFileName>Impl\DefaultPersistence.cs</NewMemberFileName>
         </TypeIdentifier>
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAACBAAQAAAAEAAAAAAAA=</HashCode>
-      <FileName>DefaultPersistence.cs</FileName>
+      <FileName>Impl\DefaultPersistence.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

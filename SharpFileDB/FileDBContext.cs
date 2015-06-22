@@ -17,12 +17,6 @@ namespace SharpFileDB
     public class FileDBContext
     {
         /// <summary>
-        /// 文件数据库操作锁，
-        /// <para>database operation lock.</para>
-        /// </summary>
-        protected static readonly object operationLock = new object();
-
-        /// <summary>
         /// 文件数据库。
         /// <para>Represents a file database.</para>
         /// </summary>
@@ -173,13 +167,7 @@ namespace SharpFileDB
 
             if (File.Exists(fullname))
             {
-                lock (operationLock)
-                {
-                    if (File.Exists(fullname))
-                    {
-                        File.Delete(fullname);
-                    }
-                }
+                File.Delete(fullname);
             }
         }
 
