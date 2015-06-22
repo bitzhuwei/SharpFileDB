@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cat.cs" />
+    <Compile Include="DemoBinaryFormater.cs" />
+    <Compile Include="DemoGuid.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

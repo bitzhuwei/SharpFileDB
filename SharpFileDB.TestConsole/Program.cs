@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,32 +12,44 @@ namespace SharpFileDB.TestConsole
     {
         static void Main(string[] args)
         {
+            DemoGuid.TypicalScene();
+            DemoBinaryFormater.TypicalScene();
+
             {
-                // what Guid.ToString() looks like:
-                Guid id = Guid.NewGuid();
-                var e = id.ToString();
-                var E = id.ToString("");
-                var n = id.ToString("N");
-                var d = id.ToString("D");
-                var b = id.ToString("B");
-                var p = id.ToString("P");
-                var x = id.ToString("X");
-            }
-            {
-                // common cases to use SharpFileDB.
-                FileDBContext db = new FileDBContext();
+                List<Type> ipersistenceList = new List<Type>();
+                Assembly assembly = System.Reflection.Assembly.GetAssembly(typeof(IPersistence));
+                foreach (var item in assembly.ExportedTypes)
+                {
+                    if (typeof(IPersistence).IsAssignableFrom(item))
+                    {
+                        if (item.IsClass)
+                        {
+                            ipersistenceList.Add(item);
+                        }
+                    }
+                }
 
-                Cat cat = new Cat();
-                cat.Name = "xiao xiao bai";
-                db.Create(cat);
+                foreach (var item in ipersistenceList)
+                {
+                    object obj = Activator.CreateInstance(item);
+                    IPersistence ipersistence = obj as IPersistence;
+                    string dbDirectory = Path.Combine(Environment.CurrentDirectory, "TestDatabase");
 
-                Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");
-                IList<Cat> cats = db.Retrieve(pre);
+                    // common cases to use SharpFileDB.
+                    FileDBContext db = new FileDBContext(dbDirectory, ipersistence);
 
-                cat.Name = "xiao bai";
-                db.Update(cat);
+                    Cat cat = new Cat();
+                    cat.Name = "xiao xiao bai";
+                    db.Create(cat);
 
-                db.Delete(cat);
+                    Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");
+                    IList<Cat> cats = db.Retrieve(pre);
+
+                    cat.Name = "xiao bai";
+                    db.Update(cat);
+
+                    db.Delete(cat);
+                }
             }
         }
     }
