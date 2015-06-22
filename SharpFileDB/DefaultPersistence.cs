@@ -2,24 +2,43 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpFileDB
 {
     /// <summary>
-    /// 用BinaryFormatter实现<see cref="IPersistence"/>。
-    /// <para>Implement <see cref="IPersistence"/> using BinaryFormatter.</para>
+    /// 用<see cref="IFormatter"/>实现<see cref="IPersistence"/>。
+    /// <para>Implement <see cref="IPersistence"/> using <see cref="IFormatter"/>.</para>
     /// </summary>
-    public class BinaryPersistence : IPersistence
+    public class DefaultPersistence : IPersistence
     {
+        private System.Runtime.Serialization.IFormatter formatter;
+
+        public DefaultPersistence(PersistenceFormat format = PersistenceFormat.Soap)
+        {
+            switch (format)
+            {
+                case PersistenceFormat.Soap:
+                    this.formatter = new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
+                    this.Extension = "soap";
+                    break;
+                case PersistenceFormat.Binary:
+                    this.formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                    this.Extension = "bin";
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
 
         #region IPersistence 成员
 
+        private string extension;
         public string Extension
         {
             get { return "bin"; }
+            private set { this.extension = value; }
         }
 
         public string Serialize(FileObject item)
@@ -32,7 +51,6 @@ namespace SharpFileDB
             byte[] bytes;
             using (MemoryStream ms = new MemoryStream())
             {
-                BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(ms, item);
                 ms.Position = 0;
                 bytes = new byte[ms.Length];
@@ -52,7 +70,6 @@ namespace SharpFileDB
                 using (MemoryStream ms = new MemoryStream(bytes))
                 {
                     ms.Position = 0;
-                    BinaryFormatter formatter = new BinaryFormatter();
                     object obj = formatter.Deserialize(ms);
                     fileObjct = obj as TFileObject;
                 }
@@ -63,5 +80,11 @@ namespace SharpFileDB
 
         #endregion
       
+    }
+
+    public enum PersistenceFormat
+    {
+        Soap,
+        Binary,
     }
 }

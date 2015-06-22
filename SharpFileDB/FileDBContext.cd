@@ -14,26 +14,27 @@
       <FileName>FileObject.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="SharpFileDB.StringWriterWithEncoding">
-    <Position X="0.5" Y="4.5" Width="6.5" />
+  <Class Name="SharpFileDB.DefaultPersistence">
+    <Position X="5.5" Y="4.5" Width="5.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAAAAA=</HashCode>
-      <FileName>StringWriterWithEncoding.cs</FileName>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAACBAAQAAAAEAAAAAAAA=</HashCode>
+      <FileName>DefaultPersistence.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="SharpFileDB.InvalidFileName">
-    <Position X="7.25" Y="4.5" Width="3.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
-      <FileName>InvalidFileName.cs</FileName>
-    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="SharpFileDB.IPersistence">
-    <Position X="6.25" Y="2.5" Width="4.75" />
+    <Position X="0.5" Y="4.25" Width="4.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAQAAAAAAAAAAAAA=</HashCode>
       <FileName>IPersistence.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Enum Name="SharpFileDB.PersistenceFormat">
+    <Position X="5.5" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DefaultPersistence.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="微软雅黑" Size="9" />
 </ClassDiagram>

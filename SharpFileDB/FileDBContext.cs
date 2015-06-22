@@ -40,7 +40,7 @@ namespace SharpFileDB
 
             if (persistence == null)
             {
-                this.persistence = new XmlPersistence();
+                this.persistence = new DefaultPersistence(PersistenceFormat.Soap);
             }
             else
             {
