@@ -12,7 +12,7 @@ namespace SharpFileDB.TestConsole
     /// More information please visit: (http://msdn.microsoft.com/zh-cn/library/system.runtime.serialization.iserializable.aspx) and (https://msdn.microsoft.com/zh-cn/library/system.runtime.serialization.iserializable.getobjectdata.aspx).
     /// </summary>
     [Serializable]
-    public class Cat : FileObject, ISerializable
+    public class Cat : FileObject
     {
         /// <summary>
         /// Used for serialization.
@@ -44,10 +44,9 @@ namespace SharpFileDB.TestConsole
         /// <param name="context"></param>
         //[SecurityPermission(SecurityAction.LinkDemand,
             //Flags = SecurityPermissionFlag.SerializationFormatter)]
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if (info == null)
-                throw new System.ArgumentNullException("info");
+            base.GetObjectData(info, context);
 
             info.AddValue(strName, this.Name);
 
@@ -74,10 +73,8 @@ namespace SharpFileDB.TestConsole
         /// <param name="info"></param>
         /// <param name="context"></param>
         protected Cat(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+            : base(info, context)
         {
-            if (info == null)
-                throw new System.ArgumentNullException("info");
-
             this.Name = (string)info.GetValue(strName, typeof(string));
 
             this.Legs = (int)info.GetValue(strLegs, typeof(int));

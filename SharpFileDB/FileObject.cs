@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PostSharp.Patterns.Contracts;
+using System.Runtime.Serialization;
 
 namespace SharpFileDB
 {
@@ -13,13 +14,13 @@ namespace SharpFileDB
     /// Base class for all classed that can use CRUD in SharpFileDB.
     /// </summary>
     [Serializable]
-    public abstract class FileObject
+    public abstract class FileObject : ISerializable
     {
         /// <summary>
         /// 主键.
         /// main key.
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; internal set; }
 
         /// <summary>
         /// 创建一个文件对象，并自动为其生成一个全局唯一的Id。
@@ -27,7 +28,6 @@ namespace SharpFileDB
         /// </summary>
         public FileObject()
         {
-            this.Id = Guid.NewGuid();
         }
 
         /// <summary>
@@ -48,6 +48,22 @@ namespace SharpFileDB
         public override string ToString()
         {
             return string.Format("Id: {0}", this.Id);
+        }
+
+        #region ISerializable 成员
+
+        const string strGuid = "Guid"; 
+        public virtual void GetObjectData([Required] SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(strGuid, this.Id.ToString());
+        }
+
+        #endregion
+
+        protected FileObject([Required] SerializationInfo info, StreamingContext context)
+        {
+            string str = (string)info.GetValue(strGuid, typeof(string));
+            this.Id = Guid.Parse(str);
         }
     }
 }

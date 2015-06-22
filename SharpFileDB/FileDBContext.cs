@@ -98,6 +98,15 @@ namespace SharpFileDB
         /// <param name="item"></param>
         public virtual void Create([Required] FileObject item)
         {
+            if (item.Id != Guid.Empty)
+            {
+                throw new ArgumentException(string.Format("item({0}) is already created! Try to use Update() instead.", item.Id), "item");
+            }
+
+            // 为item创建Id。
+            // Create Id for item.
+            item.Id = Guid.NewGuid();
+
             string fullname = GenerateFileFullPath(item);
 
             System.IO.FileInfo info = new System.IO.FileInfo(fullname);
@@ -144,7 +153,7 @@ namespace SharpFileDB
         /// <para>Update specified <paramref name="FileObject"/>.</para>
         /// </summary>
         /// <param name="item">要被更新的对象。<para>The object to be updated.</para></param>
-        public virtual void Update(FileObject item)
+        public virtual void Update([Required] FileObject item)
         {
             string fullname = GenerateFileFullPath(item);
 
@@ -156,13 +165,8 @@ namespace SharpFileDB
         /// <para>Delete specified <paramref name="FileObject"/>.</para>
         /// </summary>
         /// <param name="item">要被删除的对象。<para>The object to be deleted.</para></param>
-        public virtual void Delete(FileObject item)
+        public virtual void Delete([Required] FileObject item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(item.ToString());
-            }
-
             string fullname = GenerateFileFullPath(item);
 
             if (File.Exists(fullname))
