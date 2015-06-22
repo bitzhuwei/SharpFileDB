@@ -33,7 +33,8 @@ namespace SharpFileDB.TestConsole
                 {
                     object obj = Activator.CreateInstance(item);
                     IPersistence ipersistence = obj as IPersistence;
-                    string dbDirectory = Path.Combine(Environment.CurrentDirectory, "TestDatabase");
+                    //string dbDirectory = Path.Combine(Environment.CurrentDirectory, "TestDatabase");
+                    string dbDirectory = @"D:\360云盘\文档\TestDatabase";
 
                     // common cases to use SharpFileDB.
                     FileDBContext db = new FileDBContext(dbDirectory, ipersistence);
