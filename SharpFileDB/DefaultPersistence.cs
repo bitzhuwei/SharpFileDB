@@ -47,45 +47,44 @@ namespace SharpFileDB
             private set { this.extension = value; }
         }
 
-        public string Serialize(FileObject item)
+        public void Serialize(FileObject item, string fullname)
         {
             if (item == null)
             {
-                return null;
+                throw new ArgumentNullException("item");
             }
 
-            byte[] bytes;
-            using (MemoryStream ms = new MemoryStream())
+            if (string.IsNullOrEmpty(fullname))
             {
-                formatter.Serialize(ms, item);
-                ms.Position = 0;
-                bytes = new byte[ms.Length];
-                ms.Read(bytes, 0, bytes.Length);
+                throw new ArgumentNullException("fullname");
             }
-            string str = Convert.ToBase64String(bytes);
-            return str;
+
+            using (FileStream s = new FileStream(fullname, FileMode.Create, FileAccess.Write))
+            {
+                formatter.Serialize(s, item);
+            }
         }
 
-        public TFileObject Deserialize<TFileObject>(string serializedFileObject) where TFileObject : FileObject
+        public TFileObject Deserialize<TFileObject>(string fullname) where TFileObject : FileObject
         {
-            TFileObject fileObjct = null;
-
-            if (!string.IsNullOrEmpty(serializedFileObject))
+            if(string.IsNullOrEmpty(fullname))
             {
-                byte[] bytes = Convert.FromBase64String(serializedFileObject);
-                using (MemoryStream ms = new MemoryStream(bytes))
-                {
-                    ms.Position = 0;
-                    object obj = formatter.Deserialize(ms);
-                    fileObjct = obj as TFileObject;
-                }
+                throw new ArgumentNullException("fullname");
             }
 
-            return fileObjct;
+            TFileObject fileObject = null;
+
+            using (FileStream s = new FileStream(fullname, FileMode.Open, FileAccess.Read))
+            {
+                object obj = formatter.Deserialize(s);
+                fileObject = obj as TFileObject;
+            }
+
+            return fileObject;
         }
 
         #endregion
-      
+
     }
 
 

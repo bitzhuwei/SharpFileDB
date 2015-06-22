@@ -104,15 +104,11 @@ namespace SharpFileDB
         public virtual void Create(FileObject item)
         {
             string fullname = GenerateFileFullPath(item);
-            string output = this.persistence.Serialize(item);
 
             System.IO.FileInfo info = new System.IO.FileInfo(fullname);
             System.IO.Directory.CreateDirectory(info.Directory.FullName);
 
-            lock (operationLock)
-            {
-                System.IO.File.WriteAllText(fullname, output);
-            }
+            this.persistence.Serialize(item, fullname);
         }
 
         /// <summary>
@@ -135,10 +131,8 @@ namespace SharpFileDB
 
                 foreach (var fullname in files)
                 {
-                    string fileContent = File.ReadAllText(fullname);
-
                     TFileObject deserializedFileObject =
-                        this.persistence.Deserialize<TFileObject>(fileContent);
+                        this.persistence.Deserialize<TFileObject>(fullname);
 
                     if (predicate(deserializedFileObject))
                     {
@@ -158,15 +152,8 @@ namespace SharpFileDB
         public virtual void Update(FileObject item)
         {
             string fullname = GenerateFileFullPath(item);
-            string output = this.persistence.Serialize(item);
 
-            System.IO.FileInfo info = new System.IO.FileInfo(fullname);
-            System.IO.Directory.CreateDirectory(info.Directory.FullName); 
-            
-            lock (operationLock)
-            {
-                System.IO.File.WriteAllText(fullname, output);
-            }
+            this.persistence.Serialize(item, fullname);
         }
 
         /// <summary>

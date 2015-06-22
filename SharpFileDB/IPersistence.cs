@@ -24,7 +24,7 @@ namespace SharpFileDB
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        string Serialize(FileObject item);
+        void Serialize(FileObject item, string fullname);
 
         /// <summary>
         /// 将字符串反序列化成文件对象。
@@ -33,6 +33,6 @@ namespace SharpFileDB
         /// <typeparam name="TFileObject"></typeparam>
         /// <param name="serializedFileObject"></param>
         /// <returns></returns>
-        TFileObject Deserialize<TFileObject>(string serializedFileObject) where TFileObject : FileObject;
+        TFileObject Deserialize<TFileObject>(string fullname) where TFileObject : FileObject;
     }
 }

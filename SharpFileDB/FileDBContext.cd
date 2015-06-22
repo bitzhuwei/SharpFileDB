@@ -6,6 +6,9 @@
       <HashCode>AIQAABAAAAAAAAAEAAAAAAAAAAEEAEAAAAAAAABAAAQ=</HashCode>
       <FileName>FileDBContext.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="persistence" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="SharpFileDB.FileObject">
     <Position X="6.25" Y="0.5" Width="3.25" />
@@ -15,9 +18,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="SharpFileDB.DefaultPersistence">
-    <Position X="5.5" Y="4.5" Width="5.25" />
+    <Position X="4.75" Y="4.25" Width="5.25" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
     <NestedTypes>
-      <Enum Name="SharpFileDB.DefaultPersistence.PersistenceFormat" Collapsed="true">
+      <Enum Name="SharpFileDB.DefaultPersistence.PersistenceFormat">
         <TypeIdentifier>
           <NewMemberFileName>DefaultPersistence.cs</NewMemberFileName>
         </TypeIdentifier>
@@ -30,7 +36,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="SharpFileDB.IPersistence">
-    <Position X="0.5" Y="4.25" Width="4.75" />
+    <Position X="0.5" Y="4.25" Width="4" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAQAAAAAAAAAAAAA=</HashCode>
       <FileName>IPersistence.cs</FileName>
