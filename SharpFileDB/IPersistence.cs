@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PostSharp.Patterns.Contracts;
 
 namespace SharpFileDB
 {
@@ -24,7 +25,7 @@ namespace SharpFileDB
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        void Serialize(FileObject item, string fullname);
+        void Serialize([Required] FileObject item, [Required] string fullname);
 
         /// <summary>
         /// 将字符串反序列化成文件对象。
@@ -33,6 +34,6 @@ namespace SharpFileDB
         /// <typeparam name="TFileObject"></typeparam>
         /// <param name="serializedFileObject"></param>
         /// <returns></returns>
-        TFileObject Deserialize<TFileObject>(string fullname) where TFileObject : FileObject;
+        TFileObject Deserialize<TFileObject>([Required] string fullname) where TFileObject : FileObject;
     }
 }

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PostSharp.Patterns.Contracts;
 
 namespace SharpFileDB
 {
@@ -35,7 +36,7 @@ namespace SharpFileDB
         /// </summary>
         /// <param name="extension">文件扩展名。<para>File's extension name.</para></param>
         /// <returns></returns>
-        internal string GenerateFileName(string extension)
+        internal string GenerateFileName([Required] string extension)
         {
             string id = this.Id.ToString();
 

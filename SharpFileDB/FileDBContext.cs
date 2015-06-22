@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using PostSharp.Patterns.Contracts;
 
 namespace SharpFileDB
 {
@@ -70,7 +71,7 @@ namespace SharpFileDB
         #endregion
 
 
-        protected string GenerateFileFullPath(FileObject item)
+        protected string GenerateFileFullPath([Required] FileObject item)
         {
             Type fileObjectType = item.GetType();
             string path = GenerateFilePath(fileObjectType);
@@ -87,7 +88,7 @@ namespace SharpFileDB
         /// </summary>
         /// <typeparam name="TDocument">文档类型</typeparam>
         /// <returns>文件路径</returns>
-        protected string GenerateFilePath(Type type)
+        protected string GenerateFilePath([Required] Type type)
         {
             string path = Path.Combine(this.Directory, type.Name);
 
@@ -101,7 +102,7 @@ namespace SharpFileDB
         /// <para>Create a new <see cref="FileObject"/> into database. This operation will create a new file.</para>
         /// </summary>
         /// <param name="item"></param>
-        public virtual void Create(FileObject item)
+        public virtual void Create([Required] FileObject item)
         {
             string fullname = GenerateFileFullPath(item);
 

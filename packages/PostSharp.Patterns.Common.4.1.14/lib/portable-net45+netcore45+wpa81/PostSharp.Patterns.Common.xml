@@ -1,0 +1,1654 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>PostSharp.Patterns.Common</name>
+  </assembly>
+  <members>
+    <member name="T:PostSharp.ImplementationDetails_8b55468.__PS___z_Activator">
+      <summary>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;summary&gt; documentation for "T:PostSharp.ImplementationDetails_8b55468.__PS___z_Activator"]</p>
+      </summary>
+    </member>
+    <member name="M:PostSharp.ImplementationDetails_8b55468.__PS___z_Activator.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:PostSharp.ImplementationDetails_8b55468.__PS___z_Activator" /> class</summary>
+    </member>
+    <member name="M:PostSharp.ImplementationDetails_8b55468.__PS___z_Activator.CreateInstance(System.Type,PostSharp.Serialization.ActivatorSecurityToken)">
+      <summary>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;summary&gt; documentation for "M:PostSharp.ImplementationDetails_8b55468.__PS___z_Activator.CreateInstance(System.Type,PostSharp.Serialization.ActivatorSecurityToken)"]</p>
+      </summary>
+      <param name="type">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="type"/&gt; documentation for "M:PostSharp.ImplementationDetails_8b55468.__PS___z_Activator.CreateInstance(System.Type,PostSharp.Serialization.ActivatorSecurityToken)"]</p>
+      </param>
+      <param name="securityToken">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="securityToken"/&gt; documentation for "M:PostSharp.ImplementationDetails_8b55468.__PS___z_Activator.CreateInstance(System.Type,PostSharp.Serialization.ActivatorSecurityToken)"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.ImplementationDetails_8b55468.__PS___z_Activator.CreateInstance(System.Type,PostSharp.Serialization.ActivatorSecurityToken)"]</p>
+      </returns>
+    </member>
+    <member name="T:PostSharp.Patterns.AssertionFailedException">
+      <summary>
+            Exception thrown upon internal assertion failures in PostSharp Pattern Libraries.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Collections.AdvisableCollection`1">
+      <summary>
+            A collection type similar to <see cref="T:System.Collections.ObjectModel.Collection`1" />  into which advices can be injected dynamically. 
+            </summary>
+      <typeparam name="T">The type of elements in the collection</typeparam>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.Add(`0)">
+      <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+      <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.Clear">
+      <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only. </exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.ClearItems">
+      <summary>
+            Removes all elements from the underlying collection.
+            </summary>
+    </member>
+    <member name="E:PostSharp.Patterns.Collections.AdvisableCollection`1.CollectionChanged">
+      <summary>Occurs when the collection changes.</summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.Contains(`0)">
+      <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.</summary>
+      <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+      <returns>true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.CopyTo(`0[],System.Int32)">
+      <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.</summary>
+      <param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
+      <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="array" /> is null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="arrayIndex" /> is less than 0.</exception>
+      <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableCollection`1.Count">
+      <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+      <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.GetCount">
+      <summary>
+            Gets the number of elements in the underlying collection.
+            </summary>
+      <returns>The number of elements in the collection.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.GetEnumerator">
+      <summary>
+            Returns an enumerator that iterates through the <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1" />.
+            </summary>
+      <returns>
+            An <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1.Enumerator" /> for the <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1" />.
+            </returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.GetItem(System.Int32)">
+      <summary>
+            Gets the element at the specified index of the underlying collection.
+            </summary>
+      <param name="index">The zero-based index of the element.</param>
+      <returns>The element value.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with the data needed to serialize the target object.</summary>
+      <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> to populate with data. </param>
+      <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext" />) for this serialization. </param>
+      <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.IndexOf(`0)">
+      <summary>Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1" />.</summary>
+      <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1" />.</param>
+      <returns>The index of <paramref name="item" /> if found in the list; otherwise, -1.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.IndexOfItem(`0)">
+      <summary>
+            Searches for the specified object and returns the zero-based index of the first occurrence within the entire underlying collection.
+            </summary>
+      <param name="item">The object to locate in the <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1" />. The value can be <c>null</c> for reference types.</param>
+      <returns>The zero-based index of the first occurrence of item within the entire <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1" />, if found; otherwise, -1.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.Insert(System.Int32,`0)">
+      <summary>Inserts an item to the <see cref="T:System.Collections.Generic.IList`1" /> at the specified index.</summary>
+      <param name="index">The zero-based index at which <paramref name="item" /> should be inserted.</param>
+      <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1" />.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.</exception>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.</exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.InsertItem(System.Int32,`0)">
+      <summary>
+            Inserts an element into the underlying collection at the specified index.
+            </summary>
+      <param name="index">The zero-based index at which <paramref name="index" /> should be inserted.</param>
+      <param name="item">The object to insert. The value can be <c>null</c> for reference types.</param>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableCollection`1.IsReadOnly">
+      <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</summary>
+      <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.</returns>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableCollection`1.Item(System.Int32)">
+      <summary>Gets or sets the element at the specified index.</summary>
+      <param name="index">The zero-based index of the element to get or set.</param>
+      <returns>The element at the specified index.</returns>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.</exception>
+      <exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IList`1" /> is read-only.</exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.Move(System.Int32,System.Int32)">
+      <summary>
+            Moved the element at the specified index to another index.
+            </summary>
+      <param name="oldIndex">The old zero-based index of the item to be moved.</param>
+      <param name="newIndex">The new zero-based index of the item to be moved.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.MoveItem(`0,System.Int32,System.Int32)">
+      <summary>
+            Moves the element at the specified index to another index in the underlying collection.
+            </summary>
+      <param name="item">The element to be moved.</param>
+      <param name="oldIndex">The old zero-based index of <paramref name="item" /> in the collection.</param>
+      <param name="newIndex">The new zero-based index of <paramref name="item" /> in the collection.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.OnDeserialization(System.Object)">
+      <summary>Runs when the entire object graph has been deserialized.</summary>
+      <param name="sender">The object that initiated the callback. The functionality for this parameter is not currently implemented. </param>
+    </member>
+    <member name="E:PostSharp.Patterns.Collections.AdvisableCollection`1.PropertyChanged">
+      <summary>Occurs when a property value changes.</summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.RaiseEvents">
+      <summary>
+            Raised the events that have been buffered.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.Remove(`0)">
+      <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+      <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
+      <returns>true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.RemoveAt(System.Int32)">
+      <summary>Removes the <see cref="T:System.Collections.Generic.IList`1" /> item at the specified index.</summary>
+      <param name="index">The zero-based index of the item to remove.</param>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.</exception>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.</exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.RemoveItem(System.Int32)">
+      <summary>
+            Removes the element at the specified index of the underlying collection.
+            </summary>
+      <param name="index">The zero-based index of the element to remove.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.SetItem(System.Int32,`0)">
+      <summary>
+            Replaces the element at the specified index of the underlying collection.
+            </summary>
+      <param name="index">The zero-based index of the element to replace.</param>
+      <param name="item">The new value for the element at the specified index. The value can be <c>null</c> for reference types.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.ToArray">
+      <summary>
+            Creates an array from the current <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1" />.
+            </summary>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.Patterns.Collections.AdvisableCollection`1.ToArray"]</p>
+      </returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Collections.AdvisableCollection`1.Enumerator">
+      <summary>
+            Enumerates the elements of an <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1" />.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableCollection`1.Enumerator.Current">
+      <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+      <returns>The element in the collection at the current position of the enumerator.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.Enumerator.Dispose">
+      <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableCollection`1.Enumerator.MoveNext">
+      <summary>Advances the enumerator to the next element of the collection.</summary>
+      <returns>true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.</returns>
+      <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+    </member>
+    <member name="T:PostSharp.Patterns.Collections.AdvisableDictionary`2">
+      <summary>
+            An implementation of a <see cref="T:System.Collections.Generic.Dictionary`2" /> into which advices can be injected dynamically. The class also allows derived classes to add new behaviors by overriding methods,
+            like the <see cref="T:System.Collections.ObjectModel.Collection`1" /> class does.
+            </summary>
+      <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+      <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" /> class
+            that is empty, has the default initial capacity, and uses the default equality comparer for the key type. 
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1})">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" /> class that contains elements copied from the specified <see cref="T:System.Collections.Generic.IDictionary`2" /> and uses the default equality comparer for the key type. 
+            </summary>
+      <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2" />  whose elements are copied to the new <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1},System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" /> class that contains elements copied from the specified <see cref="T:System.Collections.Generic.IDictionary`2" />  and uses the specified <see cref="T:System.Collections.Generic.IEqualityComparer`1" />.
+            </summary>
+      <param name="dictionary">The <see cref="T:System.Collections.Generic.IDictionary`2" /> whose elements are copied to the new <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />.</param>
+      <param name="comparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> implementation to use when comparing keys, or <c>null</c> to use the default <see cref="T:System.Collections.Generic.EqualityComparer`1" /> for the type of the key.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" /> that is empty, has the default initial capacity, and uses the specified equality comparer for the key type.
+            </summary>
+      <param name="comparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> implementation to use when comparing keys, or <c>null</c> to use the default <see cref="T:System.Collections.Generic.EqualityComparer`1" /> for the type of the key.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.#ctor(System.Int32)">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" /> class
+            that is empty, has the specified initial capacity, and uses the default equality comparer for the key type. 
+            </summary>
+      <param name="capacity">The initial number of elements that the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />  can contain.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" /> that is empty, has a specified initial capacity, and uses the specified equality comparer for the key type.
+            </summary>
+      <param name="comparer">The <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> implementation to use when comparing keys, or <c>null</c> to use the default <see cref="T:System.Collections.Generic.EqualityComparer`1" /> for the type of the key.</param>
+      <param name="capacity">The initial number of elements that the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />  can contain.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Deserialization constructor.
+            </summary>
+      <param name="info">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="info"/&gt; documentation for "M:PostSharp.Patterns.Collections.AdvisableDictionary`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"]</p>
+      </param>
+      <param name="context">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="context"/&gt; documentation for "M:PostSharp.Patterns.Collections.AdvisableDictionary`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"]</p>
+      </param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.Add(`0,`1)">
+      <summary>Adds an element with the provided key and value to the <see cref="T:System.Collections.Generic.IDictionary`2" />.</summary>
+      <param name="key">The object to use as the key of the element to add.</param>
+      <param name="value">The object to use as the value of the element to add.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="key" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">An element with the same key already exists in the <see cref="T:System.Collections.Generic.IDictionary`2" />.</exception>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.AddItem(`0,`1)">
+      <summary>
+            Adds an element into the underlying dictionary.
+            </summary>
+      <param name="key">The key of the element to add.</param>
+      <param name="value">The value of the element to add. The value can be <c>null</c> for reference types..</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.Clear">
+      <summary>Removes all elements from the <see cref="T:System.Collections.IDictionary" /> object.</summary>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.IDictionary" /> object is read-only. </exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.ClearItems">
+      <summary>
+            Removes all keys and items from the underlying dictionary.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.ContainsKey(`0)">
+      <summary>Determines whether the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key.</summary>
+      <param name="key">The key to locate in the <see cref="T:System.Collections.Generic.IDictionary`2" />.</param>
+      <returns>true if the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the key; otherwise, false.</returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="key" /> is null.</exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.ContainsValue(`1)">
+      <summary>
+            Determines whether the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" /> contains a specific value.
+            </summary>
+      <param name="value">The value to locate in the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />.
+            The value can be <c>null</c> for reference types.</param>
+      <returns>
+        <c>true</c> if the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" /> contains an element with the specified value; otherwise, <c>false</c>.
+            </returns>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableDictionary`2.Count">
+      <summary>Gets the number of elements contained in the <see cref="T:System.Collections.ICollection" />.</summary>
+      <returns>The number of elements contained in the <see cref="T:System.Collections.ICollection" />.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.GetEnumerator">
+      <summary>
+            Returns an enumerator that iterates through the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />.
+            </summary>
+      <returns>An <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.Enumerator" /> structure for the current <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with the data needed to serialize the target object.</summary>
+      <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> to populate with data. </param>
+      <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext" />) for this serialization. </param>
+      <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableDictionary`2.IsReadOnly">
+      <summary>Gets a value indicating whether the <see cref="T:System.Collections.IDictionary" /> object is read-only.</summary>
+      <returns>true if the <see cref="T:System.Collections.IDictionary" /> object is read-only; otherwise, false.</returns>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableDictionary`2.Item(`0)">
+      <summary>Gets or sets the element with the specified key.</summary>
+      <param name="key">The key of the element to get or set.</param>
+      <returns>The element with the specified key.</returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="key" /> is null.</exception>
+      <exception cref="T:System.Collections.Generic.KeyNotFoundException">The property is retrieved and <paramref name="key" /> is not found.</exception>
+      <exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableDictionary`2.Keys">
+      <summary>
+            Gets a collection containing the keys in the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.OnDeserialization(System.Object)">
+      <summary>Runs when the entire object graph has been deserialized.</summary>
+      <param name="sender">The object that initiated the callback. The functionality for this parameter is not currently implemented. </param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.Remove(`0)">
+      <summary>Removes the element with the specified key from the <see cref="T:System.Collections.Generic.IDictionary`2" />.</summary>
+      <param name="key">The key of the element to remove.</param>
+      <returns>true if the element is successfully removed; otherwise, false.  This method also returns false if <paramref name="key" /> was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" />.</returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="key" /> is null.</exception>
+      <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IDictionary`2" /> is read-only.</exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.RemoveItem(`0)">
+      <summary>
+            Removes the value with the specific key from the underlying dictionary.
+            </summary>
+      <param name="key">The key of the element to remove.</param>
+      <returns>
+        <c>true</c> if the element was successfully found and removed, otherwise <c>false</c>. This method returns <c>false</c> if <paramref name="key" />
+            if not found in the underlying dictionary. </returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.SetItem(`0,`1,`1)">
+      <summary>
+            Sets the value with the specified key in the underlying dictionary.
+            </summary>
+      <param name="key">The key of the element to add or replace.</param>
+      <param name="value">The new value to assign to the key.</param>
+      <param name="oldValue">The old value assigned to <paramref name="key" />, or <c>null</c> if there is currently no value assigned to <paramref name="key" />.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.TryGetValue(`0,`1@)">
+      <summary>Gets the value associated with the specified key.</summary>
+      <param name="key">The key whose value to get.</param>
+      <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value" /> parameter. This parameter is passed uninitialized.</param>
+      <returns>true if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, false.</returns>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="key" /> is null.</exception>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableDictionary`2.Values">
+      <summary>
+            Gets a collection containing the values in the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.Enumerator">
+      <summary>
+            Enumerates the elements of an <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableDictionary`2.Enumerator.Current">
+      <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+      <returns>The element in the collection at the current position of the enumerator.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.Enumerator.Dispose">
+      <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.Enumerator.MoveNext">
+      <summary>Advances the enumerator to the next element of the collection.</summary>
+      <returns>true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.</returns>
+      <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+    </member>
+    <member name="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection">
+      <summary>
+            Represents the collection of keys in an <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection.CopyTo(`0[],System.Int32)">
+      <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.</summary>
+      <param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
+      <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="array" /> is null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="arrayIndex" /> is less than 0.</exception>
+      <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection.Count">
+      <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+      <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection.GetEnumerator">
+      <summary>
+            Returns an enumerator that iterates through the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection" />.
+            </summary>
+      <returns>An <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection.Enumerator" /> structure for the current <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection" />.</returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection.Enumerator">
+      <summary>
+            Enumerates the elements of a <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection" />.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection.Enumerator.Current">
+      <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+      <returns>The element in the collection at the current position of the enumerator.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection.Enumerator.Dispose">
+      <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.KeyCollection.Enumerator.MoveNext">
+      <summary>Advances the enumerator to the next element of the collection.</summary>
+      <returns>true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.</returns>
+      <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+    </member>
+    <member name="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection">
+      <summary>
+            Represents the collection of values in an <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection.CopyTo(`1[],System.Int32)">
+      <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.</summary>
+      <param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
+      <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="array" /> is null.</exception>
+      <exception cref="T:System.ArgumentOutOfRangeException">
+        <paramref name="arrayIndex" /> is less than 0.</exception>
+      <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection.Count">
+      <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
+      <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection.GetEnumerator">
+      <summary>
+            Returns an enumerator that iterates through the <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection" />.
+            </summary>
+      <returns>An <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection.Enumerator" /> structure for the current <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection" />.</returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection.Enumerator">
+      <summary>
+            Enumerates the elements of a <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection" />.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection.Enumerator.Current">
+      <summary>Gets the element in the collection at the current position of the enumerator.</summary>
+      <returns>The element in the collection at the current position of the enumerator.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection.Enumerator.Dispose">
+      <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableDictionary`2.ValueCollection.Enumerator.MoveNext">
+      <summary>Advances the enumerator to the next element of the collection.</summary>
+      <returns>true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.</returns>
+      <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+    </member>
+    <member name="T:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2">
+      <summary>
+            Provides the abstract base class for a keyed collection, similar to <see cref="T:System.Collections.ObjectModel.KeyedCollection`2" />,  into which advices can be injected dynamically. 
+            </summary>
+      <typeparam name="TKey">The type of keys in the collection.</typeparam>
+      <typeparam name="TItem">The type of values in the collection.</typeparam>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2" /> class that is empty and has the default initial capacity.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.#ctor(System.Int32)">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2" /> class that is empty and has a specified initial capacity.
+            </summary>
+      <param name="capacity">The number of elements the collection can contain before it must be resized.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.#ctor(System.Int32,System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2" /> class that has a specified initial capacity and a given equality comparer and uses the specified equality comparer.
+            </summary>
+      <param name="capacity">The number of elements the collection can contain before it must be resized.</param>
+      <param name="comparer">The implementation of the <see cref="T:System.Collections.Generic.IEqualityComparer`1" />  generic interface to use when comparing keys, or <c>null</c> to use the default equality comparer for the type of the key.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>Initializes a new instance of the <see cref="T:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2" /> class</summary>
+      <param name="info">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="info"/&gt; documentation for "M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"]</p>
+      </param>
+      <param name="context">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="context"/&gt; documentation for "M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"]</p>
+      </param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.ClearItems">
+      <summary>
+            Removes all elements from the underlying collection.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.Comparer">
+      <summary>
+            Gets the generic equality comparer that is used to determine equality of keys in the collection.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.Contains(`0)">
+      <summary>
+            Determines whether the collection contains an element with the specified key.
+            </summary>
+      <param name="item">The key to locate in the collection.</param>
+      <returns>
+        <c>true</c> if the collection contains an element with the specified key; otherwise, <c>false</c>.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.GetKeyForItem(`1)">
+      <summary>
+            Extracts the key from the specified element.
+            </summary>
+      <param name="item">The element from which to extract the key.</param>
+      <returns>The key for the specified element.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with the data needed to serialize the target object.</summary>
+      <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> to populate with data. </param>
+      <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext" />) for this serialization. </param>
+      <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.IndexOfItem(`1)">
+      <summary>
+            Searches for the specified object and returns the zero-based index of the first occurrence within the entire underlying collection.
+            </summary>
+      <param name="item">The object to locate in the <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1" />. The value can be <c>null</c> for reference types.</param>
+      <returns>The zero-based index of the first occurrence of item within the entire <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1" />, if found; otherwise, -1.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.InsertItem(System.Int32,`1)">
+      <summary>
+            Inserts an element into the underlying collection at the specified index.
+            </summary>
+      <param name="index">The zero-based index at which <paramref name="index" /> should be inserted.</param>
+      <param name="item">The object to insert. The value can be <c>null</c> for reference types.</param>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.Item(`0)">
+      <summary>
+            Gets or sets the element with the specified key. 
+            </summary>
+      <param name="key">The key of the element.</param>
+      <returns>The element whose key is <paramref name="key" />.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.MoveItem(`1,System.Int32,System.Int32)">
+      <summary>
+            Moves the element at the specified index to another index in the underlying collection.
+            </summary>
+      <param name="item">The element to be moved.</param>
+      <param name="oldIndex">The old zero-based index of <paramref name="item" /> in the collection.</param>
+      <param name="newIndex">The new zero-based index of <paramref name="item" /> in the collection.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.RemoveItem(System.Int32)">
+      <summary>
+            Removes the element at the specified index of the underlying collection.
+            </summary>
+      <param name="index">The zero-based index of the element to remove.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.AdvisableKeyedCollection`2.SetItem(System.Int32,`1)">
+      <summary>
+            Replaces the element at the specified index of the underlying collection.
+            </summary>
+      <param name="index">The zero-based index of the element to replace.</param>
+      <param name="item">The new value for the element at the specified index. The value can be <c>null</c> for reference types.</param>
+    </member>
+    <member name="T:PostSharp.Patterns.Collections.ReadOnlyArray`1">
+      <summary>
+            Read-only array wrapper.
+            </summary>
+      <typeparam name="T">Type of array items.</typeparam>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.ReadOnlyArray`1.#ctor(`0[])">
+      <summary>
+            Initializes a new <see cref="T:PostSharp.Patterns.Collections.ReadOnlyArray`1" />.
+            </summary>
+      <param name="array">An array, or <c>null</c>.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.ReadOnlyArray`1.Equals(PostSharp.Patterns.Collections.ReadOnlyArray{`0})">
+      <summary>Indicates whether the current object is equal to another object of the same type.</summary>
+      <param name="other">An object to compare with this object.</param>
+      <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.ReadOnlyArray`1.Equals(System.Object)">
+      <summary>Indicates whether this instance and a specified object are equal.</summary>
+      <param name="obj">Another object to compare to. </param>
+      <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.ReadOnlyArray`1.GetHashCode">
+      <summary>Returns the hash code for this instance.</summary>
+      <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.ReadOnlyArray`1.IsNull">
+      <summary>
+            Determines whether the array is null.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.ReadOnlyArray`1.Item(System.Int32)">
+      <summary>
+            Gets a specified element of the array.
+            </summary>
+      <param name="index">The element position.</param>
+      <returns>The element at position <paramref name="index" />.</returns>
+    </member>
+    <member name="P:PostSharp.Patterns.Collections.ReadOnlyArray`1.Length">
+      <summary>
+            Gets the array length.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.ReadOnlyArray`1.op_Equality(PostSharp.Patterns.Collections.ReadOnlyArray{`0},PostSharp.Patterns.Collections.ReadOnlyArray{`0})">
+      <summary>
+            Determines whether two instances of the <see cref="T:PostSharp.Patterns.Collections.ReadOnlyArray`1" /> type are equal.
+            </summary>
+      <param name="left">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="left"/&gt; documentation for "M:PostSharp.Patterns.Collections.ReadOnlyArray`1.op_Equality(PostSharp.Patterns.Collections.ReadOnlyArray{`0},PostSharp.Patterns.Collections.ReadOnlyArray{`0})"]</p>
+      </param>
+      <param name="right">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="right"/&gt; documentation for "M:PostSharp.Patterns.Collections.ReadOnlyArray`1.op_Equality(PostSharp.Patterns.Collections.ReadOnlyArray{`0},PostSharp.Patterns.Collections.ReadOnlyArray{`0})"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.Patterns.Collections.ReadOnlyArray`1.op_Equality(PostSharp.Patterns.Collections.ReadOnlyArray{`0},PostSharp.Patterns.Collections.ReadOnlyArray{`0})"]</p>
+      </returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Collections.ReadOnlyArray`1.op_Inequality(PostSharp.Patterns.Collections.ReadOnlyArray{`0},PostSharp.Patterns.Collections.ReadOnlyArray{`0})">
+      <summary>
+            Determines whether two instances of the <see cref="T:PostSharp.Patterns.Collections.ReadOnlyArray`1" /> type are different.
+            </summary>
+      <param name="left">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="left"/&gt; documentation for "M:PostSharp.Patterns.Collections.ReadOnlyArray`1.op_Inequality(PostSharp.Patterns.Collections.ReadOnlyArray{`0},PostSharp.Patterns.Collections.ReadOnlyArray{`0})"]</p>
+      </param>
+      <param name="right">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="right"/&gt; documentation for "M:PostSharp.Patterns.Collections.ReadOnlyArray`1.op_Inequality(PostSharp.Patterns.Collections.ReadOnlyArray{`0},PostSharp.Patterns.Collections.ReadOnlyArray{`0})"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.Patterns.Collections.ReadOnlyArray`1.op_Inequality(PostSharp.Patterns.Collections.ReadOnlyArray{`0},PostSharp.Patterns.Collections.ReadOnlyArray{`0})"]</p>
+      </returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.AggregatableAttribute">
+      <summary>
+            Custom attribute that, when applied to class, enables instances of this class to be involved in a parent-child relationship.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableAttribute.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.AggregatableAttribute" /> class.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableAttribute.#ctor(PostSharp.Serialization.PortableFormatterConstructorContext)">
+      <summary>Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.AggregatableAttribute" /> class</summary>
+      <param name="context">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="context"/&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableAttribute.#ctor(PostSharp.Serialization.PortableFormatterConstructorContext)"]</p>
+      </param>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.AggregatableAttribute.DefaultItemRelationship">
+      <summary>
+            Gets or sets the default kind of relationship for collection items. 
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.AggregatableAttribute.DefaultMemberRelationship">
+      <summary>
+            Gets or sets the default kind of relationship of fields and automatic properties. 
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.AggregatableAttribute.IsParentSurrogate">
+      <summary>
+            Determines whether instances of the target class of this custom attribute are parent surrogates.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.AggregatableAttribute.IsParentSurrogateSpecified">
+      <summary>
+            Determines whether the <see cref="P:PostSharp.Patterns.Model.AggregatableAttribute.IsParentSurrogate" /> property has been set.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.AggregatableAttributeTargetClass">
+      <summary>
+            Describes the members that are introduced or overridden by the <see cref="T:PostSharp.Patterns.Model.AggregatableAttribute" /> aspect.
+            You can define one or many of these members in classes that are the target of <see cref="T:PostSharp.Patterns.Model.AggregatableAttribute" /> to reacts to events
+            of the Aggregatable pattern.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableAttributeTargetClass.OnAncestorChanged(PostSharp.Patterns.Model.AncestorChangedEventArgs)">
+      <summary>
+            Method invoked when an ancestor of the current object has changed. Implement this method only if the target class of <see cref="T:PostSharp.Patterns.Model.AggregatableAttribute" /> implements
+            the <see cref="T:PostSharp.Patterns.Model.IAggregatable" /> interface. For other use cases, subscribe to the <see cref="E:PostSharp.Patterns.Model.IAggregatable.AncestorChanged" /> event.
+            </summary>
+      <param name="args">An instance of <see cref="T:PostSharp.Patterns.Model.AncestorChangedEventArgs" /> whose <see cref="P:PostSharp.Patterns.Model.AncestorChangedEventArgs.Child" /> property indicates
+            which object had its <see cref="P:PostSharp.Patterns.Model.IAggregatable.Parent" /> modified, or <c>null</c> if this object is the current object. </param>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableAttributeTargetClass.OnChildAttached(System.Object,PostSharp.Patterns.Model.ChildInfo)">
+      <summary>
+            Method invoked when a child has been attached to the current object.
+            </summary>
+      <param name="child">The child that has just been attached to the current object.</param>
+      <param name="childInfo">Information about the location (field or collection item, typically) to which the child is assigned and
+            about the relationship of the current node relatively to the parent node. </param>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableAttributeTargetClass.OnChildDetached(System.Object,PostSharp.Patterns.Model.ChildInfo)">
+      <summary>
+            Method invoked when a child has been detached from the current object.
+            </summary>
+      <param name="child">The child that has just been detached from the current object.</param>
+      <param name="childInfo">Information about the location (field or collection item, typically) to which the child is assigned and
+            about the relationship of the current node relatively to the parent node. </param>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableAttributeTargetClass.OnParentChanged">
+      <summary>
+            Method invoked when the <see cref="P:PostSharp.Patterns.Model.IAggregatable.Parent" /> of the current object has been changed. 
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableAttributeTargetClass.VisitChildren(PostSharp.Patterns.Model.ChildVisitor,PostSharp.Patterns.Model.ChildVisitorOptions)">
+      <summary>
+            Executes an action for all direct children of the current object. Implement this method in the target class of <see cref="T:PostSharp.Patterns.Model.AggregatableAttribute" /> if you want to
+            provide children objects that are not managed by the <see cref="T:PostSharp.Patterns.Model.AggregatableAttribute" /> aspect.
+            </summary>
+      <param name="visitor">The action to be executed for each child.</param>
+      <param name="options">Options. The default behavior is to enumerate all children, but ignore parent surrogates.</param>
+      <returns>
+        <c>false</c> if <paramref name="visitor" /> returned <see cref="F:PostSharp.Patterns.Model.DescendantVisitorStatus.Stop" />, otherwise <c>true</c>.</returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.AggregatableClientAttribute">
+      <summary>
+            Base class for aspects that consume functionalities from the <see cref="T:PostSharp.Patterns.Model.AggregatableAttribute" /> aspect.
+            This class provides functionalities to advise and unadvise children.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableClientAttribute.#ctor(PostSharp.Serialization.PortableFormatterConstructorContext)">
+      <summary>Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.AggregatableClientAttribute" /> class</summary>
+      <param name="context">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="context"/&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableClientAttribute.#ctor(PostSharp.Serialization.PortableFormatterConstructorContext)"]</p>
+      </param>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableClientAttribute.Advise(System.Object)">
+      <summary>
+            Injects the advice into the child object.
+            </summary>
+      <param name="obj">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="obj"/&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableClientAttribute.Advise(System.Object)"]</p>
+      </param>
+      <returns>
+        <c>true</c> if the children of <paramref name="obj" /> have to be advised as well, <c>false</c> otherwise.</returns>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.AggregatableClientAttribute.AppliedToCurrentType">
+      <summary>
+            Determines if the current custom attribute instance has been applied to the type of the target instance.
+            This value is <c>false</c> if the custom attribute has been applied to a base type.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableClientAttribute.CompileTimeInitialize(System.Type,PostSharp.Aspects.AspectInfo)">
+      <summary>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;summary&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableClientAttribute.CompileTimeInitialize(System.Type,PostSharp.Aspects.AspectInfo)"]</p>
+      </summary>
+      <param name="type">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="type"/&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableClientAttribute.CompileTimeInitialize(System.Type,PostSharp.Aspects.AspectInfo)"]</p>
+      </param>
+      <param name="aspectInfo">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="aspectInfo"/&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableClientAttribute.CompileTimeInitialize(System.Type,PostSharp.Aspects.AspectInfo)"]</p>
+      </param>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableClientAttribute.IsEligibleChild(System.Object,PostSharp.Patterns.Model.ChildInfo)">
+      <summary>
+            Determines if an object is eligible to be a child of the target instance of the current aspect.
+            </summary>
+      <param name="child">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="child"/&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableClientAttribute.IsEligibleChild(System.Object,PostSharp.Patterns.Model.ChildInfo)"]</p>
+      </param>
+      <param name="childInfo">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="childInfo"/&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableClientAttribute.IsEligibleChild(System.Object,PostSharp.Patterns.Model.ChildInfo)"]</p>
+      </param>
+      <returns>
+        <c>true</c> if <paramref name="child" /> is eligible to be a child without injecting any advice, otherwise <c>false</c>. When this method returns <c>false</c>,
+            the aspect will the invoke the <see cref="M:PostSharp.Patterns.Model.AggregatableClientAttribute.Advise(System.Object)" /> method. </returns>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.AggregatableClientAttribute.IsInitialized">
+      <summary>
+            Determines whether the target instance is fully initialized, i.e. if all constructors have completed.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableClientAttribute.OnInstanceConstructed">
+      <summary>
+            Executed when the target instance gets fully initialized, i.e. just after all constructors have completed.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableClientAttribute.ProvideAspects(System.Type)">
+      <summary>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;summary&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableClientAttribute.ProvideAspects(System.Type)"]</p>
+      </summary>
+      <param name="targetType">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="targetType"/&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableClientAttribute.ProvideAspects(System.Type)"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableClientAttribute.ProvideAspects(System.Type)"]</p>
+      </returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.AggregatableExtensions">
+      <summary>
+            Provides extension methods to the <see cref="T:PostSharp.Patterns.Model.IAggregatable" /> interface.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableExtensions.GetChildren(PostSharp.Patterns.Model.IAggregatable,PostSharp.Patterns.Model.ChildVisitorOptions)">
+      <summary>
+            Gets the list of children of a specified parent object.
+            </summary>
+      <param name="parent">The parent object.</param>
+      <param name="options">Options.</param>
+      <returns>A list of children.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableExtensions.GetDistinctChildren(PostSharp.Patterns.Model.IAggregatable,PostSharp.Patterns.Model.ChildVisitorOptions)">
+      <summary>
+            Gets a list of distinct children of a specified parent object.
+            </summary>
+      <param name="parent">The parent object.</param>
+      <param name="options">Options.</param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableExtensions.GetDistinctChildren(PostSharp.Patterns.Model.IAggregatable,PostSharp.Patterns.Model.ChildVisitorOptions)"]</p>
+      </returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableExtensions.IsDescendantOf(PostSharp.Patterns.Model.IAggregatable,System.Object)">
+      <summary>
+            Determines whether a specified object is a descendant of a specified ancestor.
+            </summary>
+      <param name="child">The child object.</param>
+      <param name="ancestor">The ancestor object.</param>
+      <returns>
+        <c>true</c> if <paramref name="child" /> is a descendant of <paramref name="ancestor" />, otherwise <c>false</c>.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableExtensions.VisitSelfAndDescendants(PostSharp.Patterns.Model.IAggregatable,PostSharp.Patterns.Model.DescendantVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)">
+      <summary>
+            Executes a  <see cref="T:PostSharp.Patterns.Model.ChildVisitor" /> for the a specified parent object and all its descendants.
+            </summary>
+      <param name="parent">The parent object.</param>
+      <param name="visitor">The action to execute.</param>
+      <param name="options">Options.</param>
+      <param name="state">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="state"/&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableExtensions.VisitSelfAndDescendants(PostSharp.Patterns.Model.IAggregatable,PostSharp.Patterns.Model.DescendantVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.Patterns.Model.AggregatableExtensions.VisitSelfAndDescendants(PostSharp.Patterns.Model.IAggregatable,PostSharp.Patterns.Model.DescendantVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)"]</p>
+      </returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.AggregatableServices">
+      <summary>
+            Provide static methods to aid with implementation of the <see cref="T:PostSharp.Patterns.Model.IAggregatable" /> interface.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableServices.Advice(System.Object,PostSharp.Patterns.Model.RelationshipInfo,System.Boolean)">
+      <summary>
+            Injects the <c>Aggregatable</c> dynamic impl into an object.
+            </summary>
+      <param name="obj">The object into which the impl must be injected.</param>
+      <param name="relationshipInfo">The description of the relationship of <paramref name="obj" /> relatively to its parent.</param>
+      <param name="required">
+        <c>true</c> if an <see cref="T:System.InvalidOperationException" /> should be thrown in case <paramref name="obj" /> cannot be dynamically advised,
+            otherwise <c>false</c>.</param>
+      <returns>
+        <c>true</c> if the <c>Aggregatable</c> impl was successfully injected into <paramref name="obj" />, <c>false</c> if <paramref name="obj" /> already
+            implemented the impl, or if <paramref name="obj" /> cannot be dynamically advised and <paramref name="required" /> is false.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AggregatableServices.Unadvise(System.Object)">
+      <summary>
+            Removes the Aggregatable advise from an object.
+            </summary>
+      <param name="obj">An <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1" /> or <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />,</param>
+      <returns>
+        <c>true</c> if the impl was removed from <paramref name="obj" />, <c>false</c> if <paramref name="obj" /> did not have
+            the Aggregatable impl.</returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.AncestorChangedEventArgs">
+      <summary>
+            Arguments of the <see cref="E:PostSharp.Patterns.Model.IAggregatable.AncestorChanged" /> event.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.AncestorChangedEventArgs.#ctor(System.Object)">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.AncestorChangedEventArgs" /> class.
+            </summary>
+      <param name="child">The child object.</param>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.AncestorChangedEventArgs.Child">
+      <summary>
+            Gets the child object.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.ChildAttribute">
+      <summary>
+            Custom attribute that, when applied to a field or automatic property, specifies that the object assigned to this
+            field or property is a child of the instance of the declaring type.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.ChildAttribute.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.ChildAttribute" /> class.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.ChildAttribute.DisableBehaviorPropagation">
+      <summary>
+            Determines whether the behaviors applied to the declaring type of the target field should be applied
+            to the object assigned this field. The default value of this property is <c>false</c>, which means 
+            that behaviors such as Recordable or threading models will be applied to children (resulting in build-
+            or run-time exception if it is not possible). When it is set to <c>true</c>, behaviors will not be propagated. 
+            When applied to a field of collection type, the value applies to collection items.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.ChildAttribute.DisableBuildTimeValidation">
+      <summary>
+            Determines whether the type of the target field or property should be validated at build-time
+            against the rules of aspects that rely on the Aggregatable model, such as the Recordable aspect
+            or the threading model aspects. If this property is set to <c>true</c>, validation will
+            be performed at runtime only.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.ChildAttribute.IsParentSurrogate">
+      <summary>
+            Determines whether the value assigned to the field or property is a parent surrogate. The <see cref="P:PostSharp.Patterns.Model.IAggregatable.Parent" /> property
+            of children of a parent surrogate are set to the parent of the parent surrogate, instead of to the field itself.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.ChildAttribute.ItemsRelationship">
+      <summary>
+            Determines the kind of relationship between items
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.ChildInfo">
+      <summary>
+            Describes a location (typically a field or collection item) on which a child can be attached to a parent.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.ChildInfo.#ctor(PostSharp.Serialization.PortableFormatterConstructorContext)">
+      <summary>Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.ChildInfo" /> class</summary>
+      <param name="context">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="context"/&gt; documentation for "M:PostSharp.Patterns.Model.ChildInfo.#ctor(PostSharp.Serialization.PortableFormatterConstructorContext)"]</p>
+      </param>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.ChildInfo.#ctor(System.Reflection.FieldInfo,PostSharp.Patterns.Model.RelationshipInfo)">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.ChildInfo" /> that represents a field.
+            </summary>
+      <param name="field">A field.</param>
+      <param name="relationshipInfo">A <see cref="P:PostSharp.Patterns.Model.ChildInfo.RelationshipInfo" /> instance that describes the kind of relationship of the child
+            object to its direct parent.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.ChildInfo.#ctor(System.String,System.Type,PostSharp.Patterns.Model.RelationshipInfo)">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.ChildInfo" /> that represents a collection item or a custom location.
+            </summary>
+      <param name="locationName">Name of the location, for instance <c>Item</c> for a collection item.</param>
+      <param name="locationType">Type of the location.</param>
+      <param name="relationshipInfo">A <see cref="P:PostSharp.Patterns.Model.ChildInfo.RelationshipInfo" /> instance that describes the kind of relationship of the child
+            object to its direct parent.</param>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.ChildInfo.DeclarationIdentifier">
+      <summary>
+            Gets the <see cref="T:PostSharp.Reflection.DeclarationIdentifier" /> of the field where the child is stored, or <see cref="P:PostSharp.Reflection.DeclarationIdentifier.Null" />
+            if the current <see cref="T:PostSharp.Patterns.Model.ChildInfo" /> does not represent a field.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.ChildInfo.LocationName">
+      <summary>
+            Gets the name of the location to which the child is assigned.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.ChildInfo.LocationType">
+      <summary>
+            Gets the type of the location to which the child is assigned.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.ChildInfo.RelationshipInfo">
+      <summary>
+            Describes the kind of relationship between the child and its parent.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.ChildVisitor">
+      <summary>
+            Encapsulates a method that is invoked by the <see cref="M:PostSharp.Patterns.Model.IAggregatable.VisitChildren(PostSharp.Patterns.Model.ChildVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)" /> method.
+            </summary>
+      <param name="child">The object being visited.</param>
+      <param name="childInfo">Describes the field or other location to which the child is assigned.</param>
+      <returns>
+        <c>true</c> to instruct the <see cref="M:PostSharp.Patterns.Model.IAggregatable.VisitChildren(PostSharp.Patterns.Model.ChildVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)" /> implementation to continue enumerating other children, <c>false</c> 
+            to instruct the <see cref="M:PostSharp.Patterns.Model.IAggregatable.VisitChildren(PostSharp.Patterns.Model.ChildVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)" /> implementation to immediately return the <c>false</c> value without enumerating other children.</returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.ChildVisitorOptions">
+      <summary>
+            Options for the <see cref="M:PostSharp.Patterns.Model.IAggregatable.VisitChildren(PostSharp.Patterns.Model.ChildVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)" /> and <see cref="M:PostSharp.Patterns.Model.AggregatableExtensions.VisitSelfAndDescendants(PostSharp.Patterns.Model.IAggregatable,PostSharp.Patterns.Model.DescendantVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)" /> methods.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.ChildVisitorOptions.None">
+      <summary>
+            Enumerates all children, but ignore parent surrogates.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.ChildVisitorOptions.IncludeParentSurrogates">
+      <summary>
+            Include parent surrogates.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.ChildVisitorOptions.ExcludeIndirectChildren">
+      <summary>
+            Exclude children of parent surrogates.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.DescendantVisitor">
+      <summary>
+            Encapsulates a method that is invoked by the <see cref="M:PostSharp.Patterns.Model.AggregatableExtensions.VisitSelfAndDescendants(PostSharp.Patterns.Model.IAggregatable,PostSharp.Patterns.Model.DescendantVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)" /> method.
+            </summary>
+      <param name="descendant">The object being visited.</param>
+      <param name="childInfo">Describes the field or other location to which the child is assigned.</param>
+      <returns>A value that determines how the visitor should continue enumerating other objects.</returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.DescendantVisitorStatus">
+      <summary>
+            Type of the return value of <see cref="T:PostSharp.Patterns.Model.ChildVisitor" />. Determines how the visitor should continue enumerating other objects.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.DescendantVisitorStatus.Default">
+      <summary>
+            Equivalent to <see cref="F:PostSharp.Patterns.Model.DescendantVisitorStatus.ContinueWithChildren" /> for <see cref="M:PostSharp.Patterns.Model.AggregatableExtensions.VisitSelfAndDescendants(PostSharp.Patterns.Model.IAggregatable,PostSharp.Patterns.Model.DescendantVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)" />
+            or <see cref="F:PostSharp.Patterns.Model.DescendantVisitorStatus.ContinueWithSiblings" /> for <see cref="M:PostSharp.Patterns.Model.IAggregatable.VisitChildren(PostSharp.Patterns.Model.ChildVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)" />.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.DescendantVisitorStatus.Stop">
+      <summary>
+            Immediately stops enumeration and returns to the caller.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.DescendantVisitorStatus.ContinueWithChildren">
+      <summary>
+            Continues enumerating the children of the current node, then the sibling nodes. This value is not supported by the
+            <see cref="M:PostSharp.Patterns.Model.IAggregatable.VisitChildren(PostSharp.Patterns.Model.ChildVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)" /> method.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.DescendantVisitorStatus.ContinueWithSiblings">
+      <summary>
+            Continues enumerating the siblings of the current node, but do not enumerate the children nodes.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.DynamicallyAdvisableObject">
+      <summary>
+            Base class for objects into which advices can be dynamically injected. This class is not meant to be used in user code.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.DynamicallyAdvisableObject.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo" /> with the data needed to serialize the target object.</summary>
+      <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> to populate with data. </param>
+      <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext" />) for this serialization. </param>
+      <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.DynamicallyAdvisableObject.OnDeserialization(System.Object)">
+      <summary>Runs when the entire object graph has been deserialized.</summary>
+      <param name="sender">The object that initiated the callback. The functionality for this parameter is not currently implemented. </param>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.IAggregatable">
+      <summary>
+            Defines members (principally <see cref="P:PostSharp.Patterns.Model.IAggregatable.Parent" /> and <see cref="M:PostSharp.Patterns.Model.IAggregatable.VisitChildren(PostSharp.Patterns.Model.ChildVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)" />) that allow to consume parent-child relationships in an object tree.
+            </summary>
+    </member>
+    <member name="E:PostSharp.Patterns.Model.IAggregatable.AncestorChanged">
+      <summary>
+            Occurs when any ancestor changes. An ancestor is the parent of the current object or the parent of an ancestor of the current object.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.IAggregatable.Parent">
+      <summary>
+            Gets the parent of the current object.
+            </summary>
+    </member>
+    <member name="E:PostSharp.Patterns.Model.IAggregatable.ParentChanged">
+      <summary>
+            Occurs when the <see cref="P:PostSharp.Patterns.Model.IAggregatable.Parent" /> property changes.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.IAggregatable.ParentRelationship">
+      <summary>
+            Describes the relationship between the current object and its parent. Valid values are <see cref="F:PostSharp.Patterns.Model.RelationshipKind.Child" /> or <see cref="F:PostSharp.Patterns.Model.RelationshipKind.ParentSurrogate" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.IAggregatable.VisitChildren(PostSharp.Patterns.Model.ChildVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)">
+      <summary>
+            Executes an action for all direct children of the current object.
+            </summary>
+      <param name="visitor">The action to be executed for each child.</param>
+      <param name="options">Options. The default behavior is to enumerate all children, but ignore parent surrogates.</param>
+      <param name="state">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="state"/&gt; documentation for "M:PostSharp.Patterns.Model.IAggregatable.VisitChildren(PostSharp.Patterns.Model.ChildVisitor,PostSharp.Patterns.Model.ChildVisitorOptions,System.Object)"]</p>
+      </param>
+      <returns>
+        <c>false</c> if <paramref name="visitor" /> returned <see cref="F:PostSharp.Patterns.Model.DescendantVisitorStatus.Stop" />, otherwise <c>true</c>.</returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.IAttachable">
+      <summary>
+            Defines setter methods for the <see cref="T:PostSharp.Patterns.Model.IAggregatable" />.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.IAttachable.AttachToParent(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.IAttacher,System.Object)">
+      <summary>
+            Attaches the current object to a parent object.
+            </summary>
+      <param name="relationshipInfo">Information about the relationship of the parent node relatively to the current node. 
+            The <see cref="P:PostSharp.Patterns.Model.RelationshipInfo.Relationship" /> property must be set to <see cref="F:PostSharp.Patterns.Model.RelationshipKind.Child" /> or
+            <see cref="F:PostSharp.Patterns.Model.RelationshipKind.ParentSurrogate" />.
+            </param>
+      <param name="attacher">A service that allows the current node to attach itself to the parent.</param>
+      <param name="attacherState">An opaque state object to be passed as the first argument to all methods of the <see cref="T:PostSharp.Patterns.Model.IAttacher" /> interface.</param>
+      <returns>
+        <c>true</c> if the current object was not previously attached to any parent, <c>false</c> if it was already attached to the same parent.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.IAttachable.DetachFromParent">
+      <summary>
+            Detaches the current object from its parent object.
+            </summary>
+      <returns>
+        <c>true</c> if the current object has been fully detached, i.e. is no longer attached to its parent by any other relationship, or <c>false</c>
+            if the current object is still attached to the parent by some relationship.</returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.IAttacher">
+      <summary>
+            Describes the semantics of a service through which a child <see cref="T:PostSharp.Patterns.Model.IAggregatable" /> object can attach itself to a parent object.
+            This interface is typically implemented by the parent object by composition.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.IAttacher.AttachChild(System.Object,System.Object,PostSharp.Patterns.Model.ChildInfo)">
+      <summary>
+            Attach an object as a child of the current node.
+            </summary>
+      <param name="state">The opaque state object passed to <see cref="M:PostSharp.Patterns.Model.IAttachable.AttachToParent(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.IAttacher,System.Object)" />.</param>
+      <param name="child">The object that must be attached as a child to the current node.</param>
+      <param name="childInfo">Information about the location (field or collection item, typically) to which the child is assigned and
+            about the relationship of the current node relatively to the parent node. 
+            The <see cref="P:PostSharp.Patterns.Model.RelationshipInfo.Relationship" /> property must be set to <see cref="F:PostSharp.Patterns.Model.RelationshipKind.Child" /> or <see cref="F:PostSharp.Patterns.Model.RelationshipKind.ParentSurrogate" /></param>
+      <returns>The new parent of <paramref name="child" />, or <c>null</c> if <paramref name="child" />
+            was already attached to the same parent node through another relationship. If the current node is a parent surrogate, the method
+            returns the parent of the current node. </returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.IAttacher.DetachChild(System.Object,System.Object,PostSharp.Patterns.Model.ChildInfo)">
+      <summary>
+            Detaches an object as a child of the current node.
+            </summary>
+      <param name="state">The opaque state object passed to <see cref="M:PostSharp.Patterns.Model.IAttachable.AttachToParent(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.IAttacher,System.Object)" />.</param>
+      <param name="child">The object that must be detached as a child as the current node.</param>
+      <param name="childInfo">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="childInfo"/&gt; documentation for "M:PostSharp.Patterns.Model.IAttacher.DetachChild(System.Object,System.Object,PostSharp.Patterns.Model.ChildInfo)"]</p>
+      </param>
+      <returns>The former effective parent of <paramref name="child" />, or <c>null</c> if the child is still attached to
+            the parent through another relationship.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.IAttacher.GetNode(System.Object)">
+      <summary>
+            Gets the underlying object instance which is subject to the current attacher.
+            The instance is the aggregatable node that participates in the parent-child relationships with other objects.
+            </summary>
+      <param name="state">The opaque state object passed to <see cref="M:PostSharp.Patterns.Model.IAttachable.AttachToParent(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.IAttacher,System.Object)" />.</param>
+      <returns>An object implementing <see cref="T:PostSharp.Patterns.Model.IAggregatable" />, either directly or dynamically.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.IAttacher.OnChildAttached(System.Object,System.Object,System.Object,PostSharp.Patterns.Model.ChildInfo)">
+      <summary>
+            Method invoked after a child has been successfully attached to the current node. 
+            </summary>
+      <param name="state">The opaque state object passed to <see cref="M:PostSharp.Patterns.Model.IAttachable.AttachToParent(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.IAttacher,System.Object)" />.</param>
+      <param name="parent">The actual parent of <paramref name="child" />. If <paramref name="child" /> is assigned to a parent surrogate,
+                the parameter is set to the actual parent, i.e. to the parent of the parent surrogate.</param>
+      <param name="child">The child object.</param>
+      <param name="childInfo">Information about the location (field or collection item, typically) to which the child is assigned and
+            about the relationship of the current node relatively to the parent node. </param>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.IAttacher.OnChildDetached(System.Object,System.Object,System.Object,PostSharp.Patterns.Model.ChildInfo)">
+      <summary>
+            Method invoked when a child has been detached from the current node. 
+            </summary>
+      <param name="state">The opaque state object passed to <see cref="M:PostSharp.Patterns.Model.IAttachable.AttachToParent(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.IAttacher,System.Object)" />.</param>
+      <param name="parent">The former actual parent of <paramref name="child" />.  If <paramref name="child" /> was assigned to a parent surrogate,
+                the parameter is set to the former actual parent, i.e. to the parent of the parent surrogate.</param>
+      <param name="child">The child object.</param>
+      <param name="childInfo">Information about the location (field or collection item, typically) to which the child was assigned and
+            about the relationship of the current node relatively to the parent node. </param>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.IDynamicInterfaceImplementation">
+      <summary>
+            Interface that must be implemented by objects implementing dynamic interfaces, which can be queried using <see cref="M:PostSharp.Patterns.Model.IQueryInterface.QueryInterface``1" />.
+            The <see cref="T:PostSharp.Patterns.Model.IDynamicInterfaceImplementation" /> interface provides a mean to get a reference back to the principal object.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.IDynamicInterfaceImplementation.PrincipalObject">
+      <summary>
+            Gets the principal object for which the current object is an indirect interface implementation.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.IQueryInterface">
+      <summary>
+            Interface implemented by objects that can implement interface dynamically by composition, without
+            implementing the interface directly at MSIL level. The <see cref="M:PostSharp.Patterns.Model.IQueryInterface.QueryInterface``1" /> method
+            must then be used instead of a normal cast.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.IQueryInterface.QueryInterface``1">
+      <summary>
+            Gets the implementation of a specified interface for the current object.
+            </summary>
+      <typeparam name="T">The type of the required interface.</typeparam>
+      <returns>An object implementing the <typeparamref name="T" /> interface on behalf of the current object, or <c>null</c>
+            if the current object does not implement the <typeparamref name="T" /> interface.
+            </returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.MemberRelationshipAttribute">
+      <summary>
+            Base class for custom attributes that determine the kind of relationship of objects in a graph.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.MemberRelationshipAttribute.CompileTimeValidate(System.Object)">
+      <summary>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;summary&gt; documentation for "M:PostSharp.Patterns.Model.MemberRelationshipAttribute.CompileTimeValidate(System.Object)"]</p>
+      </summary>
+      <param name="target">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="target"/&gt; documentation for "M:PostSharp.Patterns.Model.MemberRelationshipAttribute.CompileTimeValidate(System.Object)"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.Patterns.Model.MemberRelationshipAttribute.CompileTimeValidate(System.Object)"]</p>
+      </returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.ObjectAccessLevel">
+      <summary>
+            Enumeration of access levels that methods of execution scopes can require on an object.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.ObjectAccessLevel.None">
+      <summary>
+            None.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.ObjectAccessLevel.Unknown">
+      <summary>
+            The required access level is unknown; maximal access is required.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.ObjectAccessLevel.Read">
+      <summary>
+            Read-only.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.ObjectAccessLevel.Write">
+      <summary>
+            Read-write.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.ObjectAccessLevel.UpgradeableRead">
+      <summary>
+            Read-only access that prevents other threads from acquiring <see cref="F:PostSharp.Patterns.Model.ObjectAccessLevel.Write" /> or <see cref="F:PostSharp.Patterns.Model.ObjectAccessLevel.UpgradeableRead" /> access.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.ObjectAccessLevel.Unchecked">
+      <summary>
+            Disables all runtime verification of access permissions.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.ObjectAccessLevel.Yield">
+      <summary>
+            Indicates that the control flow is passed to another object.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.ParentAttribute">
+      <summary>
+            Custom attribute that, when applied to a field or automatic property, specifies that this field or property
+            should be automatically set to the parent of the instance of the declaring type, whenever this instance
+            is attached as a child to another object.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.ParentAttribute.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.ParentAttribute" /> class</summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.QueryInterfaceExtensions">
+      <summary>
+            Provides methods to aid with the use of dynamic interfaces.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.QueryInterfaceExtensions.QueryInterface``1(System.Object,System.Boolean)">
+      <summary>
+            Gets the implementation of a specified interface for the specified object.
+            </summary>
+      <param name="obj">The object for which the interface should be queried.</param>
+      <param name="throwing">
+        <c>true</c> if the method should throw a <see cref="T:System.InvalidCastException" /> if <paramref name="obj" /> does not implement the
+            <typeparamref name="T" /> interface, <c>false</c> if <c>null</c> be returned instead. The default value is <c>true</c>.</param>
+      <typeparam name="T">The type of the required interface.</typeparam>
+      <returns>An object implementing the <typeparamref name="T" /> interface on behalf of <paramref name="obj" />, or <c>null</c>
+            if <paramref name="obj" /> does not implement <typeparamref name="T" /> and <paramref name="throwing" /> is <c>true</c>.
+            </returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.ReferenceAttribute">
+      <summary>
+            Custom attribute that, when applied to a field or automatic property, specifies that this field or property is a simple reference, 
+            and is not involved in a parent-child relationship.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.ReferenceAttribute.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.ReferenceAttribute" /> class</summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.RelationshipInfo">
+      <summary>
+            Describes the relationship between a parent and a child.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.RelationshipInfo.#ctor(PostSharp.Patterns.Model.RelationshipKind,PostSharp.Patterns.Model.RelationshipKind)">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Model.RelationshipInfo" /> type.
+            </summary>
+      <param name="itemsRelationship">The kind of relationship of items of the child collection relatively to the child collection. </param>
+      <param name="relationship">The kind of relationship of the child relatively to the parent. Valid values are <see cref="F:PostSharp.Patterns.Model.RelationshipKind.Child" />, <see cref="F:PostSharp.Patterns.Model.RelationshipKind.ParentSurrogate" />
+            or <see cref="F:PostSharp.Patterns.Model.RelationshipKind.ChildOrParentSurrogate" />.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.RelationshipInfo.Equals(PostSharp.Patterns.Model.RelationshipInfo)">
+      <summary>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;summary&gt; documentation for "M:PostSharp.Patterns.Model.RelationshipInfo.Equals(PostSharp.Patterns.Model.RelationshipInfo)"]</p>
+      </summary>
+      <param name="other">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="other"/&gt; documentation for "M:PostSharp.Patterns.Model.RelationshipInfo.Equals(PostSharp.Patterns.Model.RelationshipInfo)"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.Patterns.Model.RelationshipInfo.Equals(PostSharp.Patterns.Model.RelationshipInfo)"]</p>
+      </returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.RelationshipInfo.Equals(System.Object)">
+      <summary>Indicates whether this instance and a specified object are equal.</summary>
+      <param name="obj">Another object to compare to. </param>
+      <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.RelationshipInfo.GetHashCode">
+      <summary>Returns the hash code for this instance.</summary>
+      <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.RelationshipInfo.ItemsRelationship">
+      <summary>
+            Gets the kind of relationship of items of the child collection relatively to the child collection. 
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.RelationshipInfo.op_Equality(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.RelationshipInfo)">
+      <summary>
+            Determines whether two instances of the <see cref="T:PostSharp.Patterns.Model.RelationshipInfo" /> type are equal.
+            </summary>
+      <param name="left">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="left"/&gt; documentation for "M:PostSharp.Patterns.Model.RelationshipInfo.op_Equality(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.RelationshipInfo)"]</p>
+      </param>
+      <param name="right">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="right"/&gt; documentation for "M:PostSharp.Patterns.Model.RelationshipInfo.op_Equality(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.RelationshipInfo)"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.Patterns.Model.RelationshipInfo.op_Equality(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.RelationshipInfo)"]</p>
+      </returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Model.RelationshipInfo.op_Inequality(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.RelationshipInfo)">
+      <summary>
+            Determines whether two instances of the <see cref="T:PostSharp.Patterns.Model.RelationshipInfo" /> type are equal.
+            </summary>
+      <param name="left">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="left"/&gt; documentation for "M:PostSharp.Patterns.Model.RelationshipInfo.op_Inequality(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.RelationshipInfo)"]</p>
+      </param>
+      <param name="right">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="right"/&gt; documentation for "M:PostSharp.Patterns.Model.RelationshipInfo.op_Inequality(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.RelationshipInfo)"]</p>
+      </param>
+      <returns>
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;returns&gt; documentation for "M:PostSharp.Patterns.Model.RelationshipInfo.op_Inequality(PostSharp.Patterns.Model.RelationshipInfo,PostSharp.Patterns.Model.RelationshipInfo)"]</p>
+      </returns>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.RelationshipInfo.PropagateBehaviors">
+      <summary>
+            Specifies whether behaviors of the parent should be propagated to objects assigned to the field.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.RelationshipInfo.PropagateBehaviorsToItems">
+      <summary>
+            Specifies whether behaviors of the parent should be propagated to objects added to collections assigned to this field.
+            This property is ignored if <see cref="P:PostSharp.Patterns.Model.RelationshipInfo.PropagateBehaviors" /> is <c>false</c>.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Model.RelationshipInfo.Relationship">
+      <summary>
+            Gets the kind of relationship of the child relatively to the parent. Valid values are <see cref="F:PostSharp.Patterns.Model.RelationshipKind.Child" />, <see cref="F:PostSharp.Patterns.Model.RelationshipKind.ParentSurrogate" />
+            or <see cref="F:PostSharp.Patterns.Model.RelationshipKind.ChildOrParentSurrogate" />.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Model.RelationshipKind">
+      <summary>
+            Enumeration of the kinds of relationship between objects in a object graph.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.RelationshipKind.None">
+      <summary>
+            No relationship.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.RelationshipKind.Default">
+      <summary>
+            Means that the relationship kind has not been specified. The typical behavior is a build-time error or warning.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.RelationshipKind.Child">
+      <summary>
+            Child (see <see cref="T:PostSharp.Patterns.Model.ChildAttribute" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.RelationshipKind.Reference">
+      <summary>
+            Reference (see <see cref="T:PostSharp.Patterns.Model.ReferenceAttribute" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.RelationshipKind.ParentSurrogate">
+      <summary>
+            Parent surrogate (see <see cref="P:PostSharp.Patterns.Model.ChildAttribute.IsParentSurrogate" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.RelationshipKind.Parent">
+      <summary>
+            Parent (see <see cref="T:PostSharp.Patterns.Model.ParentAttribute" />).
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Model.RelationshipKind.ChildOrParentSurrogate">
+      <summary>
+            Either <see cref="F:PostSharp.Patterns.Model.RelationshipKind.Child" /> or <see cref="F:PostSharp.Patterns.Model.RelationshipKind.ParentSurrogate" />, depending on the type of the specific object assigned to the field or property.
+            This is the default relationship kind for <see cref="T:PostSharp.Patterns.Model.ChildAttribute" /> when the <see cref="P:PostSharp.Patterns.Model.ChildAttribute.IsParentSurrogate" /> property is not set:
+            it causes the field to be a <see cref="F:PostSharp.Patterns.Model.RelationshipKind.ParentSurrogate" /> if the object is an <see cref="T:PostSharp.Patterns.Collections.AdvisableCollection`1" /> or an <see cref="T:PostSharp.Patterns.Collections.AdvisableDictionary`2" />,
+            otherwise a <see cref="F:PostSharp.Patterns.Model.RelationshipKind.Child" />.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Threading.AssumeImmutableAttribute">
+      <summary>
+            Custom attribute that, when applied to a targetType, means that targetType should be assumed to be immutable.
+            The custom attribute can be applied to an assembly by specifying the <see cref="T:System.Type" /> property using
+            the <see cref="M:PostSharp.Patterns.Threading.AssumeImmutableAttribute.#ctor(System.Type)" /> constructor.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.AssumeImmutableAttribute.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Threading.AssumeImmutableAttribute" /> custom attribute that can be applied to a specific targetType.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.AssumeImmutableAttribute.#ctor(System.Type)">
+      <summary>
+            Initializes a new instance of the <see cref="T:PostSharp.Patterns.Threading.AssumeImmutableAttribute" /> custom attribute that can be applied to an assembly,
+            passing the immutable as a constructor argument. This constructor allows to add assumptions for types that are not defined
+            in this current assembly.
+            </summary>
+      <param name="targetType">The immutable targetType.</param>
+    </member>
+    <member name="P:PostSharp.Patterns.Threading.AssumeImmutableAttribute.TargetType">
+      <summary>
+            Gets the targetType that should be assumed immutable, if the <see cref="M:PostSharp.Patterns.Threading.AssumeImmutableAttribute.#ctor(System.Type)" /> constructor was used.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Threading.ConcurrentAccessToken">
+      <summary>
+            Token returned by the <see cref="M:PostSharp.Patterns.Threading.IConcurrencyController.AcquireAccess(PostSharp.Patterns.Model.ObjectAccessLevel,PostSharp.Patterns.Threading.ConcurrentAccessToken@)" /> method. This token is intended to be used in a <c>using</c> block.
+            Consumers of this method must call <see cref="M:PostSharp.Patterns.Threading.ConcurrentAccessToken.Complete" /> on success,  and <see cref="M:PostSharp.Patterns.Threading.ConcurrentAccessToken.Dispose" /> on exception.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.ConcurrentAccessToken.CheckContext(System.Boolean)">
+      <summary>
+            Determines whether the current <see cref="T:PostSharp.Patterns.Threading.ConcurrentAccessToken" /> is valid in the current context.
+            </summary>
+      <param name="canBeParentContext">
+        <c>true</c> if the current <see cref="T:PostSharp.Patterns.Threading.ConcurrentAccessToken" /> can be the token of a parent token,
+            <c>false</c> if it must be the token of the current context.</param>
+      <returns>
+        <c>true</c> if the current <see cref="T:PostSharp.Patterns.Threading.ConcurrentAccessToken" /> is valid for the current context, otherwise <c>false</c>.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.ConcurrentAccessToken.Complete">
+      <summary>
+            Indicates that the operation requiring access on an object has successfully completed.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.ConcurrentAccessToken.Dispose">
+      <summary>
+            Indicates that the operation requiring access on an object has completed. If the <see cref="M:PostSharp.Patterns.Threading.ConcurrentAccessToken.Complete" /> method is
+            not invoked before the <see cref="M:PostSharp.Patterns.Threading.ConcurrentAccessToken.Dispose" /> method, the transaction is considered to have failed. Current threading
+            models do not support transactions and therefore this semantic is currently unused, but it may be used in the future.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Threading.ConcurrentAccessToken.Null">
+      <summary>
+            Gets a null instance of the <see cref="T:PostSharp.Patterns.Threading.ConcurrentAccessToken" /> type.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Threading.IConcurrencyController">
+      <summary>
+            Controls access to an entity from possibly several threads.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.IConcurrencyController.AcquireAccess(PostSharp.Patterns.Model.ObjectAccessLevel,PostSharp.Patterns.Threading.ConcurrentAccessToken@)">
+      <summary>
+            Acquires access on the entity for the current thread.
+            </summary>
+      <param name="objectAccessLevel">The required access level on the entity.</param>
+      <param name="concurrencyAccessToken">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="concurrencyAccessToken"/&gt; documentation for "M:PostSharp.Patterns.Threading.IConcurrencyController.AcquireAccess(PostSharp.Patterns.Model.ObjectAccessLevel,PostSharp.Patterns.Threading.ConcurrentAccessToken@)"]</p>
+      </param>
+      <returns>An opaque <see cref="T:PostSharp.Patterns.Threading.ConcurrentAccessToken" />, typically used in a <c>using</c> block. Consumers must invoke the <see cref="M:PostSharp.Patterns.Threading.ConcurrentAccessToken.Complete" />
+            method upon success before exiting the <c>using</c> block.
+            </returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.IConcurrencyController.CheckAccess(PostSharp.Patterns.Model.ObjectAccessLevel)">
+      <summary>
+            Determines whether the current thread has a specified level of access to the entity.
+            </summary>
+      <param name="objectAccessLevel">The required access level on the entity.</param>
+      <returns>
+        <c>true</c> if the current thread has the required level of access, otherwise <c>false</c>.</returns>
+    </member>
+    <member name="P:PostSharp.Patterns.Threading.IConcurrencyController.IsReadOnly">
+      <summary>
+            Determines whether the entity is currently read-only.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Threading.IConcurrencyController.IsSharable">
+      <summary>
+            Determines whether the entity can currently be accessed concurrently by several threads.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.IConcurrencyController.RequireAccess(PostSharp.Patterns.Model.ObjectAccessLevel)">
+      <summary>
+            Determines whether the current thread has a specified level of access to the entity and throws an exception if not.
+            </summary>
+      <param name="objectAccessLevel">The required access level on the entity.</param>
+    </member>
+    <member name="P:PostSharp.Patterns.Threading.IConcurrencyController.ThreadingModel">
+      <summary>
+            Gets the <see cref="T:PostSharp.Patterns.Threading.ThreadingModel" /> implemented by the current controller.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Threading.IThreadAware">
+      <summary>
+            Interface implemented by objects that are aware of concurrency. Access to thread-aware objects is controlled by a concurrency controller (<see cref="T:PostSharp.Patterns.Threading.IConcurrencyController" />).
+            Any aspect implementing a threading model (<c>ThreadAwareObjectAttribute</c>) introduces this interface to the target class and ensures that accesses to this class go through
+            the controller.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Threading.IThreadAware.ConcurrencyController">
+      <summary>
+            Gets the concurrency controller for the current object.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.IThreadAware.OnParentControllerChanged(PostSharp.Patterns.Threading.IConcurrencyController)">
+      <summary>
+            Notifies the object that the effective controller of it's parent has changed.
+            <param name="parentController">The new parent controller or <c>null</c>.</param></summary>
+      <param name="parentController">
+        <p style="color: #dc143c; font-size: 8.5pt; font-weight: bold;">[Missing &lt;param name="parentController"/&gt; documentation for "M:PostSharp.Patterns.Threading.IThreadAware.OnParentControllerChanged(PostSharp.Patterns.Threading.IConcurrencyController)"]</p>
+      </param>
+    </member>
+    <member name="T:PostSharp.Patterns.Threading.ThreadAwareExtensions">
+      <summary>
+            Provides extension methods to the <see cref="T:PostSharp.Patterns.Threading.IThreadAware" /> interface.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.ThreadAwareExtensions.AcquireAccess(PostSharp.Patterns.Threading.IThreadAware,PostSharp.Patterns.Model.ObjectAccessLevel,PostSharp.Patterns.Threading.ConcurrentAccessToken@)">
+      <summary>
+            Acquires access for a given object.
+            </summary>
+      <param name="instance">The instance for which access is required.</param>
+      <param name="objectAccessLevel">The level of access required.</param>
+      <param name="concurrentAccessToken">At output, a <see cref="T:PostSharp.Patterns.Threading.ConcurrentAccessToken" /> that should be disposed when access is no longer required.</param>
+    </member>
+    <member name="T:PostSharp.Patterns.Threading.ThreadingException">
+      <summary>
+            Base class for exceptions thrown by the <c>PostSharp.Patterns.Threading</c> component.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Threading.ThreadingModel">
+      <summary>
+            Base class for all threading models. Defines properties that describe the characteristics of threading models. All classes derived from <see cref="T:PostSharp.Patterns.Threading.ThreadingModel" />
+            are necessarily singletons.
+            </summary>
+    </member>
+    <member name="P:PostSharp.Patterns.Threading.ThreadingModel.IsThreadSafe">
+      <summary>
+            Determines whether the threading model is possibly thread safe.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Threading.ThreadingModel.ToString">
+      <summary>Returns a string that represents the current object.</summary>
+      <returns>A string that represents the current object.</returns>
+    </member>
+    <member name="T:PostSharp.Patterns.Threading.ThreadingPatternsAspectRoles">
+      <summary>
+            Enumerates the aspect roles (for use with <see cref="T:PostSharp.Aspects.Dependencies.AspectRoleDependencyAttribute" />)
+             used by the <c>PostSharp.Patterns.Threading</c> component.
+            </summary>
+    </member>
+    <member name="F:PostSharp.Patterns.Threading.ThreadingPatternsAspectRoles.ThreadingModel">
+      <summary>
+            Role of an aspect that provides a threading model.
+            </summary>
+    </member>
+    <member name="T:PostSharp.Patterns.Utilities.LocalizedTextProvider">
+      <summary>
+            Base class for providers of error messages. Implements chain of responsibility between multiple providers.
+            </summary>
+    </member>
+    <member name="M:PostSharp.Patterns.Utilities.LocalizedTextProvider.#ctor(PostSharp.Patterns.Utilities.LocalizedTextProvider)">
+      <summary>
+            Initializes a new instance of <see cref="T:PostSharp.Patterns.Utilities.LocalizedTextProvider" /> class.
+            </summary>
+      <param name="next">Next <see cref="T:PostSharp.Patterns.Utilities.LocalizedTextProvider" /> in the responsibility chain.</param>
+    </member>
+    <member name="M:PostSharp.Patterns.Utilities.LocalizedTextProvider.FormatString(System.String,System.Object[])">
+      <summary>
+            Formats a string. An implementation would typically invoke <see cref="M:System.String.Format(System.String,System.Object[])" />.
+            </summary>
+      <param name="format">Formatting string. Typically (but not necessarily) the string returned by <see cref="M:PostSharp.Patterns.Utilities.LocalizedTextProvider.GetMessage(System.String)" />.</param>
+      <param name="arguments">Arguments.</param>
+      <returns>The formatted string.</returns>
+    </member>
+    <member name="M:PostSharp.Patterns.Utilities.LocalizedTextProvider.GetMessage(System.String)">
+      <summary>
+            Gets a message declared by the <see cref="T:PostSharp.Patterns.Utilities.LocalizedTextProvider" /> or the rest of responsibility chain if applicable.
+            </summary>
+      <param name="messageId">Identifier of the message.</param>
+      <returns>Message represented by <paramref name="messageId" />.  Returning <c>null</c> is not allowed.
+            </returns>
+    </member>
+  </members>
+</doc>
