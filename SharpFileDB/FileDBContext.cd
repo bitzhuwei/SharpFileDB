@@ -11,15 +11,15 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="SharpFileDB.FileObject">
-    <Position X="6.25" Y="0.5" Width="3.25" />
+    <Position X="6.25" Y="0.5" Width="5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAEAAAAAAAgAAAAAQAAAAAAAAAACAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAEAAAAAAAgAAAAAgAAAAAAAAAACAA=</HashCode>
       <FileName>FileObject.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SharpFileDB.DefaultPersistence">
-    <Position X="4.75" Y="4.25" Width="5.25" />
+    <Position X="4.75" Y="3.75" Width="5.25" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -37,7 +37,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="SharpFileDB.IPersistence">
-    <Position X="0.5" Y="4.25" Width="4" />
+    <Position X="0.5" Y="3.75" Width="4" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAQAAAAAAAAAAAAA=</HashCode>
       <FileName>IPersistence.cs</FileName>

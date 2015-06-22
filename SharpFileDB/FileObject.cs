@@ -50,9 +50,18 @@ namespace SharpFileDB
             return string.Format("Id: {0}", this.Id);
         }
 
+        const string strGuid = "Guid";
+
         #region ISerializable 成员
 
-        const string strGuid = "Guid"; 
+        /// <summary>
+        /// This method will be invoked automatically when IFormatter.Serialize() is called.
+        /// <para>You must use <code>base(info, context);</code> in the derived class to feed <see cref="FileObject"/>'s fields and properties.</para>
+        /// <para>当使用IFormatter.Serialize()时会自动调用此方法。</para>
+        /// <para>继承此类型时，必须在子类型中用<code>base(info, context);</code>来填充<see cref="FileObject"/>自身的数据。</para>
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public virtual void GetObjectData([Required] SerializationInfo info, StreamingContext context)
         {
             info.AddValue(strGuid, this.Id.ToString());
@@ -60,6 +69,14 @@ namespace SharpFileDB
 
         #endregion
 
+        /// <summary>
+        /// This method will be invoked automatically when IFormatter.Serialize() is called.
+        /// <para>You must use <code>: base(info, context)</code> in the derived class to feed <see cref="FileObject"/>'s fields and properties.</para>
+        /// <para>当使用IFormatter.Serialize()时会自动调用此方法。</para>
+        /// <para>继承此类型时，必须在子类型中用<code>: base(info, context)</code>来填充<see cref="FileObject"/>自身的数据。</para>
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected FileObject([Required] SerializationInfo info, StreamingContext context)
         {
             string str = (string)info.GetValue(strGuid, typeof(string));
