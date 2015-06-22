@@ -10,29 +10,29 @@ using System.Runtime.Serialization;
 namespace SharpFileDB
 {
     /// <summary>
-    /// 可在文件数据库中使用CRUD操作的所有类型的基类。
-    /// Base class for all classed that can use CRUD in SharpFileDB.
+    /// 可在文件数据库中使用CRUD操作的所有类型的基类。类似于关系数据库中的Table。
+    /// Base class for all classed that can use CRUD in SharpFileDB. It's similar to the concept 'table' in relational database.
     /// </summary>
     [Serializable]
     public abstract class FileObject : ISerializable
     {
         /// <summary>
-        /// 主键.
-        /// main key.
+        /// 用以区分每个Table的每条记录。
+        /// This Id is used for diffrentiate instances of 'table's.
         /// </summary>
         public Guid Id { get; internal set; }
 
         /// <summary>
-        /// 创建一个文件对象，并自动为其生成一个全局唯一的Id。
-        /// <para>Create a <see cref="FileObject"/> and generate a global unique id for it.</para>
+        /// 创建一个文件对象，在用<code>FileDBContext.Create();</code>将此对象保存到数据库之前，此对象的Id为<code>Guid.Empty</code>。
+        /// <para>Create a <see cref="FileObject"/> whose Id is <code>Guid.Empty</code> until it's saved to database by <code>FileDBContext.Create();</code>.</para>
         /// </summary>
         public FileObject()
         {
         }
 
         /// <summary>
-        /// 生成文件名，此文件应包含序列化的<see cref="FileObject"/>的内容。
-        /// Generate file name that contains serialized <see cref="FileObject"/>.
+        /// 生成文件名，此文件将用于存储此<see cref="FileObject"/>的内容。
+        /// Generate file name that will contain this instance's data of <see cref="FileObject"/>.
         /// </summary>
         /// <param name="extension">文件扩展名。<para>File's extension name.</para></param>
         /// <returns></returns>
