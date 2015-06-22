@@ -72,8 +72,9 @@ namespace SharpFileDB
 
         protected string GenerateFileFullPath(FileObject item)
         {
-            string path = GenerateFilePath(item.GetType());
-            string name = item.GenerateFileName();
+            Type fileObjectType = item.GetType();
+            string path = GenerateFilePath(fileObjectType);
+            string name = item.GenerateFileName(this.persistence.Extension);
             string fullname = Path.Combine(path, name);
             return fullname;
         }

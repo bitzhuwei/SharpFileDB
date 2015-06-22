@@ -33,8 +33,9 @@ namespace SharpFileDB
         /// 生成文件名，此文件应包含序列化的<see cref="FileObject"/>的内容。
         /// Generate file name that contains serialized <see cref="FileObject"/>.
         /// </summary>
+        /// <param name="extension">文件扩展名。<para>File's extension name.</para></param>
         /// <returns></returns>
-        internal string GenerateFileName()
+        internal string GenerateFileName(string extension)
         {
             string id = this.Id.ToString();
 
@@ -48,7 +49,7 @@ namespace SharpFileDB
                 }
             }
 
-            string name = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", id, "xml");
+            string name = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", id, extension);
             return name;
         }
 
