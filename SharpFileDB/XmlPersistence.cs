@@ -13,11 +13,6 @@ namespace SharpFileDB
     /// </summary>
     public class XmlPersistence : IPersistence
     {
-        public override string ToString()
-        {
-            return string.Format("{0}", this.GetType());
-        }
-
         #region IPersistence 成员
 
         public string Extension

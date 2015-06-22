@@ -33,7 +33,6 @@ namespace SharpFileDB
         /// <typeparam name="TFileObject"></typeparam>
         /// <param name="serializedFileObject"></param>
         /// <returns></returns>
-        TFileObject Deserialize<TFileObject>(string serializedFileObject)
-            where TFileObject : FileObject;
+        TFileObject Deserialize<TFileObject>(string serializedFileObject) where TFileObject : FileObject;
     }
 }

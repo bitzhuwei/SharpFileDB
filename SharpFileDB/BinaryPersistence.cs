@@ -62,47 +62,6 @@ namespace SharpFileDB
         }
 
         #endregion
-        //#region IPersistence 成员
-
-        //public string Extension
-        //{
-        //    get { return "bin"; }
-        //}
-
-        //public void Serialize(FileObject item, string fullname)
-        //{
-        //    if (item == null) { return; }
-
-        //    byte[] bytes;
-        //    using (MemoryStream ms = new MemoryStream())
-        //    {
-        //        BinaryFormatter formatter = new BinaryFormatter();
-        //        formatter.Serialize(ms, item);
-        //        ms.Position = 0;
-        //        bytes = new byte[ms.Length];
-        //        ms.Read(bytes, 0, bytes.Length);
-        //    }
-
-        //    File.WriteAllBytes(fullname, bytes);
-        //}
-
-        //public TFileObject Deserialize<TFileObject>(string fullname) where TFileObject : FileObject
-        //{
-        //    TFileObject fileObjct = null;
-
-        //    byte[] bytes = File.ReadAllBytes(fullname);
-
-        //    using (MemoryStream ms = new MemoryStream(bytes))
-        //    {
-        //        ms.Position = 0;
-        //        BinaryFormatter formatter = new BinaryFormatter();
-        //        object obj = formatter.Deserialize(ms);
-        //        fileObjct = obj as TFileObject;
-        //    }
-
-        //    return fileObjct;
-        //}
-
-        //#endregion
+      
     }
 }

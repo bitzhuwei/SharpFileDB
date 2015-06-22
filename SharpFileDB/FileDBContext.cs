@@ -74,8 +74,11 @@ namespace SharpFileDB
         {
             Type fileObjectType = item.GetType();
             string path = GenerateFilePath(fileObjectType);
+
             string name = item.GenerateFileName(this.persistence.Extension);
+
             string fullname = Path.Combine(path, name);
+
             return fullname;
         }
 
@@ -87,6 +90,7 @@ namespace SharpFileDB
         protected string GenerateFilePath(Type type)
         {
             string path = Path.Combine(this.Directory, type.Name);
+
             return path;
         }
 
@@ -99,14 +103,15 @@ namespace SharpFileDB
         /// <param name="item"></param>
         public virtual void Create(FileObject item)
         {
-            string fileName = GenerateFileFullPath(item);
+            string fullname = GenerateFileFullPath(item);
             string output = this.persistence.Serialize(item);
+
+            System.IO.FileInfo info = new System.IO.FileInfo(fullname);
+            System.IO.Directory.CreateDirectory(info.Directory.FullName);
 
             lock (operationLock)
             {
-                System.IO.FileInfo info = new System.IO.FileInfo(fileName);
-                System.IO.Directory.CreateDirectory(info.Directory.FullName);
-                System.IO.File.WriteAllText(fileName, output);
+                System.IO.File.WriteAllText(fullname, output);
             }
         }
 
@@ -121,16 +126,20 @@ namespace SharpFileDB
             where TFileObject : FileObject
         {
             IList<TFileObject> result = new List<TFileObject>();
+
             if (predicate != null)
             {
                 string path = GenerateFilePath(typeof(TFileObject));
                 string[] files = System.IO.Directory.GetFiles(
                     path, "*." + this.persistence.Extension, SearchOption.AllDirectories);
-                foreach (var item in files)
+
+                foreach (var fullname in files)
                 {
-                    string fileContent = File.ReadAllText(item);
+                    string fileContent = File.ReadAllText(fullname);
+
                     TFileObject deserializedFileObject =
                         this.persistence.Deserialize<TFileObject>(fileContent);
+
                     if (predicate(deserializedFileObject))
                     {
                         result.Add(deserializedFileObject);
@@ -148,14 +157,15 @@ namespace SharpFileDB
         /// <param name="item">要被更新的对象。<para>The object to be updated.</para></param>
         public virtual void Update(FileObject item)
         {
-            string fileName = GenerateFileFullPath(item);
+            string fullname = GenerateFileFullPath(item);
             string output = this.persistence.Serialize(item);
 
+            System.IO.FileInfo info = new System.IO.FileInfo(fullname);
+            System.IO.Directory.CreateDirectory(info.Directory.FullName); 
+            
             lock (operationLock)
             {
-                System.IO.FileInfo info = new System.IO.FileInfo(fileName);
-                System.IO.Directory.CreateDirectory(info.Directory.FullName);
-                System.IO.File.WriteAllText(fileName, output);
+                System.IO.File.WriteAllText(fullname, output);
             }
         }
 
@@ -171,12 +181,16 @@ namespace SharpFileDB
                 throw new ArgumentNullException(item.ToString());
             }
 
-            string filename = GenerateFileFullPath(item);
-            if (File.Exists(filename))
+            string fullname = GenerateFileFullPath(item);
+
+            if (File.Exists(fullname))
             {
                 lock (operationLock)
                 {
-                    File.Delete(filename);
+                    if (File.Exists(fullname))
+                    {
+                        File.Delete(fullname);
+                    }
                 }
             }
         }

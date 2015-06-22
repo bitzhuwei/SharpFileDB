@@ -39,15 +39,17 @@ namespace SharpFileDB
         {
             string id = this.Id.ToString();
 
-            foreach (char c in id)
-            {
-                if (InvalidFileName.InvalidFileNameChars.Contains(c))
-                {
-                    throw new Exception(
-                      string.Format(CultureInfo.InvariantCulture,
-                      "The character '{0}' is not a valid file name identifier.", c));
-                }
-            }
+            // Guid.ToString()不需要检查非法文件名。
+            // No need to check invlia file name chars for Guid.ToString().
+            //foreach (char c in id)
+            //{
+            //    if (InvalidFileName.InvalidFileNameChars.Contains(c))
+            //    {
+            //        throw new Exception(
+            //          string.Format(CultureInfo.InvariantCulture,
+            //          "The character '{0}' is not a valid file name identifier.", c));
+            //    }
+            //}
 
             string name = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", id, extension);
             return name;
