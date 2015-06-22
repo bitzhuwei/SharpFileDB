@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,34 +14,27 @@ namespace SharpFileDB.TestConsole
         static void Main(string[] args)
         {
             DemoGuid.TypicalScene();
-            DemoBinaryFormater.TypicalScene();
+            //DemoBinaryFormater.TypicalScene();
 
             {
-                List<Type> ipersistenceList = new List<Type>();
-                Assembly assembly = System.Reflection.Assembly.GetAssembly(typeof(IPersistence));
-                foreach (var item in assembly.ExportedTypes)
+                List<IPersistence> persistenceList = new List<IPersistence>()
                 {
-                    if (typeof(IPersistence).IsAssignableFrom(item))
-                    {
-                        if (item.IsClass)
-                        {
-                            ipersistenceList.Add(item);
-                        }
-                    }
-                }
-
-                foreach (var item in ipersistenceList)
+                    new DefaultPersistence(PersistenceFormat.Binary),
+                    new DefaultPersistence(PersistenceFormat.Soap),
+                };
+                foreach (var ipersistence in persistenceList)
                 {
-                    object obj = Activator.CreateInstance(item);
-                    IPersistence ipersistence = obj as IPersistence;
                     //string dbDirectory = Path.Combine(Environment.CurrentDirectory, "TestDatabase");
-                    string dbDirectory = @"D:\360云盘\文档\TestDatabase";
+                    //string dbDirectory = @"D:\360云盘\文档\TestDatabase";
+                    string dbDirectory = @"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\TestDatabase";
 
                     // common cases to use SharpFileDB.
                     FileDBContext db = new FileDBContext(dbDirectory, ipersistence);
 
                     Cat cat = new Cat();
                     cat.Name = "xiao xiao bai";
+                    cat.Legs = 4;
+                    cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
                     db.Create(cat);
 
                     Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");
