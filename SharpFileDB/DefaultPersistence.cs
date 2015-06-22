@@ -32,6 +32,12 @@ namespace SharpFileDB
             }
         }
 
+        public enum PersistenceFormat
+        {
+            Soap,
+            Binary,
+        }
+
         #region IPersistence 成员
 
         private string extension;
@@ -82,9 +88,5 @@ namespace SharpFileDB
       
     }
 
-    public enum PersistenceFormat
-    {
-        Soap,
-        Binary,
-    }
+
 }

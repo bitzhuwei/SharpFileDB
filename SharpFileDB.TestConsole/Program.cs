@@ -19,8 +19,8 @@ namespace SharpFileDB.TestConsole
             {
                 List<IPersistence> persistenceList = new List<IPersistence>()
                 {
-                    new DefaultPersistence(PersistenceFormat.Binary),
-                    new DefaultPersistence(PersistenceFormat.Soap),
+                    new DefaultPersistence(DefaultPersistence.PersistenceFormat.Binary),
+                    new DefaultPersistence(DefaultPersistence.PersistenceFormat.Soap),
                 };
                 foreach (var ipersistence in persistenceList)
                 {

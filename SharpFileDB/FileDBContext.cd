@@ -16,6 +16,13 @@
   </Class>
   <Class Name="SharpFileDB.DefaultPersistence">
     <Position X="5.5" Y="4.5" Width="5.25" />
+    <NestedTypes>
+      <Enum Name="SharpFileDB.DefaultPersistence.PersistenceFormat" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DefaultPersistence.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAACBAAQAAAAEAAAAAAAA=</HashCode>
       <FileName>DefaultPersistence.cs</FileName>
@@ -29,12 +36,5 @@
       <FileName>IPersistence.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Enum Name="SharpFileDB.PersistenceFormat">
-    <Position X="5.5" Y="7" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DefaultPersistence.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
   <Font Name="微软雅黑" Size="9" />
 </ClassDiagram>

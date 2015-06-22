@@ -13,10 +13,11 @@ namespace SharpFileDB
     {
         /// <summary>
         /// Convert Image to Byte[]
+        /// <para>把Image转换为byte[]</para>
         /// </summary>
         /// <param name="image"></param>
         /// <returns></returns>
-        public static byte[] ImageToBytes(Image image)
+        public static byte[] ToBytes(this Image image)
         {
             byte[] buffer = null;
 
@@ -24,50 +25,15 @@ namespace SharpFileDB
             using (MemoryStream ms = new MemoryStream())
             {
                 image.Save(ms, image.RawFormat);
-                //if (format.Equals(ImageFormat.Jpeg))
-                //{
-                //    image.Save(ms, ImageFormat.Jpeg);
-                //}
-                //else if (format.Equals(ImageFormat.Png))
-                //{
-                //    image.Save(ms, ImageFormat.Png);
-                //}
-                //else if (format.Equals(ImageFormat.Bmp))
-                //{
-                //    image.Save(ms, ImageFormat.Bmp);
-                //}
-                //else if (format.Equals(ImageFormat.Gif))
-                //{
-                //    image.Save(ms, ImageFormat.Gif);
-                //}
-                //else if (format.Equals(ImageFormat.Icon))
-                //{
-                //    image.Save(ms, ImageFormat.Icon);
-                //}
-                //else
-                //{
-                //    throw new NotImplementedException(string.Format("{0} is not taken care of.", format));
-                //}
 
                 buffer = new byte[ms.Length];
+                //Image.Save() changed the ms.Position. So we need to Seek it to the beginning.
                 //Image.Save()会改变MemoryStream的Position，需要重新Seek到Begin
                 ms.Seek(0, SeekOrigin.Begin);
                 ms.Read(buffer, 0, buffer.Length);
             }
 
             return buffer;
-        }
-
-        /// <summary>
-        /// Convert Byte[] to Image
-        /// </summary>
-        /// <param name="buffer"></param>
-        /// <returns></returns>
-        public static Image BytesToImage(byte[] buffer)
-        {
-            MemoryStream ms = new MemoryStream(buffer);
-            Image image = System.Drawing.Image.FromStream(ms);
-            return image;
         }
 
         /// <summary>
@@ -79,32 +45,79 @@ namespace SharpFileDB
         public static string CreateImageFromBytes(string fileName, byte[] buffer)
         {
             string file = fileName;
-            Image image = BytesToImage(buffer);
+            Image image = ByteArrayHelper.ToImage(buffer);
             ImageFormat format = image.RawFormat;
-            if (format.Equals(ImageFormat.Jpeg))
-            {
-                file += ".jpeg";
-            }
-            else if (format.Equals(ImageFormat.Png))
-            {
-                file += ".png";
-            }
-            else if (format.Equals(ImageFormat.Bmp))
-            {
-                file += ".bmp";
-            }
-            else if (format.Equals(ImageFormat.Gif))
-            {
-                file += ".gif";
-            }
-            else if (format.Equals(ImageFormat.Icon))
-            {
-                file += ".icon";
-            }
+
+            string extension = GetExtesion(image);
+            file += "." + extension;
             System.IO.FileInfo info = new System.IO.FileInfo(file);
             System.IO.Directory.CreateDirectory(info.Directory.FullName);
             File.WriteAllBytes(file, buffer);
             return file;
+        }
+
+        public static string GetExtesion(this Image image)
+        {
+            string extension = string.Empty;
+
+            if (image != null)
+            {
+                ImageFormat format = image.RawFormat;
+                if (format.Equals(ImageFormat.Bmp))
+                {
+                    extension = "bmp";
+                }
+                else if (format.Equals(ImageFormat.Emf))
+                {
+                    extension = "emf";
+                }
+                else if (format.Equals(ImageFormat.Exif))
+                {
+                    extension = "exif";
+                }
+                //else if (format.Equals(ImageFormat.flashPIX))
+                //{
+                //extension = "flashPIX";
+                //}
+                else if (format.Equals(ImageFormat.Gif))
+                {
+                    extension = "gif";
+                }
+                else if (format.Equals(ImageFormat.Icon))
+                {
+                    extension = "icon";
+                }
+                else if (format.Equals(ImageFormat.Jpeg))
+                {
+                    extension = "jpeg";
+                }
+                else if (format.Equals(ImageFormat.MemoryBmp))
+                {
+                    extension = "bmp";
+                }
+                //else if (format.Equals(ImageFormat.photoCD))
+                //{
+                //extension = "photoCD";
+                //}
+                else if (format.Equals(ImageFormat.Png))
+                {
+                    extension = "png";
+                }
+                else if (format.Equals(ImageFormat.Tiff))
+                {
+                    extension = "tiff";
+                }
+                else if (format.Equals(ImageFormat.Wmf))
+                {
+                    extension = "wmf";
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            return extension;
         }
     }
 

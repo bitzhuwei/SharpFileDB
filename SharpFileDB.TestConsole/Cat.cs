@@ -2,11 +2,14 @@
 using System;
 using System.Drawing;
 using System.Runtime.Serialization;
+using System.Security.Permissions;
 
 namespace SharpFileDB.TestConsole
 {
     /// <summary>
     /// demo file object
+    /// <para></para>
+    /// More information please visit: (http://msdn.microsoft.com/zh-cn/library/system.runtime.serialization.iserializable.aspx) and (https://msdn.microsoft.com/zh-cn/library/system.runtime.serialization.iserializable.getobjectdata.aspx).
     /// </summary>
     [Serializable]
     public class Cat : FileObject, ISerializable
@@ -39,15 +42,20 @@ namespace SharpFileDB.TestConsole
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        //[SecurityPermission(SecurityAction.LinkDemand,
+            //Flags = SecurityPermissionFlag.SerializationFormatter)]
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            if (info == null)
+                throw new System.ArgumentNullException("info");
+
             info.AddValue(strName, this.Name);
 
             info.AddValue(strLegs, this.Legs);
 
             if (this.HeadPortrait != null)
             {
-                byte[] bytes = ImageHelper.ImageToBytes(this.HeadPortrait);
+                byte[] bytes = ImageHelper.ToBytes(this.HeadPortrait);
                 string str = Convert.ToBase64String(bytes);
                 info.AddValue(strHeadPortraitString, str);
             }
@@ -67,7 +75,10 @@ namespace SharpFileDB.TestConsole
         /// <param name="context"></param>
         protected Cat(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
-            this.Name = info.GetValue(strName, typeof(string)) as string;
+            if (info == null)
+                throw new System.ArgumentNullException("info");
+
+            this.Name = (string)info.GetValue(strName, typeof(string));
 
             this.Legs = (int)info.GetValue(strLegs, typeof(int));
 
@@ -78,7 +89,7 @@ namespace SharpFileDB.TestConsole
                 if (str != string.Empty)
                 {
                     byte[] bytes = Convert.FromBase64String(str);
-                    Image image = ImageHelper.BytesToImage(bytes);
+                    Image image = ByteArrayHelper.ToImage(bytes);
                     this.HeadPortrait = image;
                 }
             }
