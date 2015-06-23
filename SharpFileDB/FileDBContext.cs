@@ -122,26 +122,23 @@ namespace SharpFileDB
         /// <typeparam name="TFileObject"></typeparam>
         /// <param name="predicate">检索出的对象应满足的条件。<para>THe condition that should be satisfied by retrived object.</para></param>
         /// <returns></returns>
-        public virtual IList<TFileObject> Retrieve<TFileObject>(Predicate<TFileObject> predicate)
+        public virtual IList<TFileObject> Retrieve<TFileObject>([Required] Predicate<TFileObject> predicate)
             where TFileObject : FileObject
         {
             IList<TFileObject> result = new List<TFileObject>();
 
-            if (predicate != null)
+            string path = GenerateFilePath(typeof(TFileObject));
+            string[] files = System.IO.Directory.GetFiles(
+                path, "*." + this.persistence.Extension, SearchOption.AllDirectories);
+
+            foreach (var fullname in files)
             {
-                string path = GenerateFilePath(typeof(TFileObject));
-                string[] files = System.IO.Directory.GetFiles(
-                    path, "*." + this.persistence.Extension, SearchOption.AllDirectories);
+                TFileObject deserializedFileObject =
+                    this.persistence.Deserialize<TFileObject>(fullname);
 
-                foreach (var fullname in files)
+                if (predicate(deserializedFileObject))
                 {
-                    TFileObject deserializedFileObject =
-                        this.persistence.Deserialize<TFileObject>(fullname);
-
-                    if (predicate(deserializedFileObject))
-                    {
-                        result.Add(deserializedFileObject);
-                    }
+                    result.Add(deserializedFileObject);
                 }
             }
 
@@ -169,9 +166,24 @@ namespace SharpFileDB
         {
             string fullname = GenerateFileFullPath(item);
 
-            if (File.Exists(fullname))
+            File.Delete(fullname);
+        }
+
+        public virtual void Delete<TFileObject>([Required] Predicate<TFileObject> predicate) where TFileObject : FileObject
+        {
+            string path = GenerateFilePath(typeof(TFileObject));
+            string[] files = System.IO.Directory.GetFiles(
+                path, "*." + this.persistence.Extension, SearchOption.AllDirectories);
+
+            foreach (var fullname in files)
             {
-                File.Delete(fullname);
+                TFileObject deserializedFileObject =
+                    this.persistence.Deserialize<TFileObject>(fullname);
+
+                if (predicate(deserializedFileObject))
+                {
+                    File.Delete(fullname);
+                }
             }
         }
 
