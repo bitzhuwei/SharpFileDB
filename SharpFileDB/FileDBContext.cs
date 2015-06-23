@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using PostSharp.Patterns.Contracts;
 
 namespace SharpFileDB
 {
@@ -41,6 +40,8 @@ namespace SharpFileDB
             {
                 this.persistence = persistence;
             }
+
+            System.IO.Directory.CreateDirectory(this.Directory);
         }
 
         public override string ToString()
@@ -65,7 +66,7 @@ namespace SharpFileDB
         #endregion
 
 
-        protected string GenerateFileFullPath([Required] FileObject item)
+        protected string GenerateFileFullPath(FileObject item)
         {
             Type fileObjectType = item.GetType();
             string path = GenerateFilePath(fileObjectType);
@@ -82,7 +83,7 @@ namespace SharpFileDB
         /// </summary>
         /// <typeparam name="TDocument">文档类型</typeparam>
         /// <returns>文件路径</returns>
-        protected string GenerateFilePath([Required] Type type)
+        protected string GenerateFilePath(Type type)
         {
             string path = Path.Combine(this.Directory, type.Name);
 
@@ -96,7 +97,7 @@ namespace SharpFileDB
         /// <para>Create a new <see cref="FileObject"/> into database. This operation will create a new file.</para>
         /// </summary>
         /// <param name="item"></param>
-        public virtual void Create([Required] FileObject item)
+        public virtual void Create(FileObject item)
         {
             if (item.Id != Guid.Empty)
             {
@@ -122,23 +123,28 @@ namespace SharpFileDB
         /// <typeparam name="TFileObject"></typeparam>
         /// <param name="predicate">检索出的对象应满足的条件。<para>THe condition that should be satisfied by retrived object.</para></param>
         /// <returns></returns>
-        public virtual IList<TFileObject> Retrieve<TFileObject>([Required] Predicate<TFileObject> predicate)
+        public virtual IList<TFileObject> Retrieve<TFileObject>(Predicate<TFileObject> predicate)
             where TFileObject : FileObject
         {
             IList<TFileObject> result = new List<TFileObject>();
 
             string path = GenerateFilePath(typeof(TFileObject));
-            string[] files = System.IO.Directory.GetFiles(
-                path, "*." + this.persistence.Extension, SearchOption.AllDirectories);
 
-            foreach (var fullname in files)
+            if (System.IO.Directory.Exists(path))
             {
-                TFileObject deserializedFileObject =
-                    this.persistence.Deserialize<TFileObject>(fullname);
+                string extension = this.persistence.Extension;
+                string[] files = System.IO.Directory.GetFiles(
+                    path, "*." + extension, SearchOption.AllDirectories);
 
-                if (predicate(deserializedFileObject))
+                foreach (var fullname in files)
                 {
-                    result.Add(deserializedFileObject);
+                    TFileObject deserializedFileObject =
+                        this.persistence.Deserialize<TFileObject>(fullname);
+
+                    if (predicate(deserializedFileObject))
+                    {
+                        result.Add(deserializedFileObject);
+                    }
                 }
             }
 
@@ -150,7 +156,7 @@ namespace SharpFileDB
         /// <para>Update specified <paramref name="FileObject"/>.</para>
         /// </summary>
         /// <param name="item">要被更新的对象。<para>The object to be updated.</para></param>
-        public virtual void Update([Required] FileObject item)
+        public virtual void Update(FileObject item)
         {
             string fullname = GenerateFileFullPath(item);
 
@@ -162,14 +168,14 @@ namespace SharpFileDB
         /// <para>Delete specified <paramref name="FileObject"/>.</para>
         /// </summary>
         /// <param name="item">要被删除的对象。<para>The object to be deleted.</para></param>
-        public virtual void Delete([Required] FileObject item)
+        public virtual void Delete(FileObject item)
         {
             string fullname = GenerateFileFullPath(item);
 
             File.Delete(fullname);
         }
 
-        public virtual void Delete<TFileObject>([Required] Predicate<TFileObject> predicate) where TFileObject : FileObject
+        public virtual void Delete<TFileObject>(Predicate<TFileObject> predicate) where TFileObject : FileObject
         {
             string path = GenerateFilePath(typeof(TFileObject));
             string[] files = System.IO.Directory.GetFiles(

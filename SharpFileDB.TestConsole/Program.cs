@@ -15,7 +15,7 @@ namespace SharpFileDB.TestConsole
         {
             //DemoGuid.TypicalScene();
             //DemoBinaryFormater.TypicalScene();
-            DemoTcpMsg.TypicalScene();
+            //DemoTcpMsg.TypicalScene();
 
             {
                 List<IPersistence> persistenceList = new List<IPersistence>()

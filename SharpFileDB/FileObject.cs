@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PostSharp.Patterns.Contracts;
 using System.Runtime.Serialization;
 
 namespace SharpFileDB
@@ -36,7 +35,7 @@ namespace SharpFileDB
         /// </summary>
         /// <param name="extension">文件扩展名。<para>File's extension name.</para></param>
         /// <returns></returns>
-        internal string GenerateFileName([Required] string extension)
+        internal string GenerateFileName(string extension)
         {
             string id = this.Id.ToString();
 
@@ -62,7 +61,7 @@ namespace SharpFileDB
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        public virtual void GetObjectData([Required] SerializationInfo info, StreamingContext context)
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(strGuid, this.Id.ToString());
         }
@@ -77,7 +76,7 @@ namespace SharpFileDB
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        protected FileObject([Required] SerializationInfo info, StreamingContext context)
+        protected FileObject(SerializationInfo info, StreamingContext context)
         {
             string str = (string)info.GetValue(strGuid, typeof(string));
             this.Id = Guid.Parse(str);
