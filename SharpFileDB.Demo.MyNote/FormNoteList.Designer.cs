@@ -32,6 +32,7 @@
             this.btnAddNote = new System.Windows.Forms.Button();
             this.btnDeleteNode = new System.Windows.Forms.Button();
             this.lblNoteCount = new System.Windows.Forms.Label();
+            this.lblSelectedCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lstNotes
@@ -45,6 +46,7 @@
             this.lstNotes.Name = "lstNotes";
             this.lstNotes.Size = new System.Drawing.Size(398, 316);
             this.lstNotes.TabIndex = 0;
+            this.lstNotes.SelectedIndexChanged += new System.EventHandler(this.lstNotes_SelectedIndexChanged);
             // 
             // btnAddNote
             // 
@@ -67,6 +69,7 @@
             this.btnDeleteNode.TabIndex = 1;
             this.btnDeleteNode.Text = "Delete";
             this.btnDeleteNode.UseVisualStyleBackColor = true;
+            this.btnDeleteNode.Click += new System.EventHandler(this.btnDeleteNode_Click);
             // 
             // lblNoteCount
             // 
@@ -77,11 +80,21 @@
             this.lblNoteCount.TabIndex = 2;
             this.lblNoteCount.Text = "Note Count:";
             // 
+            // lblSelectedCount
+            // 
+            this.lblSelectedCount.AutoSize = true;
+            this.lblSelectedCount.Location = new System.Drawing.Point(105, 342);
+            this.lblSelectedCount.Name = "lblSelectedCount";
+            this.lblSelectedCount.Size = new System.Drawing.Size(71, 12);
+            this.lblSelectedCount.TabIndex = 2;
+            this.lblSelectedCount.Text = "selecting 0";
+            // 
             // FormNoteList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(422, 372);
+            this.Controls.Add(this.lblSelectedCount);
             this.Controls.Add(this.lblNoteCount);
             this.Controls.Add(this.btnDeleteNode);
             this.Controls.Add(this.btnAddNote);
@@ -100,5 +113,6 @@
         private System.Windows.Forms.Button btnAddNote;
         private System.Windows.Forms.Button btnDeleteNode;
         private System.Windows.Forms.Label lblNoteCount;
+        private System.Windows.Forms.Label lblSelectedCount;
     }
 }
