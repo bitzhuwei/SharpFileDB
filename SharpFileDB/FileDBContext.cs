@@ -25,7 +25,7 @@ namespace SharpFileDB
         {
             if (directory == null)
             {
-                this.Directory = Environment.CurrentDirectory;
+                this.Directory = Path.Combine(Environment.CurrentDirectory, "SharpFileDB_BaseDir");
             }
             else
             {
@@ -128,22 +128,25 @@ namespace SharpFileDB
         {
             IList<TFileObject> result = new List<TFileObject>();
 
-            string path = GenerateFilePath(typeof(TFileObject));
-
-            if (System.IO.Directory.Exists(path))
+            if (predicate != null)
             {
-                string extension = this.persistence.Extension;
-                string[] files = System.IO.Directory.GetFiles(
-                    path, "*." + extension, SearchOption.AllDirectories);
+                string path = GenerateFilePath(typeof(TFileObject));
 
-                foreach (var fullname in files)
+                if (System.IO.Directory.Exists(path))
                 {
-                    TFileObject deserializedFileObject =
-                        this.persistence.Deserialize<TFileObject>(fullname);
+                    string extension = this.persistence.Extension;
+                    string[] files = System.IO.Directory.GetFiles(
+                        path, "*." + extension, SearchOption.AllDirectories);
 
-                    if (predicate(deserializedFileObject))
+                    foreach (var fullname in files)
                     {
-                        result.Add(deserializedFileObject);
+                        TFileObject deserializedFileObject =
+                            this.persistence.Deserialize<TFileObject>(fullname);
+
+                        if (predicate(deserializedFileObject))
+                        {
+                            result.Add(deserializedFileObject);
+                        }
                     }
                 }
             }
