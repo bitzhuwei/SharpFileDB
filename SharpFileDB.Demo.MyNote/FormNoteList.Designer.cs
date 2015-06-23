@@ -47,6 +47,7 @@
             this.lstNotes.Size = new System.Drawing.Size(398, 316);
             this.lstNotes.TabIndex = 0;
             this.lstNotes.SelectedIndexChanged += new System.EventHandler(this.lstNotes_SelectedIndexChanged);
+            this.lstNotes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lstNotes_MouseDoubleClick);
             // 
             // btnAddNote
             // 

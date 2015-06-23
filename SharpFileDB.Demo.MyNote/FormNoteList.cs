@@ -87,5 +87,21 @@ namespace SharpFileDB.Demo.MyNote
 
             UpdateUI();
         }
+
+        private void lstNotes_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int index = this.lstNotes.IndexFromPoint(e.Location);
+            if (index != System.Windows.Forms.ListBox.NoMatches)
+            {
+                MyNote.Tables.Note note = this.lstNotes.Items[index] as MyNote.Tables.Note;
+
+                FormEditNote frmEditNote = new FormEditNote(note);
+                if (frmEditNote.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    database.Update(note);
+                }
+            }
+
+        }
     }
 }

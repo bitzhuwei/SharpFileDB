@@ -56,6 +56,12 @@
     <Compile Include="FormAddNote.Designer.cs">
       <DependentUpon>FormAddNote.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormEditNote.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEditNote.Designer.cs">
+      <DependentUpon>FormEditNote.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormNoteList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +73,9 @@
     <Compile Include="Tables\Note.cs" />
     <EmbeddedResource Include="FormAddNote.resx">
       <DependentUpon>FormAddNote.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormEditNote.resx">
+      <DependentUpon>FormEditNote.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormNoteList.resx">
       <DependentUpon>FormNoteList.cs</DependentUpon>
