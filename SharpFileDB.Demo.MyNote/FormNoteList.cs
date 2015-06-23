@@ -20,8 +20,9 @@ namespace SharpFileDB.Demo.MyNote
         {
             InitializeComponent();
 
-            string databaseDirectory = Path.Combine(Environment.CurrentDirectory, "noteDatabase");
-            this.database = new FileDBContext(databaseDirectory, new DefaultPersistence(DefaultPersistence.PersistenceFormat.Soap));
+            string databaseDirectory = Path.Combine(@"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\SharpFileDB.Demo.MyNote\noteDatabase");
+            IPersistence persistence = new DefaultPersistence(DefaultPersistence.PersistenceFormat.Soap);
+            this.database = new FileDBContext(databaseDirectory, persistence);
         }
 
         private void FormNoteList_Load(object sender, EventArgs e)
@@ -66,10 +67,10 @@ namespace SharpFileDB.Demo.MyNote
                 }
             }
 
-            UpdateUI();
+            UpdateSelectingUI();
         }
 
-        private void UpdateUI()
+        private void UpdateSelectingUI()
         {
 
             this.lblSelectedCount.Text = string.Format("selecting {0}", this.selectedNoteList.Count);
@@ -83,9 +84,11 @@ namespace SharpFileDB.Demo.MyNote
                 this.database.Delete(item);
             }
 
+            this.selectedNoteList.Clear();
+
             UpdateAllNotes();
 
-            UpdateUI();
+            UpdateSelectingUI();
         }
 
         private void lstNotes_MouseDoubleClick(object sender, MouseEventArgs e)
