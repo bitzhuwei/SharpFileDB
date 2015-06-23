@@ -8,6 +8,9 @@ namespace SharpFileDB.TestConsole
 {
     class DemoGuid
     {
+        /// <summary>
+        /// 显示各种格式化输出的Guid。
+        /// </summary>
         public static void TypicalScene()
         {
             // what Guid.ToString() looks like:

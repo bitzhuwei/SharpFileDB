@@ -49,6 +49,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,8 +60,11 @@
     <Compile Include="Cat.cs" />
     <Compile Include="DemoBinaryFormater.cs" />
     <Compile Include="DemoGuid.cs" />
+    <Compile Include="DemoTcpMsg.cs" />
+    <Compile Include="KittyCat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TcpMsg.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

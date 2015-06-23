@@ -43,7 +43,7 @@ namespace SharpFileDB.TestConsole
         /// <param name="info"></param>
         /// <param name="context"></param>
         //[SecurityPermission(SecurityAction.LinkDemand,
-            //Flags = SecurityPermissionFlag.SerializationFormatter)]
+        //Flags = SecurityPermissionFlag.SerializationFormatter)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -55,14 +55,15 @@ namespace SharpFileDB.TestConsole
             if (this.HeadPortrait != null)
             {
                 byte[] bytes = ImageHelper.ToBytes(this.HeadPortrait);
-                string str = Convert.ToBase64String(bytes);
-                info.AddValue(strHeadPortraitString, str);
+                info.AddValue(strHeadPortraitString, bytes, typeof(byte[]));
             }
             else
             {
-                info.AddValue(strHeadPortraitString, string.Empty);
+                info.AddValue(strHeadPortraitString, emptyByteArray, typeof(byte[]));
             }
         }
+
+        static readonly byte[] emptyByteArray = new byte[] { };
 
         #endregion
 
@@ -79,16 +80,11 @@ namespace SharpFileDB.TestConsole
 
             this.Legs = (int)info.GetValue(strLegs, typeof(int));
 
-            object obj = info.GetValue(strHeadPortraitString, typeof(string));
-            if (obj != null)
+            byte[] bytes = (byte[])info.GetValue(strHeadPortraitString, typeof(byte[]));
+            if (bytes.Length > 0)
             {
-                string str = obj as string;
-                if (str != string.Empty)
-                {
-                    byte[] bytes = Convert.FromBase64String(str);
-                    Image image = ByteArrayHelper.ToImage(bytes);
-                    this.HeadPortrait = image;
-                }
+                Image image = ByteArrayHelper.ToImage(bytes);
+                this.HeadPortrait = image;
             }
         }
     }
