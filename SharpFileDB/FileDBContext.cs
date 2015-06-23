@@ -156,7 +156,7 @@ namespace SharpFileDB
 
         /// <summary>
         /// 更新给定的对象。
-        /// <para>Update specified <paramref name="FileObject"/>.</para>
+        /// <para>Update specified <paramref name="item"/>.</para>
         /// </summary>
         /// <param name="item">要被更新的对象。<para>The object to be updated.</para></param>
         public virtual void Update(Document item)
@@ -168,7 +168,7 @@ namespace SharpFileDB
 
         /// <summary>
         /// 删除指定的对象。
-        /// <para>Delete specified <paramref name="FileObject"/>.</para>
+        /// <para>Delete specified <paramref name="item"/>.</para>
         /// </summary>
         /// <param name="item">要被删除的对象。<para>The object to be deleted.</para></param>
         public virtual void Delete(Document item)
