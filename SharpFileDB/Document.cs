@@ -13,7 +13,7 @@ namespace SharpFileDB
     /// Base class for all classed that can use CRUD in SharpFileDB. It's similar to the concept 'table' in relational database.
     /// </summary>
     [Serializable]
-    public abstract class FileObject : ISerializable
+    public abstract class Document : ISerializable
     {
         /// <summary>
         /// 用以区分每个Table的每条记录。
@@ -23,15 +23,15 @@ namespace SharpFileDB
 
         /// <summary>
         /// 创建一个文件对象，在用<code>FileDBContext.Create();</code>将此对象保存到数据库之前，此对象的Id为<code>Guid.Empty</code>。
-        /// <para>Create a <see cref="FileObject"/> whose Id is <code>Guid.Empty</code> until it's saved to database by <code>FileDBContext.Create();</code>.</para>
+        /// <para>Create a <see cref="Document"/> whose Id is <code>Guid.Empty</code> until it's saved to database by <code>FileDBContext.Create();</code>.</para>
         /// </summary>
-        public FileObject()
+        public Document()
         {
         }
 
         /// <summary>
-        /// 生成文件名，此文件将用于存储此<see cref="FileObject"/>的内容。
-        /// Generate file name that will contain this instance's data of <see cref="FileObject"/>.
+        /// 生成文件名，此文件将用于存储此<see cref="Document"/>的内容。
+        /// Generate file name that will contain this instance's data of <see cref="Document"/>.
         /// </summary>
         /// <param name="extension">文件扩展名。<para>File's extension name.</para></param>
         /// <returns></returns>
@@ -55,9 +55,9 @@ namespace SharpFileDB
 
         /// <summary>
         /// This method will be invoked automatically when IFormatter.Serialize() is called.
-        /// <para>You must use <code>base(info, context);</code> in the derived class to feed <see cref="FileObject"/>'s fields and properties.</para>
+        /// <para>You must use <code>base(info, context);</code> in the derived class to feed <see cref="Document"/>'s fields and properties.</para>
         /// <para>当使用IFormatter.Serialize()时会自动调用此方法。</para>
-        /// <para>继承此类型时，必须在子类型中用<code>base(info, context);</code>来填充<see cref="FileObject"/>自身的数据。</para>
+        /// <para>继承此类型时，必须在子类型中用<code>base(info, context);</code>来填充<see cref="Document"/>自身的数据。</para>
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
@@ -70,13 +70,13 @@ namespace SharpFileDB
 
         /// <summary>
         /// This method will be invoked automatically when IFormatter.Serialize() is called.
-        /// <para>You must use <code>: base(info, context)</code> in the derived class to feed <see cref="FileObject"/>'s fields and properties.</para>
+        /// <para>You must use <code>: base(info, context)</code> in the derived class to feed <see cref="Document"/>'s fields and properties.</para>
         /// <para>当使用IFormatter.Serialize()时会自动调用此方法。</para>
-        /// <para>继承此类型时，必须在子类型中用<code>: base(info, context)</code>来填充<see cref="FileObject"/>自身的数据。</para>
+        /// <para>继承此类型时，必须在子类型中用<code>: base(info, context)</code>来填充<see cref="Document"/>自身的数据。</para>
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
-        protected FileObject(SerializationInfo info, StreamingContext context)
+        protected Document(SerializationInfo info, StreamingContext context)
         {
             string str = (string)info.GetValue(strGuid, typeof(string));
             this.Id = Guid.Parse(str);

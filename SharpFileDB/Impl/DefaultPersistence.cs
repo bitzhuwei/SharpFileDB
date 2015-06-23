@@ -47,7 +47,7 @@ namespace SharpFileDB
             private set { this.extension = value; }
         }
 
-        public void Serialize(FileObject item, string fullname)
+        public void Serialize(Document item, string fullname)
         {
             if (item == null)
             {
@@ -65,19 +65,19 @@ namespace SharpFileDB
             }
         }
 
-        public TFileObject Deserialize<TFileObject>(string fullname) where TFileObject : FileObject
+        public TDocument Deserialize<TDocument>(string fullname) where TDocument : Document
         {
             if(string.IsNullOrEmpty(fullname))
             {
                 throw new ArgumentNullException("fullname");
             }
 
-            TFileObject fileObject = null;
+            TDocument fileObject = null;
 
             using (FileStream s = new FileStream(fullname, FileMode.Open, FileAccess.Read))
             {
                 object obj = formatter.Deserialize(s);
-                fileObject = obj as TFileObject;
+                fileObject = obj as TDocument;
             }
 
             return fileObject;

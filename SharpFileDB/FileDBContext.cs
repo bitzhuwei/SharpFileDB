@@ -66,7 +66,7 @@ namespace SharpFileDB
         #endregion
 
 
-        protected string GenerateFileFullPath(FileObject item)
+        protected string GenerateFileFullPath(Document item)
         {
             Type fileObjectType = item.GetType();
             string path = GenerateFilePath(fileObjectType);
@@ -93,11 +93,11 @@ namespace SharpFileDB
         #region CRUD
 
         /// <summary>
-        /// 增加一个<see cref="FileObject"/>到数据库。这实际上创建了一个文件。
-        /// <para>Create a new <see cref="FileObject"/> into database. This operation will create a new file.</para>
+        /// 增加一个<see cref="Document"/>到数据库。这实际上创建了一个文件。
+        /// <para>Create a new <see cref="Document"/> into database. This operation will create a new file.</para>
         /// </summary>
         /// <param name="item"></param>
-        public virtual void Create(FileObject item)
+        public virtual void Create(Document item)
         {
             if (item.Id != Guid.Empty)
             {
@@ -117,20 +117,20 @@ namespace SharpFileDB
         }
 
         /// <summary>
-        /// 检索符合给定条件的所有<paramref name="TFileObject"/>。
-        /// <para>Retrives all <paramref name="TFileObject"/> that satisfies the specified condition.</para>
+        /// 检索符合给定条件的所有<paramref name="TDocument"/>。
+        /// <para>Retrives all <paramref name="TDocument"/> that satisfies the specified condition.</para>
         /// </summary>
-        /// <typeparam name="TFileObject"></typeparam>
+        /// <typeparam name="TDocument"></typeparam>
         /// <param name="predicate">检索出的对象应满足的条件。<para>THe condition that should be satisfied by retrived object.</para></param>
         /// <returns></returns>
-        public virtual IList<TFileObject> Retrieve<TFileObject>(Predicate<TFileObject> predicate)
-            where TFileObject : FileObject
+        public virtual IList<TDocument> Retrieve<TDocument>(Predicate<TDocument> predicate)
+            where TDocument : Document
         {
-            IList<TFileObject> result = new List<TFileObject>();
+            IList<TDocument> result = new List<TDocument>();
 
             if (predicate != null)
             {
-                string path = GenerateFilePath(typeof(TFileObject));
+                string path = GenerateFilePath(typeof(TDocument));
 
                 if (System.IO.Directory.Exists(path))
                 {
@@ -140,8 +140,8 @@ namespace SharpFileDB
 
                     foreach (var fullname in files)
                     {
-                        TFileObject deserializedFileObject =
-                            this.persistence.Deserialize<TFileObject>(fullname);
+                        TDocument deserializedFileObject =
+                            this.persistence.Deserialize<TDocument>(fullname);
 
                         if (predicate(deserializedFileObject))
                         {
@@ -159,7 +159,7 @@ namespace SharpFileDB
         /// <para>Update specified <paramref name="FileObject"/>.</para>
         /// </summary>
         /// <param name="item">要被更新的对象。<para>The object to be updated.</para></param>
-        public virtual void Update(FileObject item)
+        public virtual void Update(Document item)
         {
             string fullname = GenerateFileFullPath(item);
 
@@ -171,23 +171,23 @@ namespace SharpFileDB
         /// <para>Delete specified <paramref name="FileObject"/>.</para>
         /// </summary>
         /// <param name="item">要被删除的对象。<para>The object to be deleted.</para></param>
-        public virtual void Delete(FileObject item)
+        public virtual void Delete(Document item)
         {
             string fullname = GenerateFileFullPath(item);
 
             File.Delete(fullname);
         }
 
-        public virtual void Delete<TFileObject>(Predicate<TFileObject> predicate) where TFileObject : FileObject
+        public virtual void Delete<TDocument>(Predicate<TDocument> predicate) where TDocument : Document
         {
-            string path = GenerateFilePath(typeof(TFileObject));
+            string path = GenerateFilePath(typeof(TDocument));
             string[] files = System.IO.Directory.GetFiles(
                 path, "*." + this.persistence.Extension, SearchOption.AllDirectories);
 
             foreach (var fullname in files)
             {
-                TFileObject deserializedFileObject =
-                    this.persistence.Deserialize<TFileObject>(fullname);
+                TDocument deserializedFileObject =
+                    this.persistence.Deserialize<TDocument>(fullname);
 
                 if (predicate(deserializedFileObject))
                 {

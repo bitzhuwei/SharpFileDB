@@ -11,7 +11,6 @@
     <AssemblyName>SharpFileDB</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,7 +45,7 @@
     <Compile Include="Helper\ByteArrayHelper.cs" />
     <Compile Include="Impl\DefaultPersistence.cs" />
     <Compile Include="FileDBContext.cs" />
-    <Compile Include="FileObject.cs" />
+    <Compile Include="Document.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="IPersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,7 +57,6 @@
     <Content Include="FileDBContext.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

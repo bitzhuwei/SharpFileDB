@@ -12,7 +12,7 @@ namespace SharpFileDB.TestConsole
     /// More information please visit: (http://msdn.microsoft.com/zh-cn/library/system.runtime.serialization.iserializable.aspx) and (https://msdn.microsoft.com/zh-cn/library/system.runtime.serialization.iserializable.getobjectdata.aspx).
     /// </summary>
     [Serializable]
-    public class Cat : FileObject
+    public class Cat : Document
     {
         /// <summary>
         /// Used for serialization.
