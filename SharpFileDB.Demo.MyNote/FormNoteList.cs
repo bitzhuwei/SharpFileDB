@@ -38,5 +38,18 @@ namespace SharpFileDB.Demo.MyNote
             this.lstNotes.Items.AddRange(noteList.ToArray());
             this.lblNoteCount.Text = string.Format("{0} notes", noteList.Count);
         }
+
+        private void btnAddNote_Click(object sender, EventArgs e)
+        {
+            FormAddNote frmAddNote = new FormAddNote();
+            if (frmAddNote.ShowDialog()== System.Windows.Forms.DialogResult.OK)
+            {
+                MyNote.Tables.Note note = frmAddNote.NewNote;
+
+                this.database.Create(note);
+
+                this.UpdateAllNotes();
+            }
+        }
     }
 }

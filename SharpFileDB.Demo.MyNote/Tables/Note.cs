@@ -12,7 +12,7 @@ namespace SharpFileDB.Demo.MyNote.Tables
     /// The table-type Note.
     /// </summary>
     [Serializable]
-    class Note : FileObject
+    public class Note : FileObject
     {
         public override string ToString()
         {

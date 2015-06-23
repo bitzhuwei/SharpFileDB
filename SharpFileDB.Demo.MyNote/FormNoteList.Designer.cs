@@ -55,6 +55,7 @@
             this.btnAddNote.TabIndex = 1;
             this.btnAddNote.Text = "Add Note...";
             this.btnAddNote.UseVisualStyleBackColor = true;
+            this.btnAddNote.Click += new System.EventHandler(this.btnAddNote_Click);
             // 
             // btnDeleteNode
             // 
