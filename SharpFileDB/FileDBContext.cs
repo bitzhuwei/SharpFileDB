@@ -34,7 +34,7 @@ namespace SharpFileDB
 
             if (persistence == null)
             {
-                this.persistence = new DefaultPersistence(DefaultPersistence.PersistenceFormat.Soap);
+                this.persistence = new DefaultPersistence();
             }
             else
             {

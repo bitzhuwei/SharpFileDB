@@ -10,11 +10,11 @@
       <Property Name="persistence" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="SharpFileDB.FileObject">
+  <Class Name="SharpFileDB.Document">
     <Position X="6.25" Y="0.5" Width="5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAEAAAAAAAgAAAAAgAAAAAAAAAACAA=</HashCode>
-      <FileName>FileObject.cs</FileName>
+      <FileName>Document.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -23,13 +23,6 @@
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
-    <NestedTypes>
-      <Enum Name="SharpFileDB.DefaultPersistence.PersistenceFormat">
-        <TypeIdentifier>
-          <NewMemberFileName>Impl\DefaultPersistence.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
     <TypeIdentifier>
       <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAACBAAQAAAAEAAAAAAAA=</HashCode>
       <FileName>Impl\DefaultPersistence.cs</FileName>
