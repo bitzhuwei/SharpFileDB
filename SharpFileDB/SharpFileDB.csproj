@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\SkipList.cs" />
     <Compile Include="Helper\ByteArrayHelper.cs" />
     <Compile Include="Impl\DefaultPersistence.cs" />
     <Compile Include="FileDBContext.cs" />

@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cat.cs" />
-    <Compile Include="DemoBinaryFormater.cs" />
     <Compile Include="DemoGuid.cs" />
     <Compile Include="DemoMaxFilesInDirectory.cs" />
     <Compile Include="DemoSingleFileDB.cs" />

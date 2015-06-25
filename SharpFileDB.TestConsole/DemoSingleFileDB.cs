@@ -29,7 +29,7 @@ namespace SharpFileDB.TestConsole
         }
 
         [Serializable]
-        public class Fish 
+        public class Fish
         {
             public override string ToString()
             {
@@ -148,6 +148,126 @@ namespace SharpFileDB.TestConsole
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 测试：用BinaryFormatter读写数据库。
+        /// </summary>
+        internal static void TypicalScene2()
+        {
+            const string strHowSingleFileDBWorks = "HowSingleFileDBWorks.db";
+
+            // 首先，创建数据库文件。
+            using (FileStream fs = new FileStream(strHowSingleFileDBWorks, FileMode.Create, FileAccess.Write))
+            { }
+
+            // 然后，在App中创建了一些对象。
+            Cat cat = new Cat() { Id = 1, Name = "汤姆" };
+            Cat cat2 = new Cat() { Id = 2, Name = "汤姆的媳妇" };
+            Fish fish = new Fish() { Id = 3, Weight = 1.5f };
+
+
+            // 然后，用某种序列化方式将其写入数据库。
+            IFormatter formatter = new BinaryFormatter();
+
+            // 写入cat
+            long catLength = 0;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                byte[] bytes;
+                formatter.Serialize(ms, cat);
+                ms.Position = 0;
+                bytes = new byte[ms.Length];
+                catLength = ms.Length;// 在实际数据库中，catLength由文件字节管理器进行读写
+                ms.Read(bytes, 0, bytes.Length);
+                using (FileStream fs = new FileStream(strHowSingleFileDBWorks, FileMode.Open, FileAccess.Write))
+                {
+                    fs.Position = 0;// 在实际数据库中，需要指定对象要存储到的位置
+                    fs.Write(bytes, 0, bytes.Length);//注意，若bytes.Length超过int.MaxValue，这里就需要特殊处理了。
+                }
+            }
+
+            // 写入cat2
+            long cat2Length = 0;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                byte[] bytes;
+                formatter.Serialize(ms, cat2);
+                ms.Position = 0;
+                bytes = new byte[ms.Length];
+                cat2Length = ms.Length;// 在实际数据库中，cat2Length由文件字节管理器进行读写
+                ms.Read(bytes, 0, bytes.Length);
+                using (FileStream fs = new FileStream(strHowSingleFileDBWorks, FileMode.Open, FileAccess.Write))
+                {
+                    fs.Position = catLength;// 在实际数据库中，需要指定对象要存储到的位置
+                    fs.Write(bytes, 0, bytes.Length);//注意，若bytes.Length超过int.MaxValue，这里就需要特殊处理了。
+                }
+            }
+
+            // 写入fish
+            long fishLength = 0;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                byte[] bytes;
+                formatter.Serialize(ms, fish);
+                ms.Position = 0;
+                bytes = new byte[ms.Length];
+                fishLength = ms.Length;// 在实际数据库中，fishLength由文件字节管理器进行读写
+                ms.Read(bytes, 0, bytes.Length);
+                using (FileStream fs = new FileStream(strHowSingleFileDBWorks, FileMode.Open, FileAccess.Write))
+                {
+                    fs.Position = catLength + cat2Length;// 在实际数据库中，需要指定对象要存储到的位置
+                    fs.Write(bytes, 0, bytes.Length);//注意，若bytes.Length超过int.MaxValue，这里就需要特殊处理了。
+                }
+            }
+
+            //查询cat2
+            using (FileStream fs = new FileStream(strHowSingleFileDBWorks, FileMode.Open, FileAccess.Read))
+            {
+                fs.Position = catLength;// 在实际数据库中，需要指定对象存储到的位置
+                object obj = formatter.Deserialize(fs);
+                Console.WriteLine(obj);
+            }
+
+            //删除cat2
+            // 在实际数据库中，这由文件字节管理器进行控制，只需标记cat2所在的空间为没有占用即可。实际操作是修改几个skip list指针。
+
+            //新增cat3
+            Cat cat3 = new Cat() { Id = 4, Name = "喵" };
+            long cat3Length = 0;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                byte[] bytes;
+                formatter.Serialize(ms, cat3);
+                ms.Position = 0;
+                bytes = new byte[ms.Length];
+                cat3Length = ms.Length;// 在实际数据库中，cat3Length由文件字节管理器进行读写
+                ms.Read(bytes, 0, bytes.Length);
+                using (FileStream fs = new FileStream(strHowSingleFileDBWorks, FileMode.Open, FileAccess.Write))
+                {
+                    fs.Position = catLength;// 在实际数据库中，需要指定对象要存储到的位置，这里由文件字节管理器为其找到可插入的空闲空间。
+                    fs.Write(bytes, 0, bytes.Length);//注意，若bytes.Length超过int.MaxValue，这里就需要特殊处理了。
+                }
+            }
+
+            //查询cat cat3 fish
+            using (FileStream fs = new FileStream(strHowSingleFileDBWorks, FileMode.Open, FileAccess.Read))
+            {
+                object obj = null;
+                // cat
+                fs.Position = 0;// 在实际数据库中，需要指定对象存储到的位置
+                obj = formatter.Deserialize(fs);
+                Console.WriteLine(obj);
+                // cat3
+                fs.Position = catLength;
+                obj = formatter.Deserialize(fs);
+                Console.WriteLine(obj);
+                // fish
+                fs.Position = catLength + cat2Length;
+                obj = formatter.Deserialize(fs);
+                Console.WriteLine(obj);
+            }
+
         }
 
     }

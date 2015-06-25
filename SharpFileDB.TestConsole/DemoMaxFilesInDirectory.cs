@@ -9,6 +9,9 @@ namespace SharpFileDB.TestConsole
 {
     class DemoMaxFilesInDirectory
     {
+        /// <summary>
+        /// 演示一个文件夹内的文件数量太大时，创建新文件的速度会变慢。
+        /// </summary>
         public static void TypicalScene()
         {
             string log = Path.Combine(Environment.CurrentDirectory, "maxFile.log");
@@ -24,7 +27,6 @@ namespace SharpFileDB.TestConsole
                     formatter.Serialize(s, string.Empty);
                 }
                 Directory.Delete(path, true);
-                return;
 
                 Directory.CreateDirectory(path);
                 

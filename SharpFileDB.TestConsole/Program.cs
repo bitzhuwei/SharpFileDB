@@ -13,10 +13,10 @@ namespace SharpFileDB.TestConsole
     {
         static void Main(string[] args)
         {
+            DemoSingleFileDB.TypicalScene2();
             //DemoSingleFileDB.TypicalScene();
             //DemoMaxFilesInDirectory.TypicalScene();
             //DemoGuid.TypicalScene();
-            //DemoBinaryFormater.TypicalScene();
             //DemoTcpMsg.TypicalScene();
 
             {
