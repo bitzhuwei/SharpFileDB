@@ -15,27 +15,10 @@ namespace SharpFileDB
     {
         private System.Runtime.Serialization.IFormatter formatter;
 
-        public DefaultPersistence(PersistenceFormat format = PersistenceFormat.Soap)
+        public DefaultPersistence()
         {
-            switch (format)
-            {
-                case PersistenceFormat.Soap:
-                    this.formatter = new System.Runtime.Serialization.Formatters.Soap.SoapFormatter();
-                    this.Extension = "soap";
-                    break;
-                case PersistenceFormat.Binary:
-                    this.formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                    this.Extension = "bin";
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        public enum PersistenceFormat
-        {
-            Soap,
-            Binary,
+            this.formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            this.Extension = "bin";
         }
 
         #region IPersistence 成员
