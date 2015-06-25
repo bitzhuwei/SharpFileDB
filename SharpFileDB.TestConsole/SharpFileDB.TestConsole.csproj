@@ -47,6 +47,7 @@
     <Compile Include="DemoGuid.cs" />
     <Compile Include="DemoMaxFilesInDirectory.cs" />
     <Compile Include="DemoSingleFileDB.cs" />
+    <Compile Include="DemoSkipList.cs" />
     <Compile Include="DemoTcpMsg.cs" />
     <Compile Include="KittyCat.cs" />
     <Compile Include="Program.cs" />

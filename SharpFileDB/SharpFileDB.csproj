@@ -42,7 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithm\SkipList.cs" />
+    <Compile Include="Algorithm\IVisitable.cs" />
+    <Compile Include="Algorithm\IVisitableCollection.cs" />
+    <Compile Include="Algorithm\IVisitableDictionary.cs" />
+    <Compile Include="Algorithm\IVisitor.cs" />
+    <Compile Include="Algorithm\SkipList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Algorithm\SkipListNode.cs" />
     <Compile Include="Helper\ByteArrayHelper.cs" />
     <Compile Include="Impl\DefaultPersistence.cs" />
     <Compile Include="FileDBContext.cs" />
