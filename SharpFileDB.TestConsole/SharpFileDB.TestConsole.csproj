@@ -11,7 +11,6 @@
     <AssemblyName>SharpFileDB.TestConsole</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,6 +46,8 @@
     <Compile Include="Cat.cs" />
     <Compile Include="DemoBinaryFormater.cs" />
     <Compile Include="DemoGuid.cs" />
+    <Compile Include="DemoMaxFilesInDirectory.cs" />
+    <Compile Include="DemoSingleFileDB.cs" />
     <Compile Include="DemoTcpMsg.cs" />
     <Compile Include="KittyCat.cs" />
     <Compile Include="Program.cs" />
