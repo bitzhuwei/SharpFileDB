@@ -50,10 +50,10 @@ namespace SharpFileDB
         }
 
         /// <summary>
-        /// 使用的字符越少，序列化时占用的字节就越少。
-        /// <para>Using less chars means less bytes after serialization.</para>
+        /// 使用的字符越少，序列化时占用的字节就越少。一个字符都不用最好。
+        /// <para>Using less chars means less bytes after serialization. And "" is allowed.</para>
         /// </summary>
-        const string strGuid = ".";
+        const string strGuid = "";
 
         #region ISerializable 成员
 
