@@ -35,14 +35,14 @@ namespace SharpFileDB
         public TableNode() { }
 
         const string strDocumentNodePosition = "c";
-        const string strNextPosition = "n";
+        const string strNextNodePosition = "n";
 
         #region ISerializable 成员
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(strDocumentNodePosition, this.DocumentNodePosition);
-            info.AddValue(strNextPosition, this.NextNodePosition);
+            info.AddValue(strNextNodePosition, this.NextNodePosition);
         }
 
         #endregion
@@ -50,7 +50,7 @@ namespace SharpFileDB
         protected TableNode(SerializationInfo info, StreamingContext context)
         {
             this.DocumentNodePosition = info.GetInt64(strDocumentNodePosition);
-            this.NextNodePosition = info.GetInt64(strNextPosition);
+            this.NextNodePosition = info.GetInt64(strNextNodePosition);
         }
     }
 }

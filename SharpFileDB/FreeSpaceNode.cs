@@ -42,9 +42,9 @@ namespace SharpFileDB
 
         public FreeSpaceNode() { }
 
-        const string strLength = "k";
-        const string strPosition = "v";
-        const string strRightPosition = "p";
+        const string strLength = "l";
+        const string strPosition = "p";
+        const string strNextNodePosition = "n";
 
         #region ISerializable 成员
 
@@ -52,7 +52,7 @@ namespace SharpFileDB
         {
             info.AddValue(strLength, this.Length);
             info.AddValue(strPosition, this.Position);
-            info.AddValue(strRightPosition, this.NextNodePosition);
+            info.AddValue(strNextNodePosition, this.NextNodePosition);
         }
 
         #endregion
@@ -61,7 +61,7 @@ namespace SharpFileDB
         {
             this.Length = info.GetInt64(strLength);
             this.Position = info.GetInt64(strPosition);
-            this.NextNodePosition = info.GetInt64(strRightPosition);
+            this.NextNodePosition = info.GetInt64(strNextNodePosition);
         }
     }
 }

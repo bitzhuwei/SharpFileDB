@@ -115,6 +115,7 @@ namespace SharpFileDB
 
             long freeBytesNodeHeadPosition = fs.Position;
             fs.Seek(freeBytesNodeHeadPosition, SeekOrigin.Begin);
+            obj = formatter.Deserialize(fs);
             FreeSpaceNode freeBytesNodeHead = obj as FreeSpaceNode;
 
             FreeSpaceNode currentFreeBytesNode = freeBytesNodeHead;
