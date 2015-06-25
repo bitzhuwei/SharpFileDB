@@ -40,5 +40,6 @@ namespace SharpFileDB.Demo.MyNote.Tables
             this.Title = (string)info.GetValue(strTitle, typeof(string));
             this.Content = (string)info.GetValue(strContent, typeof(string));
         }
+
     }
 }

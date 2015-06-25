@@ -21,6 +21,7 @@ namespace SharpFileDB.TestConsole
         public Cat() { }
 
         public string Name { get; set; }
+
         public int Legs { get; set; }
 
         public Image HeadPortrait { get; set; }
@@ -76,9 +77,9 @@ namespace SharpFileDB.TestConsole
         protected Cat(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
-            this.Name = (string)info.GetValue(strName, typeof(string));
+            this.Name = info.GetString(strName);
 
-            this.Legs = (int)info.GetValue(strLegs, typeof(int));
+            this.Legs = info.GetInt32(strLegs);
 
             byte[] bytes = (byte[])info.GetValue(strHeadPortraitString, typeof(byte[]));
             if (bytes.Length > 0)
@@ -87,5 +88,6 @@ namespace SharpFileDB.TestConsole
                 this.HeadPortrait = image;
             }
         }
+
     }
 }

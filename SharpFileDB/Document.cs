@@ -13,7 +13,7 @@ namespace SharpFileDB
     /// Base class for all classed that can use CRUD in SharpFileDB. It's similar to the concept 'table' in relational database.
     /// </summary>
     [Serializable]
-    public abstract class Document : ISerializable
+    public abstract class Document : ISerializable, IIndex
     {
         /// <summary>
         /// 用以区分每个Table的每条记录。
@@ -27,21 +27,6 @@ namespace SharpFileDB
         /// </summary>
         public Document()
         {
-        }
-
-        /// <summary>
-        /// 生成文件名，此文件将用于存储此<see cref="Document"/>的内容。
-        /// Generate file name that will contain this instance's data of <see cref="Document"/>.
-        /// </summary>
-        /// <param name="extension">文件扩展名。<para>File's extension name.</para></param>
-        /// <returns></returns>
-        internal string GenerateFileName(string extension)
-        {
-            string id = this.Id.ToString();
-
-            string name = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", id, extension);
-
-            return name;
         }
 
         public override string ToString()
@@ -86,5 +71,19 @@ namespace SharpFileDB
             string str = info.GetString(strGuid);
             this.Id = Guid.Parse(str);
         }
+
+        #region IIndex 成员
+
+        /// <summary>
+        /// 获取此文档对象的索引值。
+        /// <para>Gets index for this <see cref="Document"/>.</para>
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetIndex()
+        {
+            return this.Id.ToString();
+        }
+
+        #endregion
     }
 }
