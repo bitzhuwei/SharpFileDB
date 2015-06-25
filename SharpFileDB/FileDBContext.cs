@@ -124,9 +124,9 @@ namespace SharpFileDB
             {
                 freeSpaceNodeList.Add(currentFreeBytesNode);
 
-                if (currentFreeBytesNode.RightPosition != 0)
+                if (currentFreeBytesNode.NextNodePosition != 0)
                 {
-                    fs.Seek(currentFreeBytesNode.RightPosition, SeekOrigin.Begin);
+                    fs.Seek(currentFreeBytesNode.NextNodePosition, SeekOrigin.Begin);
                     obj = formatter.Deserialize(fs);
                     currentFreeBytesNode = obj as FreeSpaceNode;
                 }
@@ -145,13 +145,13 @@ namespace SharpFileDB
             TableNode currentTableNode = tableNodeHead;
             // TableNode 在数据库中有头结点。头结点是不存储实际数据的，只保存下一结点。
             // TableNode has a head note in database file. Head node stores only next node's position.
-            while (currentTableNode.NextPosition != 0)
+            while (currentTableNode.NextNodePosition != 0)
             {
                 TableNode nextNode;
                 DocumentNode docNode;
                 Type type;
                 {
-                    fs.Seek(currentTableNode.NextPosition, SeekOrigin.Begin);
+                    fs.Seek(currentTableNode.NextNodePosition, SeekOrigin.Begin);
                     obj = formatter.Deserialize(fs);
                     nextNode = obj as TableNode;
                 }
@@ -167,7 +167,7 @@ namespace SharpFileDB
                     type = doc.GetType();
                 }
 
-                this.tableDict.Add(type, docNode.NextPosition);
+                this.tableDict.Add(type, docNode.NextNodePosition);
 
                 currentTableNode = nextNode;
             }

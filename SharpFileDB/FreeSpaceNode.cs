@@ -21,7 +21,7 @@ namespace SharpFileDB
         /// 此结点在SkipList表中的下一个结点存储在数据库文件中的起始位置。
         /// <para>The Start position in database of next node in the skip list.</para>
         /// </summary>
-        public long RightPosition { get; set; }
+        public long NextNodePosition { get; set; }
 
         /// <summary>
         /// 此空闲空间的起始位置。
@@ -35,6 +35,11 @@ namespace SharpFileDB
         /// </summary>
         public long Length { get; set; }
 
+        public override string ToString()
+        {
+            return string.Format("position: {0}, length: {1}, next: {2}", Position, Length, NextNodePosition);
+        }
+
         public FreeSpaceNode() { }
 
         const string strLength = "k";
@@ -47,7 +52,7 @@ namespace SharpFileDB
         {
             info.AddValue(strLength, this.Length);
             info.AddValue(strPosition, this.Position);
-            info.AddValue(strRightPosition, this.RightPosition);
+            info.AddValue(strRightPosition, this.NextNodePosition);
         }
 
         #endregion
@@ -56,7 +61,7 @@ namespace SharpFileDB
         {
             this.Length = info.GetInt64(strLength);
             this.Position = info.GetInt64(strPosition);
-            this.RightPosition = info.GetInt64(strRightPosition);
+            this.NextNodePosition = info.GetInt64(strRightPosition);
         }
     }
 }

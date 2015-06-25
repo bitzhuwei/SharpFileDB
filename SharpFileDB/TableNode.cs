@@ -19,13 +19,18 @@ namespace SharpFileDB
         /// 此结点在SkipList表中的下一个结点存储在数据库文件中的起始位置。
         /// <para>The start position of next node in the skip list in database file.</para>
         /// </summary>
-        public long NextPosition { get; set; }
+        public long NextNodePosition { get; set; }
 
         /// <summary>
         /// 此结点包含的<see cref="DocumentNode"/>对象保存到数据库文件中的位置。
         /// <para>Th start position of <see cref="DocumentNode"/> oject stored in database file.</para>
         /// </summary>
         public long DocumentNodePosition { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("doc node: {0}, next table node: {1}", DocumentNodePosition, NextNodePosition);
+        }
 
         public TableNode() { }
 
@@ -37,7 +42,7 @@ namespace SharpFileDB
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(strDocumentNodePosition, this.DocumentNodePosition);
-            info.AddValue(strNextPosition, this.NextPosition);
+            info.AddValue(strNextPosition, this.NextNodePosition);
         }
 
         #endregion
@@ -45,7 +50,7 @@ namespace SharpFileDB
         protected TableNode(SerializationInfo info, StreamingContext context)
         {
             this.DocumentNodePosition = info.GetInt64(strDocumentNodePosition);
-            this.NextPosition = info.GetInt64(strNextPosition);
+            this.NextNodePosition = info.GetInt64(strNextPosition);
         }
     }
 }
