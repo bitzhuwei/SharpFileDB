@@ -155,6 +155,7 @@ namespace SharpFileDB.TestConsole
         /// </summary>
         internal static void TypicalScene2()
         {
+            // 理论上的单文件数据库的长度最大为long.MaxValue(9223372036854775807)个字节，即8589934591GB = 8388607TB = 8191PB = 7EB
             const string strHowSingleFileDBWorks = "HowSingleFileDBWorks.db";
 
             // 首先，创建数据库文件。
@@ -226,7 +227,7 @@ namespace SharpFileDB.TestConsole
             {
                 fs.Position = catLength;// 在实际数据库中，需要指定对象存储到的位置
                 object obj = formatter.Deserialize(fs);
-                Console.WriteLine(obj);
+                Console.WriteLine(obj);// {2: 汤姆的媳妇}
             }
 
             //删除cat2
@@ -257,15 +258,19 @@ namespace SharpFileDB.TestConsole
                 // cat
                 fs.Position = 0;// 在实际数据库中，需要指定对象存储到的位置
                 obj = formatter.Deserialize(fs);
-                Console.WriteLine(obj);
+                Console.WriteLine(obj);// {1: 汤姆}
+                
                 // cat3
-                fs.Position = catLength;
+                fs.Position = catLength;// 在实际数据库中，需要指定对象存储到的位置
+
                 obj = formatter.Deserialize(fs);
-                Console.WriteLine(obj);
+                Console.WriteLine(obj);// {4: 喵}
+                
                 // fish
-                fs.Position = catLength + cat2Length;
+                fs.Position = catLength + cat2Length;// 在实际数据库中，需要指定对象存储到的位置
+
                 obj = formatter.Deserialize(fs);
-                Console.WriteLine(obj);
+                Console.WriteLine(obj);// {3: 1.5}
             }
 
         }
