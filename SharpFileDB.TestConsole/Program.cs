@@ -13,7 +13,9 @@ namespace SharpFileDB.TestConsole
     {
         static void Main(string[] args)
         {
-            DemoSingleFileDB.TypicalScene2();
+            DemoDocumentMeta.TypicalScene();
+            return;
+            //DemoSingleFileDB.TypicalScene2();
             //DemoSingleFileDB.TypicalScene();
             //DemoMaxFilesInDirectory.TypicalScene();
             //DemoGuid.TypicalScene();

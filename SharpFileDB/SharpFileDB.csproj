@@ -59,9 +59,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Algorithm\SkipList.cd" />
     <None Include="FileDBContext.cd" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Algorithm\SkipList.png" />
     <Content Include="FileDBContext.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -21,7 +21,7 @@ namespace SharpFileDB.Demo.MyNote
             InitializeComponent();
 
             string databaseDirectory = Path.Combine(@"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\SharpFileDB.Demo.MyNote\noteDatabase");
-            IPersistence persistence = new DefaultPersistence(DefaultPersistence.PersistenceFormat.Soap);
+            IPersistence persistence = new DefaultPersistence(DefaultPersistence.PersistenceFormat.Binary);
             this.database = new FileDBContext(databaseDirectory, persistence);
         }
 

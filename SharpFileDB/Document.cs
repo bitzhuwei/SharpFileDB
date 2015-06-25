@@ -49,7 +49,11 @@ namespace SharpFileDB
             return string.Format("Id: {0}", this.Id);
         }
 
-        const string strGuid = "Guid";
+        /// <summary>
+        /// 使用的字符越少，序列化时占用的字节就越少。
+        /// <para>Using less chars means less bytes after serialization.</para>
+        /// </summary>
+        const string strGuid = ".";
 
         #region ISerializable 成员
 
@@ -63,7 +67,8 @@ namespace SharpFileDB
         /// <param name="context"></param>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(strGuid, this.Id.ToString());
+            string id = this.Id.ToString();
+            info.AddValue(strGuid, id);
         }
 
         #endregion
@@ -78,7 +83,7 @@ namespace SharpFileDB
         /// <param name="context"></param>
         protected Document(SerializationInfo info, StreamingContext context)
         {
-            string str = (string)info.GetValue(strGuid, typeof(string));
+            string str = info.GetString(strGuid);
             this.Id = Guid.Parse(str);
         }
     }
