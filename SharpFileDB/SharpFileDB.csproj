@@ -42,14 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithm\IVisitable.cs" />
-    <Compile Include="Algorithm\IVisitableCollection.cs" />
-    <Compile Include="Algorithm\IVisitableDictionary.cs" />
-    <Compile Include="Algorithm\IVisitor.cs" />
-    <Compile Include="Algorithm\SkipList.cs">
+    <Compile Include="NGenerics.DataStructures\IVisitable.cs" />
+    <Compile Include="NGenerics.DataStructures\IVisitableCollection.cs" />
+    <Compile Include="NGenerics.DataStructures\IVisitableDictionary.cs" />
+    <Compile Include="NGenerics.DataStructures\IVisitor.cs" />
+    <Compile Include="NGenerics.DataStructures\SkipList.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Algorithm\SkipListNode.cs" />
+    <Compile Include="NGenerics.DataStructures\SkipListNode.cs" />
     <Compile Include="Helper\ByteArrayHelper.cs" />
     <Compile Include="Impl\DefaultPersistence.cs" />
     <Compile Include="FileDBContext.cs" />
@@ -59,11 +59,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Algorithm\SkipList.cd" />
+    <None Include="NGenerics.DataStructures\SkipList.cd" />
     <None Include="FileDBContext.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Algorithm\SkipList.png" />
+    <Content Include="NGenerics.DataStructures\SkipList.png" />
     <Content Include="FileDBContext.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
