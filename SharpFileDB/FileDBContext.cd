@@ -2,8 +2,16 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
   <Class Name="SharpFileDB.FileDBContext">
     <Position X="0.5" Y="0.5" Width="5.5" />
+    <NestedTypes>
+      <Class Name="SharpFileDB.FileDBContext.TypeComparer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>FileDBContext.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AIQAABAAAAAAAAAEAAAAAAAAAAEEAEAAAAAAAABAAAA=</HashCode>
+      <HashCode>AIYACBEAAAAEAAIEAAAAEAAAAIEEAEAAAAAAQQBAAAA=</HashCode>
       <FileName>FileDBContext.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -13,7 +21,7 @@
   <Class Name="SharpFileDB.Document">
     <Position X="6.25" Y="0.5" Width="5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAEAAAAAAAgAAAAAgAAAAAAAAAACAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAUAAAAAAAgAAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>Document.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

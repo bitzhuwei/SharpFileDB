@@ -26,6 +26,8 @@ namespace SharpFileDB
         /// </summary>
         public long DocumentPosition { get; set; }
 
+        public DocumentNode() { }
+
         const string strDocumentPosition = "c";
         const string strNextPosition = "n";
 

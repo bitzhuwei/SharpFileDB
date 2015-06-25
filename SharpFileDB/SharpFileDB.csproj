@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DocumentNode.cs" />
-    <Compile Include="FreeBytesNode.cs" />
+    <Compile Include="FreeSpaceNode.cs" />
     <Compile Include="Helper\DocumentHelper.cs" />
     <Compile Include="IIndex.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitable.cs" />

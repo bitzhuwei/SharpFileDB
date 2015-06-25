@@ -20,7 +20,7 @@ namespace SharpFileDB.Demo.MyNote
         {
             InitializeComponent();
 
-            string databaseDirectory = Path.Combine(@"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\SharpFileDB.Demo.MyNote\noteDatabase");
+            string databaseDirectory = Path.Combine(@"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\SharpFileDB.Demo.MyNote\noteDatabase\note.db");
             IPersistence persistence = new DefaultPersistence();
             this.database = new FileDBContext(databaseDirectory, persistence);
         }
