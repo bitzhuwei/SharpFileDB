@@ -2,16 +2,8 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
   <Class Name="SharpFileDB.FileDBContext">
     <Position X="0.5" Y="0.5" Width="5.5" />
-    <NestedTypes>
-      <Class Name="SharpFileDB.FileDBContext.TypeComparer" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>FileDBContext.cs</NewMemberFileName>
-        </TypeIdentifier>
-        <Lollipop Position="0.2" />
-      </Class>
-    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AIYACBEAAAAEAAIEAAAAEAAAAIEEAEAAAAAAQQBAAAA=</HashCode>
+      <HashCode>BIYACBEAAAAAAAAEAAAIEAAAAIAEAEAAAAAAAQBAAAA=</HashCode>
       <FileName>FileDBContext.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -26,19 +18,8 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="SharpFileDB.DefaultPersistence">
-    <Position X="4.75" Y="3.75" Width="5.25" />
-    <Compartments>
-      <Compartment Name="Nested Types" Collapsed="false" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAACBAAQAAAAEAAAAAAAA=</HashCode>
-      <FileName>Impl\DefaultPersistence.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Interface Name="SharpFileDB.IPersistence">
-    <Position X="0.5" Y="3.75" Width="4" />
+    <Position X="0.5" Y="5.25" Width="4" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAQAAAAAAAAAAAAA=</HashCode>
       <FileName>IPersistence.cs</FileName>

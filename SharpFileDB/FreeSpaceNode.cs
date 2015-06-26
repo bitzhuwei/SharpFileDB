@@ -37,7 +37,7 @@ namespace SharpFileDB
 
         public override string ToString()
         {
-            return string.Format("position: {0}, length: {1}, next: {2}", Position, Length, NextNodePosition);
+            return string.Format("FreeSpaceNode: position: {0}, length: {1}, next pos: {2}", Position, Length, NextNodePosition);
         }
 
         public FreeSpaceNode() { }

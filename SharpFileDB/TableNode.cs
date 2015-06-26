@@ -29,7 +29,7 @@ namespace SharpFileDB
 
         public override string ToString()
         {
-            return string.Format("doc node: {0}, next table node: {1}", DocumentNodePosition, NextNodePosition);
+            return string.Format("TableNode: doc node pos: {0}, next pos: {1}", DocumentNodePosition, NextNodePosition);
         }
 
         public TableNode() { }
