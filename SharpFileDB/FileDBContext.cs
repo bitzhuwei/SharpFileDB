@@ -27,7 +27,7 @@ namespace SharpFileDB
         /// </summary>
         /// <param name="fullname">数据库文件绝对路径。<para>Database file's fullname.</para></param>
         /// <param name="persistence">持久化方式。<para>The <see cref="IPersistence"/> instance.</para></param>
-        public FileDBContext(string fullname = null, IPersistence persistence = null)
+        public FileDBContext(string fullname = null)//, IPersistence persistence = null)
         {
             if (fullname == null)
             {
@@ -38,14 +38,14 @@ namespace SharpFileDB
                 Fullname = fullname;
             }
 
-            if (persistence == null)
-            {
-                this.persistence = new DefaultPersistence();
-            }
-            else
-            {
-                this.persistence = persistence;
-            }
+            //if (persistence == null)
+            //{
+            //    this.persistence = new DefaultPersistence();
+            //}
+            //else
+            //{
+            //    this.persistence = persistence;
+            //}
 
 
             if (!File.Exists(fullname))
@@ -73,10 +73,6 @@ namespace SharpFileDB
             object obj = null;
             fs.Seek(0, SeekOrigin.Begin);
             obj = formatter.Deserialize(fs);
-            //TableNode tableNodeHead = obj as TableNode;
-
-            //long freeBytesNodeHeadPosition = fs.Position;
-            //fs.Seek(freeBytesNodeHeadPosition, SeekOrigin.Begin);
             obj = formatter.Deserialize(fs);
             FreeSpaceNode headNode = obj as FreeSpaceNode;
 
@@ -100,7 +96,6 @@ namespace SharpFileDB
             fs.Seek(0, SeekOrigin.Begin);
             obj = formatter.Deserialize(fs);
             TableNode headNode = obj as TableNode;
-            //long freeBytesNodeHeadPosition = fs.Position;
             TableNode currentNode = headNode;
             // TableNode 在数据库中有头结点。头结点是不存储实际数据的，只保存下一结点。
             // TableNode has a head note in database file. Head node stores only next node's position.
@@ -172,7 +167,8 @@ namespace SharpFileDB
 
         public override string ToString()
         {
-            return string.Format("@: {0}, IPersistence: {1}", Fullname, persistence);
+            //return string.Format("@: {0}, IPersistence: {1}", Fullname, persistence);
+            return string.Format("@: {0}", Fullname);
         }
 
         #region Properties
@@ -183,38 +179,38 @@ namespace SharpFileDB
         /// </summary>
         public virtual string Fullname { get; protected set; }
 
-        /// <summary>
-        /// 文件数据库使用此接口进行持久化相关的操作。
-        /// <para>FIle database executes persistence operations via this interface.</para>
-        /// </summary>
-        public virtual IPersistence persistence { get; set; }
+        ///// <summary>
+        ///// 文件数据库使用此接口进行持久化相关的操作。
+        ///// <para>FIle database executes persistence operations via this interface.</para>
+        ///// </summary>
+        //public virtual IPersistence persistence { get; set; }
 
         #endregion
 
 
-        protected string GenerateFileFullPath(Document item)
-        {
-            Type fileObjectType = item.GetType();
-            string path = GenerateFilePath(fileObjectType);
+        //protected string GenerateFileFullPath(Document item)
+        //{
+        //    Type fileObjectType = item.GetType();
+        //    string path = GenerateFilePath(fileObjectType);
 
-            string name = item.GenerateFileName(this.persistence.Extension);
+        //    string name = item.GenerateFileName(this.persistence.Extension);
 
-            string fullname = Path.Combine(path, name);
+        //    string fullname = Path.Combine(path, name);
 
-            return fullname;
-        }
+        //    return fullname;
+        //}
 
-        /// <summary>
-        /// 生成文件路径
-        /// </summary>
-        /// <typeparam name="TDocument">文档类型</typeparam>
-        /// <returns>文件路径</returns>
-        protected string GenerateFilePath(Type type)
-        {
-            string path = Path.Combine(this.Fullname, type.Name);
+        ///// <summary>
+        ///// 生成文件路径
+        ///// </summary>
+        ///// <typeparam name="TDocument">文档类型</typeparam>
+        ///// <returns>文件路径</returns>
+        //protected string GenerateFilePath(Type type)
+        //{
+        //    string path = Path.Combine(this.Fullname, type.Name);
 
-            return path;
-        }
+        //    return path;
+        //}
 
         #region CRUD
 
@@ -271,25 +267,26 @@ namespace SharpFileDB
 
             if (predicate != null)
             {
-                string path = GenerateFilePath(typeof(TDocument));
+                throw new NotImplementedException();
+                //string path = GenerateFilePath(typeof(TDocument));
 
-                if (System.IO.Directory.Exists(path))
-                {
-                    string extension = this.persistence.Extension;
-                    string[] files = System.IO.Directory.GetFiles(
-                        path, "*." + extension, SearchOption.AllDirectories);
+                //if (System.IO.Directory.Exists(path))
+                //{
+                //    string extension = this.persistence.Extension;
+                //    string[] files = System.IO.Directory.GetFiles(
+                //        path, "*." + extension, SearchOption.AllDirectories);
 
-                    foreach (var fullname in files)
-                    {
-                        TDocument deserializedFileObject =
-                            this.persistence.Deserialize<TDocument>(fullname);
+                //    foreach (var fullname in files)
+                //    {
+                //        TDocument deserializedFileObject =
+                //            this.persistence.Deserialize<TDocument>(fullname);
 
-                        if (predicate(deserializedFileObject))
-                        {
-                            result.Add(deserializedFileObject);
-                        }
-                    }
-                }
+                //        if (predicate(deserializedFileObject))
+                //        {
+                //            result.Add(deserializedFileObject);
+                //        }
+                //    }
+                //}
             }
 
             return result;
@@ -302,9 +299,10 @@ namespace SharpFileDB
         /// <param name="item">要被更新的对象。<para>The object to be updated.</para></param>
         public virtual void Update(Document item)
         {
-            string fullname = GenerateFileFullPath(item);
+            throw new NotImplementedException();
+            //string fullname = GenerateFileFullPath(item);
 
-            this.persistence.Serialize(item, fullname);
+            //this.persistence.Serialize(item, fullname);
         }
 
         /// <summary>
@@ -314,27 +312,29 @@ namespace SharpFileDB
         /// <param name="item">要被删除的对象。<para>The object to be deleted.</para></param>
         public virtual void Delete(Document item)
         {
-            string fullname = GenerateFileFullPath(item);
+            throw new NotImplementedException();
+            //string fullname = GenerateFileFullPath(item);
 
-            File.Delete(fullname);
+            //File.Delete(fullname);
         }
 
         public virtual void Delete<TDocument>(Predicate<TDocument> predicate) where TDocument : Document
         {
-            string path = GenerateFilePath(typeof(TDocument));
-            string[] files = System.IO.Directory.GetFiles(
-                path, "*." + this.persistence.Extension, SearchOption.AllDirectories);
+            throw new NotImplementedException();
+            //string path = GenerateFilePath(typeof(TDocument));
+            //string[] files = System.IO.Directory.GetFiles(
+            //    path, "*." + this.persistence.Extension, SearchOption.AllDirectories);
 
-            foreach (var fullname in files)
-            {
-                TDocument deserializedFileObject =
-                    this.persistence.Deserialize<TDocument>(fullname);
+            //foreach (var fullname in files)
+            //{
+            //    TDocument deserializedFileObject =
+            //        this.persistence.Deserialize<TDocument>(fullname);
 
-                if (predicate(deserializedFileObject))
-                {
-                    File.Delete(fullname);
-                }
-            }
+            //    if (predicate(deserializedFileObject))
+            //    {
+            //        File.Delete(fullname);
+            //    }
+            //}
         }
 
         #endregion CRUD

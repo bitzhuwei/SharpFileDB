@@ -48,9 +48,6 @@
     <Compile Include="Helper\DocumentHelper.cs" />
     <Compile Include="Helper\ObjectLengthHelper.cs" />
     <Compile Include="IIndex.cs" />
-    <Compile Include="Impl\SingleFileDBPersistence.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="NGenerics.DataStructures\IVisitable.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitableCollection.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitableDictionary.cs" />
@@ -60,11 +57,9 @@
     </Compile>
     <Compile Include="NGenerics.DataStructures\SkipListNode.cs" />
     <Compile Include="Helper\ByteArrayHelper.cs" />
-    <Compile Include="Impl\DefaultPersistence.cs" />
     <Compile Include="FileDBContext.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
-    <Compile Include="IPersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableManager.cs" />
     <Compile Include="TableNode.cs" />
@@ -79,6 +74,9 @@
     <Content Include="NGenerics.DataStructures\SkipList.png" />
     <Content Include="SharpFileDB.FileFormat-level0.jpg" />
     <Content Include="SharpFileDB.FileFormat-level1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Impl\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
