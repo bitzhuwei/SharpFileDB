@@ -15,53 +15,60 @@ namespace SharpFileDB
     /// <para>this.Key is length, this.Value is position.</para>
     /// </summary>
     [Serializable]
-    class FreeSpaceNode : ISerializable
+    class FreeSpaceNode : ISerializable, IPointToNextInFile
     {
-        /// <summary>
-        /// 此结点在SkipList表中的下一个结点存储在数据库文件中的起始位置。
-        /// <para>The Start position in database of next node in the skip list.</para>
-        /// </summary>
-        public long NextNodePosition { get; set; }
 
         /// <summary>
         /// 此空闲空间的起始位置。
         /// <para>Start position of this free space.</para>
         /// </summary>
-        public long Position { get; set; }
+        public long StartPosition { get; set; }
 
         /// <summary>
         /// 此空闲空间的长度。（单位：byte）
         /// <para>Length of this free space block in bytes.</para>
         /// </summary>
-        public long Length { get; set; }
+        public long SpaceLength { get; set; }
 
         public override string ToString()
         {
-            return string.Format("FreeSpaceNode: position: {0}, length: {1}, next pos: {2}", Position, Length, NextNodePosition);
+            return string.Format("FreeSpaceNode: position: {0}, length: {1}, next pos: {2}", 
+                this.StartPosition, this.SpaceLength, this.NextSerializedPositionInFile);
         }
 
         public FreeSpaceNode() { }
 
-        const string strLength = "l";
-        const string strPosition = "p";
-        const string strNextNodePosition = "n";
+        const string strSpaceLength = "l";
+        const string strStartPosition = "p";
+        const string strNextSerializedPositionInFile = "n";
 
         #region ISerializable 成员
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue(strLength, this.Length);
-            info.AddValue(strPosition, this.Position);
-            info.AddValue(strNextNodePosition, this.NextNodePosition);
+            info.AddValue(strSpaceLength, this.SpaceLength);
+            info.AddValue(strStartPosition, this.StartPosition);
+            info.AddValue(strNextSerializedPositionInFile, this.NextSerializedPositionInFile);
         }
 
         #endregion
 
         protected FreeSpaceNode(SerializationInfo info, StreamingContext context)
         {
-            this.Length = info.GetInt64(strLength);
-            this.Position = info.GetInt64(strPosition);
-            this.NextNodePosition = info.GetInt64(strNextNodePosition);
+            this.SpaceLength = info.GetInt64(strSpaceLength);
+            this.StartPosition = info.GetInt64(strStartPosition);
+            this.NextSerializedPositionInFile = info.GetInt64(strNextSerializedPositionInFile);
         }
+
+
+        #region IPointToNextInFile 成员
+
+        public long SerializedPositionInFile { get; set; }
+
+        public long SerializedLengthInFile { get; set; }
+
+        public long NextSerializedPositionInFile { get; set; }
+
+        #endregion
     }
 }

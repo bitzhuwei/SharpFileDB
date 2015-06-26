@@ -16,6 +16,8 @@ namespace SharpFileDB
     /// </summary>
     public class FileDBContext
     {
+        const int firstPositionInFile = 1;
+
         System.Runtime.Serialization.IFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
         TableManager tableManager = new TableManager();
@@ -71,19 +73,20 @@ namespace SharpFileDB
         private void InitializeFreeSpaceDict(FileStream fs)
         {
             object obj = null;
-            fs.Seek(0, SeekOrigin.Begin);
+            fs.Seek(firstPositionInFile, SeekOrigin.Begin);
             obj = formatter.Deserialize(fs);
+            long headNodePosition = fs.Position;
             obj = formatter.Deserialize(fs);
             FreeSpaceNode headNode = obj as FreeSpaceNode;
+            headNode.SerializedPositionInFile = headNodePosition;
+            headNode.SerializedLengthInFile = fs.Position - headNodePosition;
 
             FreeSpaceNode currentNode = headNode;
             // FreeSpaceNode 在数据库中有头结点。头结点是不存储实际数据的，只保存下一结点。
             // FreeSpaceNode has a head note in database file. Head node stores only next node's position.
-            while (currentNode.NextNodePosition != 0)
+            while (currentNode.NextSerializedPositionInFile != 0)
             {
-                fs.Seek(currentNode.NextNodePosition, SeekOrigin.Begin);
-                obj = formatter.Deserialize(fs);
-                FreeSpaceNode freeSpaceNode = obj as FreeSpaceNode;
+                FreeSpaceNode freeSpaceNode = currentNode.GetNext(fs) as FreeSpaceNode;
                 this.freeSpaceManager.freeSpaceNodeList.Add(freeSpaceNode);
 
                 currentNode = freeSpaceNode;
@@ -93,35 +96,37 @@ namespace SharpFileDB
         private void InitializeTableDict(FileStream fs)
         {
             object obj = null;
-            fs.Seek(0, SeekOrigin.Begin);
+            fs.Seek(firstPositionInFile, SeekOrigin.Begin);
             obj = formatter.Deserialize(fs);
             TableNode headNode = obj as TableNode;
+            headNode.SerializedPositionInFile = firstPositionInFile;
+
             TableNode currentNode = headNode;
             // TableNode 在数据库中有头结点。头结点是不存储实际数据的，只保存下一结点。
             // TableNode has a head note in database file. Head node stores only next node's position.
-            while (currentNode.NextNodePosition != 0)
+            while (currentNode.NextSerializedPositionInFile != 0)
             {
                 TableNode nextNode;
                 DocumentNode docNode;
                 Type type;
                 {
-                    fs.Seek(currentNode.NextNodePosition, SeekOrigin.Begin);
-                    obj = formatter.Deserialize(fs);
-                    nextNode = obj as TableNode;
+                    nextNode = currentNode.GetNext(fs) as TableNode;
                 }
                 {
                     fs.Seek(nextNode.DocumentNodePosition, SeekOrigin.Begin);
                     obj = formatter.Deserialize(fs);
                     docNode = obj as DocumentNode;
+                    docNode.SerializedPositionInFile = nextNode.DocumentNodePosition;
                 }
                 {
                     fs.Seek(docNode.DocumentPosition, SeekOrigin.Begin);
                     obj = formatter.Deserialize(fs);
                     Document doc = obj as Document;
+                    doc.SerializedPositionInFile = docNode.DocumentPosition;
                     type = doc.GetType();
                 }
 
-                this.tableManager.tableDict.Add(type, docNode.NextNodePosition);
+                this.tableManager.tableDict.Add(type, docNode.NextSerializedPositionInFile);
 
                 currentNode = nextNode;
             }
@@ -144,21 +149,29 @@ namespace SharpFileDB
                 // head node of free space list.
                 formatter.Serialize(ms, freeSpaceHead);
                 long freeSpaceHeadLength = ms.Length - tableHeadNodeLength;
-                freeSpaceHead.NextNodePosition = tableHeadNodeLength + freeSpaceHeadLength;
-                freeSpaceHead.Position = 0;
-                freeSpaceHead.Length = 0;
+                freeSpaceHead.SpaceLength = 0;
+                freeSpaceHead.StartPosition = 0;
+                freeSpaceHead.SerializedPositionInFile = firstPositionInFile + tableHeadNodeLength;
+                freeSpaceHead.SerializedLengthInFile = freeSpaceHeadLength;
+                freeSpaceHead.NextSerializedPositionInFile = firstPositionInFile + tableHeadNodeLength + freeSpaceHeadLength;
 
                 // 空闲空间链表的第一个数据结点。
                 // first node of free space list that contains data.
                 formatter.Serialize(ms, freeSpaceNode);
                 long headerLength = ms.Length;
-                freeSpaceNode.NextNodePosition = 0;
-                freeSpaceNode.Position = headerLength;// 空闲空间起始位置。Start position of the only free space.
-                freeSpaceNode.Length = long.MaxValue - headerLength;// 空闲空间长度。Length of the only free space. 
+                freeSpaceNode.SpaceLength = long.MaxValue - (firstPositionInFile + headerLength);// 空闲空间长度。Length of the only free space. 
+                freeSpaceNode.StartPosition = firstPositionInFile + headerLength;// 空闲空间起始位置。Start position of the only free space.
+                freeSpaceNode.SerializedPositionInFile = firstPositionInFile + tableHeadNodeLength + freeSpaceHeadLength;
+                freeSpaceNode.SerializedLengthInFile = freeSpaceHeadLength;
+                freeSpaceNode.NextSerializedPositionInFile = 0;
             }
 
             using (FileStream fs = System.IO.File.Create(fullname))
             {
+                for (int i = 0; i < firstPositionInFile; i++)
+                {
+                    fs.Write(new byte[] { 99 }, 0, firstPositionInFile);
+                }
                 formatter.Serialize(fs, tableHead);
                 formatter.Serialize(fs, freeSpaceHead);
                 formatter.Serialize(fs, freeSpaceNode);
@@ -234,23 +247,73 @@ namespace SharpFileDB
             Transaction transaction = new Transaction();
 
             Type type = item.GetType();
-            if(!this.tableManager.tableDict.ContainsKey(type))
+            if (!this.tableManager.tableDict.ContainsKey(type))
             {
-                TableNode tableNode = new TableNode();
-                int maxLevel = this.tableManager.tableDict.MaxListLevel;
-                DocumentNode[] docNodes = new DocumentNode[maxLevel];
-                docNodes[0] = new DocumentNode();
+                CreateTableForType(type, transaction);
+            }
+
+            using (FileStream fs = new FileStream(Fullname, FileMode.Open, FileAccess.ReadWrite))
+            {
+                transaction.Commit(fs);
+            }
+        }
+
+        private void CreateTableForType(Type type, Transaction transaction)
+        {
+            // 创建 table node.
+            TableNode tableNode = new TableNode();
+            // 创建 document node.
+            //DocumentNode level0Node = new DocumentNode();
+            int maxLevel = this.tableManager.tableDict.MaxListLevel;
+            DocumentNode[] docNodes = new DocumentNode[maxLevel];
+            for (int i = 0; i < maxLevel; i++)
+            {
+                docNodes[i] = new DocumentNode();
+            }
+            // 分配空间。
+            {
+                DocumentNode level0Node = docNodes[0];
+                long docNodeLength = level0Node.Serialize().LongLength;
                 for (int i = 1; i < maxLevel; i++)
                 {
-                    docNodes[i] = new DocumentNode();
+                    // 分配下面的 document node.
+                    long pos = this.freeSpaceManager.AllocateFreeSpace(docNodeLength, transaction);
+                    DocumentNode node = docNodes[i - 1];
+                    node.SerializedPositionInFile = pos;
+                    docNodes[i].NextSerializedPositionInFile = pos;
+                    //transaction.Add(node, node.PositionInFile);
+                    transaction.Add(node);
                 }
-                long docNodeSpace = docNodes[0].Serialize().Length;
 
-                
-                TableNode newTable = new TableNode();
-                
+                {
+                    // 分配最上面的 docment node.
+                    long pos = this.freeSpaceManager.AllocateFreeSpace(docNodeLength, transaction);
+                    DocumentNode node = docNodes[maxLevel - 1];
+                    node.SerializedPositionInFile = pos;
+                    tableNode.DocumentNodePosition = node.SerializedPositionInFile;
+                    //transaction.Add(node, node.PositionInFile);
+                    transaction.Add(node);
+                }
             }
-            //this.persistence.Serialize(item, fullname);
+            {
+                // 分配新建的Table.
+                long tableNodeLength = tableNode.Serialize().LongLength;
+                long pos = this.freeSpaceManager.AllocateFreeSpace(tableNodeLength, transaction);
+                tableNode.SerializedPositionInFile = pos;
+                //transaction.Add(tableNode, tableNode.PositionInFile);
+                transaction.Add(tableNode);
+            }
+
+            {
+                // 更新上一个Table的指针。
+                TableNode lastTableNode = this.tableManager.LastTableNode();
+                //long lastTableNodeLength = lastTableNode.Serialize().LongLength;
+                lastTableNode.NextSerializedPositionInFile = tableNode.SerializedPositionInFile;
+                //transaction.Add(lastTableNode, lastTableNode.PositionInFile);
+                transaction.Add(lastTableNode);
+            }
+
+            this.tableManager.tableDict.Add(type, tableNode.DocumentNodePosition);
         }
 
         /// <summary>

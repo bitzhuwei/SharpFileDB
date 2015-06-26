@@ -13,8 +13,9 @@ namespace SharpFileDB
     /// Base class for all classed that can use CRUD in SharpFileDB. It's similar to the concept 'table' in relational database.
     /// </summary>
     [Serializable]
-    public abstract class Document : ISerializable, IIndex
+    public abstract class Document : ISerializable, IIndex, IPointToNextInFile
     {
+
         /// <summary>
         /// 用以区分每个Table的每条记录。
         /// This Id is used for diffrentiate instances of 'table's.
@@ -83,6 +84,17 @@ namespace SharpFileDB
         {
             return this.Id.ToString();
         }
+
+        #endregion
+
+
+        #region IPointToNextInFile 成员
+
+        public long SerializedPositionInFile { get; set; }
+
+        public long SerializedLengthInFile { get; set; }
+
+        public long NextSerializedPositionInFile { get; set; }
 
         #endregion
     }

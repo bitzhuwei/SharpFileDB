@@ -12,13 +12,8 @@ namespace SharpFileDB
     /// <para>An item that store to database.</para>
     /// </summary>
     [Serializable]
-    class DocumentNode : ISerializable
+    class DocumentNode : ISerializable, IPointToNextInFile
     {
-        /// <summary>
-        /// 此结点在SkipList表中的下一个结点存储在数据库文件中的起始位置。
-        /// <para>The Start position of next node in the skip list in database file.</para>
-        /// </summary>
-        public long NextNodePosition { get; set; }
 
         /// <summary>
         /// 此结点包含的<see cref="DocumentPosition"/>对象保存到数据库文件中的位置。
@@ -28,20 +23,21 @@ namespace SharpFileDB
 
         public override string ToString()
         {
-            return string.Format("DocumentNode: doc pos: {0}, next pos: {1}", DocumentPosition, NextNodePosition);
+            return string.Format("DocumentNode: doc pos: {0}, next pos: {1}", 
+                this.DocumentPosition, this.NextSerializedPositionInFile);
         }
 
         public DocumentNode() { }
 
         const string strDocumentPosition = "c";
-        const string strNextNodePosition = "n";
+        const string strNextSerializedPositionInFile = "n";
 
         #region ISerializable 成员
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(strDocumentPosition, this.DocumentPosition);
-            info.AddValue(strNextNodePosition, this.NextNodePosition);
+            info.AddValue(strNextSerializedPositionInFile, this.NextSerializedPositionInFile);
         }
 
         #endregion
@@ -49,7 +45,18 @@ namespace SharpFileDB
         protected DocumentNode(SerializationInfo info, StreamingContext context)
         {
             this.DocumentPosition = info.GetInt64(strDocumentPosition);
-            this.NextNodePosition = info.GetInt64(strNextNodePosition);
+            this.NextSerializedPositionInFile = info.GetInt64(strNextSerializedPositionInFile);
         }
+
+
+        #region IPointToNextInFile 成员
+
+        public long SerializedPositionInFile { get; set; }
+
+        public long SerializedLengthInFile { get; set; }
+
+        public long NextSerializedPositionInFile { get; set; }
+
+        #endregion
     }
 }

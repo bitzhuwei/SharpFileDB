@@ -50,5 +50,14 @@ namespace SharpFileDB
             #endregion
         }
 
+
+        internal TableNode LastTableNode()
+        {
+            throw new NotImplementedException();
+            //Type type = this.tableDict.Keys.Last();
+            //long nodePosition = this.tableDict[type];
+
+            //return node;
+        }
     }
 }

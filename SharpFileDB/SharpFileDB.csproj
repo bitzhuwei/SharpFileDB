@@ -46,8 +46,10 @@
     <Compile Include="FreeSpaceManager.cs" />
     <Compile Include="FreeSpaceNode.cs" />
     <Compile Include="Helper\DocumentHelper.cs" />
+    <Compile Include="Helper\IPointToNextInFile.cs" />
     <Compile Include="Helper\ObjectLengthHelper.cs" />
     <Compile Include="IIndex.cs" />
+    <Compile Include="IPointToNextInFile.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitable.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitableCollection.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitableDictionary.cs" />
