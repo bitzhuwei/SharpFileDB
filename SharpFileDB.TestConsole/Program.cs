@@ -32,7 +32,7 @@ namespace SharpFileDB.TestConsole
             cat.Name = "xiao xiao bai";
             cat.Legs = 4;
             cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
-            db.Create(cat);
+            db.Insert(cat);
 
             Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");
             IList<Cat> cats = db.Retrieve(pre);

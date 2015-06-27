@@ -16,11 +16,28 @@ namespace SharpFileDB
     /// </summary>
     public class FileDBContext
     {
+        /// <summary>
+        /// 在数据库文件开头写入一些不能被IFormatter反序列化的字节。这样有助于发现bug。
+        /// <para>Write some bytes that cannot be deserialized by IFormatter. This helps to find bugs.</para>
+        /// </summary>
         const int firstPositionInFile = 1;
 
+        /// <summary>
+        /// 序列化/反序列化工具。
+        /// <para>Serializer/Deserializer.</para>
+        /// </summary>
         System.Runtime.Serialization.IFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
+        /// <summary>
+        /// 管理数据库的所有Table。
+        /// <para>Manages all tables in this database.</para>
+        /// </summary>
         TableManager tableManager = new TableManager();
+        
+        /// <summary>
+        /// 管理数据库的所有空闲空间。
+        /// <para>Manages all free spaces in this database.</para>
+        /// </summary>
         FreeSpaceManager freeSpaceManager = new FreeSpaceManager();
 
         /// <summary>
@@ -170,7 +187,7 @@ namespace SharpFileDB
             {
                 for (int i = 0; i < firstPositionInFile; i++)
                 {
-                    fs.Write(new byte[] { 99 }, 0, firstPositionInFile);
+                    fs.Write(new byte[] { 0xAA }, 0, firstPositionInFile);
                 }
                 formatter.Serialize(fs, tableHead);
                 formatter.Serialize(fs, freeSpaceHead);
@@ -229,10 +246,10 @@ namespace SharpFileDB
 
         /// <summary>
         /// 增加一个<see cref="Document"/>到数据库。这实际上创建了一个文件。
-        /// <para>Create a new <see cref="Document"/> into database. This operation will create a new file.</para>
+        /// <para>Insert a new <see cref="Document"/> into database. This operation will create a new file.</para>
         /// </summary>
         /// <param name="item"></param>
-        public virtual void Create(Document item)
+        public virtual void Insert(Document item)
         {
             if (item.Id != Guid.Empty)
             {

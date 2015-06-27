@@ -48,7 +48,7 @@ namespace SharpFileDB.Demo.MyNote
             {
                 MyNote.Tables.Note note = frmAddNote.NewNote;
 
-                this.database.Create(note);
+                this.database.Insert(note);
 
                 this.UpdateAllNotes();
             }
