@@ -12,14 +12,16 @@ namespace SharpFileDB.Pages
     internal struct PageAddress
     {
         /// <summary>
+        /// The size of each page in disk - 4096 is NTFS default
         /// Page's size: 4 * 1024 bytes.
         /// </summary>
-        public const int PAGE_SIZE = 4 * 1024;
+        public const UInt16 PAGE_SIZE = 0x1000; // = 4 * 1024;
 
         /// <summary>
         /// FileStream.Length is a System.Int64, which means database file's max length is System.Int64.MaxValue.
         /// </summary>
-        public const ulong MAX_PAGE_COUNT = System.Int64.MaxValue / PAGE_SIZE;
+        public const UInt64 MAX_PAGE_COUNT = System.Int64.MaxValue / PAGE_SIZE;
+
 
         //public const int SIZE = 6;
 
@@ -28,16 +30,16 @@ namespace SharpFileDB.Pages
         /// </summary>
         public static PageAddress Empty = new PageAddress(MAX_PAGE_COUNT, PAGE_SIZE);
 
-        //private ulong _pageID;
+        //private UInt64 _pageID;
         /// <summary>
         /// [0 ~ 0x7FFFFFFFFFFFF] or [0 ~ 2251799813685247]
         /// </summary>
-        public ulong pageID;
+        public UInt64 pageID;
         //{
         //    get { return _pageID; }
         //    set
         //    {
-        //        if (value > MAX_PAGE_COUNT)
+        //        if (value > BasePage.MAX_PAGE_COUNT)
         //        {
         //            throw new ArgumentOutOfRangeException(
         //                "PageID", string.Format("{0} is too big for a PageAddress.PageID.", value));
@@ -52,16 +54,16 @@ namespace SharpFileDB.Pages
         //    }
         //}
 
-        //private ushort _index;
+        //private UInt16 _index;
         /// <summary>
         /// [0 ~ 0x0FFF] or [0 ~ 4095]
         /// </summary>
-        public ushort indexInPage;
+        public UInt16 indexInPage;
         //{
         //    get { return _index; }
         //    set
         //    {
-        //        if (value > PAGE_SIZE)
+        //        if (value > BasePage.PAGE_SIZE)
         //        {
         //            throw new ArgumentOutOfRangeException(
         //                "PageID", string.Format("{0} is too big for a PageAddress..", value));
@@ -92,7 +94,7 @@ namespace SharpFileDB.Pages
         /// </summary>
         /// <param name="pageID">[0 ~ 0x7FFFFFFFFFFFF] or [0 ~ 2251799813685247]</param>
         /// <param name="indexInPage">[0 ~ 0x0FFF] or [0 ~ 4095]</param>
-        public PageAddress(ulong pageID, ushort indexInPage)
+        public PageAddress(UInt64 pageID, UInt16 indexInPage)
         {
             this.pageID = pageID;
             this.indexInPage = indexInPage;
