@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Pages
 {
+    /// <summary>
+    /// An empty page is a page that is not in use.
+    /// </summary>
     class EmptyPage : BasePage
     {
         public EmptyPage()
