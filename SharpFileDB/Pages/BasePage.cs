@@ -8,42 +8,41 @@ namespace SharpFileDB.Pages
 {
     internal enum PageType : byte { Unknown, Empty, Header, Collection, Index, Data, Extend }
 
+    /// <summary>
+    /// Base type for pages.
+    /// </summary>
     internal abstract class BasePage
     {
         #region Page Constants
 
         /// <summary>
-        /// The size of each page in disk - 4096 is NTFS default
+        /// This size is used bytes in header pages 29 bytes
         /// </summary>
-        public const int PAGE_SIZE = 0x1000;// = 4096;
-
-        /// <summary>
-        /// This size is used bytes in header pages 17 bytes
-        /// </summary>
-        public const int PAGE_HEADER_SIZE = 17;
+        public const UInt16 PAGE_HEADER_SIZE = 29;
 
         /// <summary>
         /// Bytes avaiable to store data removing page header size - 4079 bytes
         /// </summary>
-        public const int PAGE_AVAILABLE_BYTES = PAGE_SIZE - PAGE_HEADER_SIZE;
+        public const UInt16 PAGE_AVAILABLE_BYTES = PageAddress.PAGE_SIZE - PAGE_HEADER_SIZE;
 
         #endregion
 
         //TODO: uint.MaxValue * 4 * 1024 byte = 17592186040320 byte = 16383 GB = 15 TB
+        // this to-do is done.
         /// <summary>
-        /// Represent page number - start in 0 with HeaderPage [4 bytes]
+        /// Represent page number - start in 0 with HeaderPage [8 bytes]
         /// </summary>
-        public uint PageID { get; set; }
+        public UInt64 PageID { get; set; }
 
         /// <summary>
-        /// Represent the previous page. Used for page-sequences - MaxValue represent that has NO previous page [4 bytes]
+        /// Represent the previous page. Used for page-sequences - MaxValue represent that has NO previous page [8 bytes]
         /// </summary>
-        public uint PrevPageID { get; set; }
+        public UInt64 PrevPageID { get; set; }
 
         /// <summary>
-        /// Represent the next page. Used for page-sequences - MaxValue represent that has NO next page [4 bytes]
+        /// Represent the next page. Used for page-sequences - MaxValue represent that has NO next page [8 bytes]
         /// </summary>
-        public uint NextPageID { get; set; }
+        public UInt64 NextPageID { get; set; }
 
         /// <summary>
         /// Indicate the page type [1 byte]
@@ -52,16 +51,14 @@ namespace SharpFileDB.Pages
 
         /// <summary>
         /// Used for all pages to count itens inside this page(bytes, nodes, blocks, ...)
-        /// Its Int32 but writes in UInt16
         /// </summary>
-        public int ItemCount { get; set; }
+        public UInt16 ItemCount { get; set; }
 
         /// <summary>
         /// Used to find a free page using only header search [used in FreeList]
-        /// Its Int32 but writes in UInt16
         /// Its updated when a page modify content length (add/remove items)
         /// </summary>
-        public int FreeBytes { get; set; }
+        public UInt16 FreeBytes { get; set; }
 
         /// <summary>
         /// Indicate that this page is dirty (was modified) and must persist when commited [not-persistable]
@@ -70,8 +67,8 @@ namespace SharpFileDB.Pages
 
         public BasePage()
         {
-            this.PrevPageID = uint.MaxValue;
-            this.NextPageID = uint.MaxValue;
+            this.PrevPageID = UInt64.MaxValue;
+            this.NextPageID = UInt64.MaxValue;
             this.PageType = SharpFileDB.Pages.PageType.Unknown;
             this.ItemCount = 0;
             this.FreeBytes = PAGE_AVAILABLE_BYTES;
@@ -92,8 +89,8 @@ namespace SharpFileDB.Pages
         /// </summary>
         public virtual void Clear()
         {
-            this.PrevPageID = uint.MaxValue;
-            this.NextPageID = uint.MaxValue;
+            this.PrevPageID = UInt64.MaxValue;
+            this.NextPageID = UInt64.MaxValue;
             this.PageType = PageType.Empty;
             this.ItemCount = 0;
             this.FreeBytes = PAGE_AVAILABLE_BYTES;
@@ -121,9 +118,9 @@ namespace SharpFileDB.Pages
 
         public virtual void ReadHeader(BinaryReader reader)
         {
-            this.PageID = reader.ReadUInt32();
-            this.PrevPageID = reader.ReadUInt32();
-            this.NextPageID = reader.ReadUInt32();
+            this.PageID = reader.ReadUInt64();
+            this.PrevPageID = reader.ReadUInt64();
+            this.NextPageID = reader.ReadUInt64();
             this.PageType = (PageType)reader.ReadByte();
             this.ItemCount = reader.ReadUInt16();
             this.FreeBytes = reader.ReadUInt16();
@@ -135,8 +132,8 @@ namespace SharpFileDB.Pages
             writer.Write(this.PrevPageID);
             writer.Write(this.NextPageID);
             writer.Write((byte)this.PageType);
-            writer.Write((UInt16)this.ItemCount);
-            writer.Write((UInt16)this.FreeBytes);
+            writer.Write(this.ItemCount);
+            writer.Write(this.FreeBytes);
         }
 
         #endregion
