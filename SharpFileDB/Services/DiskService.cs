@@ -8,12 +8,23 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Services
 {
+    /// <summary>
+    /// 对数据库文件进行读写操作。
+    /// </summary>
     public class DiskService : IDisposable
     {
+        private const int LOCK_POSITION = 0;
+
+        /// <summary>
+        /// 锁定操作的最长时间。
+        /// </summary>
+        public TimeSpan timeout = new TimeSpan(0, 0, 1, 0, 0);
+
         private FileStream fileStream;
 
         private BinaryReader binaryReader;
         private BinaryWriter binaryWriter;
+        private Action lockDBAction;
 
         public DiskService(string fullname)
         {
@@ -69,6 +80,82 @@ namespace SharpFileDB.Services
             page.IsDirty = false;
         }
 
+
+        /// <summary>
+        /// Pre-allocate more disk space to fast write new pages on disk
+        /// </summary>
+        public void AllocateDiskSpace(long length)
+        {
+            FileStream stream = this.fileStream;
+
+            if (stream.Length < length)
+            {
+                stream.SetLength(length);
+            }
+        }
+
+        #region Lock/Unlock functions
+
+        /// <summary>
+        /// Lock the datafile when start a begin transaction
+        /// </summary>
+        public void Lock()
+        {
+            if(this.lockDBAction == null)
+            {
+                this.lockDBAction = new Action(this.LockDB);
+            }
+
+            TryExec(this.timeout, this.lockDBAction);
+        }
+
+        void LockDB()
+        {
+            FileStream stream = this.fileStream;
+
+            // try to lock - if is in use, a exception will be throwed
+            stream.Lock(LOCK_POSITION, 1);
+        }
+
+        /// <summary>
+        /// Unlock the datafile
+        /// </summary>
+        public void UnLock()
+        {
+            FileStream stream = this.fileStream;
+
+            stream.Unlock(LOCK_POSITION, 1);
+        }
+
+        #endregion Lock/Unlock functions
+
+
+        /// <summary>
+        /// Try execute a block of code until timeout when IO lock exception occurs OR access denind
+        /// </summary>
+        public static void TryExec(TimeSpan timeout, Action action)
+        {
+            var timer = DateTime.Now.Add(timeout);
+
+            while (DateTime.Now < timer)
+            {
+                try
+                {
+                    action();
+                    return;
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    System.Threading.Thread.Sleep(250);
+                }
+                catch (IOException ex)
+                {
+                    ex.WaitIfLocked(250);
+                }
+            }
+
+            throw new Exception(string.Format("Lock Time out {0}", timeout));
+        }
 
         #region IDisposable Members
 

@@ -81,6 +81,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DiskService.cs" />
     <Compile Include="Table.cs" />
+    <Compile Include="Utils\IOExceptionExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Pages\Pages.cd" />
