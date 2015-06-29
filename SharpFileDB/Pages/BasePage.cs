@@ -6,14 +6,17 @@ using System.Text;
 
 namespace SharpFileDB.Pages
 {
-    internal enum PageType : byte { Unknown, Empty, Header, Collection, Index, Data, Extend }
+    public enum PageType : byte { Empty, DBHeader, Table, Index, Data, Extend }
 
     /// <summary>
     /// Base type for pages.
     /// </summary>
-    internal abstract class BasePage
+    public abstract class BasePage
     {
 
+        /// <summary>
+        /// page header information for every page.
+        /// </summary>
         internal PageHeaderInfo pageHeaderInfo = new PageHeaderInfo();
 
         /// <summary>
@@ -21,11 +24,11 @@ namespace SharpFileDB.Pages
         /// </summary>
         public bool IsDirty;
 
-        public BasePage()
+        public BasePage(PageType pageType)
         {
             this.pageHeaderInfo.previousPageID = UInt64.MaxValue;
             this.pageHeaderInfo.nextPageID = UInt64.MaxValue;
-            this.pageHeaderInfo.pageType = SharpFileDB.Pages.PageType.Unknown;
+            this.pageHeaderInfo.pageType = pageType;
             this.pageHeaderInfo.itemCount = 0;
             this.pageHeaderInfo.freeBytes = PageHeaderInfo.PAGE_AVAILABLE_BYTES;
         }
@@ -41,9 +44,9 @@ namespace SharpFileDB.Pages
         //}
 
         /// <summary>
-        /// Clear page content (using when delete a page)
+        /// Free this page by clearing the page content (using when delete a page)
         /// </summary>
-        public virtual void Clear()
+        public virtual void Free()
         {
             this.pageHeaderInfo.previousPageID = UInt64.MaxValue;
             this.pageHeaderInfo.nextPageID = UInt64.MaxValue;
@@ -72,9 +75,10 @@ namespace SharpFileDB.Pages
 
         #region Page Header
 
-        public virtual void ReadHeader(BinaryReader reader)
+        public void ReadHeader(BinaryReader reader)
         {
             this.pageHeaderInfo.pageID = reader.ReadUInt64();
+
             this.pageHeaderInfo.previousPageID = reader.ReadUInt64();
             this.pageHeaderInfo.nextPageID = reader.ReadUInt64();
             this.pageHeaderInfo.pageType = (PageType)reader.ReadByte();
@@ -82,9 +86,10 @@ namespace SharpFileDB.Pages
             this.pageHeaderInfo.freeBytes = reader.ReadUInt16();
         }
 
-        public virtual void WriteHeader(BinaryWriter writer)
+        public void WriteHeader(BinaryWriter writer)
         {
             writer.Write(this.pageHeaderInfo.pageID);
+
             writer.Write(this.pageHeaderInfo.previousPageID);
             writer.Write(this.pageHeaderInfo.nextPageID);
             writer.Write((Byte)this.pageHeaderInfo.pageType);

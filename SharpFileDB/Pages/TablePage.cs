@@ -8,10 +8,16 @@ using System.Text.RegularExpressions;
 namespace SharpFileDB.Pages
 {
     /// <summary>
-    /// Represents the collection page AND a collection item, because CollectionPage represent a Collection (1 page = 1 collection). All collections pages are linked with Prev/Next links
+    /// Represents the collection page AND a collection item, because TablePage represent a Collection (1 page = 1 collection). All collections pages are linked with Prev/Next links
     /// </summary>
-    internal class TablePage : BasePage
+    public class TablePage : BasePage
     {
+        public TablePage() : base(PageType.Table) { }
+
+        public override void UpdateItemCount()
+        {
+            throw new NotImplementedException();
+        }
         //public const int MAX_COLLECTIONS = 256;
 
         //public static Regex NamePattern = new Regex(@"^[\w-]{1,30}$");
@@ -37,13 +43,13 @@ namespace SharpFileDB.Pages
         ///// </summary>
         //public CollectionIndex[] Indexes { get; set; }
 
-        //public CollectionPage()
+        //public TablePage()
         //    : base()
         //{
         //    this.PageType = PageType.Collection;
         //    this.FreeDataPageID = uint.MaxValue;
         //    this.DocumentCount = 0;
-        //    this.ItemCount = 1; // fixed for CollectionPage
+        //    this.ItemCount = 1; // fixed for TablePage
         //    this.FreeBytes = 0; // no free bytes on collection-page - only one collection per page
         //    this.Indexes = new CollectionIndex[CollectionIndex.INDEX_PER_COLLECTION];
 

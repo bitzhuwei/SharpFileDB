@@ -6,8 +6,15 @@ using System.Text;
 
 namespace SharpFileDB.Pages
 {
-    internal class IndexPage : BasePage
+    public class IndexPage : BasePage
     {
+
+        public IndexPage() : base(PageType.Index) { }
+
+        public override void UpdateItemCount()
+        {
+            throw new NotImplementedException();
+        }
         ///// <summary>
         ///// If a Index Page has less that this free space, it's considered full page for new items.
         ///// </summary>

@@ -6,14 +6,21 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Pages
 {
-    struct PageHeaderInfo
+    public struct PageHeaderInfo
     {
         #region Page Constants
 
         /// <summary>
         /// This size is used bytes in header pages 29 bytes
         /// </summary>
-        public const UInt16 PAGE_HEADER_SIZE = 29;
+        public const UInt16 PAGE_HEADER_SIZE =
+            sizeof(UInt64) // public UInt64 pageID;
+            + sizeof(UInt64) // public UInt64 previousPageID;
+            + sizeof(UInt64) // public UInt64 nextPageID;
+            + sizeof(Byte) // public PageType pageType;
+            + sizeof(UInt16) // public UInt16 itemCount;
+            + sizeof(UInt16) // public UInt16 freeBytes;
+            ; // 29;
 
         /// <summary>
         /// Bytes avaiable to store data removing page header size - 4079 bytes
@@ -41,11 +48,13 @@ namespace SharpFileDB.Pages
         public UInt64 pageID;
 
         /// <summary>
+        /// 页之间有双链表关系时，此值表示前一结点的page ID。
         /// Represent the previous page. Used for page-sequences - MaxValue represent that has NO previous page [8 bytes]
         /// </summary>
         public UInt64 previousPageID;
 
         /// <summary>
+        /// 页之间有双链表关系时，此值表示后一结点的page ID。
         /// Represent the next page. Used for page-sequences - MaxValue represent that has NO next page [8 bytes]
         /// </summary>
         public UInt64 nextPageID;

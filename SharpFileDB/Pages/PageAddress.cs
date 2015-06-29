@@ -9,8 +9,24 @@ namespace SharpFileDB.Pages
     /// <summary>
     /// Represents a page adress.
     /// </summary>
-    internal struct PageAddress
+    public struct PageAddress
     {
+
+        /// <summary>
+        /// Size of <see cref="PageAddress.pageID"/>.
+        /// </summary>
+        public const UInt16 PAGE_ID_SIZE = sizeof(UInt64);
+
+        /// <summary>
+        /// Size of <see cref="PageAddress.IndexInPage"/>.
+        /// </summary>
+        public const UInt16 INDEX_IN_PAGE_SIZE = sizeof(UInt16);
+
+        /// <summary>
+        /// Size needed to store <see cref="PageAddress"/>.
+        /// </summary>
+        public const UInt16 SIZE = PAGE_ID_SIZE + INDEX_IN_PAGE_SIZE;
+
         /// <summary>
         /// The size of each page in disk - 4096 is NTFS default
         /// Page's size: 4 * 1024 bytes.
