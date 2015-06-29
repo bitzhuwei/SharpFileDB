@@ -16,11 +16,6 @@ namespace SharpFileDB
     /// </summary>
     public class FileDBContext
     {
-        /// <summary>
-        /// 在数据库文件开头写入一些不能被IFormatter反序列化的字节。这样有助于发现bug。
-        /// <para>Write some bytes that cannot be deserialized by IFormatter. This helps to find bugs.</para>
-        /// </summary>
-        const int firstPositionInFile = 1;
 
         /// <summary>
         /// 序列化/反序列化工具。
@@ -28,20 +23,21 @@ namespace SharpFileDB
         /// </summary>
         System.Runtime.Serialization.IFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
-        DBHeader dbHeader = new DBHeader();
-
         /// <summary>
         /// 管理数据库的所有Table。
         /// <para>Manages all tables in this database.</para>
         /// </summary>
-        SkipList<Type, Table> tableManager = new SkipList<Type, Table>(32, 0.5f, Comparer<Type>.Default);
+        Dictionary<Type, Table> tableManager = new Dictionary<Type, Table>();
+        //SkipList<Type, Table> tableManager = new SkipList<Type, Table>(32, 0.5f, Comparer<Type>.Default);
         
+
+
         /// <summary>
         /// 文件数据库。
         /// <para>Represents a file database.</para>
         /// </summary>
         /// <param name="fullname">数据库文件绝对路径。<para>Database file's fullname.</para></param>
-        /// <param name="persistence">持久化方式。<para>The <see cref="IPersistence"/> instance.</para></param>
+        ///// <param name="persistence">持久化方式。<para>The <see cref="IPersistence"/> instance.</para></param>
         public FileDBContext(string fullname = null)//, IPersistence persistence = null)
         {
             if (fullname == null)
@@ -82,6 +78,11 @@ namespace SharpFileDB
 
         private void CreateDB(string fullname)
         {
+            using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write))
+            {
+                // TODO: create database file.
+
+            }
         }
 
         public override string ToString()

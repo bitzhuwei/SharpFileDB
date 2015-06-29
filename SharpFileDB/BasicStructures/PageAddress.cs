@@ -15,7 +15,7 @@ namespace SharpFileDB.Pages
         /// <summary>
         /// Size of <see cref="PageAddress.pageID"/>.
         /// </summary>
-        public const UInt16 PAGE_ID_SIZE = sizeof(UInt64);
+        public const UInt16 PAGE_ID_SIZE = sizeof(UInt16);
 
         /// <summary>
         /// Size of <see cref="PageAddress.IndexInPage"/>.
@@ -24,12 +24,12 @@ namespace SharpFileDB.Pages
 
         /// <summary>
         /// Size needed to store <see cref="PageAddress"/>.
+        /// <para>Size of <see cref="PageAddress.pageID"/> + Size of <see cref="PageAddress.IndexInPage"/>.</para>
         /// </summary>
         public const UInt16 SIZE = PAGE_ID_SIZE + INDEX_IN_PAGE_SIZE;
 
         /// <summary>
-        /// The size of each page in disk - 4096 is NTFS default
-        /// Page's size: 4 * 1024 bytes.
+        /// The size of each page in disk - 4096 bytes is NTFS default.
         /// </summary>
         public const UInt16 PAGE_SIZE = 0x1000; // = 4 * 1024;
 
