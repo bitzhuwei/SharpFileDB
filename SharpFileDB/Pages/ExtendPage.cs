@@ -10,7 +10,7 @@ namespace SharpFileDB.Pages
     /// Represent a extra data page that contains the object when is not possible store in DataPage (bigger then  PAGE_SIZE or on update has no more space on page)
     /// Can be used in sequence of pages to store big objects
     /// </summary>
-    internal class ExtendPage : BasePage
+    public class ExtendPage : BasePage
     {
         /// <summary>
         /// Represent the part or full of the object - if this page has NextPageID the object is bigger than this page
@@ -18,19 +18,18 @@ namespace SharpFileDB.Pages
         public Byte[] Data { get; set; }
 
         public ExtendPage()
-            : base()
+            : base(PageType.Extend)
         {
-            this.PageType = PageType.Extend;
-            this.Data = new byte[0];
+            this.Data = new Byte[0];
         }
 
         /// <summary>
         /// Clear page content - Data byte array
         /// </summary>
-        public override void Clear()
+        public override void Free()
         {
-            base.Clear();
-            this.Data = new byte[0];
+            base.Free();
+            this.Data = new Byte[0];
         }
 
         /// <summary>
@@ -38,13 +37,14 @@ namespace SharpFileDB.Pages
         /// </summary>
         public override void UpdateItemCount()
         {
-            this.ItemCount = (ushort)Data.Length;
-            this.FreeBytes = PAGE_AVAILABLE_BYTES - this.Data.Length; // not used on ExtendPage
+            this.pageHeaderInfo.itemCount = (ushort)Data.Length;
+            this.pageHeaderInfo.freeBytes = (UInt16)(PageHeaderInfo.PAGE_AVAILABLE_BYTES - this.Data.Length); // not used on ExtendPage
+            
         }
 
         public override void ReadContent(BinaryReader reader)
         {
-            this.Data = reader.ReadBytes(this.ItemCount);
+            this.Data = reader.ReadBytes(this.pageHeaderInfo.itemCount);
         }
 
         public override void WriteContent(BinaryWriter writer)

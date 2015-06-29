@@ -62,13 +62,40 @@
     <Compile Include="FileDBContext.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
+    <Compile Include="Pages\BasePage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pages\TableIndex.cs" />
+    <Compile Include="Pages\DataBlock.cs" />
+    <Compile Include="Pages\DataPage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pages\DBHeaderPage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pages\EmptyPage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pages\ExtendPage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Pages\IndexNode.cs" />
+    <Compile Include="Pages\IndexOptions.cs" />
+    <Compile Include="Pages\IndexPage.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Pages\PageAddress.cs" />
+    <Compile Include="Pages\PageHeaderInfo.cs" />
+    <Compile Include="Pages\TablePage.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableManager.cs" />
     <Compile Include="TableNode.cs" />
     <Compile Include="Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="NGenerics.DataStructures\SkipList.cd" />
     <None Include="FileDBContext.cd" />
   </ItemGroup>
@@ -80,7 +107,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Impl\" />
-    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
