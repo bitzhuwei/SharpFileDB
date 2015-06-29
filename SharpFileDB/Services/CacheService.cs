@@ -53,7 +53,7 @@ namespace SharpFileDB.Services
         /// Get a page inside cache system. Returns null if page not existis. 
         /// If T is more specific than page that I have in cache, returns null (eg. Page 2 is BasePage in cache and this method call for IndexPage PageId 2)
         /// </summary>
-        public T GetPage<T>(uint pageID)
+        public T GetPage<T>(UInt64 pageID)
             where T : PageBase
         {
             var page = _cache.GetOrDefault(pageID, null);

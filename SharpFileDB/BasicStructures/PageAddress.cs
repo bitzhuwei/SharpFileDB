@@ -36,7 +36,7 @@ namespace SharpFileDB.Pages
         /// <summary>
         /// FileStream.Length is a System.Int64, which means database file's max length is System.Int64.MaxValue.
         /// </summary>
-        public const UInt64 MAX_PAGE_COUNT = System.Int64.MaxValue / PAGE_SIZE;
+        const UInt64 MAX_PAGE_COUNT = System.Int64.MaxValue / PAGE_SIZE;
 
 
         //public const int SIZE = 6;
@@ -44,7 +44,8 @@ namespace SharpFileDB.Pages
         /// <summary>
         /// An empty page address is a farther page's address which is next to the farthest page in FileStream.
         /// </summary>
-        public static PageAddress Empty = new PageAddress(MAX_PAGE_COUNT, PAGE_SIZE);
+        public static PageAddress Empty = new PageAddress(UInt64.MaxValue, PAGE_SIZE);
+        //public static PageAddress Empty = new PageAddress(MAX_PAGE_COUNT, PAGE_SIZE);
 
         //private UInt64 _pageID;
         /// <summary>
@@ -91,7 +92,8 @@ namespace SharpFileDB.Pages
 
         public bool IsEmpty
         {
-            get { return pageID == MAX_PAGE_COUNT; }
+            //get { return pageID == MAX_PAGE_COUNT; }
+            get { return this.pageID == UInt64.MaxValue; }
         }
 
         public override bool Equals(object obj)
@@ -120,7 +122,7 @@ namespace SharpFileDB.Pages
         {
             string result = string.Format("{0}: {1}{2}{3}{4}", this.pageID, this.indexInPage,
                 this.IsEmpty ? " Empty" : "",
-                this.pageID > MAX_PAGE_COUNT ? " error: PageID > MAX_PAGE_COUNT" : "",
+                this.pageID > MAX_PAGE_COUNT && this.pageID != UInt64.MaxValue ? " error: PageID > MAX_PAGE_COUNT" : "",
                 this.indexInPage > PAGE_SIZE ? " erro: IndexInPage > PAGE_SIZE" : "");
             return result;
         }
