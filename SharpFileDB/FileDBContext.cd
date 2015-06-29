@@ -3,27 +3,17 @@
   <Class Name="SharpFileDB.FileDBContext">
     <Position X="0.5" Y="0.5" Width="5.5" />
     <TypeIdentifier>
-      <HashCode>BIYACBEAAAAAAAAEAAAIEAAAAIAEAEAAAAAAAQBAAAA=</HashCode>
+      <HashCode>AIYAAEEAAAAAAAAEAAAJEAAAAAEgAAAAAAAAAQAAAAA=</HashCode>
       <FileName>FileDBContext.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="persistence" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="SharpFileDB.Document">
     <Position X="6.25" Y="0.5" Width="5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAUAAAAAAAgAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAEAAAAAAAgAAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>Document.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="SharpFileDB.IPersistence">
-    <Position X="0.5" Y="5.25" Width="4" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAQAAAAAAAAAAAAA=</HashCode>
-      <FileName>IPersistence.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Font Name="微软雅黑" Size="9" />
 </ClassDiagram>

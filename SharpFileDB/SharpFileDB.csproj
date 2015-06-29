@@ -42,14 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DocumentNode.cs" />
-    <Compile Include="FreeSpaceManager.cs" />
-    <Compile Include="FreeSpaceNode.cs" />
-    <Compile Include="Helper\DocumentHelper.cs" />
-    <Compile Include="Helper\IPointToNextInFile.cs" />
+    <Compile Include="DBHeader.cs" />
     <Compile Include="Helper\ObjectLengthHelper.cs" />
-    <Compile Include="IIndex.cs" />
-    <Compile Include="IPointToNextInFile.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitable.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitableCollection.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitableDictionary.cs" />
@@ -90,12 +84,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TableManager.cs" />
-    <Compile Include="TableNode.cs" />
-    <Compile Include="Transaction.cs" />
+    <Compile Include="Table.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <None Include="Pages\Pages.cd" />
     <None Include="NGenerics.DataStructures\SkipList.cd" />
     <None Include="FileDBContext.cd" />
   </ItemGroup>
@@ -105,9 +97,7 @@
     <Content Include="SharpFileDB.FileFormat-level0.jpg" />
     <Content Include="SharpFileDB.FileFormat-level1.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Impl\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
