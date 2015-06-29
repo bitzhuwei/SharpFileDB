@@ -65,8 +65,8 @@
     <Compile Include="Pages\BasePage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Pages\TableIndex.cs" />
-    <Compile Include="Pages\DataBlock.cs" />
+    <Compile Include="Pages\Structures\TableIndex.cs" />
+    <Compile Include="Pages\Structures\DataBlock.cs" />
     <Compile Include="Pages\DataPage.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -79,13 +79,13 @@
     <Compile Include="Pages\ExtendPage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Pages\IndexNode.cs" />
-    <Compile Include="Pages\IndexOptions.cs" />
+    <Compile Include="Pages\Structures\IndexNode.cs" />
+    <Compile Include="Pages\Structures\IndexOptions.cs" />
     <Compile Include="Pages\IndexPage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Pages\PageAddress.cs" />
-    <Compile Include="Pages\PageHeaderInfo.cs" />
+    <Compile Include="Pages\Structures\PageAddress.cs" />
+    <Compile Include="Pages\Structures\PageHeaderInfo.cs" />
     <Compile Include="Pages\TablePage.cs">
       <SubType>Code</SubType>
     </Compile>
