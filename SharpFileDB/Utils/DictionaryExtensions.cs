@@ -9,7 +9,7 @@ namespace SharpFileDB
 {
     internal static class DictionaryExtensions
     {
-        public static ushort NextIndex<T>(this Dictionary<ushort, T> dict)
+        public static ushort NextIndex<T>(this Dictionary<UInt64, T> dict)
         {
             ushort next = 0;
 
@@ -21,9 +21,9 @@ namespace SharpFileDB
             return next;
         }
 
-        public static T GetOrDefault<K, T>(this IDictionary<K, T> dict, K key, T defaultValue = default(T))
+        public static V GetOrDefault<K, V>(this IDictionary<K, V> dict, K key, V defaultValue = default(V))
         {
-            T result;
+            V result;
 
             if (dict.TryGetValue(key, out result))
             {
