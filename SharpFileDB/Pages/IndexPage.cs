@@ -15,6 +15,17 @@ namespace SharpFileDB.Pages
         {
             throw new NotImplementedException();
         }
+
+        public override void ReadContent(BinaryReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteContent(BinaryWriter writer)
+        {
+            throw new NotImplementedException();
+        }
+
         ///// <summary>
         ///// If a Index Page has less that this free space, it's considered full page for new items.
         ///// </summary>

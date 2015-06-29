@@ -47,6 +47,16 @@ namespace SharpFileDB.Pages
             //this.pageHeaderInfo.freeBytes = PageHeaderInfo.PAGE_AVAILABLE_BYTES - this.DataBlocks.Sum(x => x.Value.Length);
         }
 
+        public override void ReadContent(BinaryReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteContent(BinaryWriter writer)
+        {
+            throw new NotImplementedException();
+        }
+
         //public override void WriteContent(BinaryWriter writer)
         //{
         //    foreach (var block in this.DataBlocks.Values)

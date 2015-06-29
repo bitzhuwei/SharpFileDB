@@ -18,6 +18,18 @@ namespace SharpFileDB.Pages
         {
             throw new NotImplementedException();
         }
+
+
+        public override void ReadContent(BinaryReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void WriteContent(BinaryWriter writer)
+        {
+            throw new NotImplementedException();
+        }
+
         //public const int MAX_COLLECTIONS = 256;
 
         //public static Regex NamePattern = new Regex(@"^[\w-]{1,30}$");

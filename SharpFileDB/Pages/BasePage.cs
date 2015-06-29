@@ -101,13 +101,9 @@ namespace SharpFileDB.Pages
 
         #region Page Content
 
-        public virtual void ReadContent(BinaryReader reader)
-        {
-        }
+        public abstract void ReadContent(BinaryReader reader);
 
-        public virtual void WriteContent(BinaryWriter writer)
-        {
-        }
+        public abstract void WriteContent(BinaryWriter writer);
 
         #endregion
     }
