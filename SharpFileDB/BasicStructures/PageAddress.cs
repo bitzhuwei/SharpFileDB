@@ -18,13 +18,13 @@ namespace SharpFileDB.Pages
         public const UInt16 PAGE_ID_SIZE = sizeof(UInt16);
 
         /// <summary>
-        /// Size of <see cref="PageAddress.IndexInPage"/>.
+        /// Size of <see cref="PageAddress.indexInPage"/>.
         /// </summary>
         public const UInt16 INDEX_IN_PAGE_SIZE = sizeof(UInt16);
 
         /// <summary>
         /// Size needed to store <see cref="PageAddress"/>.
-        /// <para>Size of <see cref="PageAddress.pageID"/> + Size of <see cref="PageAddress.IndexInPage"/>.</para>
+        /// <para>Size of <see cref="PageAddress.pageID"/> + Size of <see cref="PageAddress.indexInPage"/>.</para>
         /// </summary>
         public const UInt16 SIZE = PAGE_ID_SIZE + INDEX_IN_PAGE_SIZE;
 

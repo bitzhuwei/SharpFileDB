@@ -9,7 +9,7 @@ namespace SharpFileDB.Pages
     /// <summary>
     /// The DataPage thats stores object data.
     /// </summary>
-    public class DataPage : BasePage
+    public class DataPage : PageBase
     {
         ///// <summary>
         ///// If a Data Page has less that free space, it's considered full page for new items. Can be used only for update (DataPage) ~ 50% PAGE_AVAILABLE_BYTES

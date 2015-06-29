@@ -55,7 +55,7 @@
     <Compile Include="FileDBContext.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
-    <Compile Include="Pages\BasePage.cs">
+    <Compile Include="Pages\PageBase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Pages\DataPage.cs">

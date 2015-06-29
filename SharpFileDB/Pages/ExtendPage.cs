@@ -10,7 +10,7 @@ namespace SharpFileDB.Pages
     /// Represent a extra data page that contains the object when is not possible store in DataPage (bigger then  PAGE_SIZE or on update has no more space on page)
     /// Can be used in sequence of pages to store big objects
     /// </summary>
-    public class ExtendPage : BasePage
+    public class ExtendPage : PageBase
     {
         /// <summary>
         /// Represent the part or full of the object - if this page has NextPageID the object is bigger than this page

@@ -10,7 +10,7 @@ namespace SharpFileDB.Pages
     /// <summary>
     /// An empty page is a page that is not in use.
     /// </summary>
-    public class EmptyPage : BasePage
+    public class EmptyPage : PageBase
     {
         public EmptyPage()
             : base(PageType.Empty)

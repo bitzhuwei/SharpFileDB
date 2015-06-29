@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SharpFileDB.Pages
 {
-    public class IndexPage : BasePage
+    public class IndexPage : PageBase
     {
 
         public IndexPage() : base(PageType.Index) { }

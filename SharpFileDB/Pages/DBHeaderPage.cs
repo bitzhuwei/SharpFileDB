@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SharpFileDB.Pages
 {
-    public class DBHeaderPage : BasePage
+    public class DBHeaderPage : PageBase
     {
         ///// <summary>
         ///// Header info the validate that datafile is a SharpFileDB.Pages file

@@ -26,6 +26,10 @@ namespace SharpFileDB.Services
         private BinaryWriter binaryWriter;
         private Action lockDBAction;
 
+        /// <summary>
+        ///对数据库文件进行读写操作。 
+        /// </summary>
+        /// <param name="fullname">数据库文件名。</param>
         public DiskService(string fullname)
         {
             var stream = new FileStream(fullname, FileMode.Open, FileAccess.ReadWrite,
@@ -35,7 +39,13 @@ namespace SharpFileDB.Services
             this.binaryWriter = new BinaryWriter(stream);
         }
 
-        public T ReadPage<T>(ulong pageID) where T : BasePage
+        /// <summary>
+        /// 读取数据库文件的一页。
+        /// </summary>
+        /// <typeparam name="T">页类型。</typeparam>
+        /// <param name="pageID">页编号。[0 ~ 0x7FFFFFFFFFFFF] or [0 ~ 2251799813685247]</param>
+        /// <returns></returns>
+        public T ReadPage<T>(UInt64 pageID) where T : PageBase
         {
             throw new NotImplementedException();
         }
@@ -44,7 +54,7 @@ namespace SharpFileDB.Services
         /// 
         /// </summary>
         /// <param name="page"></param>
-        public void WritePage(BasePage page)
+        public void WritePage(PageBase page)
         {
             var stream = this.fileStream;
             long posStart, posEnd;
@@ -84,7 +94,7 @@ namespace SharpFileDB.Services
         /// <summary>
         /// Pre-allocate more disk space to fast write new pages on disk
         /// </summary>
-        public void AllocateDiskSpace(long length)
+        public void AllocateDiskSpace(Int64 length)
         {
             FileStream stream = this.fileStream;
 

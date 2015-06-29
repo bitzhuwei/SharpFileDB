@@ -11,7 +11,7 @@ namespace SharpFileDB.Pages
     /// <summary>
     /// Base type for pages.
     /// </summary>
-    public abstract class BasePage
+    public abstract class PageBase
     {
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace SharpFileDB.Pages
         /// </summary>
         public bool IsDirty;
 
-        public BasePage(PageType pageType)
+        public PageBase(PageType pageType)
         {
             this.pageHeaderInfo.previousPageID = UInt64.MaxValue;
             this.pageHeaderInfo.nextPageID = UInt64.MaxValue;

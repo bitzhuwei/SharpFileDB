@@ -10,7 +10,7 @@ namespace SharpFileDB.Pages
     /// <summary>
     /// Represents the collection page AND a collection item, because TablePage represent a Collection (1 page = 1 collection). All collections pages are linked with Prev/Next links
     /// </summary>
-    public class TablePage : BasePage
+    public class TablePage : PageBase
     {
         public TablePage() : base(PageType.Table) { }
 
