@@ -21,6 +21,16 @@ namespace SharpFileDB.BasicStructures
         public string IndexName { get; set; }
 
         /// <summary>
+        /// Skip list的参数之一：max level。
+        /// </summary>
+        public int MaxLevel { get; set; }
+
+        /// <summary>
+        /// Skip list的参数之一：probability。
+        /// </summary>
+        public double Probability { get; set; }
+
+        /// <summary>
         /// 此索引代表的skip list的第一个结点。
         /// </summary>
         public long FirstSkipListNode { get; set; }
@@ -48,8 +58,12 @@ namespace SharpFileDB.BasicStructures
         }
 
         const string strIndexName = "t";
-        const string strNext = "n";
+
+        const string strMaxLevel = "l";
+        const string strProbability = "p";
         const string strFirstSkipListNode = "f";
+
+        const string strNext = "n";
 
         #region ISerializable 成员
 
@@ -58,6 +72,8 @@ namespace SharpFileDB.BasicStructures
             //info.AddValue(strTableType, this.TableType.FullName);
             info.AddValue(strIndexName, this.IndexName);
             info.AddValue(strFirstSkipListNode, this.FirstSkipListNode);
+            info.AddValue(strMaxLevel, this.MaxLevel);
+            info.AddValue(strProbability, this.Probability);
 
             IDoubleLinkedNode link = this;
             info.AddValue(strNext, link.NextPos);
@@ -71,6 +87,8 @@ namespace SharpFileDB.BasicStructures
             //this.TableType = Type.GetType(fullname);
             this.IndexName = info.GetString(strIndexName);
             this.FirstSkipListNode = info.GetInt64(strFirstSkipListNode);
+            this.MaxLevel = info.GetInt32(strMaxLevel);
+            this.Probability = info.GetDouble(strProbability);
 
             IDoubleLinkedNode link = this;
             link.NextPos = info.GetInt64(strNext);

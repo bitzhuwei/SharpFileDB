@@ -48,18 +48,11 @@
     <Compile Include="BasicStructures\IndexCollection.cs" />
     <Compile Include="BasicStructures\IndexNode.cs" />
     <Compile Include="BasicStructures\PersistableDictionary.cs" />
+    <Compile Include="BasicStructures\SkipList.cs" />
     <Compile Include="BasicStructures\SkipListNode.cs" />
     <Compile Include="BasicStructures\TableCollection.cs" />
     <Compile Include="BasicStructures\TableNode.cs" />
     <Compile Include="Helper\ObjectLengthHelper.cs" />
-    <Compile Include="NGenerics.DataStructures\IVisitable.cs" />
-    <Compile Include="NGenerics.DataStructures\IVisitableCollection.cs" />
-    <Compile Include="NGenerics.DataStructures\IVisitableDictionary.cs" />
-    <Compile Include="NGenerics.DataStructures\IVisitor.cs" />
-    <Compile Include="NGenerics.DataStructures\SkipList.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="NGenerics.DataStructures\SkipListNode.cs" />
     <Compile Include="Helper\ByteArrayHelper.cs" />
     <Compile Include="FileDBContext.cs" />
     <Compile Include="Document.cs" />
@@ -103,12 +96,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Pages\Pages.cd" />
-    <None Include="NGenerics.DataStructures\SkipList.cd" />
     <None Include="FileDBContext.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FileDBContext.png" />
-    <Content Include="NGenerics.DataStructures\SkipList.png" />
     <Content Include="SharpFileDB.FileFormat-level0.jpg" />
     <Content Include="SharpFileDB.FileFormat-level1.jpg" />
   </ItemGroup>

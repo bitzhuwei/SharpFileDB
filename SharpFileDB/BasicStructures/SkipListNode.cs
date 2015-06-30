@@ -20,7 +20,15 @@ namespace SharpFileDB.BasicStructures
         public virtual TKey Key { get; set; }
         public virtual TValue Value { get; set; }
 
+        public SkipListNode<TKey, TValue> Right { get; set; }
+        public SkipListNode<TKey, TValue> Down { get; set; }
+
         public SkipListNode() { }
+        public SkipListNode(TKey key, TValue value)
+        {
+            this.Key = key;
+            this.Value = value;
+        }
 
         #region IFourSideLinked 成员
 
@@ -32,7 +40,14 @@ namespace SharpFileDB.BasicStructures
 
         long IFourSideLinked.RightPos { get; set; }
 
-        IFourSideLinked IFourSideLinked.RightObj { get; set; }
+        IFourSideLinked IFourSideLinked.RightObj
+        {
+            get { return this.Right; }
+            set
+            {
+                this.Right = (SkipListNode<TKey, TValue>)value;
+            }
+        }
 
         long IFourSideLinked.UpPos { get; set; }
 
@@ -40,7 +55,14 @@ namespace SharpFileDB.BasicStructures
 
         long IFourSideLinked.DownPos { get; set; }
 
-        IFourSideLinked IFourSideLinked.DownObj { get; set; }
+        IFourSideLinked IFourSideLinked.DownObj
+        {
+            get { return this.Down; }
+            set
+            {
+                this.Down = (SkipListNode<TKey, TValue>)value;
+            }
+        }
 
         #endregion
 
