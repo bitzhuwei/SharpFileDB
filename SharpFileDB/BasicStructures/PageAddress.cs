@@ -118,6 +118,18 @@ namespace SharpFileDB.Pages
             this.indexInPage = indexInPage;
         }
 
+        public static PageAddress GetPageAddress(long position)
+        {
+            if (position < 0)
+            { throw new ArgumentOutOfRangeException("position", "Negtive number [{0}] is not allowed to be a position."); }
+            UInt64 pageID = (UInt64)(position / PAGE_SIZE);
+            UInt16 indexInPage = (UInt16)(position % PAGE_SIZE);
+
+            PageAddress result = new PageAddress(pageID, indexInPage);
+
+            return result;
+        }
+
         public override string ToString()
         {
             string result = string.Format("{0}: {1}{2}{3}{4}", this.pageID, this.indexInPage,

@@ -66,7 +66,7 @@ namespace SharpFileDB.Services
         public T GetEmptyPage<T>() where T : PageBase, new()
         {
             T page = new T();
-
+            return page;
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace SharpFileDB
         /// 管理数据库的所有Table。
         /// <para>Manages all tables in this database.</para>
         /// </summary>
-        Dictionary<Type, Table> tableManager = new Dictionary<Type, Table>();
+        //Dictionary<Type, Table> tableManager = new Dictionary<Type, Table>();
         //SkipList<Type, Table> tableManager = new SkipList<Type, Table>(32, 0.5f, Comparer<Type>.Default);
         
 

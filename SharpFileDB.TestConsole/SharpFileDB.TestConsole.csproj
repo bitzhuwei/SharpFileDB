@@ -50,6 +50,7 @@
     <Compile Include="DemoMaxFilesInDirectory.cs" />
     <Compile Include="DemoSingleFileDB.cs" />
     <Compile Include="DemoTcpMsg.cs" />
+    <Compile Include="DemoTypeSerialization.cs" />
     <Compile Include="KittyCat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

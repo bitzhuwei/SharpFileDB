@@ -42,6 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicStructures\DoubleLinkedList.cs" />
+    <Compile Include="BasicStructures\IDoubleLinkedNode.cs" />
+    <Compile Include="BasicStructures\IFourSideLinkedNode.cs" />
+    <Compile Include="BasicStructures\IndexCollection.cs" />
+    <Compile Include="BasicStructures\IndexNode.cs" />
+    <Compile Include="BasicStructures\PersistableDictionary.cs" />
+    <Compile Include="BasicStructures\SkipListNode.cs" />
+    <Compile Include="BasicStructures\TableCollection.cs" />
+    <Compile Include="BasicStructures\TableNode.cs" />
     <Compile Include="Helper\ObjectLengthHelper.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitable.cs" />
     <Compile Include="NGenerics.DataStructures\IVisitableCollection.cs" />
@@ -84,7 +93,6 @@
     <Compile Include="Services\PageService.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Table.cs" />
     <Compile Include="Utils\DictionaryExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
