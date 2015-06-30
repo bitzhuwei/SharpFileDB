@@ -103,16 +103,17 @@ namespace SharpFileDB.BasicStructures
             // Initialise the skip list to empty nodes, and link the heads and the tails
             headNodes = new SkipListNode<TKey, TValue>[maxLevel];
 
-            headNodes[0] = new SkipListNode<TKey, TValue>();
-            headNodes[0].Right = tail;
+            //用Parse()安排下面这些指针。
+            //headNodes[0] = new SkipListNode<TKey, TValue>();
+            //headNodes[0].Right = tail;
 
-            for (int i = 1; i < maxLevel; i++)
-            {
-                headNodes[i] = new SkipListNode<TKey, TValue>();
-                headNodes[i].Down = headNodes[i - 1];
-                //headNodes[i - 1].Up = headNodes[i];
-                headNodes[i].Right = tail;
-            }
+            //for (int i = 1; i < maxLevel; i++)
+            //{
+            //    headNodes[i] = new SkipListNode<TKey, TValue>();
+            //    headNodes[i].Down = headNodes[i - 1];
+            //    //headNodes[i - 1].Up = headNodes[i];
+            //    headNodes[i].Right = tail;
+            //}
         }
 
         #endregion
