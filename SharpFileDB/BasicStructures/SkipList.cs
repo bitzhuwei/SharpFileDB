@@ -26,16 +26,40 @@ namespace SharpFileDB.BasicStructures
 
         #region Construction
 
-        public SkipList<TKey, TValue> Parse(IndexNode indexNode)
+        public SkipList<TKey, TValue> Parse(IndexNode indexNode, Services.DiskService diskService)
         {
             int maxLevel = indexNode.MaxLevel;
             double probability = indexNode.Probability;
-            SkipList<TKey, TValue> skipList = new SkipList<TKey, TValue>(maxLevel,probability,Comparer<TKey>.Default);
+            SkipList<TKey, TValue> skipList = new SkipList<TKey, TValue>(maxLevel, probability, Comparer<TKey>.Default);
+            SkipListNode<TKey, TValue>[] headNodes = skipList.headNodes;
 
+            long nodePos = indexNode.FirstSkipListNode;
+            int index = headNodes.Length - 1;
+            while (nodePos != long.MaxValue)
+            {
+                SkipListNode<TKey, TValue> headNode = diskService.Deserialize<SkipListNode<TKey, TValue>>(nodePos);
+                headNodes[index--] = headNode;
+                nodePos = ((IFourSideLinked)headNode).DownPos;
+            }
+            if (index + 1 != 0)
+            {
+                throw new Exception(string.Format("max level [{0}] != skip list nodes' count [{1}]!", maxLevel, headNodes.Length - 1 - index));
+            }
 
+            // 处理在数据库文件中没有直接保存的链接关系。
+            for (int i = 1; i < maxLevel; i++)
+            {
+                IFourSideLinked downLink = headNodes[i - 1];
+                IFourSideLinked link = headNodes[i];
+                downLink.UpPos = link.ThisPos;
+                downLink.UpObj = link;
+                //link.DownPos = downLink.ThisPos;//这在数据库文件中保存着，此处不必再设置。
+                link.DownObj = downLink;
+            }
 
             return skipList;
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SkipList&lt;TKey, TValue&gt;"/> class.
         /// </summary>
@@ -80,26 +104,14 @@ namespace SharpFileDB.BasicStructures
             headNodes = new SkipListNode<TKey, TValue>[maxLevel];
 
             headNodes[0] = new SkipListNode<TKey, TValue>();
-
-            //headNodes[0].Right = tail;
-            {
-                IFourSideLinked linkedHead = headNodes[0];
-
-                //linkedHead.ThisPos = 
-                linkedHead.RightObj = tail;
-                linkedHead.RightPos = long.MaxValue;
-            }
+            headNodes[0].Right = tail;
 
             for (int i = 1; i < maxLevel; i++)
             {
                 headNodes[i] = new SkipListNode<TKey, TValue>();
-                //headNodes[i].Down = headNodes[i - 1];
+                headNodes[i].Down = headNodes[i - 1];
                 //headNodes[i - 1].Up = headNodes[i];
-                //headNodes[i].Right = tail;
-                IFourSideLinked linked = headNodes[i];
-                linked.DownPos = long.MaxValue;
-                linked.DownObj = (IFourSideLinked)headNodes[i - 1];
-                linked.UpPos = long.MaxValue;
+                headNodes[i].Right = tail;
             }
         }
 

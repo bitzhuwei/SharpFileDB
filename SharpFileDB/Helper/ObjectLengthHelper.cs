@@ -36,6 +36,12 @@ namespace SharpFileDB
         //    return length;
         //}
 
+        /// <summary>
+        /// 获取用IFormatter序列化后得到的字节数组。
+        /// <para>如果<paramref name="obj"/>不具有<code>[Serializable]</code>特性，此方法会抛出异常。</para>
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static byte[] Serialize(this object obj)
         {
             byte[] bytes = null;

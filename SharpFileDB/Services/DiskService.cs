@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +26,9 @@ namespace SharpFileDB.Services
 
         private BinaryReader binaryReader;
         private BinaryWriter binaryWriter;
+
+        private IFormatter formatter = new BinaryFormatter();
+
         private Action lockDBAction;
 
         /// <summary>
@@ -38,6 +43,77 @@ namespace SharpFileDB.Services
             this.binaryReader = new BinaryReader(stream);
             this.binaryWriter = new BinaryWriter(stream);
         }
+
+        /// <summary>
+        /// 用IFormatter反序列化一个对象。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public T Deserialize<T>(long position)
+        {
+            FileStream stream = this.fileStream;
+            stream.Seek(position, SeekOrigin.Begin);
+            object obj = formatter.Deserialize(stream);
+            T result = (T)obj;
+            return result;
+        }
+
+        private Action<BasicStructures.IDoubleLinkedNode> writeDoubleLinkedNodeAction;
+        private void WriteDoubleLinkedNodeAction(BasicStructures.IDoubleLinkedNode node)
+        {
+            FileStream stream = this.fileStream;
+            stream.Seek(node.ThisPos, SeekOrigin.Begin);
+            formatter.Serialize(stream, node);
+        }
+
+        /// <summary>
+        /// 把双链表结点写入数据库文件。
+        /// </summary>
+        /// <param name="node"></param>
+        public void Write(BasicStructures.IDoubleLinkedNode node)
+        {
+            if (this.writeDoubleLinkedNodeAction == null)
+            {
+                this.writeDoubleLinkedNodeAction = new Action<BasicStructures.IDoubleLinkedNode>(this.WriteDoubleLinkedNodeAction); 
+            }
+
+            TryExec(this.timeout, this.writeDoubleLinkedNodeAction, node);
+        }
+
+        private Action<BasicStructures.IFourSideLinked> writeFourSideLinkedNodeAction;
+        private void WriteFourSideLinkedNodeAction(BasicStructures.IFourSideLinked node)
+        {
+            FileStream stream = this.fileStream;
+            stream.Seek(node.ThisPos, SeekOrigin.Begin);
+            formatter.Serialize(stream, node);
+        }
+
+        /// <summary>
+        /// 把四向结点写入数据库文件。
+        /// </summary>
+        /// <param name="node"></param>
+        public void Write(BasicStructures.IFourSideLinked node)
+        {
+            if (this.writeFourSideLinkedNodeAction == null)
+            {
+                this.writeFourSideLinkedNodeAction = new Action<BasicStructures.IFourSideLinked>(this.WriteFourSideLinkedNodeAction);
+            }
+
+            TryExec(this.timeout, this.writeFourSideLinkedNodeAction, node);
+        }
+
+        public void Serialize(byte[] bytes, long position)
+        {
+            if (bytes.LongLength > (long)(int.MaxValue))
+            {
+                throw new Exception("Too many bytes for an object!");
+            }
+            FileStream stream = this.fileStream;
+            stream.Seek(position, SeekOrigin.Begin);
+            stream.Write(bytes, 0, bytes.Length);
+        }
+
 
         /// <summary>
         /// 读取数据库文件的一页。
@@ -143,6 +219,8 @@ namespace SharpFileDB.Services
         /// <summary>
         /// Try execute a block of code until timeout when IO lock exception occurs OR access denind
         /// </summary>
+        /// <param name="timeout"></param>
+        /// <param name="action"></param>
         public static void TryExec(TimeSpan timeout, Action action)
         {
             var timer = DateTime.Now.Add(timeout);
@@ -152,6 +230,38 @@ namespace SharpFileDB.Services
                 try
                 {
                     action();
+                    return;
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    System.Threading.Thread.Sleep(250);
+                }
+                catch (IOException ex)
+                {
+                    ex.WaitIfLocked(250);
+                }
+            }
+
+            throw new Exception(string.Format("Lock Time out {0}", timeout));
+        }
+
+
+        /// <summary>
+        /// Try execute a block of code until timeout when IO lock exception occurs OR access denind
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="timeout"></param>
+        /// <param name="action"></param>
+        /// <param name="param"></param>
+        public static void TryExec<T>(TimeSpan timeout, Action<T> action, T param)
+        {
+            var timer = DateTime.Now.Add(timeout);
+
+            while (DateTime.Now < timer)
+            {
+                try
+                {
+                    action(param);
                     return;
                 }
                 catch (UnauthorizedAccessException)
