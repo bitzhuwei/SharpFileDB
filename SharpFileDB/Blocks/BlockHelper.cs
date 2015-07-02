@@ -28,5 +28,19 @@ namespace SharpFileDB.Blocks
             formatter.Serialize(fileStream, block);
         }
 
+        /// <summary>
+        /// 从文件流中给定的位置读取一个块。
+        /// </summary>
+        /// <typeparam name="T">块的类型。</typeparam>
+        /// <param name="fileStream"></param>
+        /// <param name="position">块所在位置。</param>
+        /// <returns></returns>
+        public static T ReadBlock<T>(this FileStream fileStream, long position) where T : Block
+        {
+            fileStream.Seek(position, SeekOrigin.Begin);
+            object obj = formatter.Deserialize(fileStream);
+            T result = obj as T;
+            return result;
+        }
     }
 }
