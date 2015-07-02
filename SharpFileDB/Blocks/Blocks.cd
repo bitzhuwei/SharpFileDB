@@ -9,9 +9,9 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SharpFileDB.Blocks.BlockHelper">
-    <Position X="14.5" Y="8.25" Width="3.75" />
+    <Position X="11.25" Y="0.5" Width="4.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAIA=</HashCode>
       <FileName>Blocks\BlockHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -74,14 +74,14 @@
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="SharpFileDB.Blocks.IDoubleLinkedNode">
-    <Position X="11.25" Y="0.5" Width="3.5" />
+    <Position X="0.5" Y="10" Width="3.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAEIAAAAEAAAA=</HashCode>
       <FileName>Blocks\IDoubleLinkedNode.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="SharpFileDB.Blocks.IFourSideLinked">
-    <Position X="15" Y="0.5" Width="3" />
+    <Position X="4.25" Y="10" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAEAABAAAAAAgAAAAAAAgAABAAAAAQAACA=</HashCode>
       <FileName>Blocks\IFourSideLinkedNode.cs</FileName>
