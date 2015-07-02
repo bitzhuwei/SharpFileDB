@@ -13,40 +13,40 @@ using System.Threading.Tasks;
 namespace SharpFileDB
 {
     /// <summary>
-    /// 用于生成唯一的Document编号。
+    /// 用于生成唯一的<see cref="Table"/>编号。
     /// </summary>
     [Serializable]
-    public sealed class DocumentId : ISerializable
+    public sealed class ObjectId : ISerializable
     {
         private string _string;
 
-        private DocumentId()
+        private ObjectId()
         {
         }
 
-        public DocumentId(string value)
+        public ObjectId(string value)
             : this(DecodeHex(value))
         {
         }
 
-        internal DocumentId(byte[] value)
+        internal ObjectId(byte[] value)
         {
             Value = value;
         }
 
-        public static DocumentId Empty
+        public static ObjectId Empty
         {
-            get { return new DocumentId("000000000000000000000000"); }
+            get { return new ObjectId("000000000000000000000000"); }
         }
 
         public byte[] Value { get; private set; }
 
-        public static DocumentId NewId()
+        public static ObjectId NewId()
         {
-            return new DocumentId { Value = ObjectIdGenerator.Generate() };
+            return new ObjectId { Value = ObjectIdGenerator.Generate() };
         }
 
-        public static bool TryParse(string value, out DocumentId objectId)
+        public static bool TryParse(string value, out ObjectId objectId)
         {
             objectId = Empty;
             if (value == null || value.Length != 24)
@@ -56,7 +56,7 @@ namespace SharpFileDB
 
             try
             {
-                objectId = new DocumentId(value);
+                objectId = new ObjectId(value);
                 return true;
             }
             catch (FormatException)
@@ -101,26 +101,26 @@ namespace SharpFileDB
 
         public override bool Equals(object obj)
         {
-            var other = obj as DocumentId;
+            var other = obj as ObjectId;
             return Equals(other);
         }
 
-        public bool Equals(DocumentId other)
+        public bool Equals(ObjectId other)
         {
             return other != null && ToString() == other.ToString();
         }
 
-        public static implicit operator string(DocumentId objectId)
+        public static implicit operator string(ObjectId objectId)
         {
             return objectId == null ? null : objectId.ToString();
         }
 
-        public static implicit operator DocumentId(string value)
+        public static implicit operator ObjectId(string value)
         {
-            return new DocumentId(value);
+            return new ObjectId(value);
         }
 
-        public static bool operator ==(DocumentId left, DocumentId right)
+        public static bool operator ==(ObjectId left, ObjectId right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -135,7 +135,7 @@ namespace SharpFileDB
             return left.Equals(right);
         }
 
-        public static bool operator !=(DocumentId left, DocumentId right)
+        public static bool operator !=(ObjectId left, ObjectId right)
         {
             return !(left == right);
         }
@@ -151,7 +151,7 @@ namespace SharpFileDB
 
         #endregion
 
-        private DocumentId(SerializationInfo info, StreamingContext context)
+        private ObjectId(SerializationInfo info, StreamingContext context)
         {
             string value = info.GetString(strValue);
             this.Value = DecodeHex(value);

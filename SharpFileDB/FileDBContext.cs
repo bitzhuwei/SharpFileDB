@@ -50,7 +50,7 @@ namespace SharpFileDB
         /// 向数据库新增一条记录。
         /// </summary>
         /// <param name="document"></param>
-        public void Insert(Document document)
+        public void Insert(Table document)
         {
             throw new NotImplementedException();
         }
@@ -59,7 +59,7 @@ namespace SharpFileDB
         /// 更新数据库内的一条记录。
         /// </summary>
         /// <param name="document"></param>
-        public void Update(Document document)
+        public void Update(Table document)
         {
             throw new NotImplementedException();
         }
@@ -68,7 +68,7 @@ namespace SharpFileDB
         /// 删除数据库内的一条记录。
         /// </summary>
         /// <param name="document"></param>
-        public void Delete(Document document)
+        public void Delete(Table document)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +79,7 @@ namespace SharpFileDB
         /// <typeparam name="T"></typeparam>
         /// <param name="predicate">符合此条件的记录会被取出。</param>
         /// <returns></returns>
-        public IList<T> Find<T>(object predicate) where T : Document, new()
+        public IList<T> Find<T>(object predicate) where T : Table, new()
         {
             throw new NotImplementedException();
         }

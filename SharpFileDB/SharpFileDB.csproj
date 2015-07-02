@@ -42,8 +42,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Document.cs" />
-    <Compile Include="DocumentId.cs">
+    <Compile Include="Blocks\Block.cs" />
+    <Compile Include="Blocks\BlockHelper.cs" />
+    <Compile Include="Blocks\DataBlock.cs" />
+    <Compile Include="Blocks\HeaderBlock.cs" />
+    <Compile Include="Blocks\IDoubleLinkedNode.cs" />
+    <Compile Include="Blocks\IFourSideLinkedNode.cs" />
+    <Compile Include="Blocks\IndexBlock.cs" />
+    <Compile Include="Blocks\SkipListNodeBlock.cs" />
+    <Compile Include="Blocks\TableBlock.cs" />
+    <Compile Include="Table.cs" />
+    <Compile Include="ObjectId.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FileDBContext.cs" />
