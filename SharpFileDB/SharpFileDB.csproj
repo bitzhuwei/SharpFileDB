@@ -42,68 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasicStructures\DoubleLinkedList.cs" />
-    <Compile Include="BasicStructures\IDoubleLinkedNode.cs" />
-    <Compile Include="BasicStructures\IFourSideLinkedNode.cs" />
-    <Compile Include="BasicStructures\IndexCollection.cs" />
-    <Compile Include="BasicStructures\IndexNode.cs" />
-    <Compile Include="BasicStructures\PersistableDictionary.cs" />
-    <Compile Include="BasicStructures\SkipList.cs" />
-    <Compile Include="BasicStructures\SkipListNode.cs" />
-    <Compile Include="BasicStructures\TableCollection.cs" />
-    <Compile Include="BasicStructures\TableNode.cs" />
-    <Compile Include="Helper\ObjectLengthHelper.cs" />
-    <Compile Include="Helper\ByteArrayHelper.cs" />
-    <Compile Include="FileDBContext.cs" />
     <Compile Include="Document.cs" />
-    <Compile Include="Helper\ImageHelper.cs" />
-    <Compile Include="Pages\PageBase.cs">
+    <Compile Include="DocumentId.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Pages\DataPage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Pages\DBHeaderPage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Pages\EmptyPage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Pages\ExtendPage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Pages\IndexPage.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BasicStructures\PageAddress.cs" />
-    <Compile Include="BasicStructures\PageHeaderInfo.cs" />
-    <Compile Include="Pages\TablePage.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="FileDBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CacheService.cs" />
-    <Compile Include="Services\DiskService.cs" />
-    <Compile Include="Services\PageService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Utils\DictionaryExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Utils\IOExceptionExtensions.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Utils\PageIDHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Pages\Pages.cd" />
-    <None Include="FileDBContext.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="FileDBContext.png" />
-    <Content Include="SharpFileDB.FileFormat-level0.jpg" />
-    <Content Include="SharpFileDB.FileFormat-level1.jpg" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace SharpFileDB
 {
@@ -20,10 +18,10 @@ namespace SharpFileDB
         /// 用以区分每个Table的每条记录。
         /// This Id is used for diffrentiate instances of 'table's.
         /// </summary>
-        public Guid Id { get; internal set; }
+        public DocumentId Id { get; internal set; }
 
         /// <summary>
-        /// 创建一个文件对象，在用<code>FileDBContext.Create();</code>将此对象保存到数据库之前，此对象的Id为<code>Guid.Empty</code>。
+        /// 创建一个文件对象，在用<code>FileDBContext.Insert();</code>将此对象保存到数据库之前，此对象的Id为<code>DocumentId.Empty</code>。
         /// <para>Create a <see cref="Document"/> whose Id is <code>Guid.Empty</code> until it's saved to database by <code>FileDBContext.Create();</code>.</para>
         /// </summary>
         public Document()
@@ -70,7 +68,7 @@ namespace SharpFileDB
         protected Document(SerializationInfo info, StreamingContext context)
         {
             string str = info.GetString(strGuid);
-            this.Id = Guid.Parse(str);
+            this.Id = new DocumentId(str);
         }
 
     }
