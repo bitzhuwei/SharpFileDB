@@ -41,7 +41,7 @@ namespace SharpFileDB
 
         public byte[] Value { get; private set; }
 
-        public static DocumentId NewObjectId()
+        public static DocumentId NewId()
         {
             return new DocumentId { Value = ObjectIdGenerator.Generate() };
         }

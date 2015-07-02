@@ -18,7 +18,7 @@ namespace SharpFileDB
         /// 用以区分每个Table的每条记录。
         /// This Id is used for diffrentiate instances of 'table's.
         /// </summary>
-        public DocumentId Id { get; internal set; }
+        public DocumentId Id { get; set; }
 
         /// <summary>
         /// 创建一个文件对象，在用<code>FileDBContext.Insert();</code>将此对象保存到数据库之前，此对象的Id为<code>DocumentId.Empty</code>。
@@ -37,7 +37,7 @@ namespace SharpFileDB
         /// 使用的字符越少，序列化时占用的字节就越少。一个字符都不用最好。
         /// <para>Using less chars means less bytes after serialization. And "" is allowed.</para>
         /// </summary>
-        const string strGuid = "";
+        const string strId = "";
 
         #region ISerializable 成员
 
@@ -51,8 +51,12 @@ namespace SharpFileDB
         /// <param name="context"></param>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            string id = this.Id.ToString();
-            info.AddValue(strGuid, id);
+            // 187
+            //string id = this.Id.ToString();//这比用byte[]占的字节多
+            // 185
+            byte[] value = this.Id.Value;
+
+            info.AddValue(strId, value);
         }
 
         #endregion
@@ -67,8 +71,10 @@ namespace SharpFileDB
         /// <param name="context"></param>
         protected Document(SerializationInfo info, StreamingContext context)
         {
-            string str = info.GetString(strGuid);
-            this.Id = new DocumentId(str);
+            //string str = info.GetString(strId);
+            //this.Id = new DocumentId(str);
+            byte[] value = (byte[])info.GetValue(strId, typeof(byte[]));
+            this.Id = new DocumentId(value);
         }
 
     }

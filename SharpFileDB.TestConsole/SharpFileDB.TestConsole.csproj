@@ -44,17 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cat.cs" />
-    <Compile Include="DemoDocumentMeta.cs" />
-    <Compile Include="DemoGuid.cs" />
-    <Compile Include="DemoMaxFilesInDirectory.cs" />
-    <Compile Include="DemoSingleFileDB.cs" />
-    <Compile Include="DemoTcpMsg.cs" />
-    <Compile Include="DemoTypeSerialization.cs" />
-    <Compile Include="KittyCat.cs" />
+    <Compile Include="DemoStringAndBytesLengthOfDocument.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TcpMsg.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

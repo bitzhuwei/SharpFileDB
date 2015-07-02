@@ -13,6 +13,8 @@ namespace SharpFileDB.TestConsole
     {
         static void Main(string[] args)
         {
+            DemoStringAndBytesLengthOfDocument.TypcialScene();
+            //DemoTypeSerialization.TypicalScene();
             //DemoDocumentMeta.TypicalScene();
             //DemoSingleFileDB.TypicalScene2();
             //DemoSingleFileDB.TypicalScene();
@@ -28,19 +30,19 @@ namespace SharpFileDB.TestConsole
             // common cases to use SharpFileDB.
             FileDBContext db = new FileDBContext(fullname);
 
-            Cat cat = new Cat();
-            cat.Name = "xiao xiao bai";
-            cat.Legs = 4;
-            cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
-            db.Insert(cat);
+            //Cat cat = new Cat();
+            //cat.Name = "xiao xiao bai";
+            //cat.Legs = 4;
+            //cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
+            //db.Insert(cat);
 
-            Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");
-            IList<Cat> cats = db.Retrieve(pre);
+            //Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");
+            //IList<Cat> cats = db.Retrieve(pre);
 
-            cat.Name = "xiao bai";
-            db.Update(cat);
+            //cat.Name = "xiao bai";
+            //db.Update(cat);
 
-            db.Delete(cat);
+            //db.Delete(cat);
         }
     }
 }
