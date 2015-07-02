@@ -28,8 +28,8 @@ namespace SharpFileDB
         /// </summary>
         //Dictionary<Type, Table> tableManager = new Dictionary<Type, Table>();
         //SkipList<Type, Table> tableManager = new SkipList<Type, Table>(32, 0.5f, Comparer<Type>.Default);
-        
 
+        Services.CacheService dirtyPageCache;// = new Services.CacheService();
 
         /// <summary>
         /// 文件数据库。
@@ -62,25 +62,64 @@ namespace SharpFileDB
             {
                 CreateDB(fullname);
             }
-            else
-            {
-                InitializeDB(fullname);
-            }
+
+            InitializeDB(fullname);
         }
 
         private void InitializeDB(string fullname)
         {
+            Services.DiskService disk = new Services.DiskService(fullname);
+            this.DiskService = disk;
+
             using (FileStream fs = new FileStream(fullname, FileMode.Open, FileAccess.Read))
             {
+                using (BinaryReader br = new BinaryReader(fs))
+                {
+                    // 读取数据库header
+                    Pages.DBHeaderPage headerPage = new Pages.DBHeaderPage();
+                    headerPage.ReadHeader(br);
+                    headerPage.ReadContent(br);
+                    this.headerPage = headerPage;
+
+                    // 读取数据库所有Table
+                    Pages.TablePage tableHead = new Pages.TablePage();
+                    tableHead.pageHeaderInfo.pageID = headerPage.FirstTablePageID;
+                    tableHead.ReadHeader(br);
+                    tableHead.ReadContent(br);
+
+                    Pages.TablePage currentTable = tableHead;
+                    while (currentTable.pageHeaderInfo.nextPageID != long.MaxValue)
+                    {
+                        long nextPageID = currentTable.pageHeaderInfo.nextPageID;
+                        Pages.TablePage tablePage = disk.ReadPage<Pages.TablePage>(nextPageID);
+                        tablePage.pageHeaderInfo.pageID = nextPageID;
+                    }
+                }
             }
         }
 
         private void CreateDB(string fullname)
         {
+            // 创建数据库文件。
             using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write))
             {
-                // TODO: create database file.
+                // 使用BinaryWriter。
+                using (BinaryWriter bw = new BinaryWriter(fs))
+                {
+                    // 写入数据库自身的头信息。
+                    Pages.DBHeaderPage headerPage = new Pages.DBHeaderPage();
+                    headerPage.FirstTablePageID = 1;
+                    headerPage.WriteHeader(bw);
+                    headerPage.WriteContent(bw);
+                    bw.Write(new byte[Pages.PageAddress.PAGE_SIZE - fs.Position]);
 
+                    // 写入Table的头结点。头结点不保存实际数据，是为编码方便而设置的。
+                    Pages.TablePage tableHead = new Pages.TablePage();
+                    tableHead.WriteHeader(bw);
+                    tableHead.WriteContent(bw);
+                    bw.Write(new byte[Pages.PageAddress.PAGE_SIZE * 2 - fs.Position]);
+                }
+                // 初始数据库文件大小应该为8 KB = 2 Pages.
             }
         }
 
@@ -163,5 +202,9 @@ namespace SharpFileDB
 
         #endregion CRUD
 
+
+        public Pages.DBHeaderPage headerPage { get; set; }
+
+        public Services.DiskService DiskService { get; set; }
     }
 }

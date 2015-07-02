@@ -77,10 +77,10 @@ namespace SharpFileDB.Pages
 
         public void ReadHeader(BinaryReader reader)
         {
-            this.pageHeaderInfo.pageID = reader.ReadUInt64();
+            //this.pageHeaderInfo.pageID = reader.ReadInt64();
 
-            this.pageHeaderInfo.previousPageID = reader.ReadUInt64();
-            this.pageHeaderInfo.nextPageID = reader.ReadUInt64();
+            this.pageHeaderInfo.previousPageID = reader.ReadInt64();
+            this.pageHeaderInfo.nextPageID = reader.ReadInt64();
             this.pageHeaderInfo.pageType = (PageType)reader.ReadByte();
             this.pageHeaderInfo.itemCount = reader.ReadUInt16();
             this.pageHeaderInfo.freeBytes = reader.ReadUInt16();
@@ -88,7 +88,7 @@ namespace SharpFileDB.Pages
 
         public void WriteHeader(BinaryWriter writer)
         {
-            writer.Write(this.pageHeaderInfo.pageID);
+            //writer.Write(this.pageHeaderInfo.pageID);
 
             writer.Write(this.pageHeaderInfo.previousPageID);
             writer.Write(this.pageHeaderInfo.nextPageID);
@@ -106,5 +106,6 @@ namespace SharpFileDB.Pages
         public abstract void WriteContent(BinaryWriter writer);
 
         #endregion
+
     }
 }

@@ -22,6 +22,7 @@ namespace SharpFileDB.Pages
 
         public override void ReadContent(BinaryReader reader)
         {
+
             throw new NotImplementedException();
         }
 
@@ -39,6 +40,7 @@ namespace SharpFileDB.Pages
         ///// </summary>
         //public string CollectionName { get; set; }
 
+        
         ///// <summary>
         ///// Get a reference for the free list data page - its private list per collection - each DataPage contains only data for 1 collection (no mixing)
         ///// Must to be a Field to be used as parameter reference

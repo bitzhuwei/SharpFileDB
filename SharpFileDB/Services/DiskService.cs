@@ -103,7 +103,7 @@ namespace SharpFileDB.Services
             TryExec(this.timeout, this.writeFourSideLinkedNodeAction, node);
         }
 
-        public void Serialize(byte[] bytes, long position)
+        public void Write(byte[] bytes, long position)
         {
             if (bytes.LongLength > (long)(int.MaxValue))
             {
@@ -121,9 +121,16 @@ namespace SharpFileDB.Services
         /// <typeparam name="T">页类型。</typeparam>
         /// <param name="pageID">页编号。[0 ~ 0x7FFFFFFFFFFFF] or [0 ~ 2251799813685247]</param>
         /// <returns></returns>
-        public T ReadPage<T>(UInt64 pageID) where T : PageBase
+        public T ReadPage<T>(Int64 pageID) where T : PageBase, new()
         {
-            throw new NotImplementedException();
+            FileStream stream = this.fileStream;
+            long position = pageID * PageAddress.PAGE_SIZE;
+            stream.Seek(position, SeekOrigin.Begin);
+            T page = new T();
+            page.ReadHeader(this.binaryReader);
+            page.ReadContent(this.binaryReader);
+
+            return page;
         }
 
         /// <summary>
@@ -136,12 +143,8 @@ namespace SharpFileDB.Services
             long posStart, posEnd;
             checked
             {
-                ulong start = (page.pageHeaderInfo.pageID * PageAddress.PAGE_SIZE);
-                ulong end = start + PageAddress.PAGE_SIZE;
-                if ((ulong)(long.MaxValue) < end)
-                { throw new Exception(string.Format("{0} is too far away as a FileStream.Position", end)); }
-                posStart = (long)start;
-                posEnd = (long)end;
+                posStart = (page.pageHeaderInfo.pageID * PageAddress.PAGE_SIZE);
+                posEnd = posStart + PageAddress.PAGE_SIZE;
             }
 
             // position cursor

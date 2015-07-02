@@ -26,12 +26,12 @@ namespace SharpFileDB.Pages
         /// <summary>
         /// Get/Set the pageID that start sequenece with a complete empty pages (can be used as a new page)
         /// </summary>
-        public UInt64 FreeEmptyPageID;
+        public Int64 FreeEmptyPageID;
 
         /// <summary>
         /// Last created page - Used when there is no free page inside file
         /// </summary>
-        public UInt64 LastPageID { get; set; }
+        public Int64 LastPageID { get; set; }
 
         ///// <summary>
         ///// Get/Set a user version of database file
@@ -41,7 +41,7 @@ namespace SharpFileDB.Pages
         /// <summary>
         /// Get/Set the first collection pageID (used as Field to be passed as reference)
         /// </summary>
-        public UInt64 FirstTablePageID;
+        public Int64 FirstTablePageID;
 
         public DBHeaderPage()
             : base(PageType.DBHeader)
@@ -50,8 +50,8 @@ namespace SharpFileDB.Pages
             this.pageHeaderInfo.itemCount = 1;// fixed for header
             this.pageHeaderInfo.freeBytes = 0;// no free bytes on header
 
-            this.FreeEmptyPageID = UInt64.MaxValue;
-            this.FirstTablePageID = UInt64.MaxValue;
+            this.FreeEmptyPageID = Int64.MaxValue;
+            this.FirstTablePageID = Int64.MaxValue;
             //this.ChangeID = 0;
             this.LastPageID = 0;
             //this.UserVersion = 0;
@@ -92,9 +92,9 @@ namespace SharpFileDB.Pages
             //if (ver != FILE_VERSION) throw new Exception("invliad database version");// throw LiteException.InvalidDatabaseVersion(reader.BaseStream, ver);
 
             //this.ChangeID = reader.ReadUInt16();
-            this.FreeEmptyPageID = reader.ReadUInt32();
-            this.FirstTablePageID = reader.ReadUInt32();
-            this.LastPageID = reader.ReadUInt32();
+            this.FreeEmptyPageID = reader.ReadInt64();
+            this.FirstTablePageID = reader.ReadInt64();
+            this.LastPageID = reader.ReadInt64();
             //this.UserVersion = reader.ReadInt32();
         }
 
