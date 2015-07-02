@@ -19,7 +19,7 @@ namespace SharpFileDB.Blocks
         public long SkipListNodePos { get; set; }
 
         /// <summary>
-        /// 存储数据库表信息的块。
+        /// 存储索引的块。
         /// </summary>
         public IndexBlock() { }
 

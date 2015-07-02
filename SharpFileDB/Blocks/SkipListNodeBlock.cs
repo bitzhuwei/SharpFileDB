@@ -22,6 +22,11 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public long ValuePos { get; set; }
 
+        /// <summary>
+        /// 用于把skip list node存储到数据库文件的块。
+        /// </summary>
+        public SkipListNodeBlock() { }
+
         const string strKeyPos = "k";
         const string strValuePos = "v";
         const string strRight = "r";

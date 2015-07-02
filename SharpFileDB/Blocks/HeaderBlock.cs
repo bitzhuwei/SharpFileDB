@@ -18,6 +18,9 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public TableBlock TableBlockHead { get; set; }
 
+        /// <summary>
+        /// 数据库文件的头部。应该放在数据库文件的最开始。
+        /// </summary>
         public HeaderBlock()
         {
             this.TableBlockHead = new TableBlock();

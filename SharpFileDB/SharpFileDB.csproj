@@ -57,9 +57,13 @@
     </Compile>
     <Compile Include="FileDBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <None Include="Blocks\Blocks.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Blocks\Blocks.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

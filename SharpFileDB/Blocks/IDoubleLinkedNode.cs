@@ -25,13 +25,11 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此对象的上一个对象。
         /// </summary>
-        //IDoubleLinked<T> PreviousObj { get; set; }
         IDoubleLinkedNode PreviousObj { get; set; }
 
         /// <summary>
         /// 此对象的下一个对象。
         /// </summary>
-        //IDoubleLinked<T> NextObj { get; set; }
         IDoubleLinkedNode NextObj { get; set; }
     }
 }

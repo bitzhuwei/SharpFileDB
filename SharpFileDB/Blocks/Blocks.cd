@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="SharpFileDB.Blocks.Block">
+    <Position X="6" Y="0.5" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Blocks\Block.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SharpFileDB.Blocks.BlockHelper">
+    <Position X="14.5" Y="8.25" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Blocks\BlockHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SharpFileDB.Blocks.DataBlock">
+    <Position X="9.25" Y="8.25" Width="5" />
+    <InheritanceLine Type="SharpFileDB.Blocks.Block" ManuallyRouted="true">
+      <Path>
+        <Point X="8.5" Y="2.428" />
+        <Point X="8.5" Y="2.862" />
+        <Point X="11.75" Y="2.862" />
+        <Point X="11.75" Y="8.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAIAAAAAAAIAABgAAAAABAAAAAAAAAAABA=</HashCode>
+      <FileName>Blocks\DataBlock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SharpFileDB.Blocks.HeaderBlock">
+    <Position X="0.5" Y="3.25" Width="5" />
+    <AssociationLine Name="TableBlockHead" Type="SharpFileDB.Blocks.TableBlock" FixedFromPoint="true">
+      <Path>
+        <Point X="2.562" Y="5.308" />
+        <Point X="2.562" Y="6" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.06" Y="0.401" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAACAEAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Blocks\HeaderBlock.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TableBlockHead" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SharpFileDB.Blocks.IndexBlock">
+    <Position X="6.25" Y="3.25" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAIAAMIAAAAEAAQQ=</HashCode>
+      <FileName>Blocks\IndexBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SharpFileDB.Blocks.SkipListNodeBlock">
+    <Position X="12" Y="3.25" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABACAAMEABAAAAAAgAgAAAAAgABBAAAAAQAgCE=</HashCode>
+      <FileName>Blocks\SkipListNodeBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SharpFileDB.Blocks.TableBlock">
+    <Position X="0.5" Y="6" Width="5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAgAAAAAIACUIAAAAEAAwA=</HashCode>
+      <FileName>Blocks\TableBlock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="SharpFileDB.Blocks.IDoubleLinkedNode">
+    <Position X="11.25" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAEIAAAAEAAAA=</HashCode>
+      <FileName>Blocks\IDoubleLinkedNode.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SharpFileDB.Blocks.IFourSideLinked">
+    <Position X="15" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAEAABAAAAAAgAAAAAAAgAABAAAAAQAACA=</HashCode>
+      <FileName>Blocks\IFourSideLinkedNode.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>
