@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 用于把skip list node存储到数据库文件的块。
     /// </summary>
     [Serializable]
-    class SkipListNodeBlock : Block, IFourSideLinked
+    class SkipListNodeBlock : Block, IFourSideLinked, IUpdatable
     {
         /// <summary>
         /// 此结点的Key所在位置。
@@ -91,6 +91,12 @@ namespace SharpFileDB.Blocks
         /// 数据库中不保存此值。
         /// </summary>
         public IFourSideLinked DownObj { get; set; }
+
+        #endregion
+
+        #region IUpdatable 成员
+
+        public bool IsDirty { get; set; }
 
         #endregion
     }

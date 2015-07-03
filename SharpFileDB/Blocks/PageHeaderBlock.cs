@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 页的头部。此块应在每个页的最开始处。
     /// </summary>
     [Serializable]
-    class PageHeaderBlock : Block
+    class PageHeaderBlock : Block, IUpdatable
     {
 
         /// <summary>
@@ -39,5 +39,11 @@ namespace SharpFileDB.Blocks
             this.NextPagePos = info.GetInt64(strNextPagePos);
         }
 
+
+        #region IUpdatable 成员
+
+        public bool IsDirty { get; set; }
+
+        #endregion
     }
 }

@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 数据库文件的头部。应该放在数据库文件的最开始。
     /// </summary>
     [Serializable]
-    internal class DBHeaderBlock : Block
+    internal class DBHeaderBlock : Block, IUpdatable
     {
 
         /// <summary>
@@ -41,6 +41,7 @@ namespace SharpFileDB.Blocks
 
         /// <summary>
         /// <see cref="TableBlock"/>的头结点。
+        /// <para>头结点的<see cref="TableBlock.TableType"/>属性始终为空，所以<see cref="DBHeaderBlock"/>的序列化长度是不变的。</para>
         /// </summary>
         public TableBlock TableBlockHead { get; set; }
 
@@ -82,5 +83,11 @@ namespace SharpFileDB.Blocks
             this.TableBlockHead = (TableBlock)info.GetValue(strTableBlockHead, typeof(TableBlock));
         }
 
+
+        #region IUpdatable 成员
+
+        public bool IsDirty { get; set; }
+
+        #endregion
     }
 }

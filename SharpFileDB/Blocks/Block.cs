@@ -13,6 +13,7 @@ namespace SharpFileDB.Blocks
     [Serializable]
     internal abstract class Block : ISerializable
     {
+
         /// <summary>
         /// 此对象自身在数据库文件中的位置。
         /// <para>请注意在读写时设定此值。</para>
