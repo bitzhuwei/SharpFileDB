@@ -57,8 +57,9 @@ namespace SharpFileDB
                 currentTableBlock.NextObj = tableBlock;
 
                 Dictionary<string, IndexBlock> indexDict = GetIndexDict(fileStream, tableBlock);
+                this.tableIndexBlockDict.Add(tableBlock.TableType, indexDict);
 
-                this.tableIndexDict.Add(tableBlock.TableType, indexDict);
+                this.tableBlockDict.Add(tableBlock.TableType, tableBlock);
 
                 currentTableBlock = tableBlock;
             }
@@ -204,7 +205,7 @@ namespace SharpFileDB
 
         internal Transaction transaction = new Transaction();
 
-        //internal Dictionary<Type, TableBlock> tableBlockDict = new Dictionary<Type, TableBlock>();
-        internal Dictionary<Type, Dictionary<string, IndexBlock>> tableIndexDict = new Dictionary<Type, Dictionary<string, IndexBlock>>();
+        internal Dictionary<Type, TableBlock> tableBlockDict = new Dictionary<Type, TableBlock>();
+        internal Dictionary<Type, Dictionary<string, IndexBlock>> tableIndexBlockDict = new Dictionary<Type, Dictionary<string, IndexBlock>>();
     }
 }
