@@ -35,14 +35,7 @@ namespace SharpFileDB
         /// <param name="fullname">数据库文件据对路径。</param>
         private void InitializeDB(string fullname)
         {
-            using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096))
-            {
-                Blocks.HeaderBlock headerBlock = new Blocks.HeaderBlock();
-                byte[] bytes = headerBlock.ToBytes();
-                fs.Write(bytes, 0, bytes.Length);
-                byte[] leftSpace = new byte[4096 - bytes.Length];
-                fs.Write(leftSpace, 0, leftSpace.Length);
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -51,7 +44,14 @@ namespace SharpFileDB
         /// <param name="fullname">数据库文件据对路径。</param>
         private void CreateDB(string fullname)
         {
-            throw new NotImplementedException();
+            using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096))
+            {
+                DBHeaderBlock headerBlock = new DBHeaderBlock();
+                byte[] bytes = headerBlock.ToBytes();
+                fs.Write(bytes, 0, bytes.Length);
+                byte[] leftSpace = new byte[4096 - bytes.Length];
+                fs.Write(leftSpace, 0, leftSpace.Length);
+            }
         }
 
         /// <summary>
@@ -96,5 +96,12 @@ namespace SharpFileDB
         /// 数据库文件据对路径。 
         /// </summary>
         public string Fullname { get; set; }
+
+        /// <summary>
+        /// 用于读写数据库文件的文件流。
+        /// </summary>
+        internal FileStream FileStream { get; set; }
+
+        internal DBHeaderBlock HeaderBlock { get; set; }
     }
 }

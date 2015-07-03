@@ -42,7 +42,6 @@ namespace SharpFileDB.Blocks
         }
 
         protected TableBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
-            : base(info, context)
         {
             string typeName = info.GetString(strTableType);
             this.TableType = Type.GetType(typeName);

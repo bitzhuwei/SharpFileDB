@@ -31,7 +31,7 @@ namespace SharpFileDB.Blocks
         #endregion
 
         /// <summary>
-        /// 继承<see cref="Block"/>的类型必须继承此方法，即用":base(info, context)"
+        /// BinaryFormatter会通过调用此方法来反序列化此块。
         /// </summary>
         /// <param name="info"></param>
         /// <param name="context"></param>
