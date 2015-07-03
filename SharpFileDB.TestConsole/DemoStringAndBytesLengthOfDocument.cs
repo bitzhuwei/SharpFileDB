@@ -14,7 +14,7 @@ namespace SharpFileDB.TestConsole
         public static void TypcialScene()
         {
             Pet pet1 = new Pet() { Price = 1 };
-            pet1.Id = DocumentId.NewId();
+            pet1.Id = ObjectId.NewId();
             IFormatter formatter = new BinaryFormatter();
             using (MemoryStream ms = new MemoryStream())
             {
@@ -31,7 +31,7 @@ namespace SharpFileDB.TestConsole
     }
 
     [Serializable]
-    class Pet : Document
+    class Pet : Table
     {
         public Pet() { }
 

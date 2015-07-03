@@ -11,9 +11,11 @@ namespace SharpFileDB.TestConsole
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            DemoStringAndBytesLengthOfDocument.TypcialScene();
+
+            //DemoStringAndBytesLengthOfDocument.TypcialScene();
             //DemoTypeSerialization.TypicalScene();
             //DemoDocumentMeta.TypicalScene();
             //DemoSingleFileDB.TypicalScene2();

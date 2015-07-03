@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpFileDB.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,11 +8,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpFileDB
+namespace SharpFileDB.Utilities
 {
     public static class TableHelper
     {
-        static IFormatter formatter = new BinaryFormatter();
 
         /// <summary>
         /// 把Table的一条记录转换为字节数组。
@@ -23,7 +23,7 @@ namespace SharpFileDB
             byte[] result;
             using (MemoryStream ms = new MemoryStream())
             {
-                formatter.Serialize(ms, table);
+                Consts.formatter.Serialize(ms, table);
                 result = new byte[ms.Length];
                 ms.Seek(0, SeekOrigin.Begin);
                 ms.Read(result, 0, result.Length);
@@ -43,7 +43,7 @@ namespace SharpFileDB
             T result;
             using (MemoryStream ms = new MemoryStream(bytes))
             {
-                object obj = formatter.Deserialize(ms);
+                object obj = Consts.formatter.Deserialize(ms);
                 result = obj as T;
             }
 

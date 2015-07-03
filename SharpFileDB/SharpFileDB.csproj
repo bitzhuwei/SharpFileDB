@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blocks\Block.cs" />
-    <Compile Include="Blocks\BlockHelper.cs" />
     <Compile Include="Blocks\DataBlock.cs" />
     <Compile Include="Blocks\DBHeaderBlock.cs">
       <SubType>Code</SubType>
@@ -55,6 +54,7 @@
     <Compile Include="Blocks\PageHeaderBlock.cs" />
     <Compile Include="Blocks\SkipListNodeBlock.cs" />
     <Compile Include="Blocks\TableBlock.cs" />
+    <Compile Include="Services\AllocPageTypes.cs" />
     <Compile Include="Services\DiskService.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="ObjectId.cs">
@@ -62,7 +62,14 @@
     </Compile>
     <Compile Include="FileDBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TableHelper.cs" />
+    <Compile Include="Utilities\BlockHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\TableHelper.cs" />
+    <Compile Include="Transaction.cs" />
+    <Compile Include="Utilities\Consts.cs" />
+    <Compile Include="Utilities\FileStreamHelper.cs" />
+    <Compile Include="Utilities\Int64Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Blocks\Blocks.cd" />

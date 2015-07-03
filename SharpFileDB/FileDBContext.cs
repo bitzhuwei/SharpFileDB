@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharpFileDB.Blocks;
+using SharpFileDB.Utilities;
 
 namespace SharpFileDB
 {
@@ -13,6 +14,7 @@ namespace SharpFileDB
     /// </summary>
     public class FileDBContext
     {
+
         /// <summary>
         /// 单文件数据库上下文，代表一个单文件数据库。SharpFileDB的核心类型。
         /// </summary>
@@ -35,6 +37,11 @@ namespace SharpFileDB
         /// <param name="fullname">数据库文件据对路径。</param>
         private void InitializeDB(string fullname)
         {
+            // 尝试恢复数据库文件。
+
+            // 准备各项工作。
+            this.Transaction = new Transaction();
+
             throw new NotImplementedException();
         }
 
@@ -103,5 +110,7 @@ namespace SharpFileDB
         internal FileStream FileStream { get; set; }
 
         internal DBHeaderBlock HeaderBlock { get; set; }
+
+        internal Transaction Transaction { get; set; }
     }
 }
