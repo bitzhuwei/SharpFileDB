@@ -28,10 +28,10 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public IndexBlock() { }
 
-        const string strSkipListNodePos = "s";
-        const string strBindMember = "m";
+        const string strSkipListNodePos = "S";
+        const string strBindMember = "M";
 
-        const string strNext = "n";
+        const string strNext = "N";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {

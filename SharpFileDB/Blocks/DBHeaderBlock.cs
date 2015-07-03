@@ -40,6 +40,16 @@ namespace SharpFileDB.Blocks
         public long FirstEmptyPagePos { get; set; }
 
         /// <summary>
+        /// 索引使用的skip list的max level参数。
+        /// </summary>
+        public int MaxLevelOfSkipList { get; set; }
+        
+        /// <summary>
+        /// 索引使用的skip list的probability参数。
+        /// </summary>
+        public double ProbabilityOfSkipList { get; set; }
+
+        /// <summary>
         /// <see cref="TableBlock"/>的头结点。
         /// <para>头结点的<see cref="TableBlock.TableType"/>属性始终为空，所以<see cref="DBHeaderBlock"/>的序列化长度是不变的。</para>
         /// </summary>
@@ -53,13 +63,15 @@ namespace SharpFileDB.Blocks
             this.TableBlockHead = new TableBlock();
         }
 
-        const string strFirstTablePagePos = "t";
-        const string strFirstIndexPagePos = "i";
-        const string strFirstSkipListNodePagePos = "s";
-        const string strFirstDataPagePos = "d";
-        const string strFirstEmptyPagePos = "e";
+        const string strFirstTablePagePos = "T";
+        const string strFirstIndexPagePos = "I";
+        const string strFirstSkipListNodePagePos = "S";
+        const string strFirstDataPagePos = "D";
+        const string strFirstEmptyPagePos = "E";
+        const string strMaxLevel = "M";
+        const string strProbability = "P";
 
-        const string strTableBlockHead = "h";
+        const string strTableBlockHead = "H";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
@@ -68,6 +80,8 @@ namespace SharpFileDB.Blocks
             info.AddValue(strFirstSkipListNodePagePos, this.FirstSkipListNodePagePos);
             info.AddValue(strFirstDataPagePos, this.FirstDataPagePos);
             info.AddValue(strFirstEmptyPagePos, this.FirstEmptyPagePos);
+            info.AddValue(strMaxLevel, this.MaxLevelOfSkipList);
+            info.AddValue(strProbability, this.ProbabilityOfSkipList);
 
             info.AddValue(strTableBlockHead, this.TableBlockHead);
         }
@@ -79,6 +93,8 @@ namespace SharpFileDB.Blocks
             this.FirstSkipListNodePagePos = info.GetInt64(strFirstSkipListNodePagePos);
             this.FirstDataPagePos = info.GetInt64(strFirstDataPagePos);
             this.FirstEmptyPagePos = info.GetInt64(strFirstEmptyPagePos);
+            this.MaxLevelOfSkipList = info.GetInt32(strMaxLevel);
+            this.ProbabilityOfSkipList = info.GetDouble(strProbability);
 
             this.TableBlockHead = (TableBlock)info.GetValue(strTableBlockHead, typeof(TableBlock));
         }
@@ -92,13 +108,15 @@ namespace SharpFileDB.Blocks
 
         public override string ToString()
         {
-            return string.Format("{0}, T: {1}, I: {2}, S: {3}, D: {4}, E: {5}",
+            return string.Format("{0}, T: {1}, I: {2}, S: {3}, D: {4}, E: {5}, M: {6}, P: {7}",
                 base.ToString(),
                 this.FirstTablePagePos,
                 this.FirstIndexPagePos,
                 this.FirstSkipListNodePagePos,
                 this.FirstDataPagePos,
                 this.FirstEmptyPagePos,
+                this.MaxLevelOfSkipList,
+                this.ProbabilityOfSkipList
                 );
         }
     }

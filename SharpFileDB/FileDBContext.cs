@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpFileDB.Blocks;
 using SharpFileDB.Utilities;
+using System.Reflection;
 
 namespace SharpFileDB
 {
@@ -109,17 +110,37 @@ namespace SharpFileDB
         /// <summary>
         /// 向数据库新增一条记录。
         /// </summary>
-        /// <param name="document"></param>
-        public void Insert(Table document)
+        /// <param name="item"></param>
+        public void Insert(Table item)
         {
+            //TODO: doing this
+            Type type = item.GetType();
+            if(!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
+            {
+                MemberInfo[] members = type.GetMembers();
+                foreach (var member in members)
+                {
+                    TableIndexAttribute attr = member.GetCustomAttribute<TableIndexAttribute>();
+                    if(attr!=null)
+                    {
+                        IndexBlock indexBlock = new IndexBlock();
+                        indexBlock.BindMember = member.Name;
+
+                    }
+                }
+                TableBlock tableBlock = new TableBlock();
+                tableBlock.TableType = type;
+            }
+
+            // 添加document。
             throw new NotImplementedException();
         }
 
         /// <summary>
         /// 更新数据库内的一条记录。
         /// </summary>
-        /// <param name="document"></param>
-        public void Update(Table document)
+        /// <param name="item"></param>
+        public void Update(Table item)
         {
             throw new NotImplementedException();
         }
@@ -127,8 +148,8 @@ namespace SharpFileDB
         /// <summary>
         /// 删除数据库内的一条记录。
         /// </summary>
-        /// <param name="document"></param>
-        public void Delete(Table document)
+        /// <param name="item"></param>
+        public void Delete(Table item)
         {
             throw new NotImplementedException();
         }

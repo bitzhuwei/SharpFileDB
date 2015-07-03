@@ -13,7 +13,7 @@ namespace SharpFileDB.Blocks
     class DataBlock : Block
     {
         /// <summary>
-        /// 一个或多个数据块代表的对象序列化后所占用的字节总数。
+        /// 一个或多个数据块代表的对象序列化后所占用的字节总数。用此值便于<code>byte[] bytes = new byte[DataBlock.ObjectLength];</code>。
         /// </summary>
         public long ObjectLength { get; set; }
 
@@ -33,10 +33,10 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public DataBlock() { }
 
-        const string strObjectLength = "l";
-        const string strData = "d";
+        const string strObjectLength = "L";
+        const string strData = "D";
 
-        const string strNextDataBlockPos = "n";
+        const string strNextDataBlockPos = "N";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {

@@ -34,9 +34,9 @@ namespace SharpFileDB.Blocks
 
         public PageHeaderBlock() { }
 
-        const string strAvailableBytes = "a";
-        const string strOccupiedBytes = "o";
-        const string strNextPagePos = "n";
+        const string strAvailableBytes = "A";
+        const string strOccupiedBytes = "O";
+        const string strNextPagePos = "N";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {

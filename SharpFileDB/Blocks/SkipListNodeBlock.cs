@@ -27,10 +27,10 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public SkipListNodeBlock() { }
 
-        const string strKeyPos = "k";
-        const string strValuePos = "v";
-        const string strRight = "r";
-        const string strDown = "d";
+        const string strKeyPos = "K";
+        const string strValuePos = "V";
+        const string strRight = "R";
+        const string strDown = "D";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {

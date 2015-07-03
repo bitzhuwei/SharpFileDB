@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="FileDBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TableIndexAttribute.cs" />
     <Compile Include="Utilities\BlockHelper.cs">
       <SubType>Code</SubType>
     </Compile>
