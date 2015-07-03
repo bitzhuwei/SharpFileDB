@@ -14,7 +14,7 @@ namespace SharpFileDB.Utilities
     {
 
         /// <summary>
-        /// 把Table的一条记录转换为字节数组。
+        /// 把Table的一条记录转换为字节数组。这个字节数组应该保存到Data页。
         /// </summary>
         /// <param name="table"></param>
         /// <returns></returns>
@@ -32,22 +32,5 @@ namespace SharpFileDB.Utilities
             return result;
         }
 
-        /// <summary>
-        /// 把字节数组转换为Table的一条记录。
-        /// </summary>
-        /// <typeparam name="T">继承自<see cref="Table"/>的类型。</typeparam>
-        /// <param name="bytes"></param>
-        /// <returns></returns>
-        public static T ToTableItem<T>(this byte[] bytes) where T : Table, new()
-        {
-            T result;
-            using (MemoryStream ms = new MemoryStream(bytes))
-            {
-                object obj = Consts.formatter.Deserialize(ms);
-                result = obj as T;
-            }
-
-            return result;
-        }
     }
 }

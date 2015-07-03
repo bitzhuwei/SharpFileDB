@@ -54,9 +54,11 @@ namespace SharpFileDB
             using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096))
             {
                 DBHeaderBlock headerBlock = new DBHeaderBlock();
-                byte[] bytes = headerBlock.ToBytes();
-                fs.Write(bytes, 0, bytes.Length);
-                byte[] leftSpace = new byte[4096 - bytes.Length];
+                Consts.formatter.Serialize(fs, headerBlock);
+                //byte[] bytes = headerBlock.ToBytes();
+                //fs.Write(bytes, 0, bytes.Length);
+                //byte[] leftSpace = new byte[4096 - bytes.Length];
+                byte[] leftSpace = new byte[4096 - fs.Length];
                 fs.Write(leftSpace, 0, leftSpace.Length);
             }
         }

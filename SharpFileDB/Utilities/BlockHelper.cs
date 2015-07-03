@@ -32,23 +32,5 @@ namespace SharpFileDB.Utilities
             return result;
         }
 
-        ///// <summary>
-        ///// 把字节数组转换为一个块。
-        ///// </summary>
-        ///// <typeparam name="T">继承自<see cref="Block"/>的类型。</typeparam>
-        ///// <param name="bytes"></param>
-        ///// <returns></returns>
-        //public static T ToBlock<T>(this byte[] bytes) where T : Block
-        //{
-        //    T result;
-        //    using (MemoryStream ms = new MemoryStream(bytes))
-        //    {
-        //        object obj = formatter.Deserialize(ms);
-        //        result = obj as T;
-        //    }
-
-        //    return result;
-        //}
-
     }
 }

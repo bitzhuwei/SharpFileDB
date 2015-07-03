@@ -65,6 +65,7 @@
     <Compile Include="Utilities\BlockHelper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\BytesHelper.cs" />
     <Compile Include="Utilities\TableHelper.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Utilities\Consts.cs" />
