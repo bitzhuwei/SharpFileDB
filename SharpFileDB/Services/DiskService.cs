@@ -28,8 +28,8 @@ namespace SharpFileDB.Services
             // 由于一页能用的空间很有限，所以可能需要从多个页上获取空间。
             IList<AllocatedSpace> result = new List<AllocatedSpace>();
 
-            FileStream fs = db.FileStream;
-            Blocks.DBHeaderBlock dbHeader = db.HeaderBlock;
+            FileStream fs = db.fileStream;
+            Blocks.DBHeaderBlock dbHeader = db.headerBlock;
 
             long allocated = 0;
             while (allocated < length)
@@ -58,8 +58,8 @@ namespace SharpFileDB.Services
         {
             PageHeaderBlock page;
 
-            FileStream fs = db.FileStream;
-            Blocks.DBHeaderBlock dbHeader = db.HeaderBlock;
+            FileStream fs = db.fileStream;
+            Blocks.DBHeaderBlock dbHeader = db.headerBlock;
             // 找到第一个给定类型的页的位置。
             long pagePos = dbHeader.GetPosOfFirstPage(type);
 
@@ -98,8 +98,8 @@ namespace SharpFileDB.Services
         {
             PageHeaderBlock block;
 
-            FileStream fs = db.FileStream;
-            DBHeaderBlock dbHeader = db.HeaderBlock;
+            FileStream fs = db.fileStream;
+            DBHeaderBlock dbHeader = db.headerBlock;
             long emptyPagePos = dbHeader.FirstEmptyPagePos;
             if (emptyPagePos != 0)// 存在空白页，则使用此空白页。
             {

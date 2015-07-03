@@ -12,7 +12,7 @@ namespace SharpFileDB
     /// <summary>
     /// 单文件数据库上下文，代表一个单文件数据库。SharpFileDB的核心类型。
     /// </summary>
-    public class FileDBContext
+    public partial class FileDBContext : IDisposable
     {
 
         /// <summary>
@@ -40,9 +40,26 @@ namespace SharpFileDB
             // 尝试恢复数据库文件。
 
             // 准备各项工作。
-            this.Transaction = new Transaction();
+            // 准备数据库文件流。
+            var fileStream = new FileStream(fullname, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
+            this.fileStream = fileStream;
+            // 准备数据库头部块。
+            DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(0);
+            this.headerBlock = headerBlock;
+            // 准备数据库表块，保存到字典。
+            TableBlock currentTableBlock = headerBlock.TableBlockHead;
+            while (currentTableBlock.NextPos != 0)
+            {
+                TableBlock block = fileStream.ReadBlock<TableBlock>(currentTableBlock.NextPos);
+                block.PreviousObj = currentTableBlock;
+                block.PreviousPos = currentTableBlock.ThisPos;
 
-            throw new NotImplementedException();
+                currentTableBlock.NextObj = block;
+
+                this.tableBlockDict.Add(block.TableType, block);
+
+                currentTableBlock = block;
+            }
         }
 
         /// <summary>
@@ -54,7 +71,7 @@ namespace SharpFileDB
             using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096))
             {
                 DBHeaderBlock headerBlock = new DBHeaderBlock();
-                Consts.formatter.Serialize(fs, headerBlock);
+                fs.WriteBlock(headerBlock);
                 //byte[] bytes = headerBlock.ToBytes();
                 //fs.Write(bytes, 0, bytes.Length);
                 //byte[] leftSpace = new byte[4096 - bytes.Length];
@@ -106,13 +123,62 @@ namespace SharpFileDB
         /// </summary>
         public string Fullname { get; set; }
 
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Internal variable which checks if Dispose has already been called
+        /// </summary>
+        private Boolean disposed;
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        private void Dispose(Boolean disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                //TODO: Managed cleanup code here, while managed refs still valid
+            }
+            //TODO: Unmanaged cleanup code here
+            this.fileStream.Close();
+            this.fileStream.Dispose();
+
+            disposed = true;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            // Call the private Dispose(bool) helper and indicate 
+            // that we are explicitly disposing
+            this.Dispose(true);
+
+            // Tell the garbage collector that the object doesn't require any
+            // cleanup when collected since Dispose was called explicitly.
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+				
+
         /// <summary>
         /// 用于读写数据库文件的文件流。
         /// </summary>
-        internal FileStream FileStream { get; set; }
+        internal FileStream fileStream;
 
-        internal DBHeaderBlock HeaderBlock { get; set; }
+        internal DBHeaderBlock headerBlock;
 
-        internal Transaction Transaction { get; set; }
+        internal Transaction transaction = new Transaction();
+
+        internal Dictionary<Type, TableBlock> tableBlockDict = new Dictionary<Type, TableBlock>();
     }
 }
