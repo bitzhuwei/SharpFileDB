@@ -16,8 +16,6 @@ namespace SharpFileDB.Services
     /// </summary>
     public static class DiskService
     {
-        static IFormatter formatter = new BinaryFormatter();
-
 
         /// <summary>
         /// 从数据库文件中申请一定长度的空间。
@@ -43,7 +41,6 @@ namespace SharpFileDB.Services
                 result.Add(item);
                 allocated += partLength;
             }
-
 
             dbHeader.IsDirty = true;
 
