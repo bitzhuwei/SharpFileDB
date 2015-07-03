@@ -1,20 +1,14 @@
 ﻿using SharpFileDB.Blocks;
-using SharpFileDB.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpFileDB.Services
+namespace SharpFileDB.Utilities
 {
-    /// <summary>
-    /// 为数据库文件提供关于页的操作。
-    /// </summary>
-    public static class DiskService
+    public static class FileDBContextHelper
     {
 
         /// <summary>
@@ -22,6 +16,7 @@ namespace SharpFileDB.Services
         /// </summary>
         /// <param name="db"></param>
         /// <param name="length"></param>
+        /// <param name="type"></param>
         /// <returns></returns>
         public static IList<AllocatedSpace> Alloc(this FileDBContext db, long length, AllocPageTypes type)
         {
@@ -122,6 +117,7 @@ namespace SharpFileDB.Services
             return block;
         }
     }
+
 
     /// <summary>
     /// 把从给定位置开始的给定长度作为空闲空间标记出来。 

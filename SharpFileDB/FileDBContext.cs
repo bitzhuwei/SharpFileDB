@@ -113,26 +113,46 @@ namespace SharpFileDB
         /// <param name="item"></param>
         public void Insert(Table item)
         {
-            //TODO: doing this
             Type type = item.GetType();
-            if(!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
+            if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
             {
+                IndexBlock indexBlockHead = new IndexBlock();
+
+                Dictionary<string, IndexBlock> indexBlockDict = new Dictionary<string, IndexBlock>();
                 MemberInfo[] members = type.GetMembers();
                 foreach (var member in members)
                 {
                     TableIndexAttribute attr = member.GetCustomAttribute<TableIndexAttribute>();
-                    if(attr!=null)
+                    if (attr != null)
                     {
+                        int maxLevel = this.headerBlock.MaxLevelOfSkipList;
+                        SkipListNodeBlock current = new SkipListNodeBlock();
+                        for (int i = 1; i < maxLevel; i++)
+                        {
+                            SkipListNodeBlock block = new SkipListNodeBlock();
+                            block.DownObj = current;
+                            current = block;
+                        }
                         IndexBlock indexBlock = new IndexBlock();
                         indexBlock.BindMember = member.Name;
+                        indexBlock.SkipListNode = current;
+                        indexBlockHead.NextObj = indexBlock;
+                        indexBlock.PreviousObj = indexBlockHead;
 
+                        indexBlockDict.Add(member.Name, indexBlock);
                     }
                 }
                 TableBlock tableBlock = new TableBlock();
                 tableBlock.TableType = type;
+                tableBlock.IndexBlockHead = indexBlockHead;
+
+                this.transaction.Add(tableBlock);
+                this.tableBlockDict.Add(type, tableBlock);
+                this.tableIndexBlockDict.Add(type, indexBlockDict);
             }
 
-            // 添加document。
+            // TODO:添加item。
+
             throw new NotImplementedException();
         }
 

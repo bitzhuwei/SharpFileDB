@@ -23,6 +23,11 @@ namespace SharpFileDB.Blocks
         public long IndexBlockHeadPos { get; set; }
 
         /// <summary>
+        /// 此表的Index的头结点。
+        /// </summary>
+        public IndexBlock IndexBlockHead { get; set; }
+
+        /// <summary>
         /// 存储数据库表信息的块。
         /// </summary>
         public TableBlock() { }

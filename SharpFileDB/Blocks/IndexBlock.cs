@@ -19,6 +19,11 @@ namespace SharpFileDB.Blocks
         public long SkipListNodePos { get; set; }
 
         /// <summary>
+        /// 此索引的第一个skip list结点。
+        /// </summary>
+        public SkipListNodeBlock SkipListNode { get; set; }
+
+        /// <summary>
         /// 此Index代表的表的成员（字段/属性）名。
         /// </summary>
         public string BindMember { get; set; }

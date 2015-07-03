@@ -65,7 +65,7 @@ namespace SharpFileDB
             }
         }
 
-        protected static byte[] DecodeHex(string value)
+        static byte[] DecodeHex(string value)
         {
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentNullException("value");

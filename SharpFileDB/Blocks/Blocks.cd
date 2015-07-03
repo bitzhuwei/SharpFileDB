@@ -40,7 +40,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAgAAAEAIAAMIgAAAEAAQQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAgAAAEEIAAMIgAAAEAAQQ=</HashCode>
       <FileName>Blocks\IndexBlock.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -80,7 +80,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAEEAAAAAAAgAAAAAIACUIAAAAEAAwA=</HashCode>
+      <HashCode>AAAAAAIAAAAAAAEEAAAAAAAgAAAAAIACUIAAAAEAAwA=</HashCode>
       <FileName>Blocks\TableBlock.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

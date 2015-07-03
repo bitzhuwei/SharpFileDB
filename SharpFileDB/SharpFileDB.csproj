@@ -54,8 +54,6 @@
     <Compile Include="Blocks\PageHeaderBlock.cs" />
     <Compile Include="Blocks\SkipListNodeBlock.cs" />
     <Compile Include="Blocks\TableBlock.cs" />
-    <Compile Include="Services\AllocPageTypes.cs" />
-    <Compile Include="Services\DiskService.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="ObjectId.cs">
       <SubType>Code</SubType>
@@ -63,10 +61,15 @@
     <Compile Include="FileDBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableIndexAttribute.cs" />
+    <Compile Include="Utilities\AllocPageTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utilities\BlockHelper.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\BytesHelper.cs" />
+    <Compile Include="Utilities\DBHeaderBlockHelper.cs" />
+    <Compile Include="Utilities\FileDBContextHelper.cs" />
     <Compile Include="Utilities\TableHelper.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Utilities\Consts.cs" />
