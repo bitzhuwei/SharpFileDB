@@ -89,5 +89,17 @@ namespace SharpFileDB.Blocks
         public bool IsDirty { get; set; }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("{0}, T: {1}, I: {2}, S: {3}, D: {4}, E: {5}",
+                base.ToString(),
+                this.FirstTablePagePos,
+                this.FirstIndexPagePos,
+                this.FirstSkipListNodePagePos,
+                this.FirstDataPagePos,
+                this.FirstEmptyPagePos,
+                );
+        }
     }
 }

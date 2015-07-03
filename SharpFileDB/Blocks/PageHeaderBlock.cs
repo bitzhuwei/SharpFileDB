@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpFileDB.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -57,5 +58,16 @@ namespace SharpFileDB.Blocks
         public bool IsDirty { get; set; }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("{0}, using: {1}, free: {2}, next: {3}{4}",
+                base.ToString(),
+                this.OccupiedBytes,
+                this.AvailableBytes,
+                this.NextPagePos,
+                this.AvailableBytes == Consts.maxAvailableSpaceInPage ? " Empty Page" : ""
+                );
+        }
     }
 }

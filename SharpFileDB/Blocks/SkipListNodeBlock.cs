@@ -99,5 +99,12 @@ namespace SharpFileDB.Blocks
         public bool IsDirty { get; set; }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("{0}, key: {1}, value: {2}, down: {3}, right: {4}",
+                base.ToString(),
+                this.KeyPos, this.ValuePos, this.DownPos, this.RightPos);
+        }
     }
 }

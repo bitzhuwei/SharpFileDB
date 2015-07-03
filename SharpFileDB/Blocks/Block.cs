@@ -40,5 +40,10 @@ namespace SharpFileDB.Blocks
         {
         }
 
+        public override string ToString()
+        {
+            return string.Format("Pos: {0}", this.ThisPos);
+        }
+
     }
 }

@@ -54,5 +54,11 @@ namespace SharpFileDB.Blocks
             this.NextDataBlockPos = info.GetInt64(strNextDataBlockPos);
         }
 
+        public override string ToString()
+        {
+            return string.Format("{0}, object: {1} bytes, this: {2} bytes, next: {3}",
+                base.ToString(),
+                this.ObjectLength, this.Data == null ? 0 : this.Data.Length, this.NextDataBlockPos);
+        }
     }
 }

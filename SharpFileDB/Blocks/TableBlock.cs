@@ -81,5 +81,11 @@ namespace SharpFileDB.Blocks
 
         #endregion
 
+        public override string ToString()
+        {
+            return string.Format("{0}, type: {1}, index pos: {2}, next: {3}{4}",
+                base.ToString(),
+                this.TableType, this.IndexBlockHeadPos, this.NextPos);
+        }
     }
 }

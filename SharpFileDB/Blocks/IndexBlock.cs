@@ -14,9 +14,14 @@ namespace SharpFileDB.Blocks
     {
 
         /// <summary>
-        /// 此表的Index的第一个Skip List结点的位置。
+        /// 此Index的第一个Skip List结点的位置。
         /// </summary>
         public long SkipListNodePos { get; set; }
+
+        /// <summary>
+        /// 此Index代表的表的成员（字段/属性）名。
+        /// </summary>
+        public string BindMember { get; set; }
 
         /// <summary>
         /// 存储索引的块。
@@ -24,12 +29,14 @@ namespace SharpFileDB.Blocks
         public IndexBlock() { }
 
         const string strSkipListNodePos = "s";
+        const string strBindMember = "m";
 
         const string strNext = "n";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
             info.AddValue(strSkipListNodePos, this.SkipListNodePos);
+            info.AddValue(strBindMember, this.BindMember);
 
             info.AddValue(strNext, this.NextPos);
         }
@@ -37,6 +44,7 @@ namespace SharpFileDB.Blocks
         protected IndexBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
             this.SkipListNodePos = info.GetInt64(strSkipListNodePos);
+            this.BindMember = info.GetString(strBindMember);
 
             this.NextPos = info.GetInt64(strNext);
         }
@@ -65,5 +73,15 @@ namespace SharpFileDB.Blocks
         public IDoubleLinkedNode NextObj { get; set; }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("{0}, S: {1}, M: {2}, next: {3}, pre: {4}",
+                base.ToString(),
+                this.SkipListNodePos,
+                this.BindMember,
+                this.NextPos,
+                this.PreviousPos);
+        }
     }
 }

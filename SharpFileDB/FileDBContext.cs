@@ -37,7 +37,7 @@ namespace SharpFileDB
         /// <param name="fullname">数据库文件据对路径。</param>
         private void InitializeDB(string fullname)
         {
-            // 尝试恢复数据库文件。
+            // TODO:尝试恢复数据库文件。
 
             // 准备各项工作。
             // 准备数据库文件流。
@@ -50,16 +50,41 @@ namespace SharpFileDB
             TableBlock currentTableBlock = headerBlock.TableBlockHead;
             while (currentTableBlock.NextPos != 0)
             {
-                TableBlock block = fileStream.ReadBlock<TableBlock>(currentTableBlock.NextPos);
-                block.PreviousObj = currentTableBlock;
-                block.PreviousPos = currentTableBlock.ThisPos;
+                TableBlock tableBlock = fileStream.ReadBlock<TableBlock>(currentTableBlock.NextPos);
+                tableBlock.PreviousObj = currentTableBlock;
+                tableBlock.PreviousPos = currentTableBlock.ThisPos;
 
-                currentTableBlock.NextObj = block;
+                currentTableBlock.NextObj = tableBlock;
 
-                this.tableBlockDict.Add(block.TableType, block);
+                Dictionary<string, IndexBlock> indexDict = GetIndexDict(fileStream, tableBlock);
 
-                currentTableBlock = block;
+                this.tableIndexDict.Add(tableBlock.TableType, indexDict);
+
+                currentTableBlock = tableBlock;
             }
+        }
+
+        private Dictionary<string, IndexBlock> GetIndexDict(FileStream fileStream, TableBlock tableBlock)
+        {
+            Dictionary<string, IndexBlock> indexDict = new Dictionary<string, IndexBlock>();
+
+            long indexBlockHeadPos = tableBlock.IndexBlockHeadPos;
+            IndexBlock currentIndexBlock = fileStream.ReadBlock<IndexBlock>(indexBlockHeadPos);
+
+            while (currentIndexBlock.NextPos != 0)
+            {
+                IndexBlock indexBlock = fileStream.ReadBlock<IndexBlock>(currentIndexBlock.NextPos);
+                indexBlock.PreviousObj = currentIndexBlock;
+                indexBlock.PreviousPos = currentIndexBlock.ThisPos;
+
+                currentIndexBlock.NextObj = indexBlock;
+
+                indexDict.Add(indexBlock.BindMember, indexBlock);
+
+                currentIndexBlock = indexBlock;
+            }
+
+            return indexDict;
         }
 
         /// <summary>
@@ -179,6 +204,7 @@ namespace SharpFileDB
 
         internal Transaction transaction = new Transaction();
 
-        internal Dictionary<Type, TableBlock> tableBlockDict = new Dictionary<Type, TableBlock>();
+        //internal Dictionary<Type, TableBlock> tableBlockDict = new Dictionary<Type, TableBlock>();
+        internal Dictionary<Type, Dictionary<string, IndexBlock>> tableIndexDict = new Dictionary<Type, Dictionary<string, IndexBlock>>();
     }
 }
