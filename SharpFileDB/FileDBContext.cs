@@ -78,6 +78,8 @@ namespace SharpFileDB
                 IndexBlock indexBlock = fileStream.ReadBlock<IndexBlock>(currentIndexBlock.NextPos);
                 indexBlock.PreviousObj = currentIndexBlock;
                 indexBlock.PreviousPos = currentIndexBlock.ThisPos;
+                SkipListNodeBlock[] headNodes = GetHeadNodesOfSkipListNodeBlock(fileStream, indexBlock);
+                indexBlock.SkipListHeadNodes = headNodes;
 
                 currentIndexBlock.NextObj = indexBlock;
 
@@ -87,6 +89,23 @@ namespace SharpFileDB
             }
 
             return indexDict;
+        }
+
+        private SkipListNodeBlock[] GetHeadNodesOfSkipListNodeBlock(FileStream fileStream, IndexBlock indexBlock)
+        {
+            SkipListNodeBlock[] headNodes = new SkipListNodeBlock[this.headerBlock.MaxLevelOfSkipList];
+            long currentSkipListNodeBlockPos = indexBlock.SkipListHeadNodePos;
+            for (int i = headNodes.Length - 1; i >= 0; i--)
+            {
+                if (currentSkipListNodeBlockPos == 0)
+                { throw new Exception(string.Format("max level [{0}] != real max level [{1}]", headNodes.Length, headNodes.Length - 1 - i)); }
+                SkipListNodeBlock skipListNodeBlock = fileStream.ReadBlock<SkipListNodeBlock>(currentSkipListNodeBlockPos);
+                headNodes[i] = skipListNodeBlock;
+                if (i != headNodes.Length - 1)
+                { headNodes[i + 1].DownObj = headNodes[i]; }// 除非删除此索引，否则这里的赋值并不需要。不过这样赋值，DownObj和DownPos就一致了。
+                currentSkipListNodeBlockPos = skipListNodeBlock.DownPos;
+            }
+            return headNodes;
         }
 
         /// <summary>
@@ -131,11 +150,11 @@ namespace SharpFileDB
 
             // 添加item。
             {
-                DataBlock[] dataBlocks = CreateDataBlocks(item);
+                DataBlock[] dataBlocksForValue = CreateDataBlocks(item);
 
                 foreach (var indexBlock in this.tableIndexBlockDict[type])
                 {
-                    indexBlock.Value.Add(item, dataBlocks, this);
+                    indexBlock.Value.Add(item, dataBlocksForValue, this);
                 }
             }
 
@@ -176,6 +195,7 @@ namespace SharpFileDB
         private Dictionary<string, IndexBlock> CreateIndexBlocks(Type type, IndexBlock indexBlockHead)
         {
             Dictionary<string, IndexBlock> indexBlockDict = new Dictionary<string, IndexBlock>();
+
             PropertyInfo[] properties = type.GetProperties();// RULE: 规则：索引必须加在属性上，否则无效。
             foreach (var property in properties)
             {
@@ -216,6 +236,7 @@ namespace SharpFileDB
                     this.transaction.Add(indexBlock);// 加入事务，准备写入数据库。
                 }
             }
+
             return indexBlockDict;
         }
 

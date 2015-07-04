@@ -70,6 +70,7 @@
     <Compile Include="Utilities\BytesHelper.cs" />
     <Compile Include="Utilities\DBHeaderBlockHelper.cs" />
     <Compile Include="Utilities\FileDBContextHelper.cs" />
+    <Compile Include="Utilities\IComparableHelper.cs" />
     <Compile Include="Utilities\IndexBlockHelper.cs" />
     <Compile Include="Utilities\TableHelper.cs" />
     <Compile Include="Transaction.cs" />

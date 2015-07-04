@@ -20,9 +20,19 @@ namespace SharpFileDB.Blocks
         public long KeyPos { get; set; }
 
         /// <summary>
-        /// 此结点的Value所在位置。
+        /// 用于存储此结点的Key的块。
+        /// </summary>
+        public DataBlock Key { get;set; }
+
+        /// <summary>
+        /// 此结点的Value的第一个块所在位置。
         /// </summary>
         public long ValuePos { get; set; }
+
+        /// <summary>
+        /// 用于存储此结点的Value的块。
+        /// </summary>
+        public DataBlock[] Value { get; set; }
 
 
         /// <summary>
