@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SharpFileDB.Utilities;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +12,7 @@ namespace SharpFileDB.Blocks
     /// 用于把skip list node存储到数据库文件的块。
     /// </summary>
     [Serializable]
-    class SkipListNodeBlock : Block, IFourSideLinked, IUpdatable
+    public class SkipListNodeBlock : Block, IFourSideLinked, IUpdatable
     {
         /// <summary>
         /// 此结点的Key所在位置。
@@ -22,6 +24,7 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public long ValuePos { get; set; }
 
+
         /// <summary>
         /// 用于把skip list node存储到数据库文件的块。
         /// </summary>
@@ -29,16 +32,16 @@ namespace SharpFileDB.Blocks
 
         const string strKeyPos = "K";
         const string strValuePos = "V";
-        const string strRight = "R";
-        const string strDown = "D";
+        const string strRightPos = "R";
+        const string strDownPos = "D";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
             info.AddValue(strKeyPos, this.KeyPos);
             info.AddValue(strValuePos, this.ValuePos);
 
-            info.AddValue(strRight, this.RightPos);
-            info.AddValue(strDown, this.DownPos);
+            info.AddValue(strRightPos, this.RightPos);
+            info.AddValue(strDownPos, this.DownPos);
         }
 
         protected SkipListNodeBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
@@ -46,8 +49,8 @@ namespace SharpFileDB.Blocks
             this.KeyPos = info.GetInt64(strKeyPos);
             this.ValuePos = info.GetInt64(strValuePos);
 
-            this.RightPos = info.GetInt64(strRight);
-            this.DownPos = info.GetInt64(strDown);
+            this.RightPos = info.GetInt64(strRightPos);
+            this.DownPos = info.GetInt64(strDownPos);
         }
 
         #region IFourSideLinked 成员

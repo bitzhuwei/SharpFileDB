@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpFileDB.Blocks;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,17 +31,35 @@ namespace SharpFileDB.Utilities
         public static readonly Int16 maxAvailableSpaceInPage;
 
         /// <summary>
+        /// <see cref="DataBlock.Data"/>的最大长度。
+        /// </summary>
+        public static readonly Int16 maxDataBytes;
+
+        /// <summary>
         /// 系统启动时初始化一个页内可用的最大空间（字节数）。
         /// </summary>
         static Consts()
         {
-            Blocks.PageHeaderBlock block = new Blocks.PageHeaderBlock();
-            using (MemoryStream ms = new MemoryStream())
             {
-                formatter.Serialize(ms, block);
-                if (ms.Length > 4096 / 2)
-                { throw new Exception("Page header block takes too much space!"); }
-                maxAvailableSpaceInPage = (Int16)(4096 - ms.Length);
+                PageHeaderBlock block = new PageHeaderBlock();
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    formatter.Serialize(ms, block);
+                    if (ms.Length > Consts.pageSize / 2)
+                    { throw new Exception("Page header block takes too much space!"); }
+                    maxAvailableSpaceInPage = (Int16)(Consts.pageSize - ms.Length);
+                }
+            }
+            {
+                DataBlock block = new DataBlock();
+                block.Data = new byte[0];
+                Int16 minValue;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    formatter.Serialize(ms, block);
+                    minValue = (Int16)ms.Length;
+                }
+                maxDataBytes = (Int16)(Consts.pageSize - minValue);
             }
         }
 

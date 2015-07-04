@@ -16,13 +16,13 @@ namespace SharpFileDB.Blocks
 
         /// <summary>
         /// 此页剩余的可用字节数。剩余的可用字节都在页的末尾。
-        /// <para>剩余可用字节数+被使用的字节数+页中间那些七零八落的空白字节数=页长度（4KB）</para>
+        /// <para>剩余可用字节数+被使用的字节数+页中间那些七零八落的空白字节数+<see cref="PageHeaderBlock"/>自身所占字节数=页长度（4KB）</para>
         /// </summary>
         public Int16 AvailableBytes { get; set; }
 
         /// <summary>
         /// 此页内已被使用的字节数。
-        /// <para>剩余可用字节数+被使用的字节数+页中间那些七零八落的空白字节数=页长度（4KB）</para>
+        /// <para>剩余可用字节数+被使用的字节数+页中间那些七零八落的空白字节数+<see cref="PageHeaderBlock"/>自身所占字节数=页长度（4KB）</para>
         /// </summary>
         public Int16 OccupiedBytes { get; set; }
 

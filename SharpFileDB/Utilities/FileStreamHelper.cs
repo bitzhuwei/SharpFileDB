@@ -44,5 +44,21 @@ namespace SharpFileDB.Utilities
             return result;
         }
 
+        /// <summary>
+        /// 从文件流中给定的位置读取一个对象。
+        /// </summary>
+        /// <typeparam name="T">对象的类型。</typeparam>
+        /// <param name="fileStream"></param>
+        /// <param name="position">对象所在位置。</param>
+        /// <returns></returns>
+        public static T ReadObject<T>(this FileStream fileStream, long position)
+        {
+            if (position < 0)
+            { return default(T); }
+            fileStream.Seek(position, SeekOrigin.Begin);
+            object obj = Consts.formatter.Deserialize(fileStream);
+            T result = (T)obj;
+            return result;
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace SharpFileDB
         /// 用以区分每个Table的每条记录。
         /// This Id is used for diffrentiate instances of 'table's.
         /// </summary>
+        [TableIndex]// 标记为索引，这是每个表都有的主键。
         public ObjectId Id { get; set; }
 
         /// <summary>

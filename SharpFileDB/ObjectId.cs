@@ -16,7 +16,7 @@ namespace SharpFileDB
     /// 用于生成唯一的<see cref="Table"/>编号。
     /// </summary>
     [Serializable]
-    public sealed class ObjectId : ISerializable
+    public sealed class ObjectId : ISerializable, IComparable<ObjectId>, IComparable
     {
         private string _string;
 
@@ -156,6 +156,32 @@ namespace SharpFileDB
             string value = info.GetString(strValue);
             this.Value = DecodeHex(value);
         }
+
+
+        #region IComparable<ObjectId> 成员
+
+        public int CompareTo(ObjectId other)
+        {
+            if (other == null) { return 1; }
+
+            string thisStr = this.ToString();
+            string otherStr = other.ToString();
+            int result = thisStr.CompareTo(otherStr);
+
+            return result;
+        }
+
+        #endregion
+
+        #region IComparable 成员
+
+        public int CompareTo(object obj)
+        {
+            ObjectId other = obj as ObjectId;
+            return CompareTo(other);
+        }
+
+        #endregion
     }
 
     internal static class ObjectIdGenerator

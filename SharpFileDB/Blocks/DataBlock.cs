@@ -15,13 +15,18 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 一个或多个数据块代表的对象序列化后所占用的字节总数。用此值便于<code>byte[] bytes = new byte[DataBlock.ObjectLength];</code>。
         /// </summary>
-        public long ObjectLength { get; set; }
+        public Int32 ObjectLength { get; set; }// RULE: 一个Table序列化后的最大长度为Int32.MaxValue个字节。
 
         /// <summary>
         /// 下一个数据块的位置。
         /// <para>如果此值为0，则说明没有下一块。</para>
         /// </summary>
         public long NextDataBlockPos { get; set; }
+
+        /// <summary>
+        /// 链表的下一个结点。
+        /// </summary>
+        public DataBlock NextDataBlock { get; set; }
 
         /// <summary>
         /// 数据块。
@@ -48,7 +53,7 @@ namespace SharpFileDB.Blocks
 
         protected DataBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
-            this.ObjectLength = info.GetInt64(strObjectLength);
+            this.ObjectLength = info.GetInt32(strObjectLength);
             this.Data = (byte[])info.GetValue(strData, typeof(byte[]));
 
             this.NextDataBlockPos = info.GetInt64(strNextDataBlockPos);

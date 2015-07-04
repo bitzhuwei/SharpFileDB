@@ -15,15 +15,20 @@ namespace SharpFileDB.Blocks
     {
 
         /// <summary>
-        /// 此对象自身在数据库文件中的位置。
+        /// 此对象自身在数据库文件中的位置。为0时说明尚未指定位置。只有<see cref="DBHeaderBlock"/>的位置才应该为0。
         /// <para>请注意在读写时设定此值。</para>
         /// </summary>
         public long ThisPos { get; set; }
 
         /// <summary>
+        /// 此块是否已更新（需要写入数据库）。
+        /// </summary>
+        public bool IsDirty { get; set; }
+
+        /// <summary>
         /// 存储到数据库文件的一块内容。
         /// </summary>
-        public Block() { }
+        public Block() { this.IsDirty = true; }
 
         #region ISerializable 成员
 

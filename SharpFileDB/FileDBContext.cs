@@ -95,14 +95,14 @@ namespace SharpFileDB
         /// <param name="fullname">数据库文件据对路径。</param>
         private void CreateDB(string fullname)
         {
-            using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096))
+            using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write, FileShare.None, Consts.pageSize))
             {
                 DBHeaderBlock headerBlock = new DBHeaderBlock();
                 fs.WriteBlock(headerBlock);
                 //byte[] bytes = headerBlock.ToBytes();
                 //fs.Write(bytes, 0, bytes.Length);
-                //byte[] leftSpace = new byte[4096 - bytes.Length];
-                byte[] leftSpace = new byte[4096 - fs.Length];
+                //byte[] leftSpace = new byte[Consts.pageSize - bytes.Length];
+                byte[] leftSpace = new byte[Consts.pageSize - fs.Length];
                 fs.Write(leftSpace, 0, leftSpace.Length);
             }
         }
@@ -117,43 +117,106 @@ namespace SharpFileDB
             if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
             {
                 IndexBlock indexBlockHead = new IndexBlock();
+                Dictionary<string, IndexBlock> indexBlockDict = CreateIndexBlocks(type, indexBlockHead);
+                this.transaction.Add(indexBlockHead);// 加入事务，准备写入数据库。
 
-                Dictionary<string, IndexBlock> indexBlockDict = new Dictionary<string, IndexBlock>();
-                MemberInfo[] members = type.GetMembers();
-                foreach (var member in members)
-                {
-                    TableIndexAttribute attr = member.GetCustomAttribute<TableIndexAttribute>();
-                    if (attr != null)
-                    {
-                        int maxLevel = this.headerBlock.MaxLevelOfSkipList;
-                        SkipListNodeBlock current = new SkipListNodeBlock();
-                        for (int i = 1; i < maxLevel; i++)
-                        {
-                            SkipListNodeBlock block = new SkipListNodeBlock();
-                            block.DownObj = current;
-                            current = block;
-                        }
-                        IndexBlock indexBlock = new IndexBlock();
-                        indexBlock.BindMember = member.Name;
-                        indexBlock.SkipListNode = current;
-                        indexBlockHead.NextObj = indexBlock;
-                        indexBlock.PreviousObj = indexBlockHead;
-
-                        indexBlockDict.Add(member.Name, indexBlock);
-                    }
-                }
                 TableBlock tableBlock = new TableBlock();
                 tableBlock.TableType = type;
                 tableBlock.IndexBlockHead = indexBlockHead;
+                this.transaction.Add(tableBlock);// 加入事务，准备写入数据库。
 
-                this.transaction.Add(tableBlock);
                 this.tableBlockDict.Add(type, tableBlock);
                 this.tableIndexBlockDict.Add(type, indexBlockDict);
             }
 
-            // TODO:添加item。
+            // 添加item。
+            {
+                DataBlock[] dataBlocks = CreateDataBlocks(item);
 
-            throw new NotImplementedException();
+                foreach (var indexBlock in this.tableIndexBlockDict[type])
+                {
+                    indexBlock.Value.Add(item, dataBlocks, this);
+                }
+            }
+
+            this.transaction.Commit();
+        }
+
+        private DataBlock[] CreateDataBlocks(Table item)
+        {
+            byte[] bytes = item.ToBytes();
+
+            // 准备data blocks。
+            int dataBlockCount = (bytes.Length - 1) / Consts.maxDataBytes + 1;
+            DataBlock[] dataBlocks = new DataBlock[dataBlockCount];
+            // 准备好最后一个data block。
+            DataBlock lastDataBlock = new DataBlock() { ObjectLength = bytes.Length, };
+            int lastLength = bytes.Length % Consts.maxDataBytes;
+            if (lastLength == 0) { lastLength = Consts.maxDataBytes; }
+            lastDataBlock.Data = new byte[lastLength];
+            for (int i = dataBlockCount - lastLength, j = 0; i < dataBlockCount; i++, j++)
+            { lastDataBlock.Data[j] = bytes[i]; }
+            dataBlocks[dataBlockCount - 1] = lastDataBlock;
+            // 准备其它data blocks。
+            for (int i = dataBlockCount - 1 - 1; i >= 0; i--)
+            {
+                DataBlock block = new DataBlock() { ObjectLength = bytes.Length, };
+                block.NextDataBlock = dataBlocks[i + 1];
+                block.Data = new byte[Consts.maxDataBytes];
+                for (int p = i * Consts.maxDataBytes, q = 0; q < Consts.maxDataBytes; p++, q++)
+                { block.Data[q] = bytes[p]; }
+                dataBlocks[i] = block;
+            }
+            for (int i = dataBlockCount - 1; i >= 0; i--)
+            { this.transaction.Add(dataBlocks[i]); }// 加入事务，准备写入数据库。
+            // dataBlocks[0] -> [1] -> [2] -> ... -> [dataBlockCount - 1] -> null
+            return dataBlocks;
+        }
+
+        private Dictionary<string, IndexBlock> CreateIndexBlocks(Type type, IndexBlock indexBlockHead)
+        {
+            Dictionary<string, IndexBlock> indexBlockDict = new Dictionary<string, IndexBlock>();
+            PropertyInfo[] properties = type.GetProperties();// RULE: 规则：索引必须加在属性上，否则无效。
+            foreach (var property in properties)
+            {
+                TableIndexAttribute attr = property.GetCustomAttribute<TableIndexAttribute>();
+                if (attr != null)
+                {
+                    IndexBlock indexBlock = new IndexBlock();
+
+                    indexBlock.BindMember = property.Name;
+
+                    int maxLevel = this.headerBlock.MaxLevelOfSkipList;
+                    indexBlock.SkipListHeadNodes = new SkipListNodeBlock[maxLevel];
+                    /*SkipListNodes[maxLevel - 1]↓*/
+                    /*SkipListNodes[.]↓*/
+                    /*SkipListNodes[.]↓*/
+                    /*SkipListNodes[2]↓*/
+                    /*SkipListNodes[1]↓*/
+                    /*SkipListNodes[0] */
+                    SkipListNodeBlock current = new SkipListNodeBlock();
+                    indexBlock.SkipListHeadNodes[0] = current;
+                    for (int i = 1; i < maxLevel; i++)
+                    {
+                        SkipListNodeBlock block = new SkipListNodeBlock();
+                        block.DownObj = current;
+                        indexBlock.SkipListHeadNodes[i] = block;
+                        current = block;
+                    }
+
+                    indexBlock.PreviousObj = indexBlockHead;
+                    indexBlock.NextObj = indexBlockHead.NextObj;
+
+                    indexBlockHead.NextObj = indexBlock;
+
+                    indexBlockDict.Add(property.Name, indexBlock);// indexBlockDict不含indexBlock链表的头结点。
+
+                    for (int i = 0; i < maxLevel; i++)
+                    { this.transaction.Add(indexBlock.SkipListHeadNodes[i]); }// 加入事务，准备写入数据库。
+                    this.transaction.Add(indexBlock);// 加入事务，准备写入数据库。
+                }
+            }
+            return indexBlockDict;
         }
 
         /// <summary>
@@ -235,7 +298,7 @@ namespace SharpFileDB
         }
 
         #endregion
-				
+
 
         /// <summary>
         /// 用于读写数据库文件的文件流。

@@ -149,5 +149,10 @@ namespace SharpFileDB
         //}
 
         //#endregion
+
+        internal void Commit()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

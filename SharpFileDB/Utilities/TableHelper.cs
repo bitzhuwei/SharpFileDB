@@ -24,6 +24,8 @@ namespace SharpFileDB.Utilities
             using (MemoryStream ms = new MemoryStream())
             {
                 Consts.formatter.Serialize(ms, table);
+                if (ms.Length > (long)int.MaxValue)
+                { throw new Exception(string.Format("Toooo long is the [{0}]", table)); }
                 result = new byte[ms.Length];
                 ms.Seek(0, SeekOrigin.Begin);
                 ms.Read(result, 0, result.Length);

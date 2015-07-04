@@ -40,7 +40,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAgAAAEEIAAMIgAAAEAAQQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAgAAAEAIAAEIgBAAFAAQQ=</HashCode>
       <FileName>Blocks\IndexBlock.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -59,7 +59,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAABACAAMEABEAAAAAgAgAAAAAgABBAABAAQAgCE=</HashCode>
+      <HashCode>BAAAAAAACAAMEABEAAAAAgAgAAAAAgAABAABAAQIgCE=</HashCode>
       <FileName>Blocks\SkipListNodeBlock.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -74,8 +74,8 @@
         <Point X="9.25" Y="2.619" />
         <Point X="9.25" Y="3.422" />
         <Point X="5.741" Y="3.422" />
-        <Point X="5.741" Y="7.706" />
-        <Point X="3" Y="7.706" />
+        <Point X="5.741" Y="7.869" />
+        <Point X="3" Y="7.869" />
         <Point X="3" Y="8" />
       </Path>
     </InheritanceLine>
@@ -114,7 +114,7 @@
   <Class Name="SharpFileDB.Utilities.FileStreamHelper">
     <Position X="12" Y="0.5" Width="4.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAIA=</HashCode>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAIA=</HashCode>
       <FileName>Utilities\FileStreamHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
