@@ -288,6 +288,17 @@ namespace SharpFileDB
         }
 
         /// <summary>
+        /// 查找数据库内所有给定类型的记录。
+        /// </summary>
+        /// <typeparam name="T">要查找的类型。</typeparam>
+        /// <returns></returns>
+        public IList<T> FindAll<T>()
+        {
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// 数据库文件据对路径。 
         /// </summary>
         public string Fullname { get; set; }
@@ -352,5 +363,6 @@ namespace SharpFileDB
 
         internal Dictionary<Type, TableBlock> tableBlockDict = new Dictionary<Type, TableBlock>();
         internal Dictionary<Type, Dictionary<string, IndexBlock>> tableIndexBlockDict = new Dictionary<Type, Dictionary<string, IndexBlock>>();
+
     }
 }

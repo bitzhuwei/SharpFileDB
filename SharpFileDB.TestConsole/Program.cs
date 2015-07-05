@@ -41,6 +41,7 @@ namespace SharpFileDB.TestConsole
 
             //Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");
             //IList<Cat> cats = db.Retrieve(pre);
+            IList<Cat> cats = db.FindAll<Cat>();
 
             //cat.Name = "xiao bai";
             //db.Update(cat);
