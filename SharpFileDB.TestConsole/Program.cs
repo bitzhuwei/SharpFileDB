@@ -35,7 +35,7 @@ namespace SharpFileDB.TestConsole
             Cat cat = new Cat();
             cat.KittyName = "kitty白";
             cat.Price = 12;
-            cat.FavoriteFood = new Food() { FoodName="小黄鱼", };
+            cat.FavoriteFood = new Food() { FoodName = "小黄鱼", };
             cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
             db.Insert(cat);
 

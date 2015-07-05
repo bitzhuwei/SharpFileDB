@@ -9,7 +9,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SharpFileDB.Blocks.DataBlock">
-    <Position X="8.75" Y="9.5" Width="5" />
+    <Position X="8.75" Y="9.75" Width="5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -18,7 +18,7 @@
         <Point X="9.25" Y="3.45" />
         <Point X="9.25" Y="3.946" />
         <Point X="11.25" Y="3.946" />
-        <Point X="11.25" Y="9.5" />
+        <Point X="11.25" Y="9.75" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -97,7 +97,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAQASIEAAAAAQAEAYAAIAAgAyAAAAEAAAIBAABIAAA=</HashCode>
+      <HashCode>AAAQAQIAAAAAAQAEAYAAIAAgAyAAAAEAAAIBAABIAAA=</HashCode>
       <FileName>Blocks\DBHeaderBlock.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

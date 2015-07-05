@@ -50,7 +50,8 @@ namespace SharpFileDB
             DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(0);
             this.headerBlock = headerBlock;
             // 准备数据库表块，保存到字典。
-            TableBlock currentTableBlock = headerBlock.TableBlockHead;
+            TableBlock currentTableBlock = fileStream.ReadBlock<TableBlock>(fileStream.Position); //headerBlock.TableBlockHead;
+            this.tableBlockHead = currentTableBlock;
             while (currentTableBlock.NextPos != 0)
             {
                 TableBlock tableBlock = fileStream.ReadBlock<TableBlock>(currentTableBlock.NextPos);
@@ -122,6 +123,8 @@ namespace SharpFileDB
                 headerBlock.MaxLevelOfSkipList = 32;
                 headerBlock.ProbabilityOfSkipList = 0.5;
                 fs.WriteBlock(headerBlock);
+                TableBlock tableBlockHead = new TableBlock() { ThisPos = fs.Length, };
+                fs.WriteBlock(tableBlockHead);
                 //byte[] bytes = headerBlock.ToBytes();
                 //fs.Write(bytes, 0, bytes.Length);
                 //byte[] leftSpace = new byte[Consts.pageSize - bytes.Length];
@@ -142,12 +145,17 @@ namespace SharpFileDB
             Type type = item.GetType();
             if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
             {
-                TableBlock tableBlock = new TableBlock();
-                this.transaction.Add(tableBlock);// 加入事务，准备写入数据库。
-                tableBlock.TableType = type;
                 IndexBlock indexBlockHead = new IndexBlock();
+                TableBlock tableBlock = new TableBlock() { TableType = type, IndexBlockHead = indexBlockHead, };
+                tableBlock.NextObj = this.tableBlockHead.NextObj;// this.headerBlock.TableBlockHead.NextObj;
+                //this.headerBlock.TableBlockHead.NextObj = tableBlock;
+                this.tableBlockHead.NextObj = tableBlock;
+
+                //this.transaction.Add(this.headerBlock.TableBlockHead);// 加入事务，准备写入数据库。
+                this.transaction.Add(this.tableBlockHead);// 加入事务，准备写入数据库。
+                this.transaction.Add(tableBlock);// 加入事务，准备写入数据库。
                 this.transaction.Add(indexBlockHead);// 加入事务，准备写入数据库。
-                tableBlock.IndexBlockHead = indexBlockHead;
+                
                 Dictionary<string, IndexBlock> indexBlockDict = CreateIndexBlocks(type, indexBlockHead);
 
                 this.tableBlockDict.Add(type, tableBlock);
@@ -337,6 +345,8 @@ namespace SharpFileDB
         internal FileStream fileStream;
 
         internal DBHeaderBlock headerBlock;
+
+        internal TableBlock tableBlockHead;
 
         internal Transaction transaction;// = new Transaction(this);
 

@@ -90,12 +90,15 @@ namespace SharpFileDB
                     bool done = block.ArrangePos();
                     if (done)
                     {
-                        byte[] bytes = block.ToBytes();
-                        if (bytes.Length > Consts.maxAvailableSpaceInPage)
-                        { throw new Exception("Block size is toooo large!"); }
-                        AllocPageTypes pageType = block.BelongedPageType();
-                        IList<AllocatedSpace> spaces = this.fileDBContext.Alloc(bytes.LongLength, pageType);
-                        block.ThisPos = spaces[0].position;
+                        if (block.ThisPos == 0)
+                        {
+                            byte[] bytes = block.ToBytes();
+                            if (bytes.Length > Consts.maxAvailableSpaceInPage)
+                            { throw new Exception("Block size is toooo large!"); }
+                            AllocPageTypes pageType = block.BelongedPageType();
+                            IList<AllocatedSpace> spaces = this.fileDBContext.Alloc(bytes.LongLength, pageType);
+                            block.ThisPos = spaces[0].position;
+                        }
 
                         arrangedBlocks.Add(block);
                     }

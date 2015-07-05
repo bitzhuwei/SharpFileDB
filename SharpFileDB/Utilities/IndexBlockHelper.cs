@@ -41,7 +41,6 @@ namespace SharpFileDB.Utilities
             if (keyBytes.Length > Consts.maxDataBytes)
             { throw new Exception(string.Format("Toooo long is the key [{0}]", key)); }
             DataBlock dataBlockForKey = new DataBlock() { ObjectLength = keyBytes.Length, Data = keyBytes, };
-            db.transaction.Add(dataBlockForKey);// 加入事务，准备写入数据库。
             
             SkipListNodeBlock[] rightNodes = FindRightMostNodes(key, indexBlock, db);
 
@@ -58,8 +57,8 @@ namespace SharpFileDB.Utilities
                 rightNodes[0].RightObj = right;
                 rightKey = fs.ReadObject<IComparable>(right.KeyPos);
             }
-           if ((rightNodes[0].RightPos != 0)
-               && (rightKey.CompareTo(key) == 0))// key相等，说明Value相同。此处不再使用NGenerics的Comparer<TKey>.Default这种可指定外部比较工具的模式，是因为那会由于忘记编写合适的比较工具而带来隐藏地很深的bug。
+            if ((rightNodes[0].RightPos != 0)
+                && (rightKey.CompareTo(key) == 0))// key相等，说明Value相同。此处不再使用NGenerics的Comparer<TKey>.Default这种可指定外部比较工具的模式，是因为那会由于忘记编写合适的比较工具而带来隐藏地很深的bug。
             {
                 throw new Exception("Item Already In List");
             }
@@ -77,8 +76,9 @@ namespace SharpFileDB.Utilities
                     indexBlock.CurrentLevel = newLevel;
                 }
 
+                List<SkipListNodeBlock> nodeList = new List<SkipListNodeBlock>();
                 SkipListNodeBlock newNode = new SkipListNodeBlock() { Key = dataBlockForKey, Value = dataBlocksForValue, };
-                db.transaction.Add(newNode);// 加入事务，准备写入数据库。
+                nodeList.Add(newNode);
 
                 // Insert the item in the first level
                 //newNode.Right = rightNodes[0].Right;
@@ -93,13 +93,17 @@ namespace SharpFileDB.Utilities
                 {
                     previousNode = newNode;
                     newNode = new SkipListNodeBlock() { Key = dataBlockForKey, Value = dataBlocksForValue, };
-                    db.transaction.Add(newNode);// 加入事务，准备写入数据库。
+                    nodeList.Add(newNode);
 
                     newNode.RightObj = rightNodes[i].RightObj;
                     rightNodes[i].RightObj = newNode;
 
                     newNode.DownObj = previousNode;
                 }
+                for (int i = nodeList.Count - 1; i >= 0; i--)
+                { db.transaction.Add(nodeList[i]); }// 加入事务，准备写入数据库。
+
+                db.transaction.Add(dataBlockForKey);// 加入事务，准备写入数据库。
             }
 
             //    //itemsCount++;// 有的在内存，有的在文件，因此itemsCount不好使了。

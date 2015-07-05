@@ -54,18 +54,18 @@ namespace SharpFileDB.Blocks
             return true;// 此类型比较特殊，应该在更新时立即指定各项文件指针。
         }
 
-        /// <summary>
-        /// <see cref="TableBlock"/>的头结点。
-        /// <para>头结点的<see cref="TableBlock.TableType"/>属性始终为空，所以<see cref="DBHeaderBlock"/>的序列化长度是不变的。</para>
-        /// </summary>
-        public TableBlock TableBlockHead { get; set; }
+        ///// <summary>
+        ///// <see cref="TableBlock"/>的头结点。
+        ///// <para>头结点的<see cref="TableBlock.TableType"/>属性始终为空，所以<see cref="DBHeaderBlock"/>的序列化长度是不变的。</para>
+        ///// </summary>
+        //public TableBlock TableBlockHead { get; set; }
 
         /// <summary>
         /// 数据库文件的头部。应该放在数据库文件的最开始。
         /// </summary>
         public DBHeaderBlock()
         {
-            this.TableBlockHead = new TableBlock();
+            //this.TableBlockHead = new TableBlock();
         }
 
         const string strFirstTablePagePos = "T";
@@ -76,7 +76,7 @@ namespace SharpFileDB.Blocks
         const string strMaxLevel = "M";
         const string strProbability = "P";
 
-        const string strTableBlockHead = "H";
+        //const string strTableBlockHead = "H";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
@@ -88,7 +88,7 @@ namespace SharpFileDB.Blocks
             info.AddValue(strMaxLevel, this.MaxLevelOfSkipList);
             info.AddValue(strProbability, this.ProbabilityOfSkipList);
 
-            info.AddValue(strTableBlockHead, this.TableBlockHead);
+            //info.AddValue(strTableBlockHead, this.TableBlockHead);
         }
 
         protected DBHeaderBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
@@ -102,7 +102,7 @@ namespace SharpFileDB.Blocks
             this.MaxLevelOfSkipList = info.GetInt32(strMaxLevel);
             this.ProbabilityOfSkipList = info.GetDouble(strProbability);
 
-            this.TableBlockHead = (TableBlock)info.GetValue(strTableBlockHead, typeof(TableBlock));
+            //this.TableBlockHead = (TableBlock)info.GetValue(strTableBlockHead, typeof(TableBlock));
         }
 
 
