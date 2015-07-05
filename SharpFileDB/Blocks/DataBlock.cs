@@ -44,8 +44,6 @@ namespace SharpFileDB.Blocks
                 else
                 { allArranged = false; }
             }
-            else
-            { this.NextDataBlockPos = 0; }
 
             return allArranged;
         }

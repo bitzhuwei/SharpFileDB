@@ -51,7 +51,7 @@ namespace SharpFileDB.Blocks
 
         internal override bool ArrangePos()
         {
-            return true;
+            return true;// 此类型比较特殊，应该在更新时立即指定各项文件指针。
         }
 
         /// <summary>

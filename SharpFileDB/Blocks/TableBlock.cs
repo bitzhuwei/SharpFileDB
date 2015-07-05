@@ -36,6 +36,14 @@ namespace SharpFileDB.Blocks
             else
             { allArranged = false; }
 
+            if (this.NextObj != null)
+            {
+                if (this.NextObj.ThisPos != 0)
+                { this.NextPos = this.NextObj.ThisPos; }
+                else
+                { allArranged = false; }
+            }
+
             return allArranged;
         }
 

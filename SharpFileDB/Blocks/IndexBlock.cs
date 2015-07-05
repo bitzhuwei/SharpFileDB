@@ -32,6 +32,8 @@ namespace SharpFileDB.Blocks
             if (this.SkipListHeadNodes != null)
             {
                 int length = this.SkipListHeadNodes.Length;
+                if (length == 0)
+                { throw new Exception("SKip List's head nodes has 0 element!"); }
                 long pos = this.SkipListHeadNodes[length - 1].ThisPos;
                 if (pos != 0)
                 { this.SkipListHeadNodePos = pos; }
@@ -40,6 +42,14 @@ namespace SharpFileDB.Blocks
             }
             else
             { allArranged = false; }
+
+            if (this.NextObj != null)
+            {
+                if (this.NextObj.ThisPos != 0)
+                { this.NextPos = this.NextObj.ThisPos; }
+                else
+                { allArranged = false; }
+            }
 
             return allArranged;
         }
