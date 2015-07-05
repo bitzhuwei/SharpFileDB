@@ -17,13 +17,13 @@ namespace SharpFileDB.Utilities
         /// <typeparam name="T">继承自<see cref="Table"/>的类型。</typeparam>
         /// <param name="bytes"></param>
         /// <returns></returns>
-        public static T ToTableItem<T>(this byte[] bytes) where T : Table, new()
+        public static T ToObject<T>(this byte[] bytes)// where T : classTable, new()
         {
             T result;
             using (MemoryStream ms = new MemoryStream(bytes))
             {
                 object obj = Consts.formatter.Deserialize(ms);
-                result = obj as T;
+                result = (T)obj;
             }
 
             return result;

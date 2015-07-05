@@ -171,6 +171,7 @@ namespace SharpFileDB
                 foreach (var indexBlock in this.tableIndexBlockDict[type])
                 {
                     indexBlock.Value.Add(item, dataBlocksForValue, this);
+                    this.transaction.Add(indexBlock.Value);
                 }
 
                 for (int i = 0; i < dataBlocksForValue.Length; i++)
@@ -292,10 +293,51 @@ namespace SharpFileDB
         /// </summary>
         /// <typeparam name="T">要查找的类型。</typeparam>
         /// <returns></returns>
-        public IList<T> FindAll<T>()
+        public IList<T> FindAll<T>() where T : Table, new()
         {
+            List<T> result = new List<T>();
 
-            throw new NotImplementedException();
+            Type type = typeof(T);
+            if (this.tableBlockDict.ContainsKey(type))
+            {
+                TableBlock tableBlock = this.tableBlockDict[type];
+                IndexBlock firstIndex = tableBlock.IndexBlockHead.NextObj;// 第一个索引应该是Table.Id的索引。
+                long currentHeadNodePos = firstIndex.SkipListHeadNodePos;
+                if (currentHeadNodePos <= 0)
+                { throw new Exception("DB Error: There is no skip list node head stored!"); }
+                SkipListNodeBlock currentHeadNode = null;
+                FileStream fs = this.fileStream;
+                while (currentHeadNodePos != 0)
+                {
+                    currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
+                    currentHeadNodePos = currentHeadNode.DownPos;
+                }
+                while (currentHeadNode.RightPos != 0)
+                {
+                    SkipListNodeBlock node = fs.ReadBlock<SkipListNodeBlock>(currentHeadNode.RightPos);
+                    DataBlock dataBlock = fs.ReadBlock<DataBlock>(node.ValuePos);
+
+                    byte[] valueBytes = new byte[dataBlock.ObjectLength];
+
+                    int index = 0;// index == dataBlock.ObjectLength - 1时，dataBlock.NextDataBlockPos也就正好应该等于0了。
+                    for (int i = 0; i < dataBlock.Data.Length; i++)
+                    { valueBytes[index++] = dataBlock.Data[i]; }
+                    while (dataBlock.NextDataBlockPos != 0)
+                    {
+                        dataBlock = fs.ReadBlock<DataBlock>(dataBlock.NextDataBlockPos);
+                        for (int i = 0; i < dataBlock.Data.Length; i++)
+                        { valueBytes[index++] = dataBlock.Data[i]; }
+                    }
+
+                    T item = valueBytes.ToObject<T>();
+
+                    result.Add(item);
+
+                    currentHeadNode = node;
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

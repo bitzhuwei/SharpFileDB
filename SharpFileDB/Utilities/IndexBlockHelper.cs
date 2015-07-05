@@ -158,7 +158,9 @@ namespace SharpFileDB.Utilities
                 while ((currentNode.RightPos != 0))
                 {
                     SkipListNodeBlock right = fs.ReadObject<SkipListNodeBlock>(currentNode.RightPos);
-                    IComparable rightKey = fs.ReadObject<IComparable>(right.KeyPos);
+                    //DataBlock rightKey = fs.ReadObject<DataBlock>(right.KeyPos);
+                    DataBlock keyDataBlock = fs.ReadObject<DataBlock>(right.KeyPos);
+                    IComparable rightKey = keyDataBlock.Data.ToObject<IComparable>();
                     if (rightKey.CompareTo(key) < 0)
                     { currentNode = right; }
                     else
