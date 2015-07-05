@@ -13,41 +13,127 @@ namespace SharpFileDB.Blocks
     public class DBHeaderBlock : Block, IUpdatable
     {
 
+        private long firstTablePagePos;
+        private long firstIndexPagePos;
+        private long firstSkipListNodePagePos;
+        private long firstDataPagePos;
+        private long firstEmptyPagePos;
+
+        private int maxLevelOfSkipList;
+        private double probabilityOfSkipList;
+
         /// <summary>
         /// 第一个存储<see cref="TableBlock"/>的页的位置。
         /// </summary>
-        public long FirstTablePagePos { get; set; }
+        public long FirstTablePagePos
+        {
+            get { return firstTablePagePos; }
+            set
+            {
+                if (firstTablePagePos != value)
+                {
+                    firstTablePagePos = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
 
         /// <summary>
         /// 第一个存储<see cref="IndexBlock"/>的页的位置。
         /// </summary>
-        public long FirstIndexPagePos { get; set; }
+        public long FirstIndexPagePos
+        {
+            get { return firstIndexPagePos; }
+            set
+            {
+                if (firstIndexPagePos != value)
+                {
+                    firstIndexPagePos = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
 
         /// <summary>
         /// 第一个存储<see cref="SkipListNodeBlock"/>的页的位置。
         /// </summary>
-        public long FirstSkipListNodePagePos { get; set; }
+        public long FirstSkipListNodePagePos
+        {
+            get { return firstSkipListNodePagePos; }
+            set
+            {
+                if (firstSkipListNodePagePos != value)
+                {
+                    firstSkipListNodePagePos = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
 
         /// <summary>
         /// 第一个存储<see cref="DataBlock"/>的页的位置。
         /// </summary>
-        public long FirstDataPagePos { get; set; }
+        public long FirstDataPagePos
+        {
+            get { return firstDataPagePos; }
+            set
+            {
+                if (firstDataPagePos != value)
+                {
+                    firstDataPagePos = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
 
         /// <summary>
         /// 第一个存储空白页的位置。
         /// <para>当数据库删除某些内容后，可能会出现一些页不再被占用，此时它们就成为空白页。</para>
         /// </summary>
-        public long FirstEmptyPagePos { get; set; }
+        public long FirstEmptyPagePos
+        {
+            get { return firstEmptyPagePos; }
+            set
+            {
+                if (firstEmptyPagePos != value)
+                {
+                    firstEmptyPagePos = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
 
         /// <summary>
         /// 索引使用的skip list的max level参数。
         /// </summary>
-        public int MaxLevelOfSkipList { get; set; }
-        
+        public int MaxLevelOfSkipList
+        {
+            get { return maxLevelOfSkipList; }
+            set
+            {
+                if (maxLevelOfSkipList != value)
+                {
+                    maxLevelOfSkipList = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
+
         /// <summary>
         /// 索引使用的skip list的probability参数。
         /// </summary>
-        public double ProbabilityOfSkipList { get; set; }
+        public double ProbabilityOfSkipList
+        {
+            get { return probabilityOfSkipList; }
+            set
+            {
+                if (probabilityOfSkipList != value)
+                {
+                    probabilityOfSkipList = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
 
         internal override bool ArrangePos()
         {

@@ -75,6 +75,7 @@ namespace SharpFileDB
 
             long indexBlockHeadPos = tableBlock.IndexBlockHeadPos;
             IndexBlock currentIndexBlock = fileStream.ReadBlock<IndexBlock>(indexBlockHeadPos);
+            tableBlock.IndexBlockHead = currentIndexBlock;
 
             while (currentIndexBlock.NextPos != 0)
             {
@@ -136,13 +137,13 @@ namespace SharpFileDB
         /// <summary>
         /// 向数据库新增一条记录。
         /// </summary>
-        /// <param name="item"></param>
-        public void Insert(Table item)
+        /// <param name="record"></param>
+        public void Insert(Table record)
         {
-            if (item.Id != null)
-            { throw new Exception(string.Format("[{0}] is not a new item!", item)); }
+            if (record.Id != null)
+            { throw new Exception(string.Format("[{0}] is not a new item!", record)); }
 
-            Type type = item.GetType();
+            Type type = record.GetType();
             if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
             {
                 IndexBlock indexBlockHead = new IndexBlock();
@@ -164,14 +165,14 @@ namespace SharpFileDB
 
             // 添加item。
             {
-                item.Id = ObjectId.NewId();
+                record.Id = ObjectId.NewId();
 
-                DataBlock[] dataBlocksForValue = CreateDataBlocks(item);
+                DataBlock[] dataBlocksForValue = CreateDataBlocks(record);
 
-                foreach (var indexBlock in this.tableIndexBlockDict[type])
+                foreach (KeyValuePair<string, IndexBlock> item in this.tableIndexBlockDict[type])
                 {
-                    indexBlock.Value.Add(item, dataBlocksForValue, this);
-                    this.transaction.Add(indexBlock.Value);
+                    item.Value.Add(record, dataBlocksForValue, this);
+                    this.transaction.Add(item.Value);
                 }
 
                 for (int i = 0; i < dataBlocksForValue.Length; i++)

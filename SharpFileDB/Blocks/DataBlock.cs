@@ -39,10 +39,13 @@ namespace SharpFileDB.Blocks
 
             if (NextDataBlock != null)
             {
-                if (NextDataBlock.ThisPos != 0)
-                { this.NextDataBlockPos = NextDataBlock.ThisPos; }
-                else
-                { allArranged = false; }
+                if (this.NextDataBlockPos == 0)// 尚未被赋值。
+                {
+                    if (NextDataBlock.ThisPos != 0)
+                    { this.NextDataBlockPos = NextDataBlock.ThisPos; }
+                    else
+                    { allArranged = false; }
+                }
             }
 
             return allArranged;

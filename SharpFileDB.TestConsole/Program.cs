@@ -36,7 +36,8 @@ namespace SharpFileDB.TestConsole
             cat.KittyName = "kitty白";
             cat.Price = 12;
             cat.FavoriteFood = new Food() { FoodName = "小黄鱼", };
-            cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
+            //cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
+            //cat.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };
             db.Insert(cat);
 
             //Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");

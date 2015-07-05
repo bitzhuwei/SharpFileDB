@@ -24,7 +24,7 @@ namespace SharpFileDB.Utilities
             IList<AllocatedSpace> result = new List<AllocatedSpace>();
 
             FileStream fs = db.fileStream;
-            Blocks.DBHeaderBlock dbHeader = db.headerBlock;
+            //Blocks.DBHeaderBlock dbHeader = db.headerBlock;
 
             long allocated = 0;
             while (allocated < length)

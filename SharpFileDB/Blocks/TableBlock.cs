@@ -33,18 +33,24 @@ namespace SharpFileDB.Blocks
 
             if (this.IndexBlockHead != null)// 如果IndexBlockHead == null，则说明此块为TableBlock的头结点。头结点是不需要持有索引块的。
             {
-                if (this.IndexBlockHead.ThisPos != 0)
-                { this.IndexBlockHeadPos = this.IndexBlockHead.ThisPos; }
-                else
-                { allArranged = false; }
+                if (this.IndexBlockHeadPos == 0)// 尚未被赋值。
+                {
+                    if (this.IndexBlockHead.ThisPos != 0)
+                    { this.IndexBlockHeadPos = this.IndexBlockHead.ThisPos; }
+                    else
+                    { allArranged = false; }
+                }
             }
 
             if (this.NextObj != null)
             {
-                if (this.NextObj.ThisPos != 0)
-                { this.NextPos = this.NextObj.ThisPos; }
-                else
-                { allArranged = false; }
+                if (this.NextPos == 0)// 尚未被赋值。
+                {
+                    if (this.NextObj.ThisPos != 0)
+                    { this.NextPos = this.NextObj.ThisPos; }
+                    else
+                    { allArranged = false; }
+                }
             }
 
             return allArranged;

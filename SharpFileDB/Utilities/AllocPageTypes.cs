@@ -20,10 +20,10 @@ namespace SharpFileDB.Utilities
         ///// 页头部。
         ///// </summary>
         //PageHeader,
-        /// <summary>
-        /// 数据库头部。
-        /// </summary>
-        DBHeader,
+        ///// <summary>
+        ///// 数据库头部。
+        ///// </summary>
+        //DBHeader,
         /// <summary>
         /// 数据库表。
         /// </summary>

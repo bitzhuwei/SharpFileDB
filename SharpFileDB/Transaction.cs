@@ -43,13 +43,15 @@ namespace SharpFileDB
         {
             if (block.ThisPos == 0)// 这是一个新建的块。
             {
-                this.blockList.Add(block);
+                if (!this.blockList.Contains(block))
+                { this.blockList.Add(block); }
             }
             else// 这是已有的块。
             {
                 if (this.oldBlockPositions.Contains(block.ThisPos))
                 {
-                    throw new Exception(string.Format("Block [{0}] already in transaction.", blockList));
+                    // 此时说明你重复反序列化了同一个块，这将导致数据混乱。
+                    throw new Exception(string.Format("Block [{0}] already in transaction.", block));
                 }
 
                 this.blockList.Add(block);
@@ -137,6 +139,12 @@ namespace SharpFileDB
             foreach (PageHeaderBlock block in this.allocatedPages.Values)
             {
                 fs.WriteBlock(block);
+            }
+            DBHeaderBlock dbHeaderBlock = this.fileDBContext.headerBlock;
+            if (dbHeaderBlock.IsDirty)
+            {
+                fs.WriteBlock(dbHeaderBlock);
+                dbHeaderBlock.IsDirty = false;
             }
             // TODO: 删除恢复文件。
 

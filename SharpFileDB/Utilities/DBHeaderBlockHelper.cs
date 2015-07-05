@@ -35,6 +35,7 @@ namespace SharpFileDB.Utilities
                 default:
                     throw new NotImplementedException();
             }
+
         }
 
         /// <summary>

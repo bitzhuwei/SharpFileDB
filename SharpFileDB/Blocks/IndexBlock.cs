@@ -37,24 +37,28 @@ namespace SharpFileDB.Blocks
 
             if (this.SkipListHeadNodes != null)// 如果这里的SkipListHeadNodes == null，则说明此索引块是索引链表里的头结点。头结点是不需要SkipListHeadNodes有数据的。
             {
-                int length = this.SkipListHeadNodes.Length;
-                if (length == 0)
-                { throw new Exception("SKip List's head nodes has 0 element!"); }
-                long pos = this.SkipListHeadNodes[length - 1].ThisPos;
-                if (pos != 0)
-                { this.SkipListHeadNodePos = pos; }
-                else
-                { allArranged = false; }
+                if (this.SkipListHeadNodePos == 0)// 尚未被赋值。
+                {
+                    int length = this.SkipListHeadNodes.Length;
+                    if (length == 0)
+                    { throw new Exception("SKip List's head nodes has 0 element!"); }
+                    long pos = this.SkipListHeadNodes[length - 1].ThisPos;
+                    if (pos != 0)
+                    { this.SkipListHeadNodePos = pos; }
+                    else
+                    { allArranged = false; }
+                }
             }
-            //else
-            //{ allArranged = false; }
 
             if (this.NextObj != null)
             {
-                if (this.NextObj.ThisPos != 0)
-                { this.NextPos = this.NextObj.ThisPos; }
-                else
-                { allArranged = false; }
+                if (this.NextPos == 0)// 尚未被赋值。
+                {
+                    if (this.NextObj.ThisPos != 0)
+                    { this.NextPos = this.NextObj.ThisPos; }
+                    else
+                    { allArranged = false; }
+                }
             }
 
             return allArranged;

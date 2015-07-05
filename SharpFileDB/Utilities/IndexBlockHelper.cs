@@ -55,7 +55,8 @@ namespace SharpFileDB.Utilities
             {
                 SkipListNodeBlock right = fs.ReadObject<SkipListNodeBlock>(rightNodes[0].RightPos);
                 rightNodes[0].RightObj = right;
-                rightKey = fs.ReadObject<IComparable>(right.KeyPos);
+                DataBlock keyDataBlock = fs.ReadObject<DataBlock>(right.KeyPos);
+                rightKey = keyDataBlock.Data.ToObject<IComparable>();
             }
             if ((rightNodes[0].RightPos != 0)
                 && (rightKey.CompareTo(key) == 0))// key相等，说明Value相同。此处不再使用NGenerics的Comparer<TKey>.Default这种可指定外部比较工具的模式，是因为那会由于忘记编写合适的比较工具而带来隐藏地很深的bug。
@@ -100,6 +101,10 @@ namespace SharpFileDB.Utilities
 
                     newNode.DownObj = previousNode;
                 }
+
+                for (int i = nodeList.Count - 1; i >= 0; i--)
+                { db.transaction.Add(rightNodes[i]); }// 加入事务，准备写入数据库。
+
                 for (int i = nodeList.Count - 1; i >= 0; i--)
                 { db.transaction.Add(nodeList[i]); }// 加入事务，准备写入数据库。
 
@@ -158,7 +163,6 @@ namespace SharpFileDB.Utilities
                 while ((currentNode.RightPos != 0))
                 {
                     SkipListNodeBlock right = fs.ReadObject<SkipListNodeBlock>(currentNode.RightPos);
-                    //DataBlock rightKey = fs.ReadObject<DataBlock>(right.KeyPos);
                     DataBlock keyDataBlock = fs.ReadObject<DataBlock>(right.KeyPos);
                     IComparable rightKey = keyDataBlock.Data.ToObject<IComparable>();
                     if (rightKey.CompareTo(key) < 0)

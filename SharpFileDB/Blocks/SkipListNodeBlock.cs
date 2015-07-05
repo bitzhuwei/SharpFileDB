@@ -40,53 +40,46 @@ namespace SharpFileDB.Blocks
 
             if (this.Key != null)
             {
-                if (this.Key.ThisPos != 0)
-                { this.KeyPos = this.Key.ThisPos; }
-                else
-                { allArranged = false; }
+                if (this.KeyPos == 0)// 尚未被赋值。
+                {
+                    if (this.Key.ThisPos != 0)
+                    { this.KeyPos = this.Key.ThisPos; }
+                    else
+                    { allArranged = false; }
+                }
             }
 
             if (this.Value != null)
             {
-                if (this.Value[0].ThisPos != 0)
-                { this.ValuePos = this.Value[0].ThisPos; }
-                else
-                { allArranged = false; }
+                if (this.ValuePos == 0)// 尚未被赋值。
+                {
+                    if (this.Value[0].ThisPos != 0)
+                    { this.ValuePos = this.Value[0].ThisPos; }
+                    else
+                    { allArranged = false; }
+                }
             }
-
-            //if (this.Key == null)
-            //{ throw new Exception("Key not set!"); }
-            //if (this.Value == null)
-            //{ throw new Exception("Value not set!"); }
-
-            //if (this.Key.ThisPos < 0)// 这是头结点。
-            //{ this.KeyPos = 0; }
-            //else if (this.Key.ThisPos > 0)
-            //{ this.KeyPos = this.Key.ThisPos; }
-            //else
-            //{ allArranged = false; }
-
-            //if (this.Value.Length == 0)// 这是头结点。
-            //{ this.ValuePos = 0; }
-            //else if (this.Value[0].ThisPos != 0)
-            //{ this.ValuePos = this.Value[0].ThisPos; }
-            //else
-            //{ allArranged = false; }
 
             if (this.DownObj != null)// 此结点不是最下方的结点。
             {
-                if (this.DownObj.ThisPos != 0)
-                { this.DownPos = this.DownObj.ThisPos; }
-                else
-                { allArranged = false; }
+                if (this.DownPos == 0)// 尚未被赋值。
+                {
+                    if (this.DownObj.ThisPos != 0)
+                    { this.DownPos = this.DownObj.ThisPos; }
+                    else
+                    { allArranged = false; }
+                }
             }
 
             if (this.RightObj != null)// 此结点不是最右方的结点。
             {
-                if (this.RightObj.ThisPos != 0)
-                { this.RightPos = this.RightObj.ThisPos; }
-                else
-                { allArranged = false; }
+                if (this.RightPos == 0)// 尚未被赋值。
+                {
+                    if (this.RightObj.ThisPos != 0)
+                    { this.RightPos = this.RightObj.ThisPos; }
+                    else
+                    { allArranged = false; }
+                }
             }
 
             return allArranged;
