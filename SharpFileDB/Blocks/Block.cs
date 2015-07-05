@@ -13,6 +13,11 @@ namespace SharpFileDB.Blocks
     [Serializable]
     public abstract class Block : ISerializable
     {
+        protected static int IDCounter = 0;
+        /// <summary>
+        /// 用于给此块标记一个编号，便于调试。
+        /// </summary>
+        public int BlockID { get; protected set; }
 
         /// <summary>
         /// 此对象自身在数据库文件中的位置。为0时说明尚未指定位置。只有<see cref="DBHeaderBlock"/>的位置才应该为0。
@@ -28,7 +33,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 存储到数据库文件的一块内容。
         /// </summary>
-        public Block() { }
+        public Block() { this.BlockID = IDCounter++; }
         //public Block() { this.IsDirty = true; }
 
         #region ISerializable 成员
@@ -44,6 +49,7 @@ namespace SharpFileDB.Blocks
         /// <param name="context"></param>
         protected Block(SerializationInfo info, StreamingContext context)
         {
+            this.BlockID = IDCounter++;
         }
 
         public override string ToString()

@@ -86,6 +86,7 @@ namespace SharpFileDB.Blocks
         }
 
         protected SkipListNodeBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+            : base(info, context)
         {
             this.KeyPos = info.GetInt64(strKeyPos);
             this.ValuePos = info.GetInt64(strValuePos);

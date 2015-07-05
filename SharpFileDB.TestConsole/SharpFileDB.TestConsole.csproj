@@ -44,7 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cat.cs" />
     <Compile Include="DemoStringAndBytesLengthOfDocument.cs" />
+    <Compile Include="Food.cs" />
+    <Compile Include="Hobby.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

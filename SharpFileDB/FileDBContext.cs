@@ -119,6 +119,8 @@ namespace SharpFileDB
             using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write, FileShare.None, Consts.pageSize))
             {
                 DBHeaderBlock headerBlock = new DBHeaderBlock();
+                headerBlock.MaxLevelOfSkipList = 32;
+                headerBlock.ProbabilityOfSkipList = 0.5;
                 fs.WriteBlock(headerBlock);
                 //byte[] bytes = headerBlock.ToBytes();
                 //fs.Write(bytes, 0, bytes.Length);

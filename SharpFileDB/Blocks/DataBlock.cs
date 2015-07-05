@@ -67,6 +67,7 @@ namespace SharpFileDB.Blocks
         }
 
         protected DataBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+            : base(info, context)
         {
             this.ObjectLength = info.GetInt32(strObjectLength);
             this.Data = (byte[])info.GetValue(strData, typeof(byte[]));

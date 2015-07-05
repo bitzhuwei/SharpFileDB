@@ -32,11 +32,12 @@ namespace SharpFileDB.TestConsole
             // common cases to use SharpFileDB.
             FileDBContext db = new FileDBContext(fullname);
 
-            //Cat cat = new Cat();
-            //cat.Name = "xiao xiao bai";
-            //cat.Legs = 4;
-            //cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
-            //db.Insert(cat);
+            Cat cat = new Cat();
+            cat.KittyName = "kitty白";
+            cat.Price = 12;
+            cat.FavoriteFood = new Food() { FoodName="小黄鱼", };
+            cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
+            db.Insert(cat);
 
             //Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");
             //IList<Cat> cats = db.Retrieve(pre);

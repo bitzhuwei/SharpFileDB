@@ -92,6 +92,7 @@ namespace SharpFileDB.Blocks
         }
 
         protected DBHeaderBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+            : base(info, context)
         {
             this.FirstTablePagePos = info.GetInt64(strFirstTablePagePos);
             this.FirstIndexPagePos = info.GetInt64(strFirstIndexPagePos);

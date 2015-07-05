@@ -83,6 +83,7 @@ namespace SharpFileDB.Blocks
         }
 
         protected IndexBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+            : base(info, context)
         {
             this.SkipListHeadNodePos = info.GetInt64(strSkipListNodePos);
             this.BindMember = info.GetString(strBindMember);

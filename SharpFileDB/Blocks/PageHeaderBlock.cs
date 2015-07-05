@@ -54,6 +54,7 @@ namespace SharpFileDB.Blocks
         }
 
         protected PageHeaderBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+            : base(info, context)
         {
             this.AvailableBytes = info.GetInt16(strAvailableBytes);
             this.OccupiedBytes = info.GetInt16(strOccupiedBytes);
