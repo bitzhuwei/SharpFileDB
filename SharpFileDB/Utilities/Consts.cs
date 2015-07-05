@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace SharpFileDB.Utilities
 {
     /// <summary>
-    /// 文件数据库所用各项常量、公共变量。
+    /// 文件数据库所用各项常量。
     /// </summary>
     public class Consts
     {
@@ -32,6 +32,7 @@ namespace SharpFileDB.Utilities
 
         /// <summary>
         /// <see cref="DataBlock.Data"/>的最大长度。
+        /// 据上一次测试（2015-07-05_15-05-00）此值为3925 = <see cref="Consts.pageSize"/> - 175。
         /// </summary>
         public static readonly Int16 maxDataBytes;
 
@@ -45,9 +46,9 @@ namespace SharpFileDB.Utilities
                 using (MemoryStream ms = new MemoryStream())
                 {
                     formatter.Serialize(ms, block);
-                    if (ms.Length > Consts.pageSize / 2)
+                    if (ms.Length > Consts.pageSize / 10)
                     { throw new Exception("Page header block takes too much space!"); }
-                    maxAvailableSpaceInPage = (Int16)(Consts.pageSize - ms.Length);
+                    Consts.maxAvailableSpaceInPage = (Int16)(Consts.pageSize - ms.Length);
                 }
             }
             {
@@ -57,9 +58,11 @@ namespace SharpFileDB.Utilities
                 using (MemoryStream ms = new MemoryStream())
                 {
                     formatter.Serialize(ms, block);
+                    if (ms.Length > Consts.pageSize / 10)
+                    { throw new Exception("data block's metadata takes too much space!"); }
                     minValue = (Int16)ms.Length;
                 }
-                maxDataBytes = (Int16)(Consts.pageSize - minValue);
+                Consts.maxDataBytes = (Int16)(Consts.pageSize - minValue);
             }
         }
 

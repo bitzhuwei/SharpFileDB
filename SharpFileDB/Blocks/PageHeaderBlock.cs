@@ -37,6 +37,9 @@ namespace SharpFileDB.Blocks
             return true;// 此类型比较特殊，应该在创建时就为其安排好NextPagePos等属性。
         }
 
+        /// <summary>
+        /// 页的头部，可代表一个页。此块应在每个页的最开始处。
+        /// </summary>
         public PageHeaderBlock() { }
 
         const string strAvailableBytes = "A";
