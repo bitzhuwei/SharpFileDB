@@ -50,10 +50,16 @@ namespace SharpFileDB.Utilities
             FileStream fs = db.fileStream;
             int maxLevel = db.headerBlock.MaxLevelOfSkipList;
 
-            SkipListNodeBlock right = fs.ReadObject<SkipListNodeBlock>(rightNodes[0].RightPos);
-            rightNodes[0].RightObj = right;
-            IComparable rightKey = fs.ReadObject<IComparable>(right.KeyPos);
-            if ((rightNodes[0].RightPos != 0) && (rightKey.CompareTo(key) == 0))
+            //SkipListNodeBlock right = null;
+            IComparable rightKey = null;
+            if (rightNodes[0].RightPos != 0)
+            {
+                SkipListNodeBlock right = fs.ReadObject<SkipListNodeBlock>(rightNodes[0].RightPos);
+                rightNodes[0].RightObj = right;
+                rightKey = fs.ReadObject<IComparable>(right.KeyPos);
+            }
+           if ((rightNodes[0].RightPos != 0)
+               && (rightKey.CompareTo(key) == 0))// key相等，说明Value相同。此处不再使用NGenerics的Comparer<TKey>.Default这种可指定外部比较工具的模式，是因为那会由于忘记编写合适的比较工具而带来隐藏地很深的bug。
             {
                 throw new Exception("Item Already In List");
             }

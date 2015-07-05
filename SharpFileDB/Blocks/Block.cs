@@ -54,7 +54,7 @@ namespace SharpFileDB.Blocks
 
         public override string ToString()
         {
-            return string.Format("Pos: {0}", this.ThisPos);
+            return string.Format("ID:{0}, Pos: {1}", this.BlockID, this.ThisPos);
         }
 
         /// <summary>

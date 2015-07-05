@@ -26,11 +26,17 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public Int16 OccupiedBytes { get; set; }
 
+        ///// <summary>
+        ///// 此页的类型（即此页存储的内容的类型）。
+        ///// </summary>
+        //public AllocPageTypes PageType { get; set; }
+
         /// <summary>
         /// 此页的下一页的位置。
         /// <para>只有当此页为空白页时，此值才有效。</para>
         /// </summary>
         public long NextPagePos { get; set; }
+
 
         internal override bool ArrangePos()
         {
@@ -44,12 +50,14 @@ namespace SharpFileDB.Blocks
 
         const string strAvailableBytes = "A";
         const string strOccupiedBytes = "O";
+        const string strPageType = "P";
         const string strNextPagePos = "N";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
             info.AddValue(strAvailableBytes, this.AvailableBytes);
             info.AddValue(strOccupiedBytes, this.OccupiedBytes);
+            //info.AddValue(strPageType, this.PageType);
             info.AddValue(strNextPagePos, this.NextPagePos);
         }
 
@@ -58,6 +66,7 @@ namespace SharpFileDB.Blocks
         {
             this.AvailableBytes = info.GetInt16(strAvailableBytes);
             this.OccupiedBytes = info.GetInt16(strOccupiedBytes);
+            //this.PageType = (AllocPageTypes)info.GetValue(strPageType, typeof(AllocPageTypes));
             this.NextPagePos = info.GetInt64(strNextPagePos);
         }
 
@@ -70,7 +79,7 @@ namespace SharpFileDB.Blocks
 
         public override string ToString()
         {
-            return string.Format("{0}, using: {1}, free: {2}, next: {3}{4}",
+            return string.Format("{0}, OccupiedBytes: {1}, AvailableBytes: {2}, NextPagePos: {3}{4}",
                 base.ToString(),
                 this.OccupiedBytes,
                 this.AvailableBytes,

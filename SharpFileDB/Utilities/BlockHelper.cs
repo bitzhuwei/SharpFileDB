@@ -32,5 +32,22 @@ namespace SharpFileDB.Utilities
             return result;
         }
 
+        public static AllocPageTypes BelongedPageType(this Block block)
+        {
+            AllocPageTypes pageType;
+            Type type = block.GetType();
+            if (type == typeof(DataBlock))
+            { pageType = AllocPageTypes.Data; }
+            else if (type == typeof(SkipListNodeBlock))
+            { pageType = AllocPageTypes.SkipListNode; }
+            else if (type == typeof(IndexBlock))
+            { pageType = AllocPageTypes.Index; }
+            else if (type == typeof(TableBlock))
+            { pageType = AllocPageTypes.Table; }
+            else
+            { throw new Exception("Wrong Block Type!"); }
+
+            return pageType;
+        }
     }
 }

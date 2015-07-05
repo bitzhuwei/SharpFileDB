@@ -32,12 +32,17 @@ namespace SharpFileDB.Utilities
                 Int16 partLength = (length - allocated >= Consts.maxAvailableSpaceInPage) ? Consts.maxAvailableSpaceInPage : (Int16)(length - allocated);
                 // 找出一个可用空间充足的指定类型的页。
                 PageHeaderBlock page = PickPage(db, partLength, type);
-                AllocatedSpace item = new AllocatedSpace(page, (Int16)length);
+                if (!db.transaction.allocatedPages.ContainsKey(page.ThisPos))// 加入缓存备用。
+                { db.transaction.allocatedPages.Add(page.ThisPos, page); }
+                //page.AvailableBytes -= partLength;
+                //page.OccupiedBytes += partLength;
+                //AllocatedSpace item = new AllocatedSpace(page, (Int16)length);
+                AllocatedSpace item = new AllocatedSpace(page.ThisPos + Consts.pageSize - page.AvailableBytes - partLength, (Int16)length);
                 result.Add(item);
                 allocated += partLength;
             }
 
-            dbHeader.IsDirty = true;
+            //dbHeader.IsDirty = true;
 
             return result;
         }
@@ -46,10 +51,10 @@ namespace SharpFileDB.Utilities
         /// 从文件数据库中找出一个符合条件的页。
         /// </summary>
         /// <param name="db"></param>
-        /// <param name="minAvailableBytes">页最少应具有的可用字节数。</param>
+        /// <param name="allocatingLength">希望申请到的字节数。</param>
         /// <param name="type"></param>
         /// <returns></returns>
-        private static PageHeaderBlock PickPage(this FileDBContext db, Int16 minAvailableBytes, AllocPageTypes type)
+        private static PageHeaderBlock PickPage(this FileDBContext db, Int16 allocatingLength, AllocPageTypes type)
         {
             PageHeaderBlock page;
 
@@ -61,13 +66,20 @@ namespace SharpFileDB.Utilities
             if (pagePos == 0)// 尚无给定类型的页。
             {
                 page = db.AllocEmptyPageOrNewPage();
+                page.AvailableBytes -= allocatingLength;
+                page.OccupiedBytes += allocatingLength;
                 dbHeader.SetPosOfFirstPage(type, page.ThisPos);
             }
             else
             {
-                // 最前面的table页的可用空间是最大的（这需要在某些地方进行排序）
-                PageHeaderBlock firstTablePage = fs.ReadBlock<PageHeaderBlock>(pagePos);
-                if (firstTablePage.AvailableBytes > minAvailableBytes)// 此页的空间足够用。
+                // 最前面的table页的可用空间是最大的（这需要在后续操作中进行排序）
+                PageHeaderBlock firstTablePage;
+                if (db.transaction.allocatedPages.ContainsKey(pagePos))
+                { firstTablePage = db.transaction.allocatedPages[pagePos]; }
+                else
+                { firstTablePage = fs.ReadBlock<PageHeaderBlock>(pagePos); }
+
+                if (firstTablePage.AvailableBytes >= allocatingLength)// 此页的空间足够用。
                 {
                     // 把此页从Page链表中移除。
                     dbHeader.SetPosOfFirstPage(type, firstTablePage.NextPagePos);
@@ -78,6 +90,58 @@ namespace SharpFileDB.Utilities
                 else// 此页的空间不够用，还是要申请一个新页。
                 {
                     page = db.AllocEmptyPageOrNewPage();
+                }
+
+                page.AvailableBytes -= allocatingLength;
+                page.OccupiedBytes += allocatingLength;
+
+                // 对申请的类型的页的链表进行排序。呼应上面的排序需求。
+                long headPos = dbHeader.GetPosOfFirstPage(type);
+                if (headPos == 0)// 一个页也没有。
+                { dbHeader.SetPosOfFirstPage(type, page.ThisPos); }
+                else
+                {
+                    //PageHeaderBlock head = fs.ReadBlock<PageHeaderBlock>(headPos);page
+                    PageHeaderBlock head;
+                    if (db.transaction.allocatedPages.ContainsKey(headPos))
+                    { head = db.transaction.allocatedPages[headPos]; }
+                    else
+                    { head = fs.ReadBlock<PageHeaderBlock>(headPos); }
+                    if (page.AvailableBytes >= head.AvailableBytes)// 与第一个页进行比较。
+                    {
+                        page.NextPagePos = head.ThisPos;
+                        dbHeader.SetPosOfFirstPage(type, page.ThisPos);
+                    }
+                    else// 与后续的页进行比较。
+                    {
+                        //long currentPos = headPos;
+                        PageHeaderBlock current = head;
+                        //long currentPos = previous.NextPagePos;
+                        while (current.NextPagePos != 0)
+                        {
+                            //PageHeaderBlock next = fs.ReadBlock<PageHeaderBlock>(current.NextPagePos);
+                            PageHeaderBlock next;
+                            if(db.transaction.allocatedPages.ContainsKey(current.NextPagePos))
+                            { next = db.transaction.allocatedPages[current.NextPagePos]; }
+                            else
+                            { next = fs.ReadBlock<PageHeaderBlock>(current.NextPagePos); }
+                            if (page.AvailableBytes >= next.AvailableBytes)
+                            {
+                                page.NextPagePos = next.ThisPos;
+                                current.NextPagePos = page.ThisPos;
+                                break;
+                            }
+                            else
+                            { current = next; }
+                        }
+                        if (current.NextPagePos == 0)
+                        {
+                            current.NextPagePos = page.ThisPos;
+                        }
+
+                        if (!db.transaction.allocatedPages.ContainsKey(current.ThisPos))
+                        { db.transaction.allocatedPages.Add(current.ThisPos, current); }
+                    }
                 }
             }
 
@@ -148,16 +212,16 @@ namespace SharpFileDB.Utilities
             this.length = length;
         }
 
-        /// <summary>
-        /// 从给定页申请到了指定长度的空闲空间。
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="length"></param>
-        public AllocatedSpace(PageHeaderBlock page, Int16 length)
-        {
-            this.position = (page.ThisPos + (Consts.pageSize - page.AvailableBytes));
-            this.length = length;
-        }
+        ///// <summary>
+        ///// 从给定页申请到了指定长度的空闲空间。
+        ///// </summary>
+        ///// <param name="page"></param>
+        ///// <param name="length"></param>
+        //public AllocatedSpace(PageHeaderBlock page, Int16 length)
+        //{
+        //    this.position = (page.ThisPos + (Consts.pageSize - page.AvailableBytes));
+        //    this.length = length;
+        //}
 
         public override string ToString()
         {

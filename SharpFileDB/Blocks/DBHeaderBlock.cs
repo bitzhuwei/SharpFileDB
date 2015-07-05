@@ -114,7 +114,7 @@ namespace SharpFileDB.Blocks
 
         public override string ToString()
         {
-            return string.Format("{0}, T: {1}, I: {2}, S: {3}, D: {4}, E: {5}, M: {6}, P: {7}",
+            return string.Format("{0}, FirstTablePagePos: {1}, FirstIndexPagePos: {2}, FirstSkipListNodePagePos: {3}, FirstDataPagePos: {4}, FirstEmptyPagePos: {5}, MaxLevelOfSkipList: {6}, ProbabilityOfSkipList: {7}",
                 base.ToString(),
                 this.FirstTablePagePos,
                 this.FirstIndexPagePos,

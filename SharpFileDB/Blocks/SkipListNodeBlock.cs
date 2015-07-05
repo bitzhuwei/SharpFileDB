@@ -37,15 +37,41 @@ namespace SharpFileDB.Blocks
         internal override bool ArrangePos()
         {
             bool allArranged = true;
-            if (this.Key != null && this.Key.ThisPos != 0)
-            { this.KeyPos = this.Key.ThisPos; }
-            else
-            { allArranged = false; }
 
-            if (this.Value != null && this.Value.Length > 0 && this.Value[0].ThisPos != 0)
-            { this.ValuePos = this.Value[0].ThisPos; }
-            else
-            { allArranged = false; }
+            if (this.Key != null)
+            {
+                if (this.Key.ThisPos != 0)
+                { this.KeyPos = this.Key.ThisPos; }
+                else
+                { allArranged = false; }
+            }
+
+            if (this.Value != null)
+            {
+                if (this.Value[0].ThisPos != 0)
+                { this.ValuePos = this.Value[0].ThisPos; }
+                else
+                { allArranged = false; }
+            }
+
+            //if (this.Key == null)
+            //{ throw new Exception("Key not set!"); }
+            //if (this.Value == null)
+            //{ throw new Exception("Value not set!"); }
+
+            //if (this.Key.ThisPos < 0)// 这是头结点。
+            //{ this.KeyPos = 0; }
+            //else if (this.Key.ThisPos > 0)
+            //{ this.KeyPos = this.Key.ThisPos; }
+            //else
+            //{ allArranged = false; }
+
+            //if (this.Value.Length == 0)// 这是头结点。
+            //{ this.ValuePos = 0; }
+            //else if (this.Value[0].ThisPos != 0)
+            //{ this.ValuePos = this.Value[0].ThisPos; }
+            //else
+            //{ allArranged = false; }
 
             if (this.DownObj != null)// 此结点不是最下方的结点。
             {
@@ -66,8 +92,23 @@ namespace SharpFileDB.Blocks
             return allArranged;
         }
 
+        ///// <summary>
+        ///// 获取Key和Value处于头结点状态的<see cref="SkipListNodeBlock"/>对象。
+        ///// </summary>
+        ///// <returns></returns>
+        //public static SkipListNodeBlock GetHeadNode()
+        //{
+        //    SkipListNodeBlock headNode = new SkipListNodeBlock();
+        //    // 初始化时是头结点的状态。
+        //    headNode.Key = new DataBlock() { ThisPos = -1, };
+        //    headNode.Value = new DataBlock[0];
+
+        //    return headNode;
+        //}
+
         /// <summary>
         /// 用于把skip list node存储到数据库文件的块。
+        /// 此时代表的Key和Value都为null，代表一个头结点。
         /// </summary>
         public SkipListNodeBlock() { }
 
@@ -147,7 +188,7 @@ namespace SharpFileDB.Blocks
 
         public override string ToString()
         {
-            return string.Format("{0}, key: {1}, value: {2}, down: {3}, right: {4}",
+            return string.Format("{0}, KeyPos: {1}, ValuePos: {2}, DownPos: {3}, RightPos: {4}",
                 base.ToString(),
                 this.KeyPos, this.ValuePos, this.DownPos, this.RightPos);
         }

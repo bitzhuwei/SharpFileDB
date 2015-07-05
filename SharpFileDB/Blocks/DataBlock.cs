@@ -77,7 +77,7 @@ namespace SharpFileDB.Blocks
 
         public override string ToString()
         {
-            return string.Format("{0}, object: {1} bytes, this: {2} bytes, next: {3}",
+            return string.Format("{0}, ObjectLength: {1}, Data: {2} bytes, next pos: {3}",
                 base.ToString(),
                 this.ObjectLength, this.Data == null ? 0 : this.Data.Length, this.NextDataBlockPos);
         }

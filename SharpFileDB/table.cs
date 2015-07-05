@@ -21,7 +21,7 @@ namespace SharpFileDB
         public ObjectId Id { get; set; }
 
         /// <summary>
-        /// 创建一个文件对象，在用<code>FileDBContext.Insert();</code>将此对象保存到数据库之前，此对象的Id为<code>ObjectId.Empty</code>。
+        /// 创建一个文件对象，在用<code>FileDBContext.Insert();</code>将此对象保存到数据库之前，此对象的Id为null。
         /// </summary>
         public Table()
         {

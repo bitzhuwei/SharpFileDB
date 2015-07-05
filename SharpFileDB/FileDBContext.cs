@@ -136,17 +136,19 @@ namespace SharpFileDB
         /// <param name="item"></param>
         public void Insert(Table item)
         {
+            if (item.Id != null)
+            { throw new Exception(string.Format("[{0}] is not a new item!", item)); }
+
             Type type = item.GetType();
             if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
             {
-                IndexBlock indexBlockHead = new IndexBlock();
-                Dictionary<string, IndexBlock> indexBlockDict = CreateIndexBlocks(type, indexBlockHead);
-                this.transaction.Add(indexBlockHead);// 加入事务，准备写入数据库。
-
                 TableBlock tableBlock = new TableBlock();
-                tableBlock.TableType = type;
-                tableBlock.IndexBlockHead = indexBlockHead;
                 this.transaction.Add(tableBlock);// 加入事务，准备写入数据库。
+                tableBlock.TableType = type;
+                IndexBlock indexBlockHead = new IndexBlock();
+                this.transaction.Add(indexBlockHead);// 加入事务，准备写入数据库。
+                tableBlock.IndexBlockHead = indexBlockHead;
+                Dictionary<string, IndexBlock> indexBlockDict = CreateIndexBlocks(type, indexBlockHead);
 
                 this.tableBlockDict.Add(type, tableBlock);
                 this.tableIndexBlockDict.Add(type, indexBlockDict);
@@ -154,12 +156,17 @@ namespace SharpFileDB
 
             // 添加item。
             {
+                item.Id = ObjectId.NewId();
+
                 DataBlock[] dataBlocksForValue = CreateDataBlocks(item);
 
                 foreach (var indexBlock in this.tableIndexBlockDict[type])
                 {
                     indexBlock.Value.Add(item, dataBlocksForValue, this);
                 }
+
+                for (int i = 0; i < dataBlocksForValue.Length; i++)
+                { this.transaction.Add(dataBlocksForValue[i]); }// 加入事务，准备写入数据库。
             }
 
             this.transaction.Commit();
@@ -177,7 +184,7 @@ namespace SharpFileDB
             int lastLength = bytes.Length % Consts.maxDataBytes;
             if (lastLength == 0) { lastLength = Consts.maxDataBytes; }
             lastDataBlock.Data = new byte[lastLength];
-            for (int i = dataBlockCount - lastLength, j = 0; i < dataBlockCount; i++, j++)
+            for (int i = bytes.Length - lastLength, j = 0; i < bytes.Length; i++, j++)
             { lastDataBlock.Data[j] = bytes[i]; }
             dataBlocks[dataBlockCount - 1] = lastDataBlock;
             // 准备其它data blocks。
@@ -190,8 +197,7 @@ namespace SharpFileDB
                 { block.Data[q] = bytes[p]; }
                 dataBlocks[i] = block;
             }
-            for (int i = dataBlockCount - 1; i >= 0; i--)
-            { this.transaction.Add(dataBlocks[i]); }// 加入事务，准备写入数据库。
+
             // dataBlocks[0] -> [1] -> [2] -> ... -> [dataBlockCount - 1] -> null
             return dataBlocks;
         }
@@ -207,7 +213,7 @@ namespace SharpFileDB
                 if (attr != null)
                 {
                     IndexBlock indexBlock = new IndexBlock();
-
+                    this.transaction.Add(indexBlock);// 加入事务，准备写入数据库。
                     indexBlock.BindMember = property.Name;
 
                     int maxLevel = this.headerBlock.MaxLevelOfSkipList;
@@ -235,9 +241,9 @@ namespace SharpFileDB
 
                     indexBlockDict.Add(property.Name, indexBlock);// indexBlockDict不含indexBlock链表的头结点。
 
-                    for (int i = 0; i < maxLevel; i++)
+                    //for (int i = 0; i < maxLevel; i++)
+                    for (int i = maxLevel - 1; i >= 0; i--)
                     { this.transaction.Add(indexBlock.SkipListHeadNodes[i]); }// 加入事务，准备写入数据库。
-                    this.transaction.Add(indexBlock);// 加入事务，准备写入数据库。
                 }
             }
 

@@ -25,9 +25,9 @@ namespace SharpFileDB.TestConsole
             //DemoTcpMsg.TypicalScene();
 
             //IPersistence ipersistence = new DefaultPersistence();
-            //string fullname = Path.Combine(Environment.CurrentDirectory, "TestDatabase", "test.db");
+            string fullname = Path.Combine(Environment.CurrentDirectory, "TestDatabase", "test.db");
             //string fullname = @"D:\360云盘\文档\TestDatabase\test.db";
-            string fullname = @"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\TestDatabase\test.db";
+            //string fullname = @"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\TestDatabase\test.db";
 
             // common cases to use SharpFileDB.
             FileDBContext db = new FileDBContext(fullname);

@@ -21,7 +21,13 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此索引的第一列skip list结点。是skip list的头结点。
         /// 用于skip list的增删。
-        /// SkipListHeadNodes[0]是最下方的结点。
+        /// <para>SkipListHeadNodes[0]是最下方的结点。</para>
+        /// <para>/*SkipListNodes[maxLevel - 1]↓*/</para>
+        /// <para>/*SkipListNodes[.]↓*/</para>
+        /// <para>/*SkipListNodes[.]↓*/</para>
+        /// <para>/*SkipListNodes[2]↓*/</para>
+        /// <para>/*SkipListNodes[1]↓*/</para>
+        /// <para>/*SkipListNodes[0] */</para>
         /// </summary>
         public SkipListNodeBlock[] SkipListHeadNodes { get; set; }
 
@@ -29,7 +35,7 @@ namespace SharpFileDB.Blocks
         {
             bool allArranged = true;
 
-            if (this.SkipListHeadNodes != null)
+            if (this.SkipListHeadNodes != null)// 如果这里的SkipListHeadNodes == null，则说明此索引块是索引链表里的头结点。头结点是不需要SkipListHeadNodes有数据的。
             {
                 int length = this.SkipListHeadNodes.Length;
                 if (length == 0)
@@ -40,8 +46,8 @@ namespace SharpFileDB.Blocks
                 else
                 { allArranged = false; }
             }
-            else
-            { allArranged = false; }
+            //else
+            //{ allArranged = false; }
 
             if (this.NextObj != null)
             {
@@ -70,6 +76,7 @@ namespace SharpFileDB.Blocks
         public IndexBlock() { }
 
         const string strSkipListNodePos = "S";
+        const string strCurrentLevel = "C";
         const string strBindMember = "M";
 
         const string strNext = "N";
@@ -77,6 +84,7 @@ namespace SharpFileDB.Blocks
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
             info.AddValue(strSkipListNodePos, this.SkipListHeadNodePos);
+            info.AddValue(strCurrentLevel, this.CurrentLevel);
             info.AddValue(strBindMember, this.BindMember);
 
             info.AddValue(strNext, this.NextPos);
@@ -86,6 +94,7 @@ namespace SharpFileDB.Blocks
             : base(info, context)
         {
             this.SkipListHeadNodePos = info.GetInt64(strSkipListNodePos);
+            this.CurrentLevel = info.GetInt32(strCurrentLevel);
             this.BindMember = info.GetString(strBindMember);
 
             this.NextPos = info.GetInt64(strNext);
@@ -118,12 +127,17 @@ namespace SharpFileDB.Blocks
 
         public override string ToString()
         {
-            return string.Format("{0}, S: {1}, M: {2}, next: {3}, pre: {4}",
+            return string.Format("{0}, SkipListHeadNodePos: {1}, BindMember: {2}, NextPos: {3}, PreviousPos: {4}",
                 base.ToString(),
                 this.SkipListHeadNodePos,
                 this.BindMember,
                 this.NextPos,
                 this.PreviousPos);
+            //return string.Format("{0}, SkipListHeadNodePos: {1}, BindMember: {2}, NextPos: {3}",
+            //    base.ToString(),
+            //    this.SkipListHeadNodePos,
+            //    this.BindMember,
+            //    this.NextPos);
         }
     }
 }

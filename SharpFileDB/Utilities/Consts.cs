@@ -52,11 +52,13 @@ namespace SharpFileDB.Utilities
                 }
             }
             {
+                PageHeaderBlock pageHeader = new PageHeaderBlock();
                 DataBlock block = new DataBlock();
                 block.Data = new byte[0];
                 Int16 minValue;
                 using (MemoryStream ms = new MemoryStream())
                 {
+                    formatter.Serialize(ms, pageHeader);
                     formatter.Serialize(ms, block);
                     if (ms.Length > Consts.pageSize / 10)
                     { throw new Exception("data block's metadata takes too much space!"); }
