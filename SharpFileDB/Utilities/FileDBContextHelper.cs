@@ -91,30 +91,32 @@ namespace SharpFileDB.Utilities
         /// <returns></returns>
         private static PageHeaderBlock AllocEmptyPageOrNewPage(this FileDBContext db)
         {
-            PageHeaderBlock block;
+            PageHeaderBlock page;
 
             FileStream fs = db.fileStream;
             DBHeaderBlock dbHeader = db.headerBlock;
             long emptyPagePos = dbHeader.FirstEmptyPagePos;
             if (emptyPagePos != 0)// 存在空白页，则使用此空白页。
             {
-                PageHeaderBlock page = fs.ReadBlock<PageHeaderBlock>(emptyPagePos);
+                PageHeaderBlock emptyPage = fs.ReadBlock<PageHeaderBlock>(emptyPagePos);
                 // 从链表中去掉此空白页。
-                dbHeader.FirstEmptyPagePos = page.NextPagePos;
-                page.NextPagePos = 0;
+                dbHeader.FirstEmptyPagePos = emptyPage.NextPagePos;
+                emptyPage.NextPagePos = 0;
 
-                block = page;
+                page = emptyPage;
             }
             else// 没有空白页，则拓展数据库文件，增加一个页的长度。
             {
-                block = new PageHeaderBlock();
-                block.ThisPos = fs.Length;
-                block.OccupiedBytes = (Int16)(Consts.pageSize - Consts.maxAvailableSpaceInPage);
-                block.AvailableBytes = Consts.maxAvailableSpaceInPage;
+                PageHeaderBlock newPage = new PageHeaderBlock();
+                newPage.ThisPos = fs.Length;
+                newPage.OccupiedBytes = (Int16)(Consts.pageSize - Consts.maxAvailableSpaceInPage);
+                newPage.AvailableBytes = Consts.maxAvailableSpaceInPage;
                 fs.SetLength(fs.Length + Consts.pageSize);
+
+                page = newPage;
             }
 
-            return block;
+            return page;
         }
     }
 

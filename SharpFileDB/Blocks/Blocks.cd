@@ -3,7 +3,7 @@
   <Class Name="SharpFileDB.Blocks.Block">
     <Position X="6.75" Y="0.5" Width="5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAgAAAAAAAAAAABAAQAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAQAAAAAgAAAAAAAAAAAAAAQAAAA=</HashCode>
       <FileName>Blocks\Block.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -22,7 +22,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAMAAAEAAAIAABgAAAAABAAAAAAAAAAABA=</HashCode>
+      <HashCode>AAAAAAAAAIAMAAAEAQAIAABgAAAAABAAAAAAAAAAABA=</HashCode>
       <FileName>Blocks\DataBlock.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -32,7 +32,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAgAAAEAIAAEIgBAAFAAQQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAQAAAAAgAAAEAIAAEIgBAAFAAQQ=</HashCode>
       <FileName>Blocks\IndexBlock.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -43,7 +43,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>BAAAAAAACAAMEAREAAAAAgAgAAAAAgAABAAhAAQIgCE=</HashCode>
+      <HashCode>BAAAAAAACAAMEAREAQAAAgAgAAAAAgAABAAhAAQIgCE=</HashCode>
       <FileName>Blocks\SkipListNodeBlock.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -65,7 +65,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAQASIEAAAAAQAEAIAAIAAgAyAAAAEAAAIBAABIAAA=</HashCode>
+      <HashCode>AAAQASIEAAAAAQAEAYAAIAAgAyAAAAEAAAIBAABIAAA=</HashCode>
       <FileName>Blocks\DBHeaderBlock.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -84,14 +84,14 @@
       <FileName>Utilities\FileStreamHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="SharpFileDB.Blocks.IDoubleLinkedNode">
+  <Interface Name="SharpFileDB.Blocks.IDoubleLinkedNode&lt;T&gt;">
     <Position X="0.5" Y="0.5" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAEIAAAAEAAAA=</HashCode>
       <FileName>Blocks\IDoubleLinkedNode.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="SharpFileDB.Blocks.IFourSideLinked">
+  <Interface Name="SharpFileDB.Blocks.IFourSideLinked&lt;T&gt;">
     <Position X="3.75" Y="0.5" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAEAABAAAAAAgAAAAAAAgAABAAAAAQAACA=</HashCode>

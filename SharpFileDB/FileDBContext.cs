@@ -22,6 +22,8 @@ namespace SharpFileDB
         /// <param name="fullname">数据库文件据对路径。</param>
         public FileDBContext(string fullname)
         {
+            this.transaction = new Transaction(this);
+
             this.Fullname = fullname;
 
             if (!File.Exists(fullname))
@@ -328,7 +330,7 @@ namespace SharpFileDB
 
         internal DBHeaderBlock headerBlock;
 
-        internal Transaction transaction = new Transaction();
+        internal Transaction transaction;// = new Transaction(this);
 
         internal Dictionary<Type, TableBlock> tableBlockDict = new Dictionary<Type, TableBlock>();
         internal Dictionary<Type, Dictionary<string, IndexBlock>> tableIndexBlockDict = new Dictionary<Type, Dictionary<string, IndexBlock>>();

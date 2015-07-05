@@ -33,6 +33,23 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public byte[] Data { get; set; }
 
+        internal override bool ArrangePos()
+        {
+            bool allArranged = true;
+
+            if (NextDataBlock != null)
+            {
+                if (NextDataBlock.ThisPos != 0)
+                { this.NextDataBlockPos = NextDataBlock.ThisPos; }
+                else
+                { allArranged = false; }
+            }
+            else
+            { this.NextDataBlockPos = 0; }
+
+            return allArranged;
+        }
+
         /// <summary>
         /// 存储到数据库文件中的一块数据。由于一页只有4KB，所以一个对象可能需要多页存储。所以我们用<see cref="DataBlock"/>来一部分一部分地存储。
         /// </summary>

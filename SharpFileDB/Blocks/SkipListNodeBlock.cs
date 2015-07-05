@@ -12,7 +12,7 @@ namespace SharpFileDB.Blocks
     /// 用于把skip list node存储到数据库文件的块。
     /// </summary>
     [Serializable]
-    public class SkipListNodeBlock : Block, IFourSideLinked, IUpdatable
+    public class SkipListNodeBlock : Block, IFourSideLinked<SkipListNodeBlock>, IUpdatable
     {
         /// <summary>
         /// 此结点的Key所在位置。
@@ -34,6 +34,37 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public DataBlock[] Value { get; set; }
 
+        internal override bool ArrangePos()
+        {
+            bool allArranged = true;
+            if (this.Key != null && this.Key.ThisPos != 0)
+            { this.KeyPos = this.Key.ThisPos; }
+            else
+            { allArranged = false; }
+
+            if (this.Value != null && this.Value.Length > 0 && this.Value[0].ThisPos != 0)
+            { this.ValuePos = this.Value[0].ThisPos; }
+            else
+            { allArranged = false; }
+
+            if (this.DownObj != null)// 此结点不是最下方的结点。
+            {
+                if (this.DownObj.ThisPos != 0)
+                { this.DownPos = this.DownObj.ThisPos; }
+                else
+                { allArranged = false; }
+            }
+
+            if (this.RightObj != null)// 此结点不是最右方的结点。
+            {
+                if (this.RightObj.ThisPos != 0)
+                { this.RightPos = this.RightObj.ThisPos; }
+                else
+                { allArranged = false; }
+            }
+
+            return allArranged;
+        }
 
         /// <summary>
         /// 用于把skip list node存储到数据库文件的块。
@@ -73,7 +104,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 数据库中不保存此值。
         /// </summary>
-        public IFourSideLinked LeftObj { get; set; }
+        public SkipListNodeBlock LeftObj { get; set; }
 
         /// <summary>
         /// 数据库中保存此值。
@@ -83,7 +114,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 数据库中不保存此值。
         /// </summary>
-        public IFourSideLinked RightObj { get; set; }
+        public SkipListNodeBlock RightObj { get; set; }
 
         /// <summary>
         /// 数据库中不保存此值。
@@ -93,7 +124,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 数据库中不保存此值。
         /// </summary>
-        public IFourSideLinked UpObj { get; set; }
+        public SkipListNodeBlock UpObj { get; set; }
 
         /// <summary>
         /// 数据库中保存此值。
@@ -103,7 +134,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 数据库中不保存此值。
         /// </summary>
-        public IFourSideLinked DownObj { get; set; }
+        public SkipListNodeBlock DownObj { get; set; }
 
         #endregion
 

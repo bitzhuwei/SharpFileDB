@@ -9,7 +9,8 @@ namespace SharpFileDB.Blocks
     /// <summary>
     /// 用于内存中的对象，便于把上下左右元素保存到数据库文件。
     /// </summary>
-    public interface IFourSideLinked
+    /// <typeparam name="T"></typeparam>
+    public interface IFourSideLinked<T>
     {
 
         /// <summary>
@@ -20,7 +21,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此对象的前一个对象。
         /// </summary>
-        IFourSideLinked LeftObj { get; set; }
+        T LeftObj { get; set; }
 
         /// <summary>
         /// 此对象的后一个对象在数据库文件中的位置。
@@ -30,7 +31,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此对象的后一个对象。
         /// </summary>
-        IFourSideLinked RightObj { get; set; }
+        T RightObj { get; set; }
 
         /// <summary>
         /// 此对象的前一个对象在数据库文件中的位置。
@@ -40,7 +41,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此对象的上一个对象。
         /// </summary>
-        IFourSideLinked UpObj { get; set; }
+        T UpObj { get; set; }
 
         /// <summary>
         /// 此对象的后一个对象在数据库文件中的位置。
@@ -50,6 +51,6 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此对象的下一个对象。
         /// </summary>
-        IFourSideLinked DownObj { get; set; }
+        T DownObj { get; set; }
     }
 }

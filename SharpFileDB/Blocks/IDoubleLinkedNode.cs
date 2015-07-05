@@ -9,7 +9,8 @@ namespace SharpFileDB.Blocks
     /// <summary>
     /// 用于内存中的对象，便于把前后元素保存到数据库文件。
     /// </summary>
-    public interface IDoubleLinkedNode
+    /// <typeparam name="T"></typeparam>
+    public interface IDoubleLinkedNode<T>
     {
 
         /// <summary>
@@ -25,11 +26,11 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此对象的上一个对象。
         /// </summary>
-        IDoubleLinkedNode PreviousObj { get; set; }
+        T PreviousObj { get; set; }
 
         /// <summary>
         /// 此对象的下一个对象。
         /// </summary>
-        IDoubleLinkedNode NextObj { get; set; }
+        T NextObj { get; set; }
     }
 }

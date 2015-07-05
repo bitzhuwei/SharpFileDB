@@ -9,7 +9,7 @@ namespace SharpFileDB.Blocks
     /// 存储数据库表信息的块。
     /// </summary>
     [Serializable]
-    public class TableBlock : Block, IDoubleLinkedNode
+    public class TableBlock : Block, IDoubleLinkedNode<TableBlock>
     {
 
         /// <summary>
@@ -26,6 +26,18 @@ namespace SharpFileDB.Blocks
         /// 此表的Index的头结点。
         /// </summary>
         public IndexBlock IndexBlockHead { get; set; }
+
+        internal override bool ArrangePos()
+        {
+            bool allArranged = true;
+
+            if (this.IndexBlockHead != null && this.IndexBlockHead.ThisPos != 0)
+            { this.IndexBlockHeadPos = this.IndexBlockHead.ThisPos; }
+            else
+            { allArranged = false; }
+
+            return allArranged;
+        }
 
         /// <summary>
         /// 存储数据库表信息的块。
@@ -77,12 +89,12 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 数据库中不保存此值。
         /// </summary>
-        public IDoubleLinkedNode PreviousObj { get; set; }
+        public TableBlock PreviousObj { get; set; }
 
         /// <summary>
         /// 数据库中不保存此值。
         /// </summary>
-        public IDoubleLinkedNode NextObj { get; set; }
+        public TableBlock NextObj { get; set; }
 
         #endregion
 

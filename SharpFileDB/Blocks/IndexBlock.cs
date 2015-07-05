@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 存储索引的块。此块在内存中充当skip list。
     /// </summary>
     [Serializable]
-    public class IndexBlock : Block, IDoubleLinkedNode
+    public class IndexBlock : Block, IDoubleLinkedNode<IndexBlock>
     {
 
         /// <summary>
@@ -21,8 +21,28 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此索引的第一列skip list结点。是skip list的头结点。
         /// 用于skip list的增删。
+        /// SkipListHeadNodes[0]是最下方的结点。
         /// </summary>
         public SkipListNodeBlock[] SkipListHeadNodes { get; set; }
+
+        internal override bool ArrangePos()
+        {
+            bool allArranged = true;
+
+            if (this.SkipListHeadNodes != null)
+            {
+                int length = this.SkipListHeadNodes.Length;
+                long pos = this.SkipListHeadNodes[length - 1].ThisPos;
+                if (pos != 0)
+                { this.SkipListHeadNodePos = pos; }
+                else
+                { allArranged = false; }
+            }
+            else
+            { allArranged = false; }
+
+            return allArranged;
+        }
 
         /// <summary>
         /// 用于加速skip list的增删。
@@ -76,12 +96,12 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 数据库中不保存此值。
         /// </summary>
-        public IDoubleLinkedNode PreviousObj { get; set; }
+        public IndexBlock PreviousObj { get; set; }
 
         /// <summary>
         /// 数据库中不保存此值。
         /// </summary>
-        public IDoubleLinkedNode NextObj { get; set; }
+        public IndexBlock NextObj { get; set; }
 
         #endregion
 

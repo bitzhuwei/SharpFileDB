@@ -49,6 +49,11 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public double ProbabilityOfSkipList { get; set; }
 
+        internal override bool ArrangePos()
+        {
+            return true;
+        }
+
         /// <summary>
         /// <see cref="TableBlock"/>的头结点。
         /// <para>头结点的<see cref="TableBlock.TableType"/>属性始终为空，所以<see cref="DBHeaderBlock"/>的序列化长度是不变的。</para>
