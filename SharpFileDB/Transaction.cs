@@ -146,6 +146,9 @@ namespace SharpFileDB
                 fs.WriteBlock(dbHeaderBlock);
                 dbHeaderBlock.IsDirty = false;
             }
+
+            fs.Flush();
+
             // TODO: 删除恢复文件。
 
             // 恢复Transaction最初的状态。

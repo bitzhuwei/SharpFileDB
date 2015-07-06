@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cat.cs" />
+    <Compile Include="DemoHowBinaryFormatterWorks.cs" />
     <Compile Include="Food.cs" />
     <Compile Include="Hobby.cs" />
     <Compile Include="Program.cs" />

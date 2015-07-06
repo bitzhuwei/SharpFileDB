@@ -26,7 +26,7 @@ namespace SharpFileDB.Utilities
         internal const Int16 pageSize = 4096;// 4KB
 
         /// <summary>
-        /// 一个页内可用的最大空间（字节数）。
+        /// 一个页内可用的最大空间（字节数）。是去掉<see cref="PageHeaderBlock"/>后剩余的字节数。
         /// </summary>
         internal static readonly Int16 maxAvailableSpaceInPage;
 

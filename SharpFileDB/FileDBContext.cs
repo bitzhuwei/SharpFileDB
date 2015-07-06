@@ -47,7 +47,9 @@ namespace SharpFileDB
             var fileStream = new FileStream(fullname, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
             this.fileStream = fileStream;
             // 准备数据库头部块。
-            DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(0);
+            PageHeaderBlock pageHeaderBlock = fileStream.ReadBlock<PageHeaderBlock>(0);
+            //long position = Consts.pageSize - Consts.maxAvailableSpaceInPage;
+            DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(fileStream.Position);
             this.headerBlock = headerBlock;
             // 准备数据库表块，保存到字典。
             TableBlock currentTableBlock = fileStream.ReadBlock<TableBlock>(fileStream.Position); //headerBlock.TableBlockHead;
@@ -118,13 +120,15 @@ namespace SharpFileDB
         /// <param name="fullname">数据库文件据对路径。</param>
         private void CreateDB(string fullname)
         {
+            FileInfo fileInfo = new FileInfo(fullname);
+            Directory.CreateDirectory(fileInfo.DirectoryName);
             using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write, FileShare.None, Consts.pageSize))
             {
-                DBHeaderBlock headerBlock = new DBHeaderBlock();
-                headerBlock.MaxLevelOfSkipList = 32;
-                headerBlock.ProbabilityOfSkipList = 0.5;
+                PageHeaderBlock pageHeaderBlock = new PageHeaderBlock() { OccupiedBytes = Consts.pageSize, AvailableBytes = 0, };
+                fs.WriteBlock(pageHeaderBlock);
+                DBHeaderBlock headerBlock = new DBHeaderBlock() { MaxLevelOfSkipList = 32, ProbabilityOfSkipList = 0.5, ThisPos = fs.Position };
                 fs.WriteBlock(headerBlock);
-                TableBlock tableBlockHead = new TableBlock() { ThisPos = fs.Length, };
+                TableBlock tableBlockHead = new TableBlock() { ThisPos = fs.Position, };
                 fs.WriteBlock(tableBlockHead);
                 //byte[] bytes = headerBlock.ToBytes();
                 //fs.Write(bytes, 0, bytes.Length);
