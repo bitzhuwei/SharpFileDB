@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SharpFileDB.TestConsole
+namespace SharpFileDB.Zoo
 {
     [Serializable]
-    class Hobby
+    public class Hobby
     {
         public double SportHour { get;set; }
 

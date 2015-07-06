@@ -44,10 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cat.cs" />
     <Compile Include="DemoHowBinaryFormatterWorks.cs" />
-    <Compile Include="Food.cs" />
-    <Compile Include="Hobby.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -55,6 +52,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharpFileDB.Zoo\SharpFileDB.Zoo.csproj">
+      <Project>{a3b24709-839d-41ad-a623-e58f50ba6bad}</Project>
+      <Name>SharpFileDB.Zoo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharpFileDB\SharpFileDB.csproj">
       <Project>{e5c7d3c7-1dd6-4c4a-b9b5-0abc33031cd1}</Project>
       <Name>SharpFileDB</Name>
@@ -64,6 +65,7 @@
     <Content Include="CatHeadPortrait.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

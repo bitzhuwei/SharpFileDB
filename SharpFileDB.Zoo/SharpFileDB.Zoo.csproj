@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E5C7D3C7-1DD6-4C4A-B9B5-0ABC33031CD1}</ProjectGuid>
+    <ProjectGuid>{A3B24709-839D-41AD-A623-E58F50BA6BAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SharpFileDB</RootNamespace>
-    <AssemblyName>SharpFileDB</AssemblyName>
+    <RootNamespace>SharpFileDB.Zoo</RootNamespace>
+    <AssemblyName>SharpFileDB.Zoo</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\SharpFileDB.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,7 +33,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,52 +40,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blocks\Block.cs" />
-    <Compile Include="Blocks\DataBlock.cs" />
-    <Compile Include="Blocks\DBHeaderBlock.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Blocks\ILinkedNode.cs" />
-    <Compile Include="Blocks\ISkipListNode.cs" />
-    <Compile Include="Blocks\IndexBlock.cs" />
-    <Compile Include="Blocks\PageHeaderBlock.cs" />
-    <Compile Include="Blocks\SkipListNodeBlock.cs" />
-    <Compile Include="Blocks\TableBlock.cs" />
-    <Compile Include="SharpFileDBHelper\IndexInfo.cs" />
-    <Compile Include="SharpFileDBHelper\SharpFileDBInfo.cs" />
-    <Compile Include="SharpFileDBHelper\TableInfo.cs" />
-    <Compile Include="Table.cs" />
-    <Compile Include="ObjectId.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="FileDBContext.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TableIndexAttribute.cs" />
-    <Compile Include="Utilities\AllocPageTypes.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Utilities\BlockHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Utilities\BytesHelper.cs" />
-    <Compile Include="Utilities\DBHeaderBlockHelper.cs" />
-    <Compile Include="Utilities\FileDBContextHelper.cs" />
-    <Compile Include="Utilities\IComparableHelper.cs" />
-    <Compile Include="Utilities\IndexBlockHelper.cs" />
-    <Compile Include="SharpFileDBHelper\SharpFileDBHelper.cs" />
-    <Compile Include="Utilities\TableHelper.cs" />
-    <Compile Include="Transaction.cs" />
-    <Compile Include="Utilities\Consts.cs" />
-    <Compile Include="Utilities\FileStreamHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Blocks\Blocks.cd" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Blocks\Blocks.png" />
+    <Compile Include="Cat.cs" />
+    <Compile Include="Food.cs" />
+    <Compile Include="Hobby.cs" />
     <Content Include="readme.txt" />
+    <Compile Include="Lion.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="CatHeadPortrait.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharpFileDB\SharpFileDB.csproj">
+      <Project>{e5c7d3c7-1dd6-4c4a-b9b5-0abc33031cd1}</Project>
+      <Name>SharpFileDB</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

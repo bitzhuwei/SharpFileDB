@@ -32,8 +32,13 @@ namespace SharpFileDB.Demo.MyNote
 
         private void UpdateAllNotes()
         {
-            Predicate<MyNote.Tables.Note> selectAll = new Predicate<MyNote.Tables.Note>(x => true);
-            IList<MyNote.Tables.Note> noteList = this.database.Retrieve(selectAll);
+            IList<MyNote.Tables.Note> noteList;
+            //Predicate<MyNote.Tables.Note> selectAll = new Predicate<MyNote.Tables.Note>(x => true);
+            //IList<MyNote.Tables.Note> noteList = this.database.Find(selectAll);
+            // 下面的方式都是可以的。
+            noteList = this.database.Find((MyNote.Tables.Note n) => true);
+            noteList = this.database.Find<MyNote.Tables.Note>(x => true); 
+            noteList = this.database.FindAll<MyNote.Tables.Note>();
 
             this.lstNotes.Items.Clear();
 

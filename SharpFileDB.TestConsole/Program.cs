@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpFileDB.Zoo;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -36,9 +37,16 @@ namespace SharpFileDB.TestConsole
             cat.KittyName = "kitty白";
             cat.Price = (new Random()).Next(1, 10);
             cat.FavoriteFood = new Food() { FoodName = "小黄鱼", };
-            //cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
+            cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
             cat.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };
+            Lion lion = new Lion();
+            lion.KittyName = "kitty白";
+            lion.Price = (new Random()).Next(1, 10);
+            lion.FavoriteFood = new Food() { FoodName = "小黄鱼", };
+            lion.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
+            lion.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };
             db.Insert(cat);
+            db.Insert(lion);
 
             //Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");
             //IList<Cat> cats = db.Retrieve(pre);

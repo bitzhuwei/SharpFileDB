@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SharpFileDB.Blocks;
 using SharpFileDB.Utilities;
 using System.Reflection;
+using System.Linq.Expressions;
 
 namespace SharpFileDB
 {
@@ -279,6 +280,8 @@ namespace SharpFileDB
         /// <param name="item"></param>
         public void Delete(Table item)
         {
+            // TOOD: 现在开始做删除操作。
+
             throw new NotImplementedException();
         }
 
@@ -288,7 +291,7 @@ namespace SharpFileDB
         /// <typeparam name="T"></typeparam>
         /// <param name="predicate">符合此条件的记录会被取出。</param>
         /// <returns></returns>
-        public IList<T> Find<T>(object predicate) where T : Table, new()
+        public IList<T> Find<T>(Expression<Func<T, bool>> predicate) where T : Table, new()
         {
             throw new NotImplementedException();
         }

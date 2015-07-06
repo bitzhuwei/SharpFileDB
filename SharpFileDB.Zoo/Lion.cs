@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace SharpFileDB.TestConsole
+namespace SharpFileDB.Zoo
 {
+
     [Serializable]
-    class Cat : Table
+    public class Lion : Table
     {
 
         public override string ToString()
         {
-            return string.Format("{0}: ￥{1}, {2}, {3}", KittyName, Price, FavoriteFood, OwnHobby);
+            return string.Format("Lion: {0}, ￥{1}, {2}, {3}", KittyName, Price, FavoriteFood, OwnHobby);
         }
         public string KittyName { get; set; }
 
@@ -23,7 +25,7 @@ namespace SharpFileDB.TestConsole
 
         public Hobby OwnHobby { get; set; }
 
-        public Cat() { }
+        public Lion() { }
 
         const string strKittyName = "N";
         const string strPrice = "P";
@@ -42,7 +44,7 @@ namespace SharpFileDB.TestConsole
             info.AddValue(strHobby, this.OwnHobby);
         }
 
-        protected Cat(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+        protected Lion(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
             this.KittyName = info.GetString(strKittyName);

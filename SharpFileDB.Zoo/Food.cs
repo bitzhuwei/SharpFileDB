@@ -4,10 +4,10 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace SharpFileDB.TestConsole
+namespace SharpFileDB.Zoo
 {
     [Serializable]
-    class Food : ISerializable
+    public class Food : ISerializable
     {
 
         public override string ToString()

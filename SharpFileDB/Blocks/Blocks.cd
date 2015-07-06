@@ -106,7 +106,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="SharpFileDB.Utilities.FileStreamHelper">
-    <Position X="6" Y="0.5" Width="4.25" />
+    <Position X="5.75" Y="0.5" Width="4.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAIA=</HashCode>
       <FileName>Utilities\FileStreamHelper.cs</FileName>
@@ -131,14 +131,14 @@
     </TypeIdentifier>
   </Class>
   <Interface Name="SharpFileDB.Blocks.ILinkedNode&lt;T&gt;">
-    <Position X="8.5" Y="2" Width="2.25" />
+    <Position X="8.25" Y="2" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAEAAAA=</HashCode>
       <FileName>Blocks\ILinkedNode.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="SharpFileDB.Blocks.ISkipListNode&lt;T&gt;">
-    <Position X="6" Y="2" Width="2.25" />
+    <Position X="5.75" Y="2" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAEAABAAAAAAgAAAAAAAgAAAAAAAAAAAAA=</HashCode>
       <FileName>Blocks\ISkipListNode.cs</FileName>
