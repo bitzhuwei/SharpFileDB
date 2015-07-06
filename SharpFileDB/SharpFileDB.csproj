@@ -71,12 +71,10 @@
     <Compile Include="Utilities\FileDBContextHelper.cs" />
     <Compile Include="Utilities\IComparableHelper.cs" />
     <Compile Include="Utilities\IndexBlockHelper.cs" />
-    <Compile Include="Utilities\SkipListNodeBlockHelper.cs" />
     <Compile Include="Utilities\TableHelper.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="Utilities\Consts.cs" />
     <Compile Include="Utilities\FileStreamHelper.cs" />
-    <Compile Include="Utilities\Int64Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Blocks\Blocks.cd" />
