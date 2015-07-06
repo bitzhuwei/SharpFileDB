@@ -10,23 +10,23 @@ namespace SharpFileDB.Blocks
     /// 用于内存中的对象，便于把前后元素保存到数据库文件。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IDoubleLinkedNode<T>
+    internal interface ILinkedNode<T>
     {
 
-        /// <summary>
-        /// 此对象的上一个对象在数据库文件中的位置。
-        /// </summary>
-        long PreviousPos { get; set; }
+        ///// <summary>
+        ///// 此对象的上一个对象在数据库文件中的位置。
+        ///// </summary>
+        //long PreviousPos { get; set; }
 
         /// <summary>
         /// 此对象的下一个对象在数据库文件中的位置。
         /// </summary>
         long NextPos { get; set; }
 
-        /// <summary>
-        /// 此对象的上一个对象。
-        /// </summary>
-        T PreviousObj { get; set; }
+        ///// <summary>
+        ///// 此对象的上一个对象。
+        ///// </summary>
+        //T PreviousObj { get; set; }
 
         /// <summary>
         /// 此对象的下一个对象。

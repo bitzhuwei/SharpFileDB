@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    public static class SkipListNodeBlockHelper
+    internal static class SkipListNodeBlockHelper
     {
 
     }

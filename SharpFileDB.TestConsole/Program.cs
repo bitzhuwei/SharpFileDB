@@ -33,8 +33,8 @@ namespace SharpFileDB.TestConsole
             FileDBContext db = new FileDBContext(fullname);
 
             Cat cat = new Cat();
-            cat.KittyName = "kitty白3";
-            cat.Price = 3;
+            cat.KittyName = "kitty白";
+            cat.Price = (new Random()).Next(1, 10);
             cat.FavoriteFood = new Food() { FoodName = "小黄鱼", };
             //cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
             cat.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };

@@ -12,7 +12,7 @@ namespace SharpFileDB
     /// <summary>
     /// 事务。执行一系列的数据库文件修改动作。
     /// </summary>
-    public class Transaction// : IDictionary<long, Blocks.Block>
+    internal class Transaction// : IDictionary<long, Blocks.Block>
     {
         private static readonly object syn = new object();
 
@@ -30,7 +30,7 @@ namespace SharpFileDB
         /// 事务。执行一系列的数据库文件修改动作。
         /// </summary>
         /// <param name="fileDBContext"></param>
-        public Transaction(FileDBContext fileDBContext)
+        internal Transaction(FileDBContext fileDBContext)
         {
             this.fileDBContext = fileDBContext;
         }
@@ -39,7 +39,7 @@ namespace SharpFileDB
         /// 添加一个准备写入数据库的块。
         /// </summary>
         /// <param name="block"></param>
-        public void Add(Blocks.Block block)
+        internal void Add(Blocks.Block block)
         {
             if (block.ThisPos == 0)// 这是一个新建的块。
             {
@@ -62,7 +62,7 @@ namespace SharpFileDB
         /// <summary>
         /// 执行事务。
         /// </summary>
-        public void Commit()
+        internal void Commit()
         {
             lock (syn)
             {
@@ -163,7 +163,7 @@ namespace SharpFileDB
         ///// </summary>
         ///// <param name="key"></param>
         ///// <param name="value"></param>
-        //public void Add(long key, Blocks.Block value)
+        //internal void Add(long key, Blocks.Block value)
         //{
         //    if(this.blockDict.ContainsKey(key))
         //    {
@@ -175,32 +175,32 @@ namespace SharpFileDB
         //    }
         //}
 
-        //public bool ContainsKey(long key)
+        //internal bool ContainsKey(long key)
         //{
         //    return this.blockDict.ContainsKey(key);
         //}
 
-        //public ICollection<long> Keys
+        //internal ICollection<long> Keys
         //{
         //    get { return this.blockDict.Keys; }
         //}
 
-        //public bool Remove(long key)
+        //internal bool Remove(long key)
         //{
         //    return this.blockDict.Remove(key);
         //}
 
-        //public bool TryGetValue(long key, out Blocks.Block value)
+        //internal bool TryGetValue(long key, out Blocks.Block value)
         //{
         //    return this.blockDict.TryGetValue(key, out value);
         //}
 
-        //public ICollection<Blocks.Block> Values
+        //internal ICollection<Blocks.Block> Values
         //{
         //    get { return this.blockDict.Values; }
         //}
 
-        //public Blocks.Block this[long key]
+        //internal Blocks.Block this[long key]
         //{
         //    get
         //    {
@@ -216,34 +216,34 @@ namespace SharpFileDB
 
         //#region ICollection<KeyValuePair<long,Block>> 成员
 
-        //public void Add(KeyValuePair<long, Blocks.Block> item)
+        //internal void Add(KeyValuePair<long, Blocks.Block> item)
         //{
         //    ICollection<KeyValuePair<long, Blocks.Block>> collection = this.blockDict;
         //    collection.Add(item);
         //}
 
-        //public void Clear()
+        //internal void Clear()
         //{
         //    this.blockDict.Clear();
         //}
 
-        //public bool Contains(KeyValuePair<long, Blocks.Block> item)
+        //internal bool Contains(KeyValuePair<long, Blocks.Block> item)
         //{
         //    return this.blockDict.Contains(item);
         //}
 
-        //public void CopyTo(KeyValuePair<long, Blocks.Block>[] array, int arrayIndex)
+        //internal void CopyTo(KeyValuePair<long, Blocks.Block>[] array, int arrayIndex)
         //{
         //    ICollection<KeyValuePair<long, Blocks.Block>> collection = this.blockDict;
         //    collection.CopyTo(array, arrayIndex);
         //}
 
-        //public int Count
+        //internal int Count
         //{
         //    get { return this.blockDict.Count; }
         //}
 
-        //public bool IsReadOnly
+        //internal bool IsReadOnly
         //{
         //    get
         //    {
@@ -252,7 +252,7 @@ namespace SharpFileDB
         //    }
         //}
 
-        //public bool Remove(KeyValuePair<long, Blocks.Block> item)
+        //internal bool Remove(KeyValuePair<long, Blocks.Block> item)
         //{
         //    ICollection<KeyValuePair<long, Blocks.Block>> collection = this.blockDict;
         //    return collection.Remove(item);
@@ -262,7 +262,7 @@ namespace SharpFileDB
 
         //#region IEnumerable<KeyValuePair<long,Block>> 成员
 
-        //public IEnumerator<KeyValuePair<long, Blocks.Block>> GetEnumerator()
+        //internal IEnumerator<KeyValuePair<long, Blocks.Block>> GetEnumerator()
         //{
         //    return this.blockDict.GetEnumerator();
         //}

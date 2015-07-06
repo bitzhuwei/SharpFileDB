@@ -10,18 +10,18 @@ namespace SharpFileDB.Blocks
     /// 用于内存中的对象，便于把上下左右元素保存到数据库文件。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IFourSideLinked<T>
+    internal interface ISkipListNode<T>
     {
 
-        /// <summary>
-        /// 此对象的前一个对象在数据库文件中的位置。
-        /// </summary>
-        long LeftPos { get; set; }
+        ///// <summary>
+        ///// 此对象的前一个对象在数据库文件中的位置。
+        ///// </summary>
+        //long LeftPos { get; set; }
 
-        /// <summary>
-        /// 此对象的前一个对象。
-        /// </summary>
-        T LeftObj { get; set; }
+        ///// <summary>
+        ///// 此对象的前一个对象。
+        ///// </summary>
+        //T LeftObj { get; set; }
 
         /// <summary>
         /// 此对象的后一个对象在数据库文件中的位置。
@@ -33,15 +33,15 @@ namespace SharpFileDB.Blocks
         /// </summary>
         T RightObj { get; set; }
 
-        /// <summary>
-        /// 此对象的前一个对象在数据库文件中的位置。
-        /// </summary>
-        long UpPos { get; set; }
+        ///// <summary>
+        ///// 此对象的前一个对象在数据库文件中的位置。
+        ///// </summary>
+        //long UpPos { get; set; }
 
-        /// <summary>
-        /// 此对象的上一个对象。
-        /// </summary>
-        T UpObj { get; set; }
+        ///// <summary>
+        ///// 此对象的上一个对象。
+        ///// </summary>
+        //T UpObj { get; set; }
 
         /// <summary>
         /// 此对象的后一个对象在数据库文件中的位置。

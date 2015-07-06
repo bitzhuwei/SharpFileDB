@@ -9,6 +9,11 @@ namespace SharpFileDB.TestConsole
     [Serializable]
     class Food : ISerializable
     {
+
+        public override string ToString()
+        {
+            return string.Format("food: {0}", this.FoodName);
+        }
         public string FoodName { get; set; }
 
         public Food() { }

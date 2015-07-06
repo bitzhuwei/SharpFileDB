@@ -18,7 +18,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="block"></param>
         /// <returns></returns>
-        public static byte[] ToBytes(this Block block)
+        internal static byte[] ToBytes(this Block block)
         {
             byte[] result;
             using (MemoryStream ms = new MemoryStream())
@@ -32,7 +32,7 @@ namespace SharpFileDB.Utilities
             return result;
         }
 
-        public static AllocPageTypes BelongedPageType(this Block block)
+        internal static AllocPageTypes BelongedPageType(this Block block)
         {
             AllocPageTypes pageType;
             Type type = block.GetType();

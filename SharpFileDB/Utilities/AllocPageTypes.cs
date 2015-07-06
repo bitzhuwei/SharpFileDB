@@ -10,7 +10,7 @@ namespace SharpFileDB.Utilities
     /// <summary>
     /// 页里存放的内容的类型。一个页的内容一般只存放一种类型。
     /// </summary>
-    public enum AllocPageTypes
+    internal enum AllocPageTypes
     {
         ///// <summary>
         ///// 空页，即使用过后被释放的页，可以重新利用。

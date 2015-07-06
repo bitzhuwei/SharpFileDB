@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    public static class IComparableHelper
+    internal static class IComparableHelper
     {
 
         /// <summary>
-        /// 把此块转换为字节数组。
+        /// 把此对象转换为字节数组。
         /// <para>最初是为索引的skip list结点的Key添加的此方法。</para>
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static byte[] ToBytes(this IComparable key)
+        internal static byte[] ToBytes(this IComparable key)
         {
             byte[] result;
             using (MemoryStream ms = new MemoryStream())

@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 数据库文件的头部。应该放在数据库文件的最开始。
     /// </summary>
     [Serializable]
-    public class DBHeaderBlock : Block, IUpdatable
+    internal class DBHeaderBlock : Block//, IUpdatable
     {
 
         private long firstTablePagePos;
@@ -25,7 +25,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 第一个存储<see cref="TableBlock"/>的页的位置。
         /// </summary>
-        public long FirstTablePagePos
+        internal long FirstTablePagePos
         {
             get { return firstTablePagePos; }
             set
@@ -41,7 +41,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 第一个存储<see cref="IndexBlock"/>的页的位置。
         /// </summary>
-        public long FirstIndexPagePos
+        internal long FirstIndexPagePos
         {
             get { return firstIndexPagePos; }
             set
@@ -57,7 +57,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 第一个存储<see cref="SkipListNodeBlock"/>的页的位置。
         /// </summary>
-        public long FirstSkipListNodePagePos
+        internal long FirstSkipListNodePagePos
         {
             get { return firstSkipListNodePagePos; }
             set
@@ -73,7 +73,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 第一个存储<see cref="DataBlock"/>的页的位置。
         /// </summary>
-        public long FirstDataPagePos
+        internal long FirstDataPagePos
         {
             get { return firstDataPagePos; }
             set
@@ -90,7 +90,7 @@ namespace SharpFileDB.Blocks
         /// 第一个存储空白页的位置。
         /// <para>当数据库删除某些内容后，可能会出现一些页不再被占用，此时它们就成为空白页。</para>
         /// </summary>
-        public long FirstEmptyPagePos
+        internal long FirstEmptyPagePos
         {
             get { return firstEmptyPagePos; }
             set
@@ -106,7 +106,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 索引使用的skip list的max level参数。
         /// </summary>
-        public int MaxLevelOfSkipList
+        internal int MaxLevelOfSkipList
         {
             get { return maxLevelOfSkipList; }
             set
@@ -122,7 +122,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 索引使用的skip list的probability参数。
         /// </summary>
-        public double ProbabilityOfSkipList
+        internal double ProbabilityOfSkipList
         {
             get { return probabilityOfSkipList; }
             set
@@ -144,12 +144,12 @@ namespace SharpFileDB.Blocks
         ///// <see cref="TableBlock"/>的头结点。
         ///// <para>头结点的<see cref="TableBlock.TableType"/>属性始终为空，所以<see cref="DBHeaderBlock"/>的序列化长度是不变的。</para>
         ///// </summary>
-        //public TableBlock TableBlockHead { get; set; }
+        //internal TableBlock TableBlockHead { get; set; }
 
         /// <summary>
         /// 数据库文件的头部。应该放在数据库文件的最开始。
         /// </summary>
-        public DBHeaderBlock()
+        internal DBHeaderBlock()
         {
             //this.TableBlockHead = new TableBlock();
         }

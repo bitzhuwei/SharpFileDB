@@ -10,13 +10,13 @@ namespace SharpFileDB.Blocks
     /// 存储索引的块。此块在内存中充当skip list。
     /// </summary>
     [Serializable]
-    public class IndexBlock : Block, IDoubleLinkedNode<IndexBlock>
+    internal class IndexBlock : Block, ILinkedNode<IndexBlock>
     {
 
         /// <summary>
         /// 此Index的第一个Skip List结点（this.SkipListHeadNodes.Last()）的位置。
         /// </summary>
-        public long SkipListHeadNodePos { get; set; }
+        internal long SkipListHeadNodePos { get; set; }
 
         /// <summary>
         /// 此索引的第一列skip list结点。是skip list的头结点。
@@ -29,7 +29,7 @@ namespace SharpFileDB.Blocks
         /// <para>/*SkipListNodes[1]↓*/</para>
         /// <para>/*SkipListNodes[0] */</para>
         /// </summary>
-        public SkipListNodeBlock[] SkipListHeadNodes { get; set; }
+        internal SkipListNodeBlock[] SkipListHeadNodes { get; set; }
 
         internal override bool ArrangePos()
         {
@@ -37,7 +37,7 @@ namespace SharpFileDB.Blocks
 
             if (this.SkipListHeadNodes != null)// 如果这里的SkipListHeadNodes == null，则说明此索引块是索引链表里的头结点。头结点是不需要SkipListHeadNodes有数据的。
             {
-                if (this.SkipListHeadNodePos == 0)// 尚未被赋值。
+                //if (this.SkipListHeadNodePos == 0)// 尚未被赋值。
                 {
                     int length = this.SkipListHeadNodes.Length;
                     if (length == 0)
@@ -52,7 +52,7 @@ namespace SharpFileDB.Blocks
 
             if (this.NextObj != null)
             {
-                if (this.NextPos == 0)// 尚未被赋值。
+                //if (this.NextPos == 0)// 尚未被赋值。
                 {
                     if (this.NextObj.ThisPos != 0)
                     { this.NextPos = this.NextObj.ThisPos; }
@@ -72,12 +72,12 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此Index代表的表的成员（字段/属性）名。
         /// </summary>
-        public string BindMember { get; set; }
+        internal string BindMember { get; set; }
 
         /// <summary>
         /// 存储索引的块。
         /// </summary>
-        public IndexBlock() { }
+        internal IndexBlock() { }
 
         const string strSkipListNodePos = "S";
         const string strCurrentLevel = "C";
@@ -107,20 +107,20 @@ namespace SharpFileDB.Blocks
 
         #region IDoubleLinkedNode 成员
 
-        /// <summary>
-        /// 数据库中不保存此值。
-        /// </summary>
-        public long PreviousPos { get; set; }
+        ///// <summary>
+        ///// 数据库中不保存此值。
+        ///// </summary>
+        //public long PreviousPos { get; set; }
 
         /// <summary>
         /// 数据库中保存此值。
         /// </summary>
         public long NextPos { get; set; }
 
-        /// <summary>
-        /// 数据库中不保存此值。
-        /// </summary>
-        public IndexBlock PreviousObj { get; set; }
+        ///// <summary>
+        ///// 数据库中不保存此值。
+        ///// </summary>
+        //public IndexBlock PreviousObj { get; set; }
 
         /// <summary>
         /// 数据库中不保存此值。
@@ -131,17 +131,17 @@ namespace SharpFileDB.Blocks
 
         public override string ToString()
         {
-            return string.Format("{0}, SkipListHeadNodePos: {1}, BindMember: {2}, NextPos: {3}, PreviousPos: {4}",
-                base.ToString(),
-                this.SkipListHeadNodePos,
-                this.BindMember,
-                this.NextPos,
-                this.PreviousPos);
-            //return string.Format("{0}, SkipListHeadNodePos: {1}, BindMember: {2}, NextPos: {3}",
+            //return string.Format("{0}, SkipListHeadNodePos: {1}, BindMember: {2}, NextPos: {3}, PreviousPos: {4}",
             //    base.ToString(),
             //    this.SkipListHeadNodePos,
             //    this.BindMember,
-            //    this.NextPos);
+            //    this.NextPos,
+            //    this.PreviousPos);
+            return string.Format("{0}, SkipListHeadNodePos: {1}, BindMember: {2}, NextPos: {3}",
+                base.ToString(),
+                this.SkipListHeadNodePos,
+                this.BindMember,
+                this.NextPos);
         }
     }
 }

@@ -13,28 +13,28 @@ namespace SharpFileDB.Utilities
     /// <summary>
     /// 文件数据库所用各项常量。
     /// </summary>
-    public class Consts
+    internal class Consts
     {
         /// <summary>
         /// 序列化/反序列化工具。
         /// </summary>
-        public static readonly BinaryFormatter formatter = new BinaryFormatter();
+        internal static readonly BinaryFormatter formatter = new BinaryFormatter();
 
         /// <summary>
         /// 一页的大小。4KB
         /// </summary>
-        public const Int16 pageSize = 4096;// 4KB
+        internal const Int16 pageSize = 4096;// 4KB
 
         /// <summary>
         /// 一个页内可用的最大空间（字节数）。
         /// </summary>
-        public static readonly Int16 maxAvailableSpaceInPage;
+        internal static readonly Int16 maxAvailableSpaceInPage;
 
         /// <summary>
         /// <see cref="DataBlock.Data"/>的最大长度。
-        /// 据上一次测试（2015-07-05_15-05-00）此值为3925 = <see cref="Consts.pageSize"/> - 175。
+        /// 据上一次测试（2015-07-06_13-41-00）此值为3763 = <see cref="Consts.pageSize"/> - 333。
         /// </summary>
-        public static readonly Int16 maxDataBytes;
+        internal static readonly Int16 maxDataBytes;
 
         /// <summary>
         /// 系统启动时初始化一个页内可用的最大空间（字节数）。

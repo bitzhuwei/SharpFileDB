@@ -8,6 +8,11 @@ namespace SharpFileDB.TestConsole
     [Serializable]
     class Cat : Table
     {
+
+        public override string ToString()
+        {
+            return string.Format("{0}: ￥{1}, {2}, {3}", KittyName, Price, FavoriteFood, OwnHobby);
+        }
         public string KittyName { get; set; }
 
         public int Price { get; set; }

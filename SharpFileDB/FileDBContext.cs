@@ -55,8 +55,8 @@ namespace SharpFileDB
             while (currentTableBlock.NextPos != 0)
             {
                 TableBlock tableBlock = fileStream.ReadBlock<TableBlock>(currentTableBlock.NextPos);
-                tableBlock.PreviousObj = currentTableBlock;
-                tableBlock.PreviousPos = currentTableBlock.ThisPos;
+                //tableBlock.PreviousObj = currentTableBlock;
+                //tableBlock.PreviousPos = currentTableBlock.ThisPos;
 
                 currentTableBlock.NextObj = tableBlock;
 
@@ -80,8 +80,8 @@ namespace SharpFileDB
             while (currentIndexBlock.NextPos != 0)
             {
                 IndexBlock indexBlock = fileStream.ReadBlock<IndexBlock>(currentIndexBlock.NextPos);
-                indexBlock.PreviousObj = currentIndexBlock;
-                indexBlock.PreviousPos = currentIndexBlock.ThisPos;
+                //indexBlock.PreviousObj = currentIndexBlock;
+                //indexBlock.PreviousPos = currentIndexBlock.ThisPos;
                 SkipListNodeBlock[] headNodes = GetHeadNodesOfSkipListNodeBlock(fileStream, indexBlock);
                 indexBlock.SkipListHeadNodes = headNodes;
 
@@ -201,7 +201,7 @@ namespace SharpFileDB
             for (int i = dataBlockCount - 1 - 1; i >= 0; i--)
             {
                 DataBlock block = new DataBlock() { ObjectLength = bytes.Length, };
-                block.NextDataBlock = dataBlocks[i + 1];
+                block.NextObj = dataBlocks[i + 1];
                 block.Data = new byte[Consts.maxDataBytes];
                 for (int p = i * Consts.maxDataBytes, q = 0; q < Consts.maxDataBytes; p++, q++)
                 { block.Data[q] = bytes[p]; }
@@ -244,7 +244,7 @@ namespace SharpFileDB
                         current = block;
                     }
 
-                    indexBlock.PreviousObj = indexBlockHead;
+                    //indexBlock.PreviousObj = indexBlockHead;
                     indexBlock.NextObj = indexBlockHead.NextObj;
 
                     indexBlockHead.NextObj = indexBlock;
@@ -324,9 +324,9 @@ namespace SharpFileDB
                     int index = 0;// index == dataBlock.ObjectLength - 1时，dataBlock.NextDataBlockPos也就正好应该等于0了。
                     for (int i = 0; i < dataBlock.Data.Length; i++)
                     { valueBytes[index++] = dataBlock.Data[i]; }
-                    while (dataBlock.NextDataBlockPos != 0)
+                    while (dataBlock.NextPos != 0)
                     {
-                        dataBlock = fs.ReadBlock<DataBlock>(dataBlock.NextDataBlockPos);
+                        dataBlock = fs.ReadBlock<DataBlock>(dataBlock.NextPos);
                         for (int i = 0; i < dataBlock.Data.Length; i++)
                         { valueBytes[index++] = dataBlock.Data[i]; }
                     }

@@ -11,5 +11,10 @@ namespace SharpFileDB.TestConsole
         public double SportHour { get;set; }
 
         public string Note { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("sport hour: {0}, note: {1}", SportHour, Note);
+        }
     }
 }

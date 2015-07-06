@@ -12,27 +12,27 @@ namespace SharpFileDB.Blocks
     /// 用于把skip list node存储到数据库文件的块。
     /// </summary>
     [Serializable]
-    public class SkipListNodeBlock : Block, IFourSideLinked<SkipListNodeBlock>, IUpdatable
+    internal class SkipListNodeBlock : Block, ISkipListNode<SkipListNodeBlock>//, IUpdatable
     {
         /// <summary>
         /// 此结点的Key所在位置。
         /// </summary>
-        public long KeyPos { get; set; }
+        internal long KeyPos { get; set; }
 
         /// <summary>
         /// 用于存储此结点的Key的块。
         /// </summary>
-        public DataBlock Key { get;set; }
+        internal DataBlock Key { get;set; }
 
         /// <summary>
         /// 此结点的Value的第一个块所在位置。
         /// </summary>
-        public long ValuePos { get; set; }
+        internal long ValuePos { get; set; }
 
         /// <summary>
         /// 用于存储此结点的Value的块。
         /// </summary>
-        public DataBlock[] Value { get; set; }
+        internal DataBlock[] Value { get; set; }
 
         internal override bool ArrangePos()
         {
@@ -40,7 +40,7 @@ namespace SharpFileDB.Blocks
 
             if (this.Key != null)
             {
-                if (this.KeyPos == 0)// 尚未被赋值。
+                //if (this.KeyPos == 0)// 尚未被赋值。
                 {
                     if (this.Key.ThisPos != 0)
                     { this.KeyPos = this.Key.ThisPos; }
@@ -51,7 +51,7 @@ namespace SharpFileDB.Blocks
 
             if (this.Value != null)
             {
-                if (this.ValuePos == 0)// 尚未被赋值。
+                //if (this.ValuePos == 0)// 尚未被赋值。
                 {
                     if (this.Value[0].ThisPos != 0)
                     { this.ValuePos = this.Value[0].ThisPos; }
@@ -62,7 +62,7 @@ namespace SharpFileDB.Blocks
 
             if (this.DownObj != null)// 此结点不是最下方的结点。
             {
-                if (this.DownPos == 0)// 尚未被赋值。
+                //if (this.DownPos == 0)// 尚未被赋值。
                 {
                     if (this.DownObj.ThisPos != 0)
                     { this.DownPos = this.DownObj.ThisPos; }
@@ -89,7 +89,7 @@ namespace SharpFileDB.Blocks
         ///// 获取Key和Value处于头结点状态的<see cref="SkipListNodeBlock"/>对象。
         ///// </summary>
         ///// <returns></returns>
-        //public static SkipListNodeBlock GetHeadNode()
+        //internal static SkipListNodeBlock GetHeadNode()
         //{
         //    SkipListNodeBlock headNode = new SkipListNodeBlock();
         //    // 初始化时是头结点的状态。
@@ -103,7 +103,7 @@ namespace SharpFileDB.Blocks
         /// 用于把skip list node存储到数据库文件的块。
         /// 此时代表的Key和Value都为null，代表一个头结点。
         /// </summary>
-        public SkipListNodeBlock() { }
+        internal SkipListNodeBlock() { }
 
         const string strKeyPos = "K";
         const string strValuePos = "V";
@@ -131,15 +131,15 @@ namespace SharpFileDB.Blocks
 
         #region IFourSideLinked 成员
 
-        /// <summary>
-        /// 数据库中不保存此值。
-        /// </summary>
-        public long LeftPos { get; set; }
+        ///// <summary>
+        ///// 数据库中不保存此值。
+        ///// </summary>
+        //public long LeftPos { get; set; }
 
-        /// <summary>
-        /// 数据库中不保存此值。
-        /// </summary>
-        public SkipListNodeBlock LeftObj { get; set; }
+        ///// <summary>
+        ///// 数据库中不保存此值。
+        ///// </summary>
+        //public SkipListNodeBlock LeftObj { get; set; }
 
         /// <summary>
         /// 数据库中保存此值。
@@ -151,15 +151,15 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public SkipListNodeBlock RightObj { get; set; }
 
-        /// <summary>
-        /// 数据库中不保存此值。
-        /// </summary>
-        public long UpPos { get; set; }
+        ///// <summary>
+        ///// 数据库中不保存此值。
+        ///// </summary>
+        //public long UpPos { get; set; }
 
-        /// <summary>
-        /// 数据库中不保存此值。
-        /// </summary>
-        public SkipListNodeBlock UpObj { get; set; }
+        ///// <summary>
+        ///// 数据库中不保存此值。
+        ///// </summary>
+        //public SkipListNodeBlock UpObj { get; set; }
 
         /// <summary>
         /// 数据库中保存此值。
@@ -173,11 +173,11 @@ namespace SharpFileDB.Blocks
 
         #endregion
 
-        #region IUpdatable 成员
+        //#region IUpdatable 成员
 
-        public bool IsDirty { get; set; }
+        //public bool IsDirty { get; set; }
 
-        #endregion
+        //#endregion
 
         public override string ToString()
         {

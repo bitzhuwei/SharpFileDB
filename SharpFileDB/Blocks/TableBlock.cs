@@ -9,23 +9,23 @@ namespace SharpFileDB.Blocks
     /// 存储数据库表信息的块。
     /// </summary>
     [Serializable]
-    public class TableBlock : Block, IDoubleLinkedNode<TableBlock>
+    internal class TableBlock : Block, ILinkedNode<TableBlock>
     {
 
         /// <summary>
         /// 此表的数据类型。必须是继承自<see cref="Table"/>的类型。
         /// </summary>
-        public Type TableType { get; set; }
+        internal Type TableType { get; set; }
 
         /// <summary>
         /// 此表的Index的头结点的位置。
         /// </summary>
-        public long IndexBlockHeadPos { get; set; }
+        internal long IndexBlockHeadPos { get; set; }
 
         /// <summary>
         /// 此表的Index的头结点。
         /// </summary>
-        public IndexBlock IndexBlockHead { get; set; }
+        internal IndexBlock IndexBlockHead { get; set; }
 
         internal override bool ArrangePos()
         {
@@ -33,7 +33,7 @@ namespace SharpFileDB.Blocks
 
             if (this.IndexBlockHead != null)// 如果IndexBlockHead == null，则说明此块为TableBlock的头结点。头结点是不需要持有索引块的。
             {
-                if (this.IndexBlockHeadPos == 0)// 尚未被赋值。
+                //if (this.IndexBlockHeadPos == 0)// 尚未被赋值。
                 {
                     if (this.IndexBlockHead.ThisPos != 0)
                     { this.IndexBlockHeadPos = this.IndexBlockHead.ThisPos; }
@@ -44,7 +44,7 @@ namespace SharpFileDB.Blocks
 
             if (this.NextObj != null)
             {
-                if (this.NextPos == 0)// 尚未被赋值。
+                //if (this.NextPos == 0)// 尚未被赋值。
                 {
                     if (this.NextObj.ThisPos != 0)
                     { this.NextPos = this.NextObj.ThisPos; }
@@ -59,7 +59,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 存储数据库表信息的块。
         /// </summary>
-        public TableBlock() { }
+        internal TableBlock() { }
 
         const string strTableType = "T";
         const string strIndexBlockHeadPos = "I";
@@ -94,20 +94,20 @@ namespace SharpFileDB.Blocks
 
         #region IDoubleLinkedNode 成员
 
-        /// <summary>
-        /// 数据库中不保存此值。
-        /// </summary>
-        public long PreviousPos { get; set; }
+        ///// <summary>
+        ///// 数据库中不保存此值。
+        ///// </summary>
+        //public long PreviousPos { get; set; }
 
         /// <summary>
         /// 数据库中保存此值。
         /// </summary>
         public long NextPos { get; set; }
 
-        /// <summary>
-        /// 数据库中不保存此值。
-        /// </summary>
-        public TableBlock PreviousObj { get; set; }
+        ///// <summary>
+        ///// 数据库中不保存此值。
+        ///// </summary>
+        //public TableBlock PreviousObj { get; set; }
 
         /// <summary>
         /// 数据库中不保存此值。

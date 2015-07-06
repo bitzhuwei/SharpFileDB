@@ -27,6 +27,10 @@ namespace SharpFileDB
         {
         }
 
+        /// <summary>
+        /// 显示此条记录的Id。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("Id: {0}", this.Id);

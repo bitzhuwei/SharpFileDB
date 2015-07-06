@@ -47,10 +47,9 @@
     <Compile Include="Blocks\DBHeaderBlock.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Blocks\IDoubleLinkedNode.cs" />
-    <Compile Include="Blocks\IFourSideLinkedNode.cs" />
+    <Compile Include="Blocks\ILinkedNode.cs" />
+    <Compile Include="Blocks\ISkipListNode.cs" />
     <Compile Include="Blocks\IndexBlock.cs" />
-    <Compile Include="Blocks\IUpdatable.cs" />
     <Compile Include="Blocks\PageHeaderBlock.cs" />
     <Compile Include="Blocks\SkipListNodeBlock.cs" />
     <Compile Include="Blocks\TableBlock.cs" />

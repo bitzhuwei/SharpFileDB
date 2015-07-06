@@ -12,7 +12,7 @@ namespace SharpFileDB.Utilities
     /// <summary>
     /// IndexBlock充当了skip list node block的skip list角色。
     /// </summary>
-    public static class IndexBlockHelper
+    internal static class IndexBlockHelper
     {
         static readonly Random rand = new Random();
 
@@ -23,7 +23,7 @@ namespace SharpFileDB.Utilities
         /// <param name="item">新插入的记录。</param>
         /// <param name="dataBlocksForValue">为新插入的记录安排好的数据块。</param>
         /// <param name="db">数据库上下文。</param>
-        public static void Add(this IndexBlock indexBlock, Table item, DataBlock[] dataBlocksForValue, FileDBContext db)
+        internal static void Add(this IndexBlock indexBlock, Table item, DataBlock[] dataBlocksForValue, FileDBContext db)
         {
             Type type = item.GetType();
             PropertyInfo property = type.GetProperty(indexBlock.BindMember);
@@ -189,7 +189,7 @@ namespace SharpFileDB.Utilities
         ///// <param name="indexBlock">索引。</param>
         ///// <param name="item">新插入的记录。</param>
         ///// <param name="db">数据库上下文。</param>
-        //public static void Add(this IndexBlock indexBlock, Table item, FileDBContext db)
+        //internal static void Add(this IndexBlock indexBlock, Table item, FileDBContext db)
         //{
         //    Type type = item.GetType();
         //    PropertyInfo property = type.GetProperty(indexBlock.BindMember);

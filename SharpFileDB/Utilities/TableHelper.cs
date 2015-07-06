@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    public static class TableHelper
+    internal static class TableHelper
     {
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="table"></param>
         /// <returns></returns>
-        public static byte[] ToBytes(this Table table)
+        internal static byte[] ToBytes(this Table table)
         {
             byte[] result;
             using (MemoryStream ms = new MemoryStream())

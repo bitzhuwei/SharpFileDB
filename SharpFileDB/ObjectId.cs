@@ -24,7 +24,7 @@ namespace SharpFileDB
         {
         }
 
-        public ObjectId(string value)
+        internal ObjectId(string value)
             : this(DecodeHex(value))
         {
         }
@@ -34,19 +34,23 @@ namespace SharpFileDB
             Value = value;
         }
 
-        public static ObjectId Empty
+        internal static ObjectId Empty
         {
             get { return new ObjectId("000000000000000000000000"); }
         }
 
-        public byte[] Value { get; private set; }
+        internal byte[] Value { get; private set; }
 
+        /// <summary>
+        /// 获取一个新的<see cref="ObjectId"/>。
+        /// </summary>
+        /// <returns></returns>
         public static ObjectId NewId()
         {
             return new ObjectId { Value = ObjectIdGenerator.Generate() };
         }
 
-        public static bool TryParse(string value, out ObjectId objectId)
+        internal static bool TryParse(string value, out ObjectId objectId)
         {
             objectId = Empty;
             if (value == null || value.Length != 24)
@@ -82,11 +86,19 @@ namespace SharpFileDB
             return bytes;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
             return Value != null ? ToString().GetHashCode() : 0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             if (_string == null && Value != null)
@@ -99,27 +111,43 @@ namespace SharpFileDB
             return _string;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             var other = obj as ObjectId;
             return Equals(other);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public bool Equals(ObjectId other)
         {
             return other != null && ToString() == other.ToString();
         }
 
-        public static implicit operator string(ObjectId objectId)
-        {
-            return objectId == null ? null : objectId.ToString();
-        }
+        //public static implicit operator string(ObjectId objectId)
+        //{
+        //    return objectId == null ? null : objectId.ToString();
+        //}
 
-        public static implicit operator ObjectId(string value)
-        {
-            return new ObjectId(value);
-        }
+        //public static implicit operator ObjectId(string value)
+        //{
+        //    return new ObjectId(value);
+        //}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
         public static bool operator ==(ObjectId left, ObjectId right)
         {
             if (ReferenceEquals(left, right))
@@ -135,6 +163,12 @@ namespace SharpFileDB
             return left.Equals(right);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
         public static bool operator !=(ObjectId left, ObjectId right)
         {
             return !(left == right);
@@ -160,6 +194,11 @@ namespace SharpFileDB
 
         #region IComparable<ObjectId> 成员
 
+        /// <summary>
+        /// 根据<see cref="ObjectId.ToString()"/>的值比较两个对象。
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public int CompareTo(ObjectId other)
         {
             if (other == null) { return 1; }
@@ -175,6 +214,11 @@ namespace SharpFileDB
 
         #region IComparable 成员
 
+        /// <summary>
+        /// 根据<see cref="ObjectId.ToString()"/>的值比较两个对象。
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public int CompareTo(object obj)
         {
             ObjectId other = obj as ObjectId;
@@ -194,7 +238,7 @@ namespace SharpFileDB
         private static readonly byte[] _processId =
           BitConverter.GetBytes(GenerateProcessId());
 
-        public static byte[] Generate()
+        internal static byte[] Generate()
         {
             var oid = new byte[12];
             var copyidx = 0;

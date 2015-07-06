@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    public static class DBHeaderBlockHelper
+    internal static class DBHeaderBlockHelper
     {
 
         /// <summary>
@@ -16,7 +16,7 @@ namespace SharpFileDB.Utilities
         /// <param name="dbHeaderBlock"></param>
         /// <param name="type"></param>
         /// <param name="value"></param>
-        public static void SetPosOfFirstPage(this DBHeaderBlock dbHeaderBlock, AllocPageTypes type, long value)
+        internal static void SetPosOfFirstPage(this DBHeaderBlock dbHeaderBlock, AllocPageTypes type, long value)
         {
             switch (type)
             {
@@ -44,7 +44,7 @@ namespace SharpFileDB.Utilities
         /// <param name="dbHeaderBlock"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static long GetPosOfFirstPage(this DBHeaderBlock dbHeaderBlock, AllocPageTypes type)
+        internal static long GetPosOfFirstPage(this DBHeaderBlock dbHeaderBlock, AllocPageTypes type)
         {
             long position;
             switch (type)

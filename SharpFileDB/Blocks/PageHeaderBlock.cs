@@ -11,31 +11,31 @@ namespace SharpFileDB.Blocks
     /// 页的头部，可代表一个页。此块应在每个页的最开始处。
     /// </summary>
     [Serializable]
-    public class PageHeaderBlock : Block, IUpdatable
+    internal class PageHeaderBlock : Block//, IUpdatable
     {
 
         /// <summary>
         /// 此页剩余的可用字节数。剩余的可用字节都在页的末尾。
         /// <para>剩余可用字节数+被使用的字节数+页中间那些七零八落的空白字节数（由删除操作造成）=页长度（4KB）</para>
         /// </summary>
-        public Int16 AvailableBytes { get; set; }
+        internal Int16 AvailableBytes { get; set; }
 
         /// <summary>
         /// 此页内已被使用的字节数。
         /// <para>剩余可用字节数+被使用的字节数+页中间那些七零八落的空白字节数（由删除操作造成）=页长度（4KB）</para>
         /// </summary>
-        public Int16 OccupiedBytes { get; set; }
+        internal Int16 OccupiedBytes { get; set; }
 
         ///// <summary>
         ///// 此页的类型（即此页存储的内容的类型）。
         ///// </summary>
-        //public AllocPageTypes PageType { get; set; }
+        //internal AllocPageTypes PageType { get; set; }
 
         /// <summary>
         /// 此页的下一页的位置。
         /// <para>只有当此页为空白页时，此值才有效。</para>
         /// </summary>
-        public long NextPagePos { get; set; }
+        internal long NextPagePos { get; set; }
 
 
         internal override bool ArrangePos()
@@ -46,7 +46,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 页的头部，可代表一个页。此块应在每个页的最开始处。
         /// </summary>
-        public PageHeaderBlock() { }
+        internal PageHeaderBlock() { }
 
         const string strAvailableBytes = "A";
         const string strOccupiedBytes = "O";
@@ -71,11 +71,11 @@ namespace SharpFileDB.Blocks
         }
 
 
-        #region IUpdatable 成员
+        //#region IUpdatable 成员
 
-        public bool IsDirty { get; set; }
+        //public bool IsDirty { get; set; }
 
-        #endregion
+        //#endregion
 
         public override string ToString()
         {

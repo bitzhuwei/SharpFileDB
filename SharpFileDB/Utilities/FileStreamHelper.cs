@@ -18,7 +18,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="fileStream">数据库文件流。</param>
         /// <param name="block"></param>
-        public static void WriteBlock(this FileStream fileStream, Block block)
+        internal static void WriteBlock(this FileStream fileStream, Block block)
         {
             if (fileStream.Length < block.ThisPos)
             {
@@ -35,7 +35,7 @@ namespace SharpFileDB.Utilities
         /// <param name="fileStream"></param>
         /// <param name="position">块所在位置。</param>
         /// <returns></returns>
-        public static T ReadBlock<T>(this FileStream fileStream, long position) where T : Block
+        internal static T ReadBlock<T>(this FileStream fileStream, long position) where T : Block
         {
             fileStream.Seek(position, SeekOrigin.Begin);
             object obj = Consts.formatter.Deserialize(fileStream);
@@ -51,7 +51,7 @@ namespace SharpFileDB.Utilities
         ///// <param name="fileStream"></param>
         ///// <param name="position">对象所在位置。</param>
         ///// <returns></returns>
-        //public static T ReadObject<T>(this FileStream fileStream, long position)
+        //internal static T ReadObject<T>(this FileStream fileStream, long position)
         //{
         //    if (position < 0)
         //    { return default(T); }
