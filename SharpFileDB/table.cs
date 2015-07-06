@@ -18,7 +18,7 @@ namespace SharpFileDB
         /// This Id is used for diffrentiate instances of 'table's.
         /// </summary>
         [TableIndex]// 标记为索引，这是每个表都有的主键。
-        public ObjectId Id { get; set; }
+        public ObjectId Id { get; internal set; }
 
         /// <summary>
         /// 创建一个文件对象，在用<code>FileDBContext.Insert();</code>将此对象保存到数据库之前，此对象的Id为null。
