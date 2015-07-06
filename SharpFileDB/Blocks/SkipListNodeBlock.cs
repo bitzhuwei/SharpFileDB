@@ -73,7 +73,7 @@ namespace SharpFileDB.Blocks
 
             if (this.RightObj != null)// 此结点不是最右方的结点。
             {
-                if (this.RightPos == 0)// 尚未被赋值。
+                //if (this.RightPos == 0)// this.RightPos可能是旧值，所以此处不应以0作为判定标志。//尚未被赋值。
                 {
                     if (this.RightObj.ThisPos != 0)
                     { this.RightPos = this.RightObj.ThisPos; }

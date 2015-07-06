@@ -49,14 +49,14 @@ namespace SharpFileDB.Utilities
             FileStream fs = db.fileStream;
             int maxLevel = db.headerBlock.MaxLevelOfSkipList;
 
-            //SkipListNodeBlock right = null;
             IComparable rightKey = null;
             if (rightNodes[0].RightPos != 0)
             {
-                SkipListNodeBlock right = fs.ReadObject<SkipListNodeBlock>(rightNodes[0].RightPos);
-                rightNodes[0].RightObj = right;
-                DataBlock keyDataBlock = fs.ReadObject<DataBlock>(right.KeyPos);
-                rightKey = keyDataBlock.Data.ToObject<IComparable>();
+                if (rightNodes[0].RightObj == null)
+                { rightNodes[0].RightObj = fs.ReadBlock<SkipListNodeBlock>(rightNodes[0].RightPos); }
+                if (rightNodes[0].RightObj.Key == null)
+                { rightNodes[0].RightObj.Key = fs.ReadBlock<DataBlock>(rightNodes[0].RightObj.KeyPos); }
+                rightKey = rightNodes[0].RightObj.Key.Data.ToObject<IComparable>();
             }
             if ((rightNodes[0].RightPos != 0)
                 && (rightKey.CompareTo(key) == 0))// key相等，说明Value相同。此处不再使用NGenerics的Comparer<TKey>.Default这种可指定外部比较工具的模式，是因为那会由于忘记编写合适的比较工具而带来隐藏地很深的bug。
@@ -162,19 +162,22 @@ namespace SharpFileDB.Utilities
             {
                 while ((currentNode.RightPos != 0))
                 {
-                    SkipListNodeBlock right = fs.ReadObject<SkipListNodeBlock>(currentNode.RightPos);
-                    DataBlock keyDataBlock = fs.ReadObject<DataBlock>(right.KeyPos);
-                    IComparable rightKey = keyDataBlock.Data.ToObject<IComparable>();
+                    if (currentNode.RightObj == null)
+                    { currentNode.RightObj = fs.ReadBlock<SkipListNodeBlock>(currentNode.RightPos); }
+                    if (currentNode.RightObj.Key == null)
+                    { currentNode.RightObj.Key = fs.ReadBlock<DataBlock>(currentNode.RightObj.KeyPos); }
+                    IComparable rightKey = currentNode.RightObj.Key.Data.ToObject<IComparable>();
                     if (rightKey.CompareTo(key) < 0)
-                    { currentNode = right; }
+                    { currentNode = currentNode.RightObj; }
                     else
                     { break; }
                 }
                 rightNodes[i] = currentNode;
                 if (i > 0)
                 {
-                    SkipListNodeBlock down = fs.ReadObject<SkipListNodeBlock>(currentNode.DownPos);
-                    currentNode = down;
+                    if (currentNode.DownObj == null)
+                    { currentNode.DownObj = fs.ReadBlock<SkipListNodeBlock>(currentNode.DownPos); }
+                    currentNode = currentNode.DownObj;
                 }
             }
             return rightNodes;

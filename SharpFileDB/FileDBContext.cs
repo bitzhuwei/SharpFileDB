@@ -313,9 +313,10 @@ namespace SharpFileDB
                     currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
                     currentHeadNodePos = currentHeadNode.DownPos;
                 }
-                while (currentHeadNode.RightPos != 0)
+                SkipListNodeBlock current = currentHeadNode;
+                while (current.RightPos != 0)
                 {
-                    SkipListNodeBlock node = fs.ReadBlock<SkipListNodeBlock>(currentHeadNode.RightPos);
+                    SkipListNodeBlock node = fs.ReadBlock<SkipListNodeBlock>(current.RightPos);
                     DataBlock dataBlock = fs.ReadBlock<DataBlock>(node.ValuePos);
 
                     byte[] valueBytes = new byte[dataBlock.ObjectLength];
@@ -334,7 +335,7 @@ namespace SharpFileDB
 
                     result.Add(item);
 
-                    currentHeadNode = node;
+                    current = node;
                 }
             }
 
