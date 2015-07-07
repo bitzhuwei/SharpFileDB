@@ -50,7 +50,7 @@ namespace SharpFileDB.SharpFileDBHelper
             while (tablePos != 0)
             {
                 PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(tablePos);
-                builder.Append(string.Format(" {0} ->", pageInfo.ThisPos));
+                builder.Append(string.Format(" {0}[{1}] ->", pageInfo.ThisPos, pageInfo.ThisPos / Consts.pageSize));
                 tablePos = pageInfo.NextPagePos;
             }
             builder.AppendLine();
@@ -61,7 +61,7 @@ namespace SharpFileDB.SharpFileDBHelper
             while (indexPos != 0)
             {
                 PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(indexPos);
-                builder.Append(string.Format(" {0} ->", pageInfo.ThisPos));
+                builder.Append(string.Format(" {0}[{1}] ->", pageInfo.ThisPos, pageInfo.ThisPos / Consts.pageSize));
                 indexPos = pageInfo.NextPagePos;
             }
             builder.AppendLine();
@@ -72,7 +72,7 @@ namespace SharpFileDB.SharpFileDBHelper
             while (skiplistnodePos != 0)
             {
                 PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(skiplistnodePos);
-                builder.Append(string.Format(" {0} ->", pageInfo.ThisPos));
+                builder.Append(string.Format(" {0}[{1}] ->", pageInfo.ThisPos, pageInfo.ThisPos / Consts.pageSize));
                 skiplistnodePos = pageInfo.NextPagePos;
             }
             builder.AppendLine();
@@ -83,7 +83,7 @@ namespace SharpFileDB.SharpFileDBHelper
             while (dataBlockPos != 0)
             {
                 PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(dataBlockPos);
-                builder.Append(string.Format(" {0} ->", pageInfo.ThisPos));
+                builder.Append(string.Format(" {0}[{1}] ->", pageInfo.ThisPos, pageInfo.ThisPos / Consts.pageSize));
                 dataBlockPos = pageInfo.NextPagePos;
             }
             builder.AppendLine();
@@ -94,7 +94,7 @@ namespace SharpFileDB.SharpFileDBHelper
             while (emptyPos != 0)
             {
                 PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(emptyPos);
-                builder.Append(string.Format(" {0} ->", pageInfo.ThisPos));
+                builder.Append(string.Format(" {0}[{1}] ->", pageInfo.ThisPos, pageInfo.ThisPos / Consts.pageSize));
                 emptyPos = pageInfo.NextPagePos;
             }
             builder.AppendLine();
@@ -189,37 +189,6 @@ namespace SharpFileDB.SharpFileDBHelper
 
                             current = current.RightObj;
                         }
-                        //long currentHeadNodePos = indexBlock.SkipListHeadNodePos;
-                        //SkipListNodeBlock currentHeadNode = null;
-                        //while (currentHeadNodePos != 0)
-                        //{
-                        //    currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
-                        //    currentHeadNodePos = currentHeadNode.DownPos;
-                        //}
-                        //SkipListNodeBlock currentSkipListNode = currentHeadNode;
-                        //while (currentSkipListNode.RightPos != 0)
-                        //{
-                        //    SkipListNodeBlock node = fs.ReadBlock<SkipListNodeBlock>(currentSkipListNode.RightPos);
-                        //    DataBlock dataBlock = fs.ReadBlock<DataBlock>(node.ValuePos);
-
-                        //    byte[] valueBytes = new byte[dataBlock.ObjectLength];
-
-                        //    int index = 0;// index == dataBlock.ObjectLength - 1时，dataBlock.NextDataBlockPos也就正好应该等于0了。
-                        //    for (int i = 0; i < dataBlock.Data.Length; i++)
-                        //    { valueBytes[index++] = dataBlock.Data[i]; }
-                        //    while (dataBlock.NextPos != 0)
-                        //    {
-                        //        dataBlock = fs.ReadBlock<DataBlock>(dataBlock.NextPos);
-                        //        for (int i = 0; i < dataBlock.Data.Length; i++)
-                        //        { valueBytes[index++] = dataBlock.Data[i]; }
-                        //    }
-
-                        //    Table item = valueBytes.ToObject<Table>();
-
-                        //    tableInfo.Add(item);
-
-                        //    currentSkipListNode = node;
-                        //}
 
                         primaryKey = false;
                     }

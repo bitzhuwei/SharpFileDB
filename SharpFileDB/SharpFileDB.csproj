@@ -90,6 +90,7 @@
   <ItemGroup>
     <Content Include="Blocks\Blocks.png" />
     <Content Include="readme.txt" />
+    <Content Include="SharpFileDBHelper\readme.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
