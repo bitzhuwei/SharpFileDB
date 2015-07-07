@@ -14,7 +14,7 @@ namespace SharpFileDB.Blocks
     {
 
         /// <summary>
-        /// 此Index的第一个Skip List结点（this.SkipListHeadNodes.Last()）的位置。
+        /// 此Index代表的Skip List的头结点列的最上方的结点（this.SkipListHeadNodes.Last()）的位置。
         /// </summary>
         internal long SkipListHeadNodePos { get; set; }
 
@@ -30,6 +30,24 @@ namespace SharpFileDB.Blocks
         /// <para>/*SkipListNodes[0] */</para>
         /// </summary>
         internal SkipListNodeBlock[] SkipListHeadNodes { get; set; }
+
+        /// <summary>
+        /// 此Index代表的Skip List的尾结点列的最上方的结点（this.SkipListHeadNodes.Last()）的位置。
+        /// </summary>
+        internal long SkipListTailNodePos { get; set; }
+
+        /// <summary>
+        /// 此索引的最后一列skip list结点。是skip list的尾结点。
+        /// 用于skip list的增删。
+        /// <para>SkipListTailNodes[0]是最下方的结点。</para>
+        /// <para>/*SkipListTailNodes[maxLevel - 1]↓*/</para>
+        /// <para>/*SkipListTailNodes[.]↓*/</para>
+        /// <para>/*SkipListTailNodes[.]↓*/</para>
+        /// <para>/*SkipListTailNodes[2]↓*/</para>
+        /// <para>/*SkipListTailNodes[1]↓*/</para>
+        /// <para>/*SkipListTailNodes[0] */</para>
+        /// </summary>
+        internal SkipListNodeBlock[] SkipListTailNodes { get; set; }
 
         internal override bool ArrangePos()
         {
@@ -79,7 +97,8 @@ namespace SharpFileDB.Blocks
         /// </summary>
         internal IndexBlock() { }
 
-        const string strSkipListNodePos = "S";
+        const string strSkipListHeadNodePos = "H";
+        const string strSkipListTailNodePos = "T";
         const string strCurrentLevel = "C";
         const string strBindMember = "M";
 
@@ -87,7 +106,8 @@ namespace SharpFileDB.Blocks
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
-            info.AddValue(strSkipListNodePos, this.SkipListHeadNodePos);
+            info.AddValue(strSkipListHeadNodePos, this.SkipListHeadNodePos);
+            info.AddValue(strSkipListTailNodePos, this.SkipListTailNodePos);
             info.AddValue(strCurrentLevel, this.CurrentLevel);
             info.AddValue(strBindMember, this.BindMember);
 
@@ -97,7 +117,8 @@ namespace SharpFileDB.Blocks
         protected IndexBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
-            this.SkipListHeadNodePos = info.GetInt64(strSkipListNodePos);
+            this.SkipListHeadNodePos = info.GetInt64(strSkipListHeadNodePos);
+            this.SkipListTailNodePos = info.GetInt64(strSkipListTailNodePos);
             this.CurrentLevel = info.GetInt32(strCurrentLevel);
             this.BindMember = info.GetString(strBindMember);
 

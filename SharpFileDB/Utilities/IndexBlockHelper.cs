@@ -39,22 +39,31 @@ namespace SharpFileDB.Utilities
             var key = property.GetValue(record) as IComparable;
 
             IComparable rightKey = null;
+
             SkipListNodeBlock[] rightNodes = FindRightMostNodes(key, indexBlock, db);
 
-            rightNodes[0].TryLoadRightDownObj(fs, LoadOptions.RightObj);
-            if(rightNodes[0].RightObj != null)
-            { rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs); }
+            if (rightNodes[0].RightPos != indexBlock.SkipListTailNodes[0].ThisPos)
+            {
+                rightNodes[0].TryLoadRightDownObj(fs, LoadOptions.RightObj);
+                rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs);
+            }
+            else
+            { rightNodes[0].RightObj = indexBlock.SkipListTailNodes[0]; }
+
             // See if we actually found the node
-            if ((rightNodes[0].RightObj != null) && (rightKey.CompareTo(key) == 0))
+            if ((rightNodes[0].RightObj != indexBlock.SkipListTailNodes[0]) && (rightKey.CompareTo(key) == 0))
             {
                 for (int i = 0; i <= indexBlock.CurrentLevel; i++)
                 {
                     // Since the node is consecutive levels, as soon as we don't find it on the next
                     // level, we can stop.
+                    if (rightNodes[i].RightPos == indexBlock.SkipListTailNodes[i].ThisPos)
+                    { throw new Exception(string.Format("[{0}].RightPos should point to a valid node!", rightNodes[i])); }
+
                     rightNodes[i].TryLoadRightDownObj(fs, LoadOptions.RightObj);
-                    if(rightNodes[i].RightObj!=null)
+                    //if (rightNodes[i].RightObj != null)
                     { rightKey = rightNodes[i].RightObj.Key.GetObject<IComparable>(fs); }
-                    if ((rightNodes[i].RightObj != null) && (rightKey.CompareTo(key) == 0))
+                    if ((rightNodes[i].RightObj != null) && (rightKey.CompareTo(key) == 0))// 这应该永远都是true，为什么还要判断呢？！
                     {
                         db.transaction.Add(rightNodes[i]);
                         db.transaction.Delete(rightNodes[i].RightObj);
@@ -62,7 +71,7 @@ namespace SharpFileDB.Utilities
                         rightNodes[i].RightObj = rightNodes[i].RightObj.RightObj;
                     }
                     else
-                    { break; }
+                    { break; }// 这不应该发生啊。?!
                 }
 
                 //return true;
@@ -109,13 +118,17 @@ namespace SharpFileDB.Utilities
             int maxLevel = db.headerBlock.MaxLevelOfSkipList;
 
             IComparable rightKey = null;
-            rightNodes[0].TryLoadRightDownObj(fs, LoadOptions.RightObj);
-            if (rightNodes[0].RightObj != null)
+            if (rightNodes[0].RightPos != indexBlock.SkipListTailNodes[0].ThisPos)
             {
+                rightNodes[0].TryLoadRightDownObj(fs, LoadOptions.RightObj);
                 rightNodes[0].RightObj.TryLoadRightDownObj(fs, LoadOptions.Key);
                 rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs);
             }
-            if ((rightNodes[0].RightObj != null)
+            else
+            { rightNodes[0].RightObj = indexBlock.SkipListTailNodes[0]; }
+
+
+            if ((rightNodes[0].RightObj != indexBlock.SkipListTailNodes[0])
                 && (rightKey.CompareTo(key) == 0))// key相等，说明Value相同。此处不再使用NGenerics的Comparer<TKey>.Default这种可指定外部比较工具的模式，是因为那会由于忘记编写合适的比较工具而带来隐藏地很深的bug。
             {
                 throw new Exception("Item Already In List");
@@ -168,7 +181,7 @@ namespace SharpFileDB.Utilities
                 db.transaction.Add(dataBlockForKey);// 加入事务，准备写入数据库。
             }
 
-            //    //itemsCount++;// 有的在内存，有的在文件，因此itemsCount不好使了。
+            //itemsCount++;// 有的在内存，有的在文件，因此itemsCount不好使了。
         }
 
         private static int PickRandomLevel(FileDBContext db, IndexBlock indexBlock)

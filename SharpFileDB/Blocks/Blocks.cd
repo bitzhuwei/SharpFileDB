@@ -44,7 +44,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAQAAAAAgAAAEIAAAEAgBAAFAAQQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAEAQAAAIAwAAAEIAAAEAgBAAlAAQA=</HashCode>
       <FileName>Blocks\IndexBlock.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -108,7 +108,7 @@
   <Class Name="SharpFileDB.Utilities.FileStreamHelper">
     <Position X="5.75" Y="0.5" Width="4.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAIA=</HashCode>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAIA=</HashCode>
       <FileName>Utilities\FileStreamHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
