@@ -46,40 +46,31 @@ namespace SharpFileDB.Blocks
 
             if (this.SkipListHeadNodes != null)// 如果这里的SkipListHeadNodes == null，则说明此索引块是索引链表里的头结点。头结点是不需要SkipListHeadNodes有数据的。
             {
-                //if (this.SkipListHeadNodePos == 0)// 尚未被赋值。
-                {
-                    int length = this.SkipListHeadNodes.Length;
-                    if (length == 0)
-                    { throw new Exception("SKip List's head nodes has 0 element!"); }
-                    long pos = this.SkipListHeadNodes[length - 1].ThisPos;
-                    if (pos != 0)
-                    { this.SkipListHeadNodePos = pos; }
-                    else
-                    { allArranged = false; }
-                }
+                int length = this.SkipListHeadNodes.Length;
+                if (length == 0)
+                { throw new Exception("SKip List's head nodes has 0 element!"); }
+                long pos = this.SkipListHeadNodes[length - 1].ThisPos;
+                if (pos != 0)
+                { this.SkipListHeadNodePos = pos; }
+                else
+                { allArranged = false; }
             }
 
             if (this.SkipListTailNode != null)// 如果这里的SkipListTailNodes == null，则说明此索引块是索引链表里的头结点。头结点是不需要SkipListTailNodes有数据的。
             {
-                //if (this.SkipListHeadNodePos == 0)// 尚未被赋值。
-                {
-                    long pos = this.SkipListTailNode.ThisPos;
-                    if (pos != 0)
-                    { this.SkipListTailNodePos = pos; }
-                    else
-                    { allArranged = false; }
-                }
+                long pos = this.SkipListTailNode.ThisPos;
+                if (pos != 0)
+                { this.SkipListTailNodePos = pos; }
+                else
+                { allArranged = false; }
             }
 
             if (this.NextObj != null)
             {
-                //if (this.NextPos == 0)// 尚未被赋值。
-                {
-                    if (this.NextObj.ThisPos != 0)
-                    { this.NextPos = this.NextObj.ThisPos; }
-                    else
-                    { allArranged = false; }
-                }
+                if (this.NextObj.ThisPos != 0)
+                { this.NextPos = this.NextObj.ThisPos; }
+                else
+                { allArranged = false; }
             }
 
             return allArranged;
@@ -131,20 +122,10 @@ namespace SharpFileDB.Blocks
 
         #region IDoubleLinkedNode 成员
 
-        ///// <summary>
-        ///// 数据库中不保存此值。
-        ///// </summary>
-        //public long PreviousPos { get; set; }
-
         /// <summary>
         /// 数据库中保存此值。
         /// </summary>
         public long NextPos { get; set; }
-
-        ///// <summary>
-        ///// 数据库中不保存此值。
-        ///// </summary>
-        //public IndexBlock PreviousObj { get; set; }
 
         /// <summary>
         /// 数据库中不保存此值。
@@ -155,12 +136,6 @@ namespace SharpFileDB.Blocks
 
         public override string ToString()
         {
-            //return string.Format("{0}, SkipListHeadNodePos: {1}, BindMember: {2}, NextPos: {3}, PreviousPos: {4}",
-            //    base.ToString(),
-            //    this.SkipListHeadNodePos,
-            //    this.BindMember,
-            //    this.NextPos,
-            //    this.PreviousPos);
             return string.Format("{0}, SkipListHeadNodePos: {1}, BindMember: {2}, NextPos: {3}",
                 base.ToString(),
                 this.SkipListHeadNodePos,

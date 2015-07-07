@@ -38,13 +38,13 @@ namespace SharpFileDB.Utilities
             // 准备Key。
             var key = property.GetValue(record) as IComparable;
 
-            IComparable rightKey = null;
-
             SkipListNodeBlock[] rightNodes = FindRightMostNodes(key, indexBlock, db);
 
+            IComparable rightKey = null;
             if (rightNodes[0].RightPos != indexBlock.SkipListTailNode.ThisPos)
             {
                 rightNodes[0].TryLoadRightDownObj(fs, LoadOptions.RightObj);
+                rightNodes[0].RightObj.TryLoadRightDownObj(fs, LoadOptions.Key);
                 rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs);
             }
             else
@@ -58,20 +58,24 @@ namespace SharpFileDB.Utilities
                     // Since the node is consecutive levels, as soon as we don't find it on the next
                     // level, we can stop.
                     if (rightNodes[i].RightPos == indexBlock.SkipListTailNode.ThisPos)
-                    { throw new Exception(string.Format("[{0}].RightPos should point to a valid node!", rightNodes[i])); }
+                    {
+                        continue;
+                        //throw new Exception(string.Format("[{0}].RightPos should point to a valid node!", rightNodes[i]));
+                    }
 
                     rightNodes[i].TryLoadRightDownObj(fs, LoadOptions.RightObj);
-                    //if (rightNodes[i].RightObj != null)
-                    { rightKey = rightNodes[i].RightObj.Key.GetObject<IComparable>(fs); }
-                    if ((rightNodes[i].RightObj != null) && (rightKey.CompareTo(key) == 0))// 这应该永远都是true，为什么还要判断呢？！
+                    rightKey = rightNodes[i].RightObj.Key.GetObject<IComparable>(fs);
+                    if ((rightNodes[i].RightObj != indexBlock.SkipListTailNode) && (rightKey.CompareTo(key) == 0))
                     {
+                        rightNodes[i].RightObj.TryLoadRightDownObj(fs, LoadOptions.RightObj);
+
                         db.transaction.Add(rightNodes[i]);
                         db.transaction.Delete(rightNodes[i].RightObj);
 
                         rightNodes[i].RightObj = rightNodes[i].RightObj.RightObj;
                     }
-                    else
-                    { break; }// 这不应该发生啊。?!
+                    else// 要删除的结点的高度比CurrentLevel低，所以会走到这里。
+                    { break; }
                 }
 
                 //return true;
@@ -152,8 +156,6 @@ namespace SharpFileDB.Utilities
                 nodeList.Add(newNode);
 
                 // Insert the item in the first level
-                //newNode.Right = rightNodes[0].Right;
-                //rightNodes[0].Right = newNode;
                 newNode.RightObj = rightNodes[0].RightObj;
                 rightNodes[0].RightObj = newNode;
 
@@ -202,7 +204,6 @@ namespace SharpFileDB.Utilities
         private static SkipListNodeBlock[] FindRightMostNodes(IComparable key, IndexBlock indexBlock, FileDBContext db)
         {
             FileStream fs = db.fileStream;
-
             int maxLevel = db.headerBlock.MaxLevelOfSkipList;
 
             SkipListNodeBlock[] rightNodes = new SkipListNodeBlock[maxLevel];
@@ -212,15 +213,15 @@ namespace SharpFileDB.Utilities
 
             for (int i = indexBlock.CurrentLevel; i >= 0; i--)
             {
-                while ((currentNode.RightPos != indexBlock.SkipListTailNode.ThisPos))
+                while (true)
                 {
+                    if (!(currentNode.RightPos != indexBlock.SkipListTailNode.ThisPos)) { break; }
                     currentNode.TryLoadRightDownObj(fs, LoadOptions.RightObj);
                     currentNode.RightObj.TryLoadRightDownObj(fs, LoadOptions.Key);
                     IComparable rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fs);
-                    if (rightKey.CompareTo(key) < 0)
-                    { currentNode = currentNode.RightObj; }
-                    else
-                    { break; }
+                    if (!(rightKey.CompareTo(key) < 0)) { break; }
+
+                    currentNode = currentNode.RightObj;
                 }
                 rightNodes[i] = currentNode;
                 if (i > 0)

@@ -23,9 +23,7 @@ namespace SharpFileDB
         /// <summary>
         /// 创建一个文件对象，在用<code>FileDBContext.Insert();</code>将此对象保存到数据库之前，此对象的Id为null。
         /// </summary>
-        public Table()
-        {
-        }
+        public Table() { }
 
         /// <summary>
         /// 显示此条记录的Id。
@@ -54,11 +52,7 @@ namespace SharpFileDB
         /// <param name="context"></param>
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            // 187
-            //string id = this.Id.ToString();//这比用byte[]占的字节多
-            // 185
-            byte[] value = this.Id.Value;
-
+            byte[] value = this.Id.Value;//byte[]比this.Id.ToString()占用的字节少2个字节。
             info.AddValue(strId, value);
         }
 
@@ -74,8 +68,6 @@ namespace SharpFileDB
         /// <param name="context"></param>
         protected Table(SerializationInfo info, StreamingContext context)
         {
-            //string str = info.GetString(strId);
-            //this.Id = new DocumentId(str);
             byte[] value = (byte[])info.GetValue(strId, typeof(byte[]));
             this.Id = new ObjectId(value);
         }

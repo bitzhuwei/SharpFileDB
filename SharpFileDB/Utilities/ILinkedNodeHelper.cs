@@ -65,21 +65,25 @@ namespace SharpFileDB.Utilities
     [Flags]
     internal enum LoadOptions
     {
+
         /// <summary>
         /// 应加载RightObj
         /// </summary>
-        RightObj,
+        RightObj = 1,
+
         /// <summary>
         /// 应加载DownObj
         /// </summary>
-        DownObj,
+        DownObj = 2,
+
         /// <summary>
         /// 应加载Key
         /// </summary>
-        Key,
+        Key = 4,
+
         /// <summary>
         /// 应加载Value
         /// </summary>
-        Value,
+        Value = 8,
     }
 }

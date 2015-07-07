@@ -13,11 +13,13 @@ namespace SharpFileDB.Blocks
     [Serializable]
     internal abstract class Block : ISerializable
     {
-        protected static int IDCounter = 0;
+#if DEBUG
+        protected static long IDCounter = 0;
         /// <summary>
         /// 用于给此块标记一个编号，仅为便于调试之用。
         /// </summary>
-        internal int blockID;
+        internal long blockID;
+#endif
 
         /// <summary>
         /// 此对象自身在数据库文件中的位置。为0时说明尚未指定位置。只有<see cref="DBHeaderBlock"/>的位置才应该为0。
@@ -25,20 +27,31 @@ namespace SharpFileDB.Blocks
         /// </summary>
         internal long ThisPos { get; set; }
 
-        ///// <summary>
-        ///// 此块是否已更新（需要写入数据库）。
-        ///// </summary>
-        //internal bool IsDirty { get; set; }
-
         /// <summary>
         /// 存储到数据库文件的一块内容。
         /// </summary>
-        internal Block() { this.blockID = IDCounter++; }
-        //internal Block() { this.IsDirty = true; }
+        internal Block()
+        {
+#if DEBUG
+            this.blockID = IDCounter++;
+#endif
+        }
+
+        const string strBlockID = "";
 
         #region ISerializable 成员
 
-        public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
+        /// <summary>
+        /// 序列化时系统会调用此方法。
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+#if DEBUG
+            info.AddValue(strBlockID, this.blockID);
+#endif
+        }
 
         #endregion
 
@@ -49,12 +62,18 @@ namespace SharpFileDB.Blocks
         /// <param name="context"></param>
         protected Block(SerializationInfo info, StreamingContext context)
         {
-            this.blockID = IDCounter++;
+#if DEBUG
+            this.blockID = info.GetInt64(strBlockID);
+#endif
         }
 
         public override string ToString()
         {
-            return string.Format("ID:{0}, Pos: {1}", this.blockID, this.ThisPos);
+#if DEBUG
+            return string.Format("{0}: ID:{1}, Pos: {2}",this.GetType().Name, this.blockID, this.ThisPos);
+#else
+            return string.Format("{0}: Pos: {1}", this.GetType().Name, this.ThisPos);
+#endif
         }
 
         /// <summary>

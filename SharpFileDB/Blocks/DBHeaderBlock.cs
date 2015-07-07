@@ -149,10 +149,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 数据库文件的头部。应该放在数据库文件的最开始。
         /// </summary>
-        internal DBHeaderBlock()
-        {
-            //this.TableBlockHead = new TableBlock();
-        }
+        internal DBHeaderBlock() { }
 
         const string strFirstTablePagePos = "T";
         const string strFirstIndexPagePos = "I";
@@ -161,8 +158,6 @@ namespace SharpFileDB.Blocks
         const string strFirstEmptyPagePos = "E";
         const string strMaxLevel = "M";
         const string strProbability = "P";
-
-        //const string strTableBlockHead = "H";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
@@ -173,8 +168,6 @@ namespace SharpFileDB.Blocks
             info.AddValue(strFirstEmptyPagePos, this.FirstEmptyPagePos);
             info.AddValue(strMaxLevel, this.MaxLevelOfSkipList);
             info.AddValue(strProbability, this.ProbabilityOfSkipList);
-
-            //info.AddValue(strTableBlockHead, this.TableBlockHead);
         }
 
         protected DBHeaderBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
@@ -187,8 +180,6 @@ namespace SharpFileDB.Blocks
             this.FirstEmptyPagePos = info.GetInt64(strFirstEmptyPagePos);
             this.MaxLevelOfSkipList = info.GetInt32(strMaxLevel);
             this.ProbabilityOfSkipList = info.GetDouble(strProbability);
-
-            //this.TableBlockHead = (TableBlock)info.GetValue(strTableBlockHead, typeof(TableBlock));
         }
 
 

@@ -34,7 +34,7 @@ namespace SharpFileDB
                 {
                     CreateDB(fullname);
                 }
-                
+
                 InitializeDB(fullname, read);
             }
             else
@@ -67,7 +67,6 @@ namespace SharpFileDB
             }
             // 准备数据库头部块。
             PageHeaderBlock pageHeaderBlock = fileStream.ReadBlock<PageHeaderBlock>(0);
-            //long position = Consts.pageSize - Consts.maxAvailableSpaceInPage;
             DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(fileStream.Position);
             this.headerBlock = headerBlock;
             // 准备数据库表块，保存到字典。
@@ -76,8 +75,6 @@ namespace SharpFileDB
             while (currentTableBlock.NextPos != 0)
             {
                 TableBlock tableBlock = fileStream.ReadBlock<TableBlock>(currentTableBlock.NextPos);
-                //tableBlock.PreviousObj = currentTableBlock;
-                //tableBlock.PreviousPos = currentTableBlock.ThisPos;
 
                 currentTableBlock.NextObj = tableBlock;
 
@@ -160,13 +157,13 @@ namespace SharpFileDB
             {
                 PageHeaderBlock pageHeaderBlock = new PageHeaderBlock() { OccupiedBytes = Consts.pageSize, AvailableBytes = 0, };
                 fs.WriteBlock(pageHeaderBlock);
+
                 DBHeaderBlock headerBlock = new DBHeaderBlock() { MaxLevelOfSkipList = 32, ProbabilityOfSkipList = 0.5, ThisPos = fs.Position };
                 fs.WriteBlock(headerBlock);
+
                 TableBlock tableBlockHead = new TableBlock() { ThisPos = fs.Position, };
                 fs.WriteBlock(tableBlockHead);
-                //byte[] bytes = headerBlock.ToBytes();
-                //fs.Write(bytes, 0, bytes.Length);
-                //byte[] leftSpace = new byte[Consts.pageSize - bytes.Length];
+
                 byte[] leftSpace = new byte[Consts.pageSize - fs.Length];
                 fs.Write(leftSpace, 0, leftSpace.Length);
             }
@@ -186,11 +183,9 @@ namespace SharpFileDB
             {
                 IndexBlock indexBlockHead = new IndexBlock();
                 TableBlock tableBlock = new TableBlock() { TableType = type, IndexBlockHead = indexBlockHead, };
-                tableBlock.NextObj = this.tableBlockHead.NextObj;// this.headerBlock.TableBlockHead.NextObj;
-                //this.headerBlock.TableBlockHead.NextObj = tableBlock;
+                tableBlock.NextObj = this.tableBlockHead.NextObj;
                 this.tableBlockHead.NextObj = tableBlock;
 
-                //this.transaction.Add(this.headerBlock.TableBlockHead);// 加入事务，准备写入数据库。
                 this.transaction.Add(this.tableBlockHead);// 加入事务，准备写入数据库。
                 this.transaction.Add(tableBlock);// 加入事务，准备写入数据库。
                 this.transaction.Add(indexBlockHead);// 加入事务，准备写入数据库。
@@ -270,7 +265,6 @@ namespace SharpFileDB
 
                     InitHeadTailNodes(indexBlock, maxLevel);
 
-                    //indexBlock.PreviousObj = indexBlockHead;
                     indexBlock.NextObj = indexBlockHead.NextObj;
 
                     indexBlockHead.NextObj = indexBlock;
@@ -351,17 +345,21 @@ namespace SharpFileDB
 
             // 删除record。
             {
-                DataBlock[] dataBlocksForValue = GetDataBlocks(record, type);
-                if (dataBlocksForValue == null)// 此记录根本不存在或已经被删除过一次了。
+                SkipListNodeBlock downNode = GetDownNode(record, type);
+
+                if (downNode == null)// 此记录根本不存在或已经被删除过一次了。
                 { throw new Exception(string.Format("no data blocks for [{0}]", record)); }
+
+                downNode.TryLoadRightDownObj(fileStream, LoadOptions.Key | LoadOptions.Value);
 
                 foreach (KeyValuePair<string, IndexBlock> item in this.tableIndexBlockDict[type])
                 {
                     item.Value.Delete(record, this);
                 }
 
-                for (int i = 0; i < dataBlocksForValue.Length; i++)
-                { this.transaction.Delete(dataBlocksForValue[i]); }// 加入事务，准备写入数据库。
+                for (int i = 0; i < downNode.Value.Length; i++)
+                { this.transaction.Delete(downNode.Value[i]); }// 加入事务，准备写入数据库。
+                this.transaction.Delete(downNode.Key);// 加入事务，准备写入数据库。
             }
 
             this.transaction.Commit();
@@ -373,7 +371,7 @@ namespace SharpFileDB
         /// <param name="record"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        private DataBlock[] GetDataBlocks(Table record, Type type)
+        private SkipListNodeBlock GetDownNode(Table record, Type type)
         {
             FileStream fileStream = this.fileStream;
 
@@ -384,8 +382,7 @@ namespace SharpFileDB
 
             if (node != null)
             {
-                node.TryLoadRightDownObj(fileStream, LoadOptions.Value);
-                return node.Value;
+                return node;
             }
             else
             {
@@ -402,7 +399,7 @@ namespace SharpFileDB
 
             while (true)
             {
-                if(currentNode.RightPos!=indexBlock.SkipListTailNode.ThisPos)
+                if (currentNode.RightPos != indexBlock.SkipListTailNode.ThisPos)
                 {
                     currentNode.TryLoadRightDownObj(fileStream, LoadOptions.RightObj);
                     currentNode.RightObj.TryLoadRightDownObj(fileStream, LoadOptions.Key);
@@ -482,46 +479,20 @@ namespace SharpFileDB
                     currentHeadNode.DownObj.TryLoadRightDownObj(fs, LoadOptions.DownObj);
                     currentHeadNode = currentHeadNode.DownObj;
                 }
-                //while (currentHeadNodePos != 0)
-                //{
-                //    currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
-                //    currentHeadNodePos = currentHeadNode.DownPos;
-                //}
-                SkipListNodeBlock current = currentHeadNode;
-                current.TryLoadRightDownObj(fs, LoadOptions.RightObj);
-                while (current.RightObj.RightPos != 0)
-                //while (current.RightPos!= firstIndex.SkipListTailNodes)
-                {
-                    current.RightObj.TryLoadRightDownObj(fs, LoadOptions.Value);
-                    T item = current.RightObj.Value.GetObject<T>(this);
 
+                SkipListNodeBlock current = currentHeadNode;
+
+                while (current.RightPos != 0)
+                {
+                    current.TryLoadRightDownObj(fs, LoadOptions.RightObj);
+                    if (current.RightObj.RightPos == 0)
+                    { break; }
+                    current.RightObj.TryLoadRightDownObj(fs, LoadOptions.RightObj | LoadOptions.Value);
+                    T item = current.RightObj.Value.GetObject<T>(this);
                     result.Add(item);
 
                     current = current.RightObj;
                 }
-            //    while (current.RightPos != 0)
-            //    {
-            //        SkipListNodeBlock node = fs.ReadBlock<SkipListNodeBlock>(current.RightPos);
-            //        DataBlock dataBlock = fs.ReadBlock<DataBlock>(node.ValuePos);
-
-            //        byte[] valueBytes = new byte[dataBlock.ObjectLength];
-
-            //        int index = 0;// index == dataBlock.ObjectLength - 1时，dataBlock.NextDataBlockPos也就正好应该等于0了。
-            //        for (int i = 0; i < dataBlock.Data.Length; i++)
-            //        { valueBytes[index++] = dataBlock.Data[i]; }
-            //        while (dataBlock.NextPos != 0)
-            //        {
-            //            dataBlock = fs.ReadBlock<DataBlock>(dataBlock.NextPos);
-            //            for (int i = 0; i < dataBlock.Data.Length; i++)
-            //            { valueBytes[index++] = dataBlock.Data[i]; }
-            //        }
-
-            //        T item = valueBytes.ToObject<T>();
-
-            //        result.Add(item);
-
-            //        current = node;
-            //    }
             }
 
             return result;
@@ -588,7 +559,7 @@ namespace SharpFileDB
 
         internal TableBlock tableBlockHead;
 
-        internal Transaction transaction;// = new Transaction(this);
+        internal Transaction transaction;
 
         internal Dictionary<Type, TableBlock> tableBlockDict = new Dictionary<Type, TableBlock>();
         internal Dictionary<Type, Dictionary<string, IndexBlock>> tableIndexBlockDict = new Dictionary<Type, Dictionary<string, IndexBlock>>();

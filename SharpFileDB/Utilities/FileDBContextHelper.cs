@@ -24,7 +24,6 @@ namespace SharpFileDB.Utilities
             IList<AllocatedSpace> result = new List<AllocatedSpace>();
 
             FileStream fs = db.fileStream;
-            //Blocks.DBHeaderBlock dbHeader = db.headerBlock;
 
             long allocated = 0;
             while (allocated < length)
@@ -34,15 +33,10 @@ namespace SharpFileDB.Utilities
                 PageHeaderBlock page = PickPage(db, partLength, type);
                 if (!db.transaction.affectedPages.ContainsKey(page.ThisPos))// 加入缓存备用。
                 { db.transaction.affectedPages.Add(page.ThisPos, page); }
-                //page.AvailableBytes -= partLength;
-                //page.OccupiedBytes += partLength;
-                //AllocatedSpace item = new AllocatedSpace(page, (Int16)length);
                 AllocatedSpace item = new AllocatedSpace(page.ThisPos + Consts.pageSize - page.AvailableBytes - partLength, (Int16)length);
                 result.Add(item);
                 allocated += partLength;
             }
-
-            //dbHeader.IsDirty = true;
 
             return result;
         }
@@ -126,12 +120,9 @@ namespace SharpFileDB.Utilities
                 }
                 else// 与后续的页进行比较。
                 {
-                    //long currentPos = headPos;
                     PageHeaderBlock current = head;
-                    //long currentPos = previous.NextPagePos;
                     while (current.NextPagePos != 0)
                     {
-                        //PageHeaderBlock next = fs.ReadBlock<PageHeaderBlock>(current.NextPagePos);
                         PageHeaderBlock next = GetPageHeaderBlock(fs, ts, current.NextPagePos);
                         if (page.AvailableBytes >= next.AvailableBytes)
                         {
@@ -228,17 +219,6 @@ namespace SharpFileDB.Utilities
             this.position = position;
             this.length = length;
         }
-
-        ///// <summary>
-        ///// 从给定页申请到了指定长度的空闲空间。
-        ///// </summary>
-        ///// <param name="page"></param>
-        ///// <param name="length"></param>
-        //internal AllocatedSpace(PageHeaderBlock page, Int16 length)
-        //{
-        //    this.position = (page.ThisPos + (Consts.pageSize - page.AvailableBytes));
-        //    this.length = length;
-        //}
 
         public override string ToString()
         {

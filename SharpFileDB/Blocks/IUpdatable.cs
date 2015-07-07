@@ -11,9 +11,11 @@ namespace SharpFileDB.Blocks
     /// </summary>
     internal interface IUpdatable
     {
+
         /// <summary>
         /// 标识此块是否需要重新写入数据库文件。
         /// </summary>
         bool IsDirty { get; set; }
+
     }
 }

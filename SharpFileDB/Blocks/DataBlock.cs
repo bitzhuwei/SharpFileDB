@@ -17,17 +17,6 @@ namespace SharpFileDB.Blocks
         /// </summary>
         internal Int32 ObjectLength { get; set; }// RULE: 一个Table序列化后的最大长度为Int32.MaxValue个字节。
 
-        ///// <summary>
-        ///// 下一个数据块的位置。
-        ///// <para>如果此值为0，则说明没有下一块。</para>
-        ///// </summary>
-        //internal long NextPos { get; set; }
-
-        ///// <summary>
-        ///// 链表的下一个结点。
-        ///// </summary>
-        //internal DataBlock NextObj { get; set; }
-
         /// <summary>
         /// 数据块。
         /// </summary>
@@ -39,13 +28,10 @@ namespace SharpFileDB.Blocks
 
             if (NextObj != null)
             {
-                //if (this.NextPos == 0)// 尚未被赋值。
-                {
-                    if (NextObj.ThisPos != 0)
-                    { this.NextPos = NextObj.ThisPos; }
-                    else
-                    { allArranged = false; }
-                }
+                if (NextObj.ThisPos != 0)
+                { this.NextPos = NextObj.ThisPos; }
+                else
+                { allArranged = false; }
             }
 
             return allArranged;
@@ -87,16 +73,6 @@ namespace SharpFileDB.Blocks
 
         #region ILinkedNode<DataBlock> 成员
 
-        ///// <summary>
-        ///// 下一个数据块的位置。
-        ///// <para>如果此值为0，则说明没有下一块。</para>
-        ///// </summary>
-        //internal long NextPos { get; set; }
-
-        ///// <summary>
-        ///// 链表的下一个结点。
-        ///// </summary>
-        //internal DataBlock NextObj { get; set; }
         /// <summary>
         /// 下一个数据块的位置。
         /// <para>如果此值为0，则说明没有下一块。</para>
@@ -104,7 +80,7 @@ namespace SharpFileDB.Blocks
         public long NextPos { get; set; }
 
         /// <summary>
-        /// 链表的下一个结点。
+        /// 数据块链表的下一个结点。
         /// </summary>
         public DataBlock NextObj { get; set; }
 

@@ -26,11 +26,6 @@ namespace SharpFileDB.Blocks
         /// </summary>
         internal Int16 OccupiedBytes { get; set; }
 
-        ///// <summary>
-        ///// 此页的类型（即此页存储的内容的类型）。
-        ///// </summary>
-        //internal AllocPageTypes PageType { get; set; }
-
         /// <summary>
         /// 此页的下一页的位置。
         /// <para>只有当此页为空白页时，此值才有效。</para>
@@ -57,7 +52,6 @@ namespace SharpFileDB.Blocks
         {
             info.AddValue(strAvailableBytes, this.AvailableBytes);
             info.AddValue(strOccupiedBytes, this.OccupiedBytes);
-            //info.AddValue(strPageType, this.PageType);
             info.AddValue(strNextPagePos, this.NextPagePos);
         }
 
@@ -66,16 +60,8 @@ namespace SharpFileDB.Blocks
         {
             this.AvailableBytes = info.GetInt16(strAvailableBytes);
             this.OccupiedBytes = info.GetInt16(strOccupiedBytes);
-            //this.PageType = (AllocPageTypes)info.GetValue(strPageType, typeof(AllocPageTypes));
             this.NextPagePos = info.GetInt64(strNextPagePos);
         }
-
-
-        //#region IUpdatable 成员
-
-        //public bool IsDirty { get; set; }
-
-        //#endregion
 
         public override string ToString()
         {

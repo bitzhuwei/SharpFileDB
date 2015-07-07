@@ -74,6 +74,7 @@
             // 
             // lblNoteCount
             // 
+            this.lblNoteCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblNoteCount.AutoSize = true;
             this.lblNoteCount.Location = new System.Drawing.Point(12, 342);
             this.lblNoteCount.Name = "lblNoteCount";
@@ -83,6 +84,7 @@
             // 
             // lblSelectedCount
             // 
+            this.lblSelectedCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSelectedCount.AutoSize = true;
             this.lblSelectedCount.Location = new System.Drawing.Point(105, 342);
             this.lblSelectedCount.Name = "lblSelectedCount";

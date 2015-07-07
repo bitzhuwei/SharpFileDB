@@ -16,6 +16,7 @@ namespace SharpFileDB.Utilities
     /// </summary>
     internal class Consts
     {
+
         /// <summary>
         /// 序列化/反序列化工具。
         /// </summary>
@@ -30,6 +31,11 @@ namespace SharpFileDB.Utilities
         /// 一个页内可用的最大空间（字节数）。是去掉<see cref="PageHeaderBlock"/>后剩余的字节数。
         /// </summary>
         internal static readonly Int16 maxAvailableSpaceInPage;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal static readonly Int16 minOccupiedBytes;
 
         /// <summary>
         /// <see cref="DataBlock.Data"/>的最大长度。
@@ -55,6 +61,7 @@ namespace SharpFileDB.Utilities
                     if (ms.Length > Consts.pageSize / 10)
                     { throw new Exception("Page header block takes too much space!"); }
                     Consts.maxAvailableSpaceInPage = (Int16)(Consts.pageSize - ms.Length);
+                    Consts.minOccupiedBytes = (Int16)(Consts.pageSize - Consts.maxAvailableSpaceInPage);
                 }
             }
             {
@@ -82,6 +89,26 @@ namespace SharpFileDB.Utilities
                         Consts.TableIdString = property.Name;
                         break;
                     }
+                }
+            }
+            {
+                PageHeaderBlock pageHeader = new PageHeaderBlock();
+                DBHeaderBlock dbHeader = new DBHeaderBlock();
+                TableBlock tableBlock = new TableBlock();
+                Int16 usedSpaceInFirstPage;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    formatter.Serialize(ms, pageHeader);
+                    dbHeader.ThisPos = ms.Length;
+                    formatter.Serialize(ms, dbHeader);
+                    tableBlock.ThisPos = ms.Length;
+                    formatter.Serialize(ms, tableBlock);
+                    usedSpaceInFirstPage = (Int16)ms.Length;
+                }
+
+                if (usedSpaceInFirstPage > Consts.pageSize)
+                {
+                    throw new Exception("First page is full!");
                 }
             }
         }

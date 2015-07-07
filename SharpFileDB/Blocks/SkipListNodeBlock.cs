@@ -22,7 +22,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 用于存储此结点的Key的块。
         /// </summary>
-        internal DataBlock Key { get;set; }
+        internal DataBlock Key { get; set; }
 
         /// <summary>
         /// 此结点的Value的第一个块所在位置。
@@ -40,64 +40,38 @@ namespace SharpFileDB.Blocks
 
             if (this.Key != null)
             {
-                //if (this.KeyPos == 0)// 尚未被赋值。
-                {
-                    if (this.Key.ThisPos != 0)
-                    { this.KeyPos = this.Key.ThisPos; }
-                    else
-                    { allArranged = false; }
-                }
+                if (this.Key.ThisPos != 0)
+                { this.KeyPos = this.Key.ThisPos; }
+                else
+                { allArranged = false; }
             }
 
             if (this.Value != null)
             {
-                //if (this.ValuePos == 0)// 尚未被赋值。
-                {
-                    if (this.Value[0].ThisPos != 0)
-                    { this.ValuePos = this.Value[0].ThisPos; }
-                    else
-                    { allArranged = false; }
-                }
+                if (this.Value[0].ThisPos != 0)
+                { this.ValuePos = this.Value[0].ThisPos; }
+                else
+                { allArranged = false; }
             }
 
             if (this.DownObj != null)// 此结点不是最下方的结点。
             {
-                //if (this.DownPos == 0)// 尚未被赋值。
-                {
-                    if (this.DownObj.ThisPos != 0)
-                    { this.DownPos = this.DownObj.ThisPos; }
-                    else
-                    { allArranged = false; }
-                }
+                if (this.DownObj.ThisPos != 0)
+                { this.DownPos = this.DownObj.ThisPos; }
+                else
+                { allArranged = false; }
             }
 
             if (this.RightObj != null)// 此结点不是最右方的结点。
             {
-                //if (this.RightPos == 0)// this.RightPos可能是旧值，所以此处不应以0作为判定标志。//尚未被赋值。
-                {
-                    if (this.RightObj.ThisPos != 0)
-                    { this.RightPos = this.RightObj.ThisPos; }
-                    else
-                    { allArranged = false; }
-                }
+                if (this.RightObj.ThisPos != 0)
+                { this.RightPos = this.RightObj.ThisPos; }
+                else
+                { allArranged = false; }
             }
 
             return allArranged;
         }
-
-        ///// <summary>
-        ///// 获取Key和Value处于头结点状态的<see cref="SkipListNodeBlock"/>对象。
-        ///// </summary>
-        ///// <returns></returns>
-        //internal static SkipListNodeBlock GetHeadNode()
-        //{
-        //    SkipListNodeBlock headNode = new SkipListNodeBlock();
-        //    // 初始化时是头结点的状态。
-        //    headNode.Key = new DataBlock() { ThisPos = -1, };
-        //    headNode.Value = new DataBlock[0];
-
-        //    return headNode;
-        //}
 
         /// <summary>
         /// 用于把skip list node存储到数据库文件的块。
@@ -131,16 +105,6 @@ namespace SharpFileDB.Blocks
 
         #region IFourSideLinked 成员
 
-        ///// <summary>
-        ///// 数据库中不保存此值。
-        ///// </summary>
-        //public long LeftPos { get; set; }
-
-        ///// <summary>
-        ///// 数据库中不保存此值。
-        ///// </summary>
-        //public SkipListNodeBlock LeftObj { get; set; }
-
         /// <summary>
         /// 数据库中保存此值。
         /// </summary>
@@ -150,16 +114,6 @@ namespace SharpFileDB.Blocks
         /// 数据库中不保存此值。
         /// </summary>
         public SkipListNodeBlock RightObj { get; set; }
-
-        ///// <summary>
-        ///// 数据库中不保存此值。
-        ///// </summary>
-        //public long UpPos { get; set; }
-
-        ///// <summary>
-        ///// 数据库中不保存此值。
-        ///// </summary>
-        //public SkipListNodeBlock UpObj { get; set; }
 
         /// <summary>
         /// 数据库中保存此值。
@@ -172,12 +126,6 @@ namespace SharpFileDB.Blocks
         public SkipListNodeBlock DownObj { get; set; }
 
         #endregion
-
-        //#region IUpdatable 成员
-
-        //public bool IsDirty { get; set; }
-
-        //#endregion
 
         public override string ToString()
         {

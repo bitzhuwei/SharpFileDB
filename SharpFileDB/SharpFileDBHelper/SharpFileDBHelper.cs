@@ -13,9 +13,15 @@ namespace SharpFileDB.SharpFileDBHelper
     {
         static string Print(SkipListNodeBlock skipListNodeBlock)
         {
-            return string.Format("Pos:{0}, K: {1}, V: {2}, Down: {3}, Right: {4}",
+            return string.Format("Pos: {0}, K: {1}, V: {2}, Down: {3}, Right: {4}",
                 skipListNodeBlock.ThisPos, skipListNodeBlock.KeyPos, skipListNodeBlock.ValuePos,
                 skipListNodeBlock.DownPos, skipListNodeBlock.RightPos);
+        }
+
+        static string Print(PageHeaderBlock pageHeaderBlock)
+        {
+            return string.Format("Pos: {0}, available: {1}, Occupied: {2}",
+                pageHeaderBlock.ThisPos, pageHeaderBlock.AvailableBytes, pageHeaderBlock.OccupiedBytes);
         }
 
         public static string Print(this FileDBContext db)
@@ -23,8 +29,82 @@ namespace SharpFileDB.SharpFileDBHelper
             StringBuilder builder = new StringBuilder();
             builder.AppendLine(db.Fullname);
             FileStream fs = db.fileStream;
-            fs.ReadBlock<PageHeaderBlock>(0);
-            fs.ReadBlock<DBHeaderBlock>(fs.Position);
+            PageHeaderBlock firstPage = fs.ReadBlock<PageHeaderBlock>(0);
+            DBHeaderBlock dbHeader = fs.ReadBlock<DBHeaderBlock>(fs.Position);
+
+            PrintSkipLists(db, builder, fs);
+
+            builder.AppendLine();
+            builder.AppendLine("Page Info.:");
+            for (long i = 0; i < db.fileStream.Length; i += Consts.pageSize)
+            {
+                PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(i);
+                string str = Print(pageInfo);
+                builder.AppendLine(str);
+            }
+            builder.AppendLine();
+
+            builder.AppendLine();
+            builder.AppendLine("table pages:");
+            long tablePos = dbHeader.FirstTablePagePos;
+            while (tablePos != 0)
+            {
+                PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(tablePos);
+                builder.Append(string.Format(" {0} ->", pageInfo.ThisPos));
+                tablePos = pageInfo.NextPagePos;
+            }
+            builder.AppendLine();
+
+            builder.AppendLine();
+            builder.AppendLine("index pages:");
+            long indexPos = dbHeader.FirstIndexPagePos;
+            while (indexPos != 0)
+            {
+                PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(indexPos);
+                builder.Append(string.Format(" {0} ->", pageInfo.ThisPos));
+                indexPos = pageInfo.NextPagePos;
+            }
+            builder.AppendLine();
+
+            builder.AppendLine();
+            builder.AppendLine("skip list node pages:");
+            long skiplistnodePos = dbHeader.FirstSkipListNodePagePos;
+            while (skiplistnodePos != 0)
+            {
+                PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(skiplistnodePos);
+                builder.Append(string.Format(" {0} ->", pageInfo.ThisPos));
+                skiplistnodePos = pageInfo.NextPagePos;
+            }
+            builder.AppendLine();
+
+            builder.AppendLine();
+            builder.AppendLine("data block pages:");
+            long dataBlockPos = dbHeader.FirstDataPagePos;
+            while (dataBlockPos != 0)
+            {
+                PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(dataBlockPos);
+                builder.Append(string.Format(" {0} ->", pageInfo.ThisPos));
+                dataBlockPos = pageInfo.NextPagePos;
+            }
+            builder.AppendLine();
+
+            builder.AppendLine();
+            builder.AppendLine("empty pages:");
+            long emptyPos = dbHeader.FirstEmptyPagePos;
+            while (emptyPos != 0)
+            {
+                PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(emptyPos);
+                builder.Append(string.Format(" {0} ->", pageInfo.ThisPos));
+                emptyPos = pageInfo.NextPagePos;
+            }
+            builder.AppendLine();
+
+            return builder.ToString();
+        }
+
+        private static void PrintSkipLists(FileDBContext db, StringBuilder builder, FileStream fs)
+        {
+
             TableBlock tableHead = fs.ReadBlock<TableBlock>(fs.Position);
             TableBlock currentTableBlock = tableHead;
             while (currentTableBlock.NextPos != 0)// 依次Print各个表
@@ -65,8 +145,6 @@ namespace SharpFileDB.SharpFileDBHelper
 
                 currentTableBlock = tableBlock;
             }
-
-            return builder.ToString();
         }
 
         public static SharpFileDBInfo GetDBInfo(this FileDBContext db)

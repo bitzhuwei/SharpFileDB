@@ -33,24 +33,18 @@ namespace SharpFileDB.Blocks
 
             if (this.IndexBlockHead != null)// 如果IndexBlockHead == null，则说明此块为TableBlock的头结点。头结点是不需要持有索引块的。
             {
-                //if (this.IndexBlockHeadPos == 0)// 尚未被赋值。
-                {
-                    if (this.IndexBlockHead.ThisPos != 0)
-                    { this.IndexBlockHeadPos = this.IndexBlockHead.ThisPos; }
-                    else
-                    { allArranged = false; }
-                }
+                if (this.IndexBlockHead.ThisPos != 0)
+                { this.IndexBlockHeadPos = this.IndexBlockHead.ThisPos; }
+                else
+                { allArranged = false; }
             }
 
             if (this.NextObj != null)
             {
-                //if (this.NextPos == 0)// 尚未被赋值。
-                {
-                    if (this.NextObj.ThisPos != 0)
-                    { this.NextPos = this.NextObj.ThisPos; }
-                    else
-                    { allArranged = false; }
-                }
+                if (this.NextObj.ThisPos != 0)
+                { this.NextPos = this.NextObj.ThisPos; }
+                else
+                { allArranged = false; }
             }
 
             return allArranged;
@@ -68,10 +62,7 @@ namespace SharpFileDB.Blocks
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
-            //Type type = this.TableType;
-            //string typeName = type == null ? string.Empty : type.FullName;
-            //info.AddValue(strTableType, typeName);
-            info.AddValue(strTableType, this.TableType);// 这样占用空间少一点。
+            info.AddValue(strTableType, this.TableType);// 这样占用空间比(this.TableType.Fullname)少一点。
             info.AddValue(strIndexBlockHeadPos, this.IndexBlockHeadPos);
 
             info.AddValue(strNext, this.NextPos);
@@ -80,11 +71,6 @@ namespace SharpFileDB.Blocks
         protected TableBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
-            //string typeName = info.GetString(strTableType);
-            //if (typeName != string.Empty)
-            //{
-            //    this.TableType = Type.GetType(typeName);
-            //}
             this.TableType = (Type)info.GetValue(strTableType, typeof(Type));
             this.IndexBlockHeadPos = info.GetInt64(strIndexBlockHeadPos);
 
@@ -94,20 +80,10 @@ namespace SharpFileDB.Blocks
 
         #region IDoubleLinkedNode 成员
 
-        ///// <summary>
-        ///// 数据库中不保存此值。
-        ///// </summary>
-        //public long PreviousPos { get; set; }
-
         /// <summary>
         /// 数据库中保存此值。
         /// </summary>
         public long NextPos { get; set; }
-
-        ///// <summary>
-        ///// 数据库中不保存此值。
-        ///// </summary>
-        //public TableBlock PreviousObj { get; set; }
 
         /// <summary>
         /// 数据库中不保存此值。

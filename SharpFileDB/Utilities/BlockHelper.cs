@@ -32,6 +32,11 @@ namespace SharpFileDB.Utilities
             return result;
         }
 
+        /// <summary>
+        /// 获取此块所属的页的类型。
+        /// </summary>
+        /// <param name="block"></param>
+        /// <returns></returns>
         internal static AllocPageTypes BelongedPageType(this AllocBlock block)
         {
             AllocPageTypes pageType;
