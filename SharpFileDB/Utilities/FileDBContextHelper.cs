@@ -32,8 +32,8 @@ namespace SharpFileDB.Utilities
                 Int16 partLength = (length - allocated >= Consts.maxAvailableSpaceInPage) ? Consts.maxAvailableSpaceInPage : (Int16)(length - allocated);
                 // 找出一个可用空间充足的指定类型的页。
                 PageHeaderBlock page = PickPage(db, partLength, type);
-                if (!db.transaction.allocatedPages.ContainsKey(page.ThisPos))// 加入缓存备用。
-                { db.transaction.allocatedPages.Add(page.ThisPos, page); }
+                if (!db.transaction.affectedPages.ContainsKey(page.ThisPos))// 加入缓存备用。
+                { db.transaction.affectedPages.Add(page.ThisPos, page); }
                 //page.AvailableBytes -= partLength;
                 //page.OccupiedBytes += partLength;
                 //AllocatedSpace item = new AllocatedSpace(page, (Int16)length);
@@ -74,8 +74,8 @@ namespace SharpFileDB.Utilities
             {
                 // 最前面的table页的可用空间是最大的（这需要在后续操作中进行排序）
                 PageHeaderBlock firstTablePage;
-                if (db.transaction.allocatedPages.ContainsKey(pagePos))
-                { firstTablePage = db.transaction.allocatedPages[pagePos]; }
+                if (db.transaction.affectedPages.ContainsKey(pagePos))
+                { firstTablePage = db.transaction.affectedPages[pagePos]; }
                 else
                 { firstTablePage = fs.ReadBlock<PageHeaderBlock>(pagePos); }
 
@@ -103,8 +103,8 @@ namespace SharpFileDB.Utilities
                 {
                     //PageHeaderBlock head = fs.ReadBlock<PageHeaderBlock>(headPos);page
                     PageHeaderBlock head;
-                    if (db.transaction.allocatedPages.ContainsKey(headPos))
-                    { head = db.transaction.allocatedPages[headPos]; }
+                    if (db.transaction.affectedPages.ContainsKey(headPos))
+                    { head = db.transaction.affectedPages[headPos]; }
                     else
                     { head = fs.ReadBlock<PageHeaderBlock>(headPos); }
                     if (page.AvailableBytes >= head.AvailableBytes)// 与第一个页进行比较。
@@ -121,8 +121,8 @@ namespace SharpFileDB.Utilities
                         {
                             //PageHeaderBlock next = fs.ReadBlock<PageHeaderBlock>(current.NextPagePos);
                             PageHeaderBlock next;
-                            if(db.transaction.allocatedPages.ContainsKey(current.NextPagePos))
-                            { next = db.transaction.allocatedPages[current.NextPagePos]; }
+                            if(db.transaction.affectedPages.ContainsKey(current.NextPagePos))
+                            { next = db.transaction.affectedPages[current.NextPagePos]; }
                             else
                             { next = fs.ReadBlock<PageHeaderBlock>(current.NextPagePos); }
                             if (page.AvailableBytes >= next.AvailableBytes)
@@ -139,8 +139,8 @@ namespace SharpFileDB.Utilities
                             current.NextPagePos = page.ThisPos;
                         }
 
-                        if (!db.transaction.allocatedPages.ContainsKey(current.ThisPos))
-                        { db.transaction.allocatedPages.Add(current.ThisPos, current); }
+                        if (!db.transaction.affectedPages.ContainsKey(current.ThisPos))
+                        { db.transaction.affectedPages.Add(current.ThisPos, current); }
                     }
                 }
             }

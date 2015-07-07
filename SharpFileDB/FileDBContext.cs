@@ -21,32 +21,50 @@ namespace SharpFileDB
         /// 单文件数据库上下文，代表一个单文件数据库。SharpFileDB的核心类型。
         /// </summary>
         /// <param name="fullname">数据库文件据对路径。</param>
-        public FileDBContext(string fullname)
+        /// <param name="read">只读方式打开。</param>
+        public FileDBContext(string fullname, bool read = false)
         {
             this.transaction = new Transaction(this);
 
             this.Fullname = fullname;
 
-            if (!File.Exists(fullname))
+            if (!read)
             {
-                CreateDB(fullname);
+                if (!File.Exists(fullname))
+                {
+                    CreateDB(fullname);
+                }
+                
+                InitializeDB(fullname, read);
             }
-
-            InitializeDB(fullname);
+            else
+            {
+                InitializeDB(fullname, read);
+            }
         }
 
         /// <summary>
         /// 根据数据库文件初始化<see cref="FileDBContext"/>。
         /// </summary>
         /// <param name="fullname">数据库文件据对路径。</param>
-        private void InitializeDB(string fullname)
+        /// <param name="read">只读方式打开。</param>
+        private void InitializeDB(string fullname, bool read)
         {
             // TODO:尝试恢复数据库文件。
 
             // 准备各项工作。
             // 准备数据库文件流。
-            var fileStream = new FileStream(fullname, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
-            this.fileStream = fileStream;
+            FileStream fileStream = null;
+            if (read)
+            {
+                fileStream = new FileStream(fullname, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                this.fileStream = fileStream;
+            }
+            else
+            {
+                fileStream = new FileStream(fullname, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
+                this.fileStream = fileStream;
+            }
             // 准备数据库头部块。
             PageHeaderBlock pageHeaderBlock = fileStream.ReadBlock<PageHeaderBlock>(0);
             //long position = Consts.pageSize - Consts.maxAvailableSpaceInPage;
@@ -76,25 +94,39 @@ namespace SharpFileDB
         {
             Dictionary<string, IndexBlock> indexDict = new Dictionary<string, IndexBlock>();
 
+            //long indexBlockHeadPos = tableBlock.IndexBlockHeadPos;
+            //IndexBlock currentIndexBlock = fileStream.ReadBlock<IndexBlock>(indexBlockHeadPos);
+            //tableBlock.IndexBlockHead = currentIndexBlock;
+
+            //while (currentIndexBlock.NextPos != 0)
+            //{
+            //    IndexBlock indexBlock = fileStream.ReadBlock<IndexBlock>(currentIndexBlock.NextPos);
+            //    //indexBlock.PreviousObj = currentIndexBlock;
+            //    //indexBlock.PreviousPos = currentIndexBlock.ThisPos;
+            //    SkipListNodeBlock[] headNodes = GetHeadNodesOfSkipListNodeBlock(fileStream, indexBlock);
+            //    indexBlock.SkipListHeadNodes = headNodes;
+
+            //    currentIndexBlock.NextObj = indexBlock;
+
+            //    indexDict.Add(indexBlock.BindMember, indexBlock);
+
+            //    currentIndexBlock = indexBlock;
+            //}
             long indexBlockHeadPos = tableBlock.IndexBlockHeadPos;
             IndexBlock currentIndexBlock = fileStream.ReadBlock<IndexBlock>(indexBlockHeadPos);
             tableBlock.IndexBlockHead = currentIndexBlock;
 
-            while (currentIndexBlock.NextPos != 0)
+            currentIndexBlock.TryLoadNextObj(fileStream);// 此时的currentIndexBlock是索引块的头结点。
+            while (currentIndexBlock.NextObj != null)
             {
-                IndexBlock indexBlock = fileStream.ReadBlock<IndexBlock>(currentIndexBlock.NextPos);
-                //indexBlock.PreviousObj = currentIndexBlock;
-                //indexBlock.PreviousPos = currentIndexBlock.ThisPos;
-                SkipListNodeBlock[] headNodes = GetHeadNodesOfSkipListNodeBlock(fileStream, indexBlock);
-                indexBlock.SkipListHeadNodes = headNodes;
+                SkipListNodeBlock[] headNodes = GetHeadNodesOfSkipListNodeBlock(fileStream, currentIndexBlock.NextObj);
+                currentIndexBlock.NextObj.SkipListHeadNodes = headNodes;
+                currentIndexBlock.NextObj.TryLoadNextObj(fileStream);
 
-                currentIndexBlock.NextObj = indexBlock;
+                indexDict.Add(currentIndexBlock.NextObj.BindMember, currentIndexBlock.NextObj);
 
-                indexDict.Add(indexBlock.BindMember, indexBlock);
-
-                currentIndexBlock = indexBlock;
+                currentIndexBlock = currentIndexBlock.NextObj;
             }
-
             return indexDict;
         }
 
@@ -109,7 +141,7 @@ namespace SharpFileDB
                 SkipListNodeBlock skipListNodeBlock = fileStream.ReadBlock<SkipListNodeBlock>(currentSkipListNodeBlockPos);
                 headNodes[i] = skipListNodeBlock;
                 if (i != headNodes.Length - 1)
-                { headNodes[i + 1].DownObj = headNodes[i]; }// 除非删除此索引，否则这里的赋值并不需要。不过这样赋值，DownObj和DownPos就一致了。
+                { headNodes[i + 1].DownObj = headNodes[i]; }
                 currentSkipListNodeBlockPos = skipListNodeBlock.DownPos;
             }
             return headNodes;
@@ -146,7 +178,7 @@ namespace SharpFileDB
         public void Insert(Table record)
         {
             if (record.Id != null)
-            { throw new Exception(string.Format("[{0}] is not a new item!", record)); }
+            { throw new Exception(string.Format("[{0}] is not a new record!", record)); }
 
             Type type = record.GetType();
             if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
@@ -161,14 +193,14 @@ namespace SharpFileDB
                 this.transaction.Add(this.tableBlockHead);// 加入事务，准备写入数据库。
                 this.transaction.Add(tableBlock);// 加入事务，准备写入数据库。
                 this.transaction.Add(indexBlockHead);// 加入事务，准备写入数据库。
-                
+
                 Dictionary<string, IndexBlock> indexBlockDict = CreateIndexBlocks(type, indexBlockHead);
 
                 this.tableBlockDict.Add(type, tableBlock);
                 this.tableIndexBlockDict.Add(type, indexBlockDict);
             }
 
-            // 添加item。
+            // 添加record。
             {
                 record.Id = ObjectId.NewId();
 
@@ -193,6 +225,8 @@ namespace SharpFileDB
 
             // 准备data blocks。
             int dataBlockCount = (bytes.Length - 1) / Consts.maxDataBytes + 1;
+            if (dataBlockCount <= 0)
+            { throw new Exception(string.Format("no data block for [{0}]", item)); }
             DataBlock[] dataBlocks = new DataBlock[dataBlockCount];
             // 准备好最后一个data block。
             DataBlock lastDataBlock = new DataBlock() { ObjectLength = bytes.Length, };
@@ -237,6 +271,7 @@ namespace SharpFileDB
                     /*SkipListNodes[.]↓*/
                     /*SkipListNodes[.]↓*/
                     /*SkipListNodes[2]↓*/
+                    // TODO: 页头重新排序。
                     /*SkipListNodes[1]↓*/
                     /*SkipListNodes[0] */
                     SkipListNodeBlock current = new SkipListNodeBlock();
@@ -268,8 +303,8 @@ namespace SharpFileDB
         /// <summary>
         /// 更新数据库内的一条记录。
         /// </summary>
-        /// <param name="item"></param>
-        public void Update(Table item)
+        /// <param name="record"></param>
+        public void Update(Table record)
         {
             throw new NotImplementedException();
         }
@@ -277,12 +312,106 @@ namespace SharpFileDB
         /// <summary>
         /// 删除数据库内的一条记录。
         /// </summary>
-        /// <param name="item"></param>
-        public void Delete(Table item)
+        /// <param name="record"></param>
+        public void Delete(Table record)
         {
             // TOOD: 现在开始做删除操作。
+            if (record.Id == null)
+            { throw new Exception(string.Format("[{0}] is a new record!", record)); }
 
-            throw new NotImplementedException();
+            Type type = record.GetType();
+            if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
+            { throw new Exception(string.Format("No Table for type [{0}] is set!", type)); }
+
+            // 删除record。
+            {
+                DataBlock[] dataBlocksForValue = GetDataBlocks(record, type);
+                if (dataBlocksForValue == null)// 此记录根本不存在或已经被删除过一次了。
+                { throw new Exception(string.Format("no data blocks for [{0}]", record)); }
+
+                foreach (KeyValuePair<string, IndexBlock> item in this.tableIndexBlockDict[type])
+                {
+                    item.Value.Delete(record, this);
+                }
+
+                for (int i = 0; i < dataBlocksForValue.Length; i++)
+                { this.transaction.Delete(dataBlocksForValue[i]); }// 加入事务，准备写入数据库。
+            }
+
+            this.transaction.Commit();
+        }
+
+        /// <summary>
+        /// 获取指定记录在数据库中存储的数据块链表。
+        /// </summary>
+        /// <param name="record"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private DataBlock[] GetDataBlocks(Table record, Type type)
+        {
+            FileStream fileStream = this.fileStream;
+
+            ObjectId key = record.Id;
+            IndexBlock indexBlock = this.tableIndexBlockDict[type][Consts.TableIdString];
+
+            SkipListNodeBlock node = FindSkipListNodeByPrimaryKey(fileStream, key, indexBlock);
+
+            if (node != null)
+            {
+                return node.Value;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private SkipListNodeBlock FindSkipListNodeByPrimaryKey(FileStream fileStream, ObjectId key, IndexBlock indexBlock)
+        {
+            // Start at the top list header node
+            SkipListNodeBlock currentNode = indexBlock.SkipListHeadNodes[indexBlock.CurrentLevel];
+
+            IComparable rightKey = null;
+
+            while (true)
+            {
+                currentNode.TryLoadRightDownObj(fileStream, LoadOptions.RightObj);
+                if (currentNode.RightObj != null)
+                {
+                    currentNode.RightObj.TryLoadRightDownObj(fileStream, LoadOptions.Key);
+                    rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fileStream);
+                }
+                while ((currentNode.RightObj != null) && (rightKey.CompareTo(key) < 0))
+                {
+                    currentNode = currentNode.RightObj;
+                    currentNode.TryLoadRightDownObj(fileStream, LoadOptions.RightObj);
+                    if (currentNode.RightObj != null)
+                    {
+                        currentNode.RightObj.TryLoadRightDownObj(fileStream, LoadOptions.Key);
+                        rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fileStream);
+                    }
+                }
+
+                // Check if there is a next level, and if there is move down.
+                if (currentNode.DownPos == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    currentNode.TryLoadRightDownObj(fileStream, LoadOptions.DownObj);
+                    currentNode = currentNode.DownObj;
+                }
+            }
+
+            // Do one final comparison to see if the key to the right equals this key.
+            // If it doesn't match, it would be bigger than this key.
+            if (rightKey.CompareTo(key) == 0)
+            {
+                return currentNode.RightObj;
+            }
+            else
+            { return null; }
         }
 
         /// <summary>
@@ -313,37 +442,53 @@ namespace SharpFileDB
                 long currentHeadNodePos = firstIndex.SkipListHeadNodePos;
                 if (currentHeadNodePos <= 0)
                 { throw new Exception("DB Error: There is no skip list node head stored!"); }
-                SkipListNodeBlock currentHeadNode = null;
                 FileStream fs = this.fileStream;
-                while (currentHeadNodePos != 0)
+                SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
+                currentHeadNode.TryLoadRightDownObj(fs, LoadOptions.DownObj);
+                while (currentHeadNode.DownObj != null)
                 {
-                    currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
-                    currentHeadNodePos = currentHeadNode.DownPos;
+                    currentHeadNode.DownObj.TryLoadRightDownObj(fs, LoadOptions.DownObj);
+                    currentHeadNode = currentHeadNode.DownObj;
                 }
+                //while (currentHeadNodePos != 0)
+                //{
+                //    currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
+                //    currentHeadNodePos = currentHeadNode.DownPos;
+                //}
                 SkipListNodeBlock current = currentHeadNode;
-                while (current.RightPos != 0)
+                current.TryLoadRightDownObj(fs, LoadOptions.RightObj);
+                while (current.RightObj != null)
                 {
-                    SkipListNodeBlock node = fs.ReadBlock<SkipListNodeBlock>(current.RightPos);
-                    DataBlock dataBlock = fs.ReadBlock<DataBlock>(node.ValuePos);
-
-                    byte[] valueBytes = new byte[dataBlock.ObjectLength];
-
-                    int index = 0;// index == dataBlock.ObjectLength - 1时，dataBlock.NextDataBlockPos也就正好应该等于0了。
-                    for (int i = 0; i < dataBlock.Data.Length; i++)
-                    { valueBytes[index++] = dataBlock.Data[i]; }
-                    while (dataBlock.NextPos != 0)
-                    {
-                        dataBlock = fs.ReadBlock<DataBlock>(dataBlock.NextPos);
-                        for (int i = 0; i < dataBlock.Data.Length; i++)
-                        { valueBytes[index++] = dataBlock.Data[i]; }
-                    }
-
-                    T item = valueBytes.ToObject<T>();
+                    current.RightObj.TryLoadRightDownObj(fs, LoadOptions.Value);
+                    T item = current.RightObj.Value.GetObject<T>(this);
 
                     result.Add(item);
 
-                    current = node;
+                    current = current.RightObj;
                 }
+            //    while (current.RightPos != 0)
+            //    {
+            //        SkipListNodeBlock node = fs.ReadBlock<SkipListNodeBlock>(current.RightPos);
+            //        DataBlock dataBlock = fs.ReadBlock<DataBlock>(node.ValuePos);
+
+            //        byte[] valueBytes = new byte[dataBlock.ObjectLength];
+
+            //        int index = 0;// index == dataBlock.ObjectLength - 1时，dataBlock.NextDataBlockPos也就正好应该等于0了。
+            //        for (int i = 0; i < dataBlock.Data.Length; i++)
+            //        { valueBytes[index++] = dataBlock.Data[i]; }
+            //        while (dataBlock.NextPos != 0)
+            //        {
+            //            dataBlock = fs.ReadBlock<DataBlock>(dataBlock.NextPos);
+            //            for (int i = 0; i < dataBlock.Data.Length; i++)
+            //            { valueBytes[index++] = dataBlock.Data[i]; }
+            //        }
+
+            //        T item = valueBytes.ToObject<T>();
+
+            //        result.Add(item);
+
+            //        current = node;
+            //    }
             }
 
             return result;

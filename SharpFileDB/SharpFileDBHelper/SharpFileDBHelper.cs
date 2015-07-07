@@ -27,46 +27,65 @@ namespace SharpFileDB.SharpFileDBHelper
                 info.Add(tableInfo);
                 IndexBlock indexBlockHead = fs.ReadBlock<IndexBlock>(tableBlock.IndexBlockHeadPos);
                 IndexBlock currentIndexBlock = indexBlockHead;
-                bool pk = true;
+                bool primaryKey = true;
                 while (currentIndexBlock.NextPos != 0)
                 {
                     IndexBlock indexBlock = fs.ReadBlock<IndexBlock>(currentIndexBlock.NextPos);
                     tableInfo.Add(indexBlock);
-                    if (pk)
+                    if (primaryKey)
                     {
                         long currentHeadNodePos = indexBlock.SkipListHeadNodePos;
-                        SkipListNodeBlock currentHeadNode = null;
-                        while (currentHeadNodePos != 0)
+                        SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
+                        currentHeadNode.TryLoadRightDownObj(fs, LoadOptions.DownObj);
+                        while (currentHeadNode.DownObj != null)
                         {
-                            currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
-                            currentHeadNodePos = currentHeadNode.DownPos;
+                            currentHeadNode.DownObj.TryLoadRightDownObj(fs, LoadOptions.DownObj);
+                            currentHeadNode = currentHeadNode.DownObj;
                         }
-                        SkipListNodeBlock currentSkipListNode = currentHeadNode;
-                        while (currentSkipListNode.RightPos != 0)
+                        SkipListNodeBlock current = currentHeadNode;
+                        current.TryLoadRightDownObj(fs, LoadOptions.RightObj);
+                        while (current.RightObj != null)
                         {
-                            SkipListNodeBlock node = fs.ReadBlock<SkipListNodeBlock>(currentSkipListNode.RightPos);
-                            DataBlock dataBlock = fs.ReadBlock<DataBlock>(node.ValuePos);
-
-                            byte[] valueBytes = new byte[dataBlock.ObjectLength];
-
-                            int index = 0;// index == dataBlock.ObjectLength - 1时，dataBlock.NextDataBlockPos也就正好应该等于0了。
-                            for (int i = 0; i < dataBlock.Data.Length; i++)
-                            { valueBytes[index++] = dataBlock.Data[i]; }
-                            while (dataBlock.NextPos != 0)
-                            {
-                                dataBlock = fs.ReadBlock<DataBlock>(dataBlock.NextPos);
-                                for (int i = 0; i < dataBlock.Data.Length; i++)
-                                { valueBytes[index++] = dataBlock.Data[i]; }
-                            }
-
-                            Table item = valueBytes.ToObject<Table>();
+                            current.RightObj.TryLoadRightDownObj(fs, LoadOptions.Value);
+                            Table item = current.RightObj.Value.GetObject<Table>(db);
 
                             tableInfo.Add(item);
 
-                            currentSkipListNode = node;
+                            current = current.RightObj;
                         }
+                        //long currentHeadNodePos = indexBlock.SkipListHeadNodePos;
+                        //SkipListNodeBlock currentHeadNode = null;
+                        //while (currentHeadNodePos != 0)
+                        //{
+                        //    currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
+                        //    currentHeadNodePos = currentHeadNode.DownPos;
+                        //}
+                        //SkipListNodeBlock currentSkipListNode = currentHeadNode;
+                        //while (currentSkipListNode.RightPos != 0)
+                        //{
+                        //    SkipListNodeBlock node = fs.ReadBlock<SkipListNodeBlock>(currentSkipListNode.RightPos);
+                        //    DataBlock dataBlock = fs.ReadBlock<DataBlock>(node.ValuePos);
 
-                        pk = false;
+                        //    byte[] valueBytes = new byte[dataBlock.ObjectLength];
+
+                        //    int index = 0;// index == dataBlock.ObjectLength - 1时，dataBlock.NextDataBlockPos也就正好应该等于0了。
+                        //    for (int i = 0; i < dataBlock.Data.Length; i++)
+                        //    { valueBytes[index++] = dataBlock.Data[i]; }
+                        //    while (dataBlock.NextPos != 0)
+                        //    {
+                        //        dataBlock = fs.ReadBlock<DataBlock>(dataBlock.NextPos);
+                        //        for (int i = 0; i < dataBlock.Data.Length; i++)
+                        //        { valueBytes[index++] = dataBlock.Data[i]; }
+                        //    }
+
+                        //    Table item = valueBytes.ToObject<Table>();
+
+                        //    tableInfo.Add(item);
+
+                        //    currentSkipListNode = node;
+                        //}
+
+                        primaryKey = false;
                     }
 
                     currentIndexBlock = indexBlock;

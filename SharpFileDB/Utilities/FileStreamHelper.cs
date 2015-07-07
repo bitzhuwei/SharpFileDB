@@ -44,6 +44,30 @@ namespace SharpFileDB.Utilities
             return result;
         }
 
+        /// <summary>
+        /// 从文件流中给定的位置读取一个由块为结点组成的文件链表。
+        /// </summary>
+        /// <typeparam name="T">块的类型。</typeparam>
+        /// <param name="fileStream"></param>
+        /// <param name="position">第一个块的位置。</param>
+        /// <returns></returns>
+        internal static T[] ReadBlocks<T>(this FileStream fileStream, long position) where T : Block, ILinkedNode<T>
+        {
+            List<T> list = new List<T>();
+            T item = ReadBlock<T>(fileStream, position);
+            list.Add(item);
+
+            while (item.NextPos != 0)
+            {
+                item.NextObj = ReadBlock<T>(fileStream, item.NextPos);
+                list.Add(item.NextObj);
+                item = item.NextObj;
+            }
+
+            return list.ToArray();
+        }
+
+
         ///// <summary>
         ///// 从文件流中给定的位置读取一个对象。
         ///// </summary>

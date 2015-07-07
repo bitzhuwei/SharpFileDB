@@ -55,7 +55,12 @@ namespace SharpFileDB.TestConsole
             //cat.Name = "xiao bai";
             //db.Update(cat);
 
-            //db.Delete(cat);
+            db.Delete(cat);
+            //if (cats.Count > 0)
+            //{
+            //    Cat first = cats[0];
+            //    db.Delete(first);
+            //}
         }
     }
 }

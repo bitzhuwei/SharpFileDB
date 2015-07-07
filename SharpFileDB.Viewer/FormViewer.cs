@@ -35,7 +35,7 @@ namespace SharpFileDB.Viewer
             this.lstIndex.Items.Clear();
             this.lstRecord.Items.Clear();
 
-            using (SharpFileDB.FileDBContext db = new FileDBContext(this.txtFullname.Text))
+            using (SharpFileDB.FileDBContext db = new FileDBContext(this.txtFullname.Text, true))
             {
                 SharpFileDBInfo dbInfo = db.GetDBInfo();
                 foreach (TableInfo table in dbInfo.tableList)

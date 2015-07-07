@@ -16,15 +16,18 @@ namespace SharpFileDB
     {
         private static readonly object syn = new object();
 
-        private List<Block> blockList = new List<Block>();
-        private SortedSet<long> oldBlockPositions = new SortedSet<long>();
+        private List<Block> addlingBlockList = new List<Block>();
+        private SortedSet<long> oldAddingBlockPositions = new SortedSet<long>();
+
+        private List<Block> deletingBlockList = new List<Block>();
+        private SortedSet<long> oldDeletingBlockPositions = new SortedSet<long>();
 
         private FileDBContext fileDBContext;
 
         /// <summary>
         /// 执行Commit()期间动用过的所有页。
         /// </summary>
-        internal Dictionary<long, PageHeaderBlock> allocatedPages = new Dictionary<long, PageHeaderBlock>();
+        internal Dictionary<long, PageHeaderBlock> affectedPages = new Dictionary<long, PageHeaderBlock>();
 
         /// <summary>
         /// 事务。执行一系列的数据库文件修改动作。
@@ -39,23 +42,34 @@ namespace SharpFileDB
         /// 添加一个准备写入数据库的块。
         /// </summary>
         /// <param name="block"></param>
-        internal void Add(Blocks.Block block)
+        internal void Add(Block block)
         {
             if (block.ThisPos == 0)// 这是一个新建的块。
             {
-                if (!this.blockList.Contains(block))
-                { this.blockList.Add(block); }
+                if (!this.addlingBlockList.Contains(block))
+                { this.addlingBlockList.Add(block); }
             }
             else// 这是已有的块。
             {
-                if (this.oldBlockPositions.Contains(block.ThisPos))
+                if (this.oldAddingBlockPositions.Contains(block.ThisPos))
                 {
                     // 此时说明你重复反序列化了同一个块，这将导致数据混乱。
                     throw new Exception(string.Format("Block [{0}] already in transaction.", block));
                 }
 
-                this.blockList.Add(block);
-                this.oldBlockPositions.Add(block.ThisPos);
+                this.addlingBlockList.Add(block);
+                this.oldAddingBlockPositions.Add(block.ThisPos);
+            }
+        }
+
+        internal void Delete(Block block)
+        {
+            if (block.ThisPos == 0)// 尝试删除一个连在文件里的位置都没有的块。这个块似乎在文件里根本不存在。
+            { throw new Exception("Deleting [{0}] but it's position still not set!"); }
+
+            if (!this.deletingBlockList.Contains(block))
+            {
+                this.deletingBlockList.Add(block);
             }
         }
 
@@ -82,11 +96,11 @@ namespace SharpFileDB
             //}
             //string str = builder.ToString();
 
-            while (arrangedBlocks.Count < this.blockList.Count)
+            while (arrangedBlocks.Count < this.addlingBlockList.Count)
             {
-                for (int i = this.blockList.Count - 1; i >= 0; i--)// 后加入列表的先处理。
+                for (int i = this.addlingBlockList.Count - 1; i >= 0; i--)// 后加入列表的先处理。
                 {
-                    Block block = this.blockList[i];
+                    Block block = this.addlingBlockList[i];
                     if (arrangedBlocks.Contains(block))
                     { continue; }
                     bool done = block.ArrangePos();
@@ -108,6 +122,35 @@ namespace SharpFileDB
             }
 
             FileStream fs = this.fileDBContext.fileStream;
+
+            // 根据要删除的块，更新文件头。
+            foreach (var block in this.deletingBlockList)
+            {
+                long pagePos = block.ThisPos.PagePos();
+                PageHeaderBlock page;
+                if (this.affectedPages.ContainsKey(pagePos))
+                { page = this.affectedPages[pagePos]; }
+                else
+                {
+                    page = fs.ReadBlock<PageHeaderBlock>(pagePos);
+                    this.affectedPages.Add(pagePos, page);
+                }
+
+                byte[] bytes = block.ToBytes();
+                if (bytes.Length > Consts.maxAvailableSpaceInPage)
+                { throw new Exception(string.Format("Block [{0}]'s serialized bytes is more than {1}", block, Consts.maxAvailableSpaceInPage)); }
+                Int16 releasedLength = (Int16)bytes.Length;
+                page.OccupiedBytes -= releasedLength;
+                if (page.OccupiedBytes < (Consts.pageSize - Consts.maxAvailableSpaceInPage))
+                { throw new Exception(string.Format("DB Error: {0}'s Occupied bytes is less than {1}", page, (Consts.pageSize - Consts.maxAvailableSpaceInPage))); }
+                if (page.OccupiedBytes == (Int16)(Consts.pageSize - Consts.maxAvailableSpaceInPage))// 此页已成为新的空白页。
+                {
+                    // page 加入空白页链表。
+                    DBHeaderBlock dbHeader = this.fileDBContext.headerBlock;
+                    page.NextPagePos = dbHeader.FirstDataPagePos;
+                    dbHeader.FirstDataPagePos = page.ThisPos;
+                }
+            }
 
             //// 准备要更新的页头。
             //List<PageHeaderBlock> pageHeaderBlockList = new List<PageHeaderBlock>();
@@ -132,11 +175,11 @@ namespace SharpFileDB
             // TODO: 准备恢复文件。
 
             // 写入所有的更改。
-            foreach (Block block in this.blockList)
+            foreach (Block block in this.addlingBlockList)
             {
                 fs.WriteBlock(block);
             }
-            foreach (PageHeaderBlock block in this.allocatedPages.Values)
+            foreach (PageHeaderBlock block in this.affectedPages.Values)
             {
                 fs.WriteBlock(block);
             }
@@ -152,9 +195,9 @@ namespace SharpFileDB
             // TODO: 删除恢复文件。
 
             // 恢复Transaction最初的状态。
-            this.blockList.Clear();
-            this.oldBlockPositions.Clear();
-            this.allocatedPages.Clear();
+            this.addlingBlockList.Clear();
+            this.oldAddingBlockPositions.Clear();
+            this.affectedPages.Clear();
 
             //throw new NotImplementedException();
         }

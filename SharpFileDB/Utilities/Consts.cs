@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -37,7 +38,12 @@ namespace SharpFileDB.Utilities
         internal static readonly Int16 maxDataBytes;
 
         /// <summary>
-        /// 系统启动时初始化一个页内可用的最大空间（字节数）。
+        /// <see cref="Table.Id"/>这一属性的名字。
+        /// </summary>
+        internal static string TableIdString;
+
+        /// <summary>
+        /// 系统启动时初始化各项常量。
         /// </summary>
         static Consts()
         {
@@ -65,6 +71,18 @@ namespace SharpFileDB.Utilities
                     minValue = (Int16)ms.Length;
                 }
                 Consts.maxDataBytes = (Int16)(Consts.pageSize - minValue);
+            }
+            {
+                PropertyInfo[] properties = typeof(Table).GetProperties();
+                foreach (var property in properties)
+                {
+                    TableIndexAttribute attr = property.GetCustomAttribute<TableIndexAttribute>();
+                    if (attr != null && property.PropertyType == typeof(ObjectId))
+                    {
+                        Consts.TableIdString = property.Name;
+                        break;
+                    }
+                }
             }
         }
 
