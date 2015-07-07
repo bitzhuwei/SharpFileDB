@@ -15,7 +15,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="dataBlock"></param>
-        /// <param name="db"></param>
+        /// <param name="fileStream"></param>
         /// <returns></returns>
         internal static T GetObject<T>(this DataBlock dataBlock, FileStream fileStream)
         {

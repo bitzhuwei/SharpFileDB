@@ -94,24 +94,6 @@ namespace SharpFileDB
         {
             Dictionary<string, IndexBlock> indexDict = new Dictionary<string, IndexBlock>();
 
-            //long indexBlockHeadPos = tableBlock.IndexBlockHeadPos;
-            //IndexBlock currentIndexBlock = fileStream.ReadBlock<IndexBlock>(indexBlockHeadPos);
-            //tableBlock.IndexBlockHead = currentIndexBlock;
-
-            //while (currentIndexBlock.NextPos != 0)
-            //{
-            //    IndexBlock indexBlock = fileStream.ReadBlock<IndexBlock>(currentIndexBlock.NextPos);
-            //    //indexBlock.PreviousObj = currentIndexBlock;
-            //    //indexBlock.PreviousPos = currentIndexBlock.ThisPos;
-            //    SkipListNodeBlock[] headNodes = GetHeadNodesOfSkipListNodeBlock(fileStream, indexBlock);
-            //    indexBlock.SkipListHeadNodes = headNodes;
-
-            //    currentIndexBlock.NextObj = indexBlock;
-
-            //    indexDict.Add(indexBlock.BindMember, indexBlock);
-
-            //    currentIndexBlock = indexBlock;
-            //}
             long indexBlockHeadPos = tableBlock.IndexBlockHeadPos;
             IndexBlock currentIndexBlock = fileStream.ReadBlock<IndexBlock>(indexBlockHeadPos);
             tableBlock.IndexBlockHead = currentIndexBlock;
@@ -121,8 +103,13 @@ namespace SharpFileDB
             {
                 SkipListNodeBlock[] headNodes = GetHeadNodesOfSkipListNodeBlock(fileStream, currentIndexBlock.NextObj);
                 currentIndexBlock.NextObj.SkipListHeadNodes = headNodes;
-                SkipListNodeBlock[] tailNodes = GetTailNodesOfSkipListNodeBlock(fileStream, currentIndexBlock.NextObj);
-                currentIndexBlock.NextObj.SkipListTailNodes = tailNodes;
+                SkipListNodeBlock tailNode = GetTailNodesOfSkipListNodeBlock(fileStream, currentIndexBlock.NextObj);
+                currentIndexBlock.NextObj.SkipListTailNode = tailNode;
+                foreach (SkipListNodeBlock headNode in currentIndexBlock.NextObj.SkipListHeadNodes)
+                {
+                    if (headNode.RightPos == tailNode.ThisPos)
+                    { headNode.RightObj = tailNode; }
+                }
 
                 currentIndexBlock.NextObj.TryLoadNextObj(fileStream);
 
@@ -133,21 +120,15 @@ namespace SharpFileDB
             return indexDict;
         }
 
-        private SkipListNodeBlock[] GetTailNodesOfSkipListNodeBlock(FileStream fileStream, IndexBlock indexBlock)
+        private SkipListNodeBlock GetTailNodesOfSkipListNodeBlock(FileStream fileStream, IndexBlock indexBlock)
         {
-            SkipListNodeBlock[] tailNodes = new SkipListNodeBlock[this.headerBlock.MaxLevelOfSkipList];
             long currentSkipListNodeBlockPos = indexBlock.SkipListTailNodePos;
-            for (int i = tailNodes.Length - 1; i >= 0; i--)
-            {
-                if (currentSkipListNodeBlockPos == 0)
-                { throw new Exception(string.Format("max level [{0}] != real max level [{1}]", tailNodes.Length, tailNodes.Length - 1 - i)); }
-                SkipListNodeBlock skipListNodeBlock = fileStream.ReadBlock<SkipListNodeBlock>(currentSkipListNodeBlockPos);
-                tailNodes[i] = skipListNodeBlock;
-                if (i != tailNodes.Length - 1)
-                { tailNodes[i + 1].DownObj = tailNodes[i]; }
-                currentSkipListNodeBlockPos = skipListNodeBlock.DownPos;
-            }
-            return tailNodes;
+            if (currentSkipListNodeBlockPos == 0)
+            { throw new Exception(string.Format("tail node not set for [{0}]", indexBlock)); }
+
+            SkipListNodeBlock tailNode = fileStream.ReadBlock<SkipListNodeBlock>(currentSkipListNodeBlockPos);
+
+            return tailNode;
         }
 
         private SkipListNodeBlock[] GetHeadNodesOfSkipListNodeBlock(FileStream fileStream, IndexBlock indexBlock)
@@ -298,8 +279,7 @@ namespace SharpFileDB
 
                     for (int i = maxLevel - 1; i >= 0; i--)
                     { this.transaction.Add(indexBlock.SkipListHeadNodes[i]); }// 加入事务，准备写入数据库。
-                    for (int i = maxLevel - 1; i >= 0; i--)
-                    { this.transaction.Add(indexBlock.SkipListTailNodes[i]); }// 加入事务，准备写入数据库。
+                    this.transaction.Add(indexBlock.SkipListTailNode);// 加入事务，准备写入数据库。
                 }
             }
 
@@ -333,29 +313,15 @@ namespace SharpFileDB
                 }
             }
             {
-                // 初始化尾结点列。尾结点在序列化到数据库文件后，将永远不再变动，这给编码带来方便，也是我使用尾结点的原因。
-                indexBlock.SkipListTailNodes = new SkipListNodeBlock[maxLevel];
-                /*SkipListTailNodes[maxLevel - 1]↓*/
-                /*SkipListTailNodes[.]↓*/
-                /*SkipListTailNodes[.]↓*/
-                /*SkipListTailNodes[2]↓*/
-                /*SkipListTailNodes[1]↓*/
-                /*SkipListTailNodes[0] */
-                SkipListNodeBlock current = new SkipListNodeBlock();
-                indexBlock.SkipListTailNodes[0] = current;
-                for (int i = 1; i < maxLevel; i++)
-                {
-                    SkipListNodeBlock block = new SkipListNodeBlock();
-                    block.DownObj = current;
-                    indexBlock.SkipListTailNodes[i] = block;
-                    current = block;
-                }
+                // 初始化尾结点。尾结点在序列化到数据库文件后，将永远不再变动，这给编码带来方便，也是我使用尾结点的原因。
+                // 这样也是完全把外存（硬盘）与内存编程相对应的思想。
+                indexBlock.SkipListTailNode = new SkipListNodeBlock();
             }
             {
                 // 头结点指向对应的尾结点。
                 for (int i = 0; i < maxLevel; i++)
                 {
-                    indexBlock.SkipListHeadNodes[i].RightObj = indexBlock.SkipListTailNodes[i];
+                    indexBlock.SkipListHeadNodes[i].RightObj = indexBlock.SkipListTailNode;
                 }
             }
         }
@@ -418,6 +384,7 @@ namespace SharpFileDB
 
             if (node != null)
             {
+                node.TryLoadRightDownObj(fileStream, LoadOptions.Value);
                 return node.Value;
             }
             else
@@ -435,21 +402,26 @@ namespace SharpFileDB
 
             while (true)
             {
-                currentNode.TryLoadRightDownObj(fileStream, LoadOptions.RightObj);
-                if (currentNode.RightObj != null)
+                if(currentNode.RightPos!=indexBlock.SkipListTailNode.ThisPos)
                 {
+                    currentNode.TryLoadRightDownObj(fileStream, LoadOptions.RightObj);
                     currentNode.RightObj.TryLoadRightDownObj(fileStream, LoadOptions.Key);
                     rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fileStream);
                 }
-                while ((currentNode.RightObj != null) && (rightKey.CompareTo(key) < 0))
+                else
+                { currentNode.RightObj = indexBlock.SkipListTailNode; }
+
+                while ((currentNode.RightObj != indexBlock.SkipListTailNode) && (rightKey.CompareTo(key) < 0))
                 {
                     currentNode = currentNode.RightObj;
-                    currentNode.TryLoadRightDownObj(fileStream, LoadOptions.RightObj);
-                    if (currentNode.RightObj != null)
+                    if (currentNode.RightPos != indexBlock.SkipListTailNode.ThisPos)
                     {
+                        currentNode.TryLoadRightDownObj(fileStream, LoadOptions.RightObj);
                         currentNode.RightObj.TryLoadRightDownObj(fileStream, LoadOptions.Key);
                         rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fileStream);
                     }
+                    else
+                    { currentNode.RightObj = indexBlock.SkipListTailNode; }
                 }
 
                 // Check if there is a next level, and if there is move down.

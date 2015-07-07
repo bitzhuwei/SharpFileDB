@@ -11,6 +11,64 @@ namespace SharpFileDB.SharpFileDBHelper
 {
     public static class SharpFileDBHelper
     {
+        static string Print(SkipListNodeBlock skipListNodeBlock)
+        {
+            return string.Format("Pos:{0}, K: {1}, V: {2}, Down: {3}, Right: {4}",
+                skipListNodeBlock.ThisPos, skipListNodeBlock.KeyPos, skipListNodeBlock.ValuePos,
+                skipListNodeBlock.DownPos, skipListNodeBlock.RightPos);
+        }
+
+        public static string Print(this FileDBContext db)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine(db.Fullname);
+            FileStream fs = db.fileStream;
+            fs.ReadBlock<PageHeaderBlock>(0);
+            fs.ReadBlock<DBHeaderBlock>(fs.Position);
+            TableBlock tableHead = fs.ReadBlock<TableBlock>(fs.Position);
+            TableBlock currentTableBlock = tableHead;
+            while (currentTableBlock.NextPos != 0)// 依次Print各个表
+            {
+                TableBlock tableBlock = fs.ReadBlock<TableBlock>(currentTableBlock.NextPos);
+                builder.Append("Table:"); builder.AppendLine(tableBlock.TableType.ToString());
+                IndexBlock indexBlockHead = fs.ReadBlock<IndexBlock>(tableBlock.IndexBlockHeadPos);
+                IndexBlock currentIndexBlock = indexBlockHead;
+                IndexBlock indexBlock = fs.ReadBlock<IndexBlock>(currentIndexBlock.NextPos);
+
+                SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(indexBlock.SkipListHeadNodePos);
+                int level = db.headerBlock.MaxLevelOfSkipList - 1;
+                SkipListNodeBlock current = currentHeadNode;
+                while (current != null)// 依次Print表的PK Index
+                {
+                    StringBuilder levelBuilder = new StringBuilder();
+                    levelBuilder.AppendLine(string.Format("level {0}", level--));
+                    string str = Print(current);
+                    levelBuilder.AppendLine(str);
+                    int count = 1;
+                    while (current.RightPos != 0)//依次Print PK Index的Level
+                    {
+                        current = fs.ReadBlock<SkipListNodeBlock>(current.RightPos);
+                        str = Print(current);
+                        levelBuilder.AppendLine(str);
+                        count++;
+                    }
+
+                    if (count > 2)
+                    { builder.AppendLine(levelBuilder.ToString()); }
+
+                    if (currentHeadNode.DownPos != 0)
+                    { currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNode.DownPos); }
+                    else
+                    { currentHeadNode = null; }
+                    current = currentHeadNode;
+                }
+
+                currentTableBlock = tableBlock;
+            }
+
+            return builder.ToString();
+        }
+
         public static SharpFileDBInfo GetDBInfo(this FileDBContext db)
         {
             SharpFileDBInfo info = new SharpFileDBInfo();
@@ -44,7 +102,7 @@ namespace SharpFileDB.SharpFileDBHelper
                         }
                         SkipListNodeBlock current = currentHeadNode;
                         current.TryLoadRightDownObj(fs, LoadOptions.RightObj);
-                        while (current.RightObj != null)
+                        while (current.RightObj.RightPos != 0)
                         {
                             current.RightObj.TryLoadRightDownObj(fs, LoadOptions.Value);
                             Table item = current.RightObj.Value.GetObject<Table>(db);

@@ -16,10 +16,10 @@ namespace SharpFileDB
     {
         private static readonly object syn = new object();
 
-        private List<Block> addlingBlockList = new List<Block>();
+        private List<AllocBlock> addlingBlockList = new List<AllocBlock>();
         private SortedSet<long> oldAddingBlockPositions = new SortedSet<long>();
 
-        private List<Block> deletingBlockList = new List<Block>();
+        private List<AllocBlock> deletingBlockList = new List<AllocBlock>();
         private SortedSet<long> oldDeletingBlockPositions = new SortedSet<long>();
 
         private FileDBContext fileDBContext;
@@ -42,7 +42,7 @@ namespace SharpFileDB
         /// 添加一个准备写入数据库的块。
         /// </summary>
         /// <param name="block"></param>
-        internal void Add(Block block)
+        internal void Add(AllocBlock block)
         {
             if (block.ThisPos == 0)// 这是一个新建的块。
             {
@@ -62,7 +62,7 @@ namespace SharpFileDB
             }
         }
 
-        internal void Delete(Block block)
+        internal void Delete(AllocBlock block)
         {
             if (block.ThisPos == 0)// 尝试删除一个连在文件里的位置都没有的块。这个块似乎在文件里根本不存在。
             { throw new Exception("Deleting [{0}] but it's position still not set!"); }
@@ -100,7 +100,7 @@ namespace SharpFileDB
             {
                 for (int i = this.addlingBlockList.Count - 1; i >= 0; i--)// 后加入列表的先处理。
                 {
-                    Block block = this.addlingBlockList[i];
+                    AllocBlock block = this.addlingBlockList[i];
                     if (arrangedBlocks.Contains(block))
                     { continue; }
                     bool done = block.ArrangePos();

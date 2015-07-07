@@ -42,22 +42,22 @@ namespace SharpFileDB.Utilities
 
             SkipListNodeBlock[] rightNodes = FindRightMostNodes(key, indexBlock, db);
 
-            if (rightNodes[0].RightPos != indexBlock.SkipListTailNodes[0].ThisPos)
+            if (rightNodes[0].RightPos != indexBlock.SkipListTailNode.ThisPos)
             {
                 rightNodes[0].TryLoadRightDownObj(fs, LoadOptions.RightObj);
                 rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs);
             }
             else
-            { rightNodes[0].RightObj = indexBlock.SkipListTailNodes[0]; }
+            { rightNodes[0].RightObj = indexBlock.SkipListTailNode; }
 
             // See if we actually found the node
-            if ((rightNodes[0].RightObj != indexBlock.SkipListTailNodes[0]) && (rightKey.CompareTo(key) == 0))
+            if ((rightNodes[0].RightObj != indexBlock.SkipListTailNode) && (rightKey.CompareTo(key) == 0))
             {
                 for (int i = 0; i <= indexBlock.CurrentLevel; i++)
                 {
                     // Since the node is consecutive levels, as soon as we don't find it on the next
                     // level, we can stop.
-                    if (rightNodes[i].RightPos == indexBlock.SkipListTailNodes[i].ThisPos)
+                    if (rightNodes[i].RightPos == indexBlock.SkipListTailNode.ThisPos)
                     { throw new Exception(string.Format("[{0}].RightPos should point to a valid node!", rightNodes[i])); }
 
                     rightNodes[i].TryLoadRightDownObj(fs, LoadOptions.RightObj);
@@ -118,17 +118,17 @@ namespace SharpFileDB.Utilities
             int maxLevel = db.headerBlock.MaxLevelOfSkipList;
 
             IComparable rightKey = null;
-            if (rightNodes[0].RightPos != indexBlock.SkipListTailNodes[0].ThisPos)
+            if (rightNodes[0].RightPos != indexBlock.SkipListTailNode.ThisPos)
             {
                 rightNodes[0].TryLoadRightDownObj(fs, LoadOptions.RightObj);
                 rightNodes[0].RightObj.TryLoadRightDownObj(fs, LoadOptions.Key);
                 rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs);
             }
             else
-            { rightNodes[0].RightObj = indexBlock.SkipListTailNodes[0]; }
+            { rightNodes[0].RightObj = indexBlock.SkipListTailNode; }
 
 
-            if ((rightNodes[0].RightObj != indexBlock.SkipListTailNodes[0])
+            if ((rightNodes[0].RightObj != indexBlock.SkipListTailNode)
                 && (rightKey.CompareTo(key) == 0))// key相等，说明Value相同。此处不再使用NGenerics的Comparer<TKey>.Default这种可指定外部比较工具的模式，是因为那会由于忘记编写合适的比较工具而带来隐藏地很深的bug。
             {
                 throw new Exception("Item Already In List");
@@ -208,33 +208,14 @@ namespace SharpFileDB.Utilities
             SkipListNodeBlock[] rightNodes = new SkipListNodeBlock[maxLevel];
 
             // Start at the top list header node
-            //SkipListNode<TKey, TValue> currentNode = headNodes[indexBlock.CurrentLevel];
             SkipListNodeBlock currentNode = indexBlock.SkipListHeadNodes[indexBlock.CurrentLevel];
 
-            //for (int i = indexBlock.CurrentLevel; i >= 0; i--)
-            //{
-            //    while ((currentNode.Right != tail) && (comparerToUse.Compare(currentNode.Right.Key, key) < 0))
-            //    {
-            //        currentNode = currentNode.Right;
-            //    }
-
-            //    // Store this node - the new node will be to the right of it.
-            //    rightNodes[i] = currentNode;
-
-            //    // Check if there is a next level, and if there is move down.
-            //    if (i > 0)
-            //    {
-            //        currentNode = currentNode.Down;
-            //    }
-            //}
-            //return rightNodes;
             for (int i = indexBlock.CurrentLevel; i >= 0; i--)
             {
-                while ((currentNode.RightPos != 0))
+                while ((currentNode.RightPos != indexBlock.SkipListTailNode.ThisPos))
                 {
                     currentNode.TryLoadRightDownObj(fs, LoadOptions.RightObj);
                     currentNode.RightObj.TryLoadRightDownObj(fs, LoadOptions.Key);
-                    //IComparable rightKey = currentNode.RightObj.Key.Data.ToObject<IComparable>();
                     IComparable rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fs);
                     if (rightKey.CompareTo(key) < 0)
                     { currentNode = currentNode.RightObj; }

@@ -89,6 +89,7 @@
             this.lblSelectedCount.Size = new System.Drawing.Size(71, 12);
             this.lblSelectedCount.TabIndex = 2;
             this.lblSelectedCount.Text = "selecting 0";
+            this.lblSelectedCount.Click += new System.EventHandler(this.lblSelectedCount_Click);
             // 
             // FormNoteList
             // 

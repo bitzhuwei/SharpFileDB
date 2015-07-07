@@ -20,9 +20,9 @@ namespace SharpFileDB.Demo.MyNote
         {
             InitializeComponent();
 
-            string databaseDirectory = Path.Combine(@"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\SharpFileDB.Demo.MyNote\noteDatabase\note.db");
-            //IPersistence persistence = new DefaultPersistence();
-            this.database = new FileDBContext(databaseDirectory);//, persistence);
+            //string fullname = Path.Combine(@"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\SharpFileDB.Demo.MyNote\noteDatabase\note.db");
+            string fullname = Path.Combine(Environment.CurrentDirectory, "MyNote.db");
+            this.database = new FileDBContext(fullname);
         }
 
         private void FormNoteList_Load(object sender, EventArgs e)
@@ -36,8 +36,8 @@ namespace SharpFileDB.Demo.MyNote
             //Predicate<MyNote.Tables.Note> selectAll = new Predicate<MyNote.Tables.Note>(x => true);
             //IList<MyNote.Tables.Note> noteList = this.database.Find(selectAll);
             // 下面的方式都是可以的。
-            noteList = this.database.Find((MyNote.Tables.Note n) => true);
-            noteList = this.database.Find<MyNote.Tables.Note>(x => true); 
+            //noteList = this.database.Find((MyNote.Tables.Note n) => true);
+            //noteList = this.database.Find<MyNote.Tables.Note>(x => true); 
             noteList = this.database.FindAll<MyNote.Tables.Note>();
 
             this.lstNotes.Items.Clear();
@@ -109,6 +109,15 @@ namespace SharpFileDB.Demo.MyNote
                     database.Update(note);
                 }
             }
+
+        }
+
+        private void lblSelectedCount_Click(object sender, EventArgs e)
+        {
+            string str = SharpFileDB.SharpFileDBHelper.SharpFileDBHelper.Print(this.database);
+            string message = string.Format("{0}", str);
+            //MessageBox.Show(message);
+            (new FormTip(str)).Show();
 
         }
     }

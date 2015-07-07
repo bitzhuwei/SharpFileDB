@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 存储索引的块。此块在内存中充当skip list。
     /// </summary>
     [Serializable]
-    internal class IndexBlock : Block, ILinkedNode<IndexBlock>
+    internal class IndexBlock : AllocBlock, ILinkedNode<IndexBlock>
     {
 
         /// <summary>
@@ -20,7 +20,6 @@ namespace SharpFileDB.Blocks
 
         /// <summary>
         /// 此索引的第一列skip list结点。是skip list的头结点。
-        /// 用于skip list的增删。
         /// <para>SkipListHeadNodes[0]是最下方的结点。</para>
         /// <para>/*SkipListNodes[maxLevel - 1]↓*/</para>
         /// <para>/*SkipListNodes[.]↓*/</para>
@@ -32,22 +31,14 @@ namespace SharpFileDB.Blocks
         internal SkipListNodeBlock[] SkipListHeadNodes { get; set; }
 
         /// <summary>
-        /// 此Index代表的Skip List的尾结点列的最上方的结点（this.SkipListHeadNodes.Last()）的位置。
+        /// 此Index代表的Skip List的尾结点（this.SkipListHeadNode）的位置。
         /// </summary>
         internal long SkipListTailNodePos { get; set; }
 
         /// <summary>
-        /// 此索引的最后一列skip list结点。是skip list的尾结点。
-        /// 用于skip list的增删。
-        /// <para>SkipListTailNodes[0]是最下方的结点。</para>
-        /// <para>/*SkipListTailNodes[maxLevel - 1]↓*/</para>
-        /// <para>/*SkipListTailNodes[.]↓*/</para>
-        /// <para>/*SkipListTailNodes[.]↓*/</para>
-        /// <para>/*SkipListTailNodes[2]↓*/</para>
-        /// <para>/*SkipListTailNodes[1]↓*/</para>
-        /// <para>/*SkipListTailNodes[0] */</para>
+        /// 此索引的最后一个skip list结点。是skip list的尾结点。
         /// </summary>
-        internal SkipListNodeBlock[] SkipListTailNodes { get; set; }
+        internal SkipListNodeBlock SkipListTailNode { get; set; }
 
         internal override bool ArrangePos()
         {
@@ -63,6 +54,18 @@ namespace SharpFileDB.Blocks
                     long pos = this.SkipListHeadNodes[length - 1].ThisPos;
                     if (pos != 0)
                     { this.SkipListHeadNodePos = pos; }
+                    else
+                    { allArranged = false; }
+                }
+            }
+
+            if (this.SkipListTailNode != null)// 如果这里的SkipListTailNodes == null，则说明此索引块是索引链表里的头结点。头结点是不需要SkipListTailNodes有数据的。
+            {
+                //if (this.SkipListHeadNodePos == 0)// 尚未被赋值。
+                {
+                    long pos = this.SkipListTailNode.ThisPos;
+                    if (pos != 0)
+                    { this.SkipListTailNodePos = pos; }
                     else
                     { allArranged = false; }
                 }

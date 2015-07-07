@@ -59,13 +59,16 @@ namespace SharpFileDB.Utilities
             PageHeaderBlock page;
 
             FileStream fs = db.fileStream;
-            Blocks.DBHeaderBlock dbHeader = db.headerBlock;
+            Transaction ts = db.transaction;
+            DBHeaderBlock dbHeader = db.headerBlock;
+
             // 找到第一个给定类型的页的位置。
             long pagePos = dbHeader.GetPosOfFirstPage(type);
 
             if (pagePos == 0)// 尚无给定类型的页。
             {
                 page = db.AllocEmptyPageOrNewPage();
+
                 page.AvailableBytes -= allocatingLength;
                 page.OccupiedBytes += allocatingLength;
                 dbHeader.SetPosOfFirstPage(type, page.ThisPos);
@@ -73,11 +76,7 @@ namespace SharpFileDB.Utilities
             else
             {
                 // 最前面的table页的可用空间是最大的（这需要在后续操作中进行排序）
-                PageHeaderBlock firstTablePage;
-                if (db.transaction.affectedPages.ContainsKey(pagePos))
-                { firstTablePage = db.transaction.affectedPages[pagePos]; }
-                else
-                { firstTablePage = fs.ReadBlock<PageHeaderBlock>(pagePos); }
+                PageHeaderBlock firstTablePage = GetFirstTablePage(fs, ts, pagePos);
 
                 if (firstTablePage.AvailableBytes >= allocatingLength)// 此页的空间足够用。
                 {
@@ -96,55 +95,73 @@ namespace SharpFileDB.Utilities
                 page.OccupiedBytes += allocatingLength;
 
                 // 对申请的类型的页的链表进行排序。呼应上面的排序需求。
-                long headPos = dbHeader.GetPosOfFirstPage(type);
-                if (headPos == 0)// 一个页也没有。
-                { dbHeader.SetPosOfFirstPage(type, page.ThisPos); }
-                else
-                {
-                    //PageHeaderBlock head = fs.ReadBlock<PageHeaderBlock>(headPos);page
-                    PageHeaderBlock head;
-                    if (db.transaction.affectedPages.ContainsKey(headPos))
-                    { head = db.transaction.affectedPages[headPos]; }
-                    else
-                    { head = fs.ReadBlock<PageHeaderBlock>(headPos); }
-                    if (page.AvailableBytes >= head.AvailableBytes)// 与第一个页进行比较。
-                    {
-                        page.NextPagePos = head.ThisPos;
-                        dbHeader.SetPosOfFirstPage(type, page.ThisPos);
-                    }
-                    else// 与后续的页进行比较。
-                    {
-                        //long currentPos = headPos;
-                        PageHeaderBlock current = head;
-                        //long currentPos = previous.NextPagePos;
-                        while (current.NextPagePos != 0)
-                        {
-                            //PageHeaderBlock next = fs.ReadBlock<PageHeaderBlock>(current.NextPagePos);
-                            PageHeaderBlock next;
-                            if(db.transaction.affectedPages.ContainsKey(current.NextPagePos))
-                            { next = db.transaction.affectedPages[current.NextPagePos]; }
-                            else
-                            { next = fs.ReadBlock<PageHeaderBlock>(current.NextPagePos); }
-                            if (page.AvailableBytes >= next.AvailableBytes)
-                            {
-                                page.NextPagePos = next.ThisPos;
-                                current.NextPagePos = page.ThisPos;
-                                break;
-                            }
-                            else
-                            { current = next; }
-                        }
-                        if (current.NextPagePos == 0)
-                        {
-                            current.NextPagePos = page.ThisPos;
-                        }
-
-                        if (!db.transaction.affectedPages.ContainsKey(current.ThisPos))
-                        { db.transaction.affectedPages.Add(current.ThisPos, current); }
-                    }
-                }
+                SortPage(type, page, fs, ts, dbHeader);
             }
 
+            return page;
+        }
+
+        private static PageHeaderBlock GetFirstTablePage(FileStream fs, Transaction ts, long pagePos)
+        {
+            PageHeaderBlock firstTablePage;
+            if (ts.affectedPages.ContainsKey(pagePos))
+            { firstTablePage = ts.affectedPages[pagePos]; }
+            else
+            { firstTablePage = fs.ReadBlock<PageHeaderBlock>(pagePos); }
+            return firstTablePage;
+        }
+
+        private static void SortPage(AllocPageTypes type, PageHeaderBlock page, FileStream fs, Transaction ts, Blocks.DBHeaderBlock dbHeader)
+        {
+            long headPos = dbHeader.GetPosOfFirstPage(type);
+            if (headPos == 0)// 一个页也没有。
+            { dbHeader.SetPosOfFirstPage(type, page.ThisPos); }
+            else
+            {
+                PageHeaderBlock head = GetPageHeaderBlock(fs, ts, headPos);
+                if (page.AvailableBytes >= head.AvailableBytes)// 与第一个页进行比较。
+                {
+                    page.NextPagePos = head.ThisPos;
+                    dbHeader.SetPosOfFirstPage(type, page.ThisPos);
+                }
+                else// 与后续的页进行比较。
+                {
+                    //long currentPos = headPos;
+                    PageHeaderBlock current = head;
+                    //long currentPos = previous.NextPagePos;
+                    while (current.NextPagePos != 0)
+                    {
+                        //PageHeaderBlock next = fs.ReadBlock<PageHeaderBlock>(current.NextPagePos);
+                        PageHeaderBlock next = GetPageHeaderBlock(fs, ts, current.NextPagePos);
+                        if (page.AvailableBytes >= next.AvailableBytes)
+                        {
+                            if (next.ThisPos != current.NextPagePos)
+                            { throw new Exception(string.Format("this should not happen.")); }
+                            page.NextPagePos = current.NextPagePos; // next.ThisPos;
+                            current.NextPagePos = page.ThisPos;
+                            break;
+                        }
+                        else
+                        { current = next; }
+                    }
+                    if (current.NextPagePos == 0)
+                    {
+                        current.NextPagePos = page.ThisPos;
+                    }
+
+                    if (!ts.affectedPages.ContainsKey(current.ThisPos))
+                    { ts.affectedPages.Add(current.ThisPos, current); }
+                }
+            }
+        }
+
+        private static PageHeaderBlock GetPageHeaderBlock(FileStream fs, Transaction ts, long pagePos)
+        {
+            PageHeaderBlock page;
+            if (ts.affectedPages.ContainsKey(pagePos))
+            { page = ts.affectedPages[pagePos]; }
+            else
+            { page = fs.ReadBlock<PageHeaderBlock>(pagePos); }
             return page;
         }
 

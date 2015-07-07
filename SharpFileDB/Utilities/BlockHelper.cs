@@ -32,7 +32,7 @@ namespace SharpFileDB.Utilities
             return result;
         }
 
-        internal static AllocPageTypes BelongedPageType(this Block block)
+        internal static AllocPageTypes BelongedPageType(this AllocBlock block)
         {
             AllocPageTypes pageType;
             Type type = block.GetType();
