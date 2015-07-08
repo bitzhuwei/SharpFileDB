@@ -18,5 +18,14 @@ namespace SharpFileDB
     {
 
 
+        /// <summary>
+        /// 更新数据库内的一条记录。
+        /// </summary>
+        /// <param name="record"></param>
+        public void Update(Table record)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
