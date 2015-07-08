@@ -62,6 +62,8 @@ namespace SharpFileDB.Blocks
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
+            base.GetObjectData(info, context);
+
             info.AddValue(strTableType, this.TableType);// 这样占用空间比(this.TableType.Fullname)少一点。
             info.AddValue(strIndexBlockHeadPos, this.IndexBlockHeadPos);
 

@@ -100,6 +100,8 @@ namespace SharpFileDB.Blocks
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
+            base.GetObjectData(info, context);
+
             info.AddValue(strSkipListHeadNodePos, this.SkipListHeadNodePos);
             info.AddValue(strSkipListTailNodePos, this.SkipListTailNodePos);
             info.AddValue(strCurrentLevel, this.CurrentLevel);

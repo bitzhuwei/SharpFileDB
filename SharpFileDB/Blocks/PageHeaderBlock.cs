@@ -45,11 +45,13 @@ namespace SharpFileDB.Blocks
 
         const string strAvailableBytes = "A";
         const string strOccupiedBytes = "O";
-        const string strPageType = "P";
+        //const string strPageType = "P";
         const string strNextPagePos = "N";
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
+            base.GetObjectData(info, context);
+
             info.AddValue(strAvailableBytes, this.AvailableBytes);
             info.AddValue(strOccupiedBytes, this.OccupiedBytes);
             info.AddValue(strNextPagePos, this.NextPagePos);
