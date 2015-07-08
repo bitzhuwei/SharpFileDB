@@ -26,6 +26,9 @@ namespace SharpFileDB
         /// <returns></returns>
         public IList<T> Find<T>(Expression<Func<T, bool>> predicate) where T : Table, new()
         {
+            
+
+
             throw new NotImplementedException();
         }
 

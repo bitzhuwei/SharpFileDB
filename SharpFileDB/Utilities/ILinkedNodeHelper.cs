@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
+    /// <summary>
+    /// <see cref="ILinkedNode&lt;T&gt;"/>类型的辅助类。
+    /// </summary>
     public static class ILinkedNodeHelper
     {
         /// <summary>

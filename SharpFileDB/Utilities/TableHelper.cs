@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -11,7 +12,10 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    internal static class TableHelper
+    /// <summary>
+    /// <see cref="Table"/>类型的辅助类。
+    /// </summary>
+    public static class TableHelper
     {
 
         /// <summary>
@@ -19,7 +23,8 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="table"></param>
         /// <returns></returns>
-        internal static byte[] ToBytes(this Table table)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte[] ToBytes(this Table table)
         {
             byte[] result;
             using (MemoryStream ms = new MemoryStream())
@@ -37,11 +42,12 @@ namespace SharpFileDB.Utilities
 
 
         /// <summary>
-        /// 把指定的数据库记录转换为<see cref="DataBlock[]"/>形式。
+        /// 把指定的数据库记录转换为<see cref="DataBlock"/>[]形式。
         /// </summary>
         /// <param name="record"></param>
         /// <returns></returns>
-        internal static DataBlock[] ToDataBlocks(this Table record)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static DataBlock[] ToDataBlocks(this Table record)
         {
             byte[] bytes = record.ToBytes();
 

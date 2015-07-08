@@ -7,8 +7,11 @@ using System.IO;
 using SharpFileDB.Blocks;
 using SharpFileDB.Utilities;
 
-namespace SharpFileDB.SharpFileDBHelper
+namespace SharpFileDB.DebugHelper
 {
+    /// <summary>
+    /// 打印<see cref="SharpFileDB"/>的详细信息。
+    /// </summary>
     public static class SharpFileDBHelper
     {
         static string Print(SkipListNodeBlock skipListNodeBlock)
@@ -24,11 +27,16 @@ namespace SharpFileDB.SharpFileDBHelper
                 pageHeaderBlock.ThisPos, pageHeaderBlock.AvailableBytes, pageHeaderBlock.OccupiedBytes);
         }
 
+        /// <summary>
+        /// 打印数据库文件里所有表的所有主键的skip list和所有类型的页链表。
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public static string Print(this FileDBContext db)
         {
             StringBuilder builder = new StringBuilder();
             builder.AppendLine(db.Fullname);
-            FileStream fs = db.fileStream;
+            FileStream fs = db.GetFileStream();
             PageHeaderBlock firstPage = fs.ReadBlock<PageHeaderBlock>(0);
             DBHeaderBlock dbHeader = fs.ReadBlock<DBHeaderBlock>(fs.Position);
 
@@ -36,7 +44,7 @@ namespace SharpFileDB.SharpFileDBHelper
 
             builder.AppendLine();
             builder.AppendLine("Page Info.:");
-            for (long i = 0; i < db.fileStream.Length; i += Consts.pageSize)
+            for (long i = 0; i < fs.Length; i += Consts.pageSize)
             {
                 PageHeaderBlock pageInfo = fs.ReadBlock<PageHeaderBlock>(i);
                 string str = Print(pageInfo);
@@ -116,7 +124,7 @@ namespace SharpFileDB.SharpFileDBHelper
                 IndexBlock indexBlock = fs.ReadBlock<IndexBlock>(currentIndexBlock.NextPos);
 
                 SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(indexBlock.SkipListHeadNodePos);
-                int level = db.headerBlock.MaxLevelOfSkipList - 1;
+                int level = db.GetDBHeaderBlock().MaxLevelOfSkipList - 1;
                 SkipListNodeBlock current = currentHeadNode;
                 while (current != null)// 依次Print表的PK Index
                 {
@@ -147,11 +155,16 @@ namespace SharpFileDB.SharpFileDBHelper
             }
         }
 
+        /// <summary>
+        /// 获取数据库的所有表和表里的所有数据对象。
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
         public static SharpFileDBInfo GetDBInfo(this FileDBContext db)
         {
             SharpFileDBInfo info = new SharpFileDBInfo();
 
-            FileStream fs = db.fileStream;
+            FileStream fs = db.GetFileStream();
             fs.ReadBlock<PageHeaderBlock>(0);
             fs.ReadBlock<DBHeaderBlock>(fs.Position);
             TableBlock tableHead = fs.ReadBlock<TableBlock>(fs.Position);

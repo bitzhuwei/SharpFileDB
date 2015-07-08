@@ -135,16 +135,14 @@ namespace SharpFileDB.Blocks
             }
         }
 
+        /// <summary>
+        /// 安排所有文件指针。如果全部安排完毕，返回true，否则返回false。
+        /// </summary>
+        /// <returns></returns>
         public override bool ArrangePos()
         {
             return true;// 此类型比较特殊，应该在更新时立即指定各项文件指针。
         }
-
-        ///// <summary>
-        ///// <see cref="TableBlock"/>的头结点。
-        ///// <para>头结点的<see cref="TableBlock.TableType"/>属性始终为空，所以<see cref="DBHeaderBlock"/>的序列化长度是不变的。</para>
-        ///// </summary>
-        //internal TableBlock TableBlockHead { get; set; }
 
         /// <summary>
         /// 数据库文件的头部。应该放在数据库文件的最开始。
@@ -159,6 +157,11 @@ namespace SharpFileDB.Blocks
         const string strMaxLevel = "M";
         const string strProbability = "P";
 
+        /// <summary>
+        /// 序列化时系统会调用此方法。
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -172,6 +175,11 @@ namespace SharpFileDB.Blocks
             info.AddValue(strProbability, this.ProbabilityOfSkipList);
         }
 
+        /// <summary>
+        /// BinaryFormatter会通过调用此方法来反序列化此块。
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected DBHeaderBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
@@ -187,10 +195,17 @@ namespace SharpFileDB.Blocks
 
         #region IUpdatable 成员
 
+        /// <summary>
+        /// 标识此块是否需要重新写入数据库文件。
+        /// </summary>
         public bool IsDirty { get; set; }
 
         #endregion
 
+        /// <summary>
+        /// 显示此块的信息，便于调试。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("{0}, FirstTablePagePos: {1}, FirstIndexPagePos: {2}, FirstSkipListNodePagePos: {3}, FirstDataPagePos: {4}, FirstEmptyPagePos: {5}, MaxLevelOfSkipList: {6}, ProbabilityOfSkipList: {7}",

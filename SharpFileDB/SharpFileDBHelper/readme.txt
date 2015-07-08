@@ -1,1 +1,0 @@
-﻿此子namespace里的类型是为了方便外部程序集查看SharpFileDB的情况。

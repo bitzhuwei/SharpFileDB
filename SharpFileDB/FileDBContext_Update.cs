@@ -48,12 +48,12 @@ namespace SharpFileDB
                     item.Value.Update(record, dataBlocksForValue, this);
                 }
 
-                // 删除旧数据。
+                // 删除旧的record.ToDataBlocks()数据。
                 for (int i = 0; i < oldValue.Length; i++)
                 { this.transaction.Delete(oldValue[i]); }// 加入事务，准备写入数据库。
                 //this.transaction.Delete(downNode.Key);// 加入事务，准备写入数据库。
 
-                // 写入新数据。
+                // 写入新的record.ToDataBlocks()数据。
                 for (int i = 0; i < dataBlocksForValue.Length; i++)
                 { this.transaction.Add(dataBlocksForValue[i]); }// 加入事务，准备写入数据库。
             }

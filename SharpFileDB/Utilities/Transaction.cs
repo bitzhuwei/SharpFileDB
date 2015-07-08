@@ -5,14 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharpFileDB.Utilities;
 
-namespace SharpFileDB
+namespace SharpFileDB.Utilities
 {
     /// <summary>
     /// 事务。执行一系列的数据库文件修改动作。
     /// </summary>
-    internal class Transaction
+    public class Transaction
     {
         private static readonly object syn = new object();
 
@@ -62,6 +61,10 @@ namespace SharpFileDB
             }
         }
 
+        /// <summary>
+        /// 添加一个准备从数据库文件中删除的块。
+        /// </summary>
+        /// <param name="block"></param>
         public void Delete(AllocBlock block)
         {
             if (block.ThisPos == 0)// 尝试删除一个连在文件里的位置都没有的块。这个块似乎在文件里根本不存在。

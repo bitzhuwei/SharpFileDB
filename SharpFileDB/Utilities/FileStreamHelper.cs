@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -10,7 +11,10 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    internal static class FileStreamHelper
+    /// <summary>
+    /// <see cref="FileStream"/>类型的辅助类。
+    /// </summary>
+    public static class FileStreamHelper
     {
 
         /// <summary>
@@ -18,7 +22,8 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="fileStream">数据库文件流。</param>
         /// <param name="block"></param>
-        internal static void WriteBlock(this FileStream fileStream, Block block)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void WriteBlock(this FileStream fileStream, Block block)
         {
             if (fileStream.Length < block.ThisPos)
             {
@@ -35,7 +40,8 @@ namespace SharpFileDB.Utilities
         /// <param name="fileStream"></param>
         /// <param name="position">块所在位置。</param>
         /// <returns></returns>
-        internal static T ReadBlock<T>(this FileStream fileStream, long position) where T : Block
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T ReadBlock<T>(this FileStream fileStream, long position) where T : Block
         {
             fileStream.Seek(position, SeekOrigin.Begin);
             object obj = Consts.formatter.Deserialize(fileStream);
@@ -51,7 +57,8 @@ namespace SharpFileDB.Utilities
         /// <param name="fileStream"></param>
         /// <param name="position">第一个块的位置。</param>
         /// <returns></returns>
-        internal static T[] ReadBlocks<T>(this FileStream fileStream, long position) where T : Block, ILinkedNode<T>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[] ReadBlocks<T>(this FileStream fileStream, long position) where T : Block, ILinkedNode<T>
         {
             List<T> list = new List<T>();
             T item = ReadBlock<T>(fileStream, position);
@@ -75,7 +82,8 @@ namespace SharpFileDB.Utilities
         ///// <param name="fileStream"></param>
         ///// <param name="position">对象所在位置。</param>
         ///// <returns></returns>
-        //internal static T ReadObject<T>(this FileStream fileStream, long position)
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static T ReadObject<T>(this FileStream fileStream, long position)
         //{
         //    if (position < 0)
         //    { return default(T); }

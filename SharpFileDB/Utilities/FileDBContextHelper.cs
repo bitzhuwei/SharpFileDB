@@ -3,13 +3,57 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
+    /// <summary>
+    /// <see cref="FileDBContext"/>类型的辅助类。
+    /// </summary>
     public static class FileDBContextHelper
     {
+        
+        /// <summary>
+        /// 获取数据库的文件流。
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public static FileStream GetFileStream(this FileDBContext db)
+        {
+            return db.fileStream;
+        }
+
+        /// <summary>
+        /// 获取数据库的事务。
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public static Transaction GetTransaction(this FileDBContext db)
+        {
+            return db.transaction;
+        }
+
+        /// <summary>
+        /// 获取数据库的头部。
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public static DBHeaderBlock GetDBHeaderBlock(this FileDBContext db)
+        {
+            return db.headerBlock;
+        }
+
+        /// <summary>
+        /// 获取数据库表块的头结点。
+        /// </summary>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public static TableBlock GetTableBlockHeadNode(this FileDBContext db)
+        {
+            return db.tableBlockHead;
+        }
 
         /// <summary>
         /// 从数据库文件中申请一定长度的空间。
@@ -18,6 +62,7 @@ namespace SharpFileDB.Utilities
         /// <param name="length"></param>
         /// <param name="type"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IList<AllocatedSpace> Alloc(this FileDBContext db, long length, AllocPageTypes type)
         {
             // 由于一页能用的空间很有限，所以可能需要从多个页上获取空间。
@@ -48,6 +93,7 @@ namespace SharpFileDB.Utilities
         /// <param name="allocatingLength">希望申请到的字节数。</param>
         /// <param name="type"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static PageHeaderBlock PickPage(this FileDBContext db, Int16 allocatingLength, AllocPageTypes type)
         {
             PageHeaderBlock page;
@@ -70,7 +116,7 @@ namespace SharpFileDB.Utilities
             else
             {
                 // 最前面的table页的可用空间是最大的（这需要在后续操作中进行排序）
-                PageHeaderBlock firstTablePage = GetFirstTablePage(fs, ts, pagePos);
+                PageHeaderBlock firstTablePage = GetTablePage(fs, ts, pagePos);
 
                 if (firstTablePage.AvailableBytes >= allocatingLength)// 此页的空间足够用。
                 {
@@ -95,7 +141,15 @@ namespace SharpFileDB.Utilities
             return page;
         }
 
-        private static PageHeaderBlock GetFirstTablePage(FileStream fs, Transaction ts, long pagePos)
+        /// <summary>
+        /// 获取指定位置所在的页。
+        /// </summary>
+        /// <param name="fs"></param>
+        /// <param name="ts"></param>
+        /// <param name="pagePos"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static PageHeaderBlock GetTablePage(FileStream fs, Transaction ts, long pagePos)
         {
             PageHeaderBlock firstTablePage;
             if (ts.affectedPages.ContainsKey(pagePos))
@@ -105,6 +159,15 @@ namespace SharpFileDB.Utilities
             return firstTablePage;
         }
 
+        /// <summary>
+        /// 给更新了的页进行排序。
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="page"></param>
+        /// <param name="fs"></param>
+        /// <param name="ts"></param>
+        /// <param name="dbHeader"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static void SortPage(AllocPageTypes type, PageHeaderBlock page, FileStream fs, Transaction ts, Blocks.DBHeaderBlock dbHeader)
         {
             long headPos = dbHeader.GetPosOfFirstPage(type);
@@ -220,6 +283,10 @@ namespace SharpFileDB.Utilities
             this.length = length;
         }
 
+        /// <summary>
+        /// 显示此对象的信息，便于调试。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("{0}: {1}", position, length);

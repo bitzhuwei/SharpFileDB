@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SharpFileDB.SharpFileDBHelper
+namespace SharpFileDB.DebugHelper
 {
     public class IndexInfo
     {
@@ -19,6 +19,10 @@ namespace SharpFileDB.SharpFileDBHelper
 
         public string IndexBindMember { get; set; }
 
+        /// <summary>
+        /// 显示此对象的信息，便于调试。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("{0}", this.IndexBindMember);

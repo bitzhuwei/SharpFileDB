@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SharpFileDB.SharpFileDBHelper
+namespace SharpFileDB.DebugHelper
 {
     public class TableInfo
     {
@@ -27,6 +27,10 @@ namespace SharpFileDB.SharpFileDBHelper
             this.indexInfoList.Add(indexInfo);
         }
 
+        /// <summary>
+        /// 显示此对象的信息，便于调试。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("{0}", this.TableType);

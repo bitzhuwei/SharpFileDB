@@ -10,6 +10,10 @@ namespace SharpFileDB.Zoo
     public class Food : ISerializable
     {
 
+        /// <summary>
+        /// 显示此对象的信息，便于调试。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("food: {0}", this.FoodName);

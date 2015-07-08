@@ -2,12 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    internal static class DBHeaderBlockHelper
+    /// <summary>
+    /// <see cref="DBHeaderBlock"/>类型的辅助类。
+    /// </summary>
+    public static class DBHeaderBlockHelper
     {
 
         /// <summary>
@@ -16,7 +20,8 @@ namespace SharpFileDB.Utilities
         /// <param name="dbHeaderBlock"></param>
         /// <param name="type"></param>
         /// <param name="value"></param>
-        internal static void SetPosOfFirstPage(this DBHeaderBlock dbHeaderBlock, AllocPageTypes type, long value)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SetPosOfFirstPage(this DBHeaderBlock dbHeaderBlock, AllocPageTypes type, long value)
         {
             switch (type)
             {
@@ -44,7 +49,8 @@ namespace SharpFileDB.Utilities
         /// <param name="dbHeaderBlock"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        internal static long GetPosOfFirstPage(this DBHeaderBlock dbHeaderBlock, AllocPageTypes type)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static long GetPosOfFirstPage(this DBHeaderBlock dbHeaderBlock, AllocPageTypes type)
         {
             long position;
             switch (type)

@@ -96,7 +96,7 @@ namespace SharpFileDB
         }
 
         /// <summary>
-        /// 
+        /// 显示此对象的信息，便于调试。
         /// </summary>
         /// <returns></returns>
         public override string ToString()

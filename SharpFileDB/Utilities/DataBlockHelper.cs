@@ -3,12 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    internal static class DataBlockHelper
+    /// <summary>
+    /// <see cref="DataBlock"/>类型的辅助类。
+    /// </summary>
+    public static class DataBlockHelper
     {
         /// <summary>
         /// 以此块为第一个数据块读取一个对象。
@@ -17,7 +21,8 @@ namespace SharpFileDB.Utilities
         /// <param name="dataBlock"></param>
         /// <param name="fileStream"></param>
         /// <returns></returns>
-        internal static T GetObject<T>(this DataBlock dataBlock, FileStream fileStream)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetObject<T>(this DataBlock dataBlock, FileStream fileStream)
         {
             byte[] bytes = new byte[dataBlock.ObjectLength];
 
@@ -72,7 +77,8 @@ namespace SharpFileDB.Utilities
         /// <param name="dataBlocks"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        internal static T GetObject<T>(this DataBlock[] dataBlocks, FileDBContext db)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetObject<T>(this DataBlock[] dataBlocks, FileDBContext db)
         {
             byte[] bytes = new byte[dataBlocks[0].ObjectLength];
             int index = 0;// index == dataBlock.ObjectLength - 1时，dataBlock.NextDataBlockPos也就正好应该等于0了。

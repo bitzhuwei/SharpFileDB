@@ -12,6 +12,7 @@ namespace SharpFileDB.TestConsole
 {
     class Program
     {
+        static Random random = new Random();
 
         static void Main(string[] args)
         {
@@ -34,26 +35,30 @@ namespace SharpFileDB.TestConsole
             FileDBContext db = new FileDBContext(fullname);
 
             Cat cat = new Cat();
-            cat.KittyName = "kitty白";
-            cat.Price = (new Random()).Next(1, 10);
+            string name = "kitty白 " + random.Next();
+            cat.KittyName = name;
+            cat.Price = random.Next(1, 10);
             cat.FavoriteFood = new Food() { FoodName = "小黄鱼", };
             cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
             cat.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };
             Lion lion = new Lion();
-            lion.KittyName = "kitty白";
-            lion.Price = (new Random()).Next(1, 10);
+            lion.KittyName = "狮子 " + random.Next();
+            lion.Price = random.Next(1, 10);
             lion.FavoriteFood = new Food() { FoodName = "小黄鱼", };
             lion.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
             lion.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };
             db.Insert(cat);
             db.Insert(lion);
 
-            //Predicate<Cat> pre = new Predicate<Cat>(x => x.Name == "xiao xiao bai");
-            //IList<Cat> cats = db.Retrieve(pre);
-            IList<Cat> cats = db.FindAll<Cat>();
+            //IList<Cat> cats = db.Find<Cat>(x => x.KittyName == name);
+            System.Linq.Expressions.Expression<Func<Cat, bool>> pre =
+                (x => (x.KittyName == name && x.Price < 10) || (x.KittyName == "kitty2" && x.Price > 10));
+            IList<Cat> cats = db.Find<Cat>(pre);
 
-            //cat.Name = "xiao bai";
-            //db.Update(cat);
+            cats = db.FindAll<Cat>();
+
+            cat.KittyName = "小白 " + random.Next();
+            db.Update(cat);
 
             foreach (var item in cats)
             {

@@ -11,6 +11,10 @@ namespace SharpFileDB.Zoo
     public class Lion : Table
     {
 
+        /// <summary>
+        /// 显示此对象的信息，便于调试。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("Lion: {0}, ￥{1}, {2}, {3}", KittyName, Price, FavoriteFood, OwnHobby);

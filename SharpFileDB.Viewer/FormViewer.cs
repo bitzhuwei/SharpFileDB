@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SharpFileDB.SharpFileDBHelper;
+using SharpFileDB.DebugHelper;
 
 namespace SharpFileDB.Viewer
 {

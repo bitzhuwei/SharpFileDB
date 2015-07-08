@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
@@ -10,7 +11,10 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    internal static class BlockHelper
+    /// <summary>
+    /// <see cref="Block"/>类型的辅助类。
+    /// </summary>
+    public static class BlockHelper
     {
 
         /// <summary>
@@ -18,6 +22,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="block"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static byte[] ToBytes(this Block block)
         {
             byte[] result;
@@ -37,6 +42,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="block"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static AllocPageTypes BelongedPageType(this AllocBlock block)
         {
             AllocPageTypes pageType;

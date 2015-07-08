@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,7 @@ namespace SharpFileDB.Utilities
         /// <param name="indexBlock">索引。</param>
         /// <param name="record">要删除的记录。</param>
         /// <param name="db">数据库上下文。</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Delete(this IndexBlock indexBlock, Table record, FileDBContext db)
         {
             Type type = record.GetType();

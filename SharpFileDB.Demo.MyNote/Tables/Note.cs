@@ -14,6 +14,11 @@ namespace SharpFileDB.Demo.MyNote.Tables
     [Serializable]
     public class Note : Table
     {
+
+        /// <summary>
+        /// 显示此对象的信息，便于调试。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("{0}", this.Title);

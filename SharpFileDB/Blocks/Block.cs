@@ -14,7 +14,7 @@ namespace SharpFileDB.Blocks
     public abstract class Block : ISerializable
     {
 #if DEBUG
-        protected static long IDCounter = 0;
+        private static long IDCounter = 0;
         /// <summary>
         /// 用于给此块标记一个编号，仅为便于调试之用。
         /// </summary>
@@ -67,6 +67,10 @@ namespace SharpFileDB.Blocks
 #endif
         }
 
+        /// <summary>
+        /// 显示此块的信息，便于调试。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
 #if DEBUG

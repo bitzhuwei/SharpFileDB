@@ -112,6 +112,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SharpFileDB.DebugHelper\SharpFileDB.DebugHelper.csproj">
+      <Project>{bad47f8b-5cc9-45a7-9815-432d0f43694d}</Project>
+      <Name>SharpFileDB.DebugHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharpFileDB\SharpFileDB.csproj">
       <Project>{e5c7d3c7-1dd6-4c4a-b9b5-0abc33031cd1}</Project>
       <Name>SharpFileDB</Name>

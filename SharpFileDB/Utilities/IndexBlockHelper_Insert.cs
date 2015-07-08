@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +25,7 @@ namespace SharpFileDB.Utilities
         /// <param name="item">新插入的记录。</param>
         /// <param name="dataBlocksForValue">为新插入的记录安排好的数据块。</param>
         /// <param name="db">数据库上下文。</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Insert(this IndexBlock indexBlock, Table item, DataBlock[] dataBlocksForValue, FileDBContext db)
         {
             Type type = item.GetType();
@@ -115,6 +117,7 @@ namespace SharpFileDB.Utilities
             //itemsCount++;// 有的在内存，有的在文件，因此itemsCount不好使了。
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int PickRandomLevel(FileDBContext db, IndexBlock indexBlock)
         {
             int randomLevel = 0;

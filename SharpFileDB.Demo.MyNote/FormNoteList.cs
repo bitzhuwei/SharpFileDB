@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SharpFileDB.DebugHelper;
 
 namespace SharpFileDB.Demo.MyNote
 {
@@ -118,7 +119,7 @@ namespace SharpFileDB.Demo.MyNote
 
         private void lblSelectedCount_Click(object sender, EventArgs e)
         {
-            string str = SharpFileDB.SharpFileDBHelper.SharpFileDBHelper.Print(this.database);
+            string str = this.database.Print();
             string message = string.Format("{0}", str);
             //MessageBox.Show(message);
             (new FormTip(str)).Show();

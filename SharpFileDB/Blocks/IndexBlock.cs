@@ -40,6 +40,10 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public SkipListNodeBlock SkipListTailNode { get; set; }
 
+        /// <summary>
+        /// 安排所有文件指针。如果全部安排完毕，返回true，否则返回false。
+        /// </summary>
+        /// <returns></returns>
         public override bool ArrangePos()
         {
             bool allArranged = true;
@@ -98,6 +102,11 @@ namespace SharpFileDB.Blocks
 
         const string strNext = "N";
 
+        /// <summary>
+        /// 序列化时系统会调用此方法。
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -110,6 +119,11 @@ namespace SharpFileDB.Blocks
             info.AddValue(strNext, this.NextPos);
         }
 
+        /// <summary>
+        /// BinaryFormatter会通过调用此方法来反序列化此块。
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         protected IndexBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
@@ -136,6 +150,10 @@ namespace SharpFileDB.Blocks
 
         #endregion
 
+        /// <summary>
+        /// 显示此块的信息，便于调试。
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format("{0}, SkipListHeadNodePos: {1}, BindMember: {2}, NextPos: {3}",

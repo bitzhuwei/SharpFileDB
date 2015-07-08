@@ -63,9 +63,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\ILinkedNodeHelper.cs" />
-    <Compile Include="SharpFileDBHelper\IndexInfo.cs" />
-    <Compile Include="SharpFileDBHelper\SharpFileDBInfo.cs" />
-    <Compile Include="SharpFileDBHelper\TableInfo.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="ObjectId.cs">
       <SubType>Code</SubType>
@@ -88,15 +85,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\IndexBlockHelper_Common.cs" />
-    <Compile Include="Utilities\IndexBlockHelper.cs" />
-    <Compile Include="SharpFileDBHelper\SharpFileDBHelper.cs" />
     <Compile Include="Utilities\IndexBlockHelper_Update.cs" />
     <Compile Include="Utilities\IndexBlockHelper_Delete.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\Int64Helper.cs" />
     <Compile Include="Utilities\TableHelper.cs" />
-    <Compile Include="Transaction.cs" />
+    <Compile Include="Utilities\Transaction.cs" />
     <Compile Include="Utilities\Consts.cs" />
     <Compile Include="Utilities\FileStreamHelper.cs" />
   </ItemGroup>
@@ -106,7 +101,6 @@
   <ItemGroup>
     <Content Include="Blocks\Blocks.png" />
     <Content Include="readme.txt" />
-    <Content Include="SharpFileDBHelper\readme.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
