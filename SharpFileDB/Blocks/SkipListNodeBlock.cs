@@ -17,24 +17,24 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此结点的Key所在位置。
         /// </summary>
-        internal long KeyPos { get; set; }
+        public long KeyPos { get; set; }
 
         /// <summary>
         /// 用于存储此结点的Key的块。
         /// </summary>
-        internal DataBlock Key { get; set; }
+        public DataBlock Key { get; set; }
 
         /// <summary>
         /// 此结点的Value的第一个块所在位置。
         /// </summary>
-        internal long ValuePos { get; set; }
+        public long ValuePos { get; set; }
 
         /// <summary>
         /// 用于存储此结点的Value的块。
         /// </summary>
-        internal DataBlock[] Value { get; set; }
+        public DataBlock[] Value { get; set; }
 
-        internal override bool ArrangePos()
+        public override bool ArrangePos()
         {
             bool allArranged = true;
 
@@ -77,7 +77,7 @@ namespace SharpFileDB.Blocks
         /// 用于把skip list node存储到数据库文件的块。
         /// 此时代表的Key和Value都为null，代表一个头结点。
         /// </summary>
-        internal SkipListNodeBlock() { }
+        public SkipListNodeBlock() { }
 
         const string strKeyPos = "K";
         const string strValuePos = "V";

@@ -1,4 +1,5 @@
-﻿using SharpFileDB.Utilities;
+﻿using SharpFileDB.Blocks;
+using SharpFileDB.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,5 +35,42 @@ namespace SharpFileDB.Utilities
             return result;
         }
 
+
+        /// <summary>
+        /// 把指定的数据库记录转换为<see cref="DataBlock[]"/>形式。
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        internal static DataBlock[] ToDataBlocks(this Table record)
+        {
+            byte[] bytes = record.ToBytes();
+
+            // 准备data blocks。
+            int dataBlockCount = (bytes.Length - 1) / Consts.maxDataBytes + 1;
+            if (dataBlockCount <= 0)
+            { throw new Exception(string.Format("no data block for [{0}]", record)); }
+            DataBlock[] dataBlocks = new DataBlock[dataBlockCount];
+            // 准备好最后一个data block。
+            DataBlock lastDataBlock = new DataBlock() { ObjectLength = bytes.Length, };
+            int lastLength = bytes.Length % Consts.maxDataBytes;
+            if (lastLength == 0) { lastLength = Consts.maxDataBytes; }
+            lastDataBlock.Data = new byte[lastLength];
+            for (int i = bytes.Length - lastLength, j = 0; i < bytes.Length; i++, j++)
+            { lastDataBlock.Data[j] = bytes[i]; }
+            dataBlocks[dataBlockCount - 1] = lastDataBlock;
+            // 准备其它data blocks。
+            for (int i = dataBlockCount - 1 - 1; i >= 0; i--)
+            {
+                DataBlock block = new DataBlock() { ObjectLength = bytes.Length, };
+                block.NextObj = dataBlocks[i + 1];
+                block.Data = new byte[Consts.maxDataBytes];
+                for (int p = i * Consts.maxDataBytes, q = 0; q < Consts.maxDataBytes; p++, q++)
+                { block.Data[q] = bytes[p]; }
+                dataBlocks[i] = block;
+            }
+
+            // dataBlocks[0] -> [1] -> [2] -> ... -> [dataBlockCount - 1] -> null
+            return dataBlocks;
+        }
     }
 }

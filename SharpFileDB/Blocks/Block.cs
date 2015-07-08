@@ -18,14 +18,14 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 用于给此块标记一个编号，仅为便于调试之用。
         /// </summary>
-        internal long blockID;
+        public long blockID;
 #endif
 
         /// <summary>
         /// 此对象自身在数据库文件中的位置。为0时说明尚未指定位置。只有<see cref="DBHeaderBlock"/>的位置才应该为0。
         /// <para>请注意在读写时设定此值。</para>
         /// </summary>
-        internal long ThisPos { get; set; }
+        public long ThisPos { get; set; }
 
         /// <summary>
         /// 存储到数据库文件的一块内容。
@@ -80,6 +80,6 @@ namespace SharpFileDB.Blocks
         /// 安排所有文件指针。如果全部安排完毕，返回true，否则返回false。
         /// </summary>
         /// <returns></returns>
-        internal abstract bool ArrangePos();
+        public abstract bool ArrangePos();
     }
 }

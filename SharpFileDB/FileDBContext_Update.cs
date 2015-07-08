@@ -24,6 +24,41 @@ namespace SharpFileDB
         /// <param name="record"></param>
         public void Update(Table record)
         {
+            if (record.Id == null)
+            { throw new Exception(string.Format("[{0}] is a new record! Use Insert(Table) to create a new record in SharpFileDB.", record)); }
+
+            Type type = record.GetType();
+            if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
+            { throw new Exception(string.Format("DBError: No Table for type [{0}] is set!", type)); }
+
+            // 更新record。
+            {
+                IndexBlock indexBlock = this.tableIndexBlockDict[type][Consts.TableIdString];
+                SkipListNodeBlock downNode = FindSkipListNode(fileStream, record.Id, indexBlock);
+
+                if (downNode == null)// 此记录根本不存在或已经被删除了。
+                { throw new Exception(string.Format("no data blocks for [{0}]", record)); }
+
+                DataBlock[] dataBlocksForValue = record.ToDataBlocks();
+
+                foreach (KeyValuePair<string, IndexBlock> item in this.tableIndexBlockDict[type])
+                {
+                    item.Value.Update(record, dataBlocksForValue, this);
+                }
+
+                downNode.TryLoadRightDownObj(fileStream, LoadOptions.Key | LoadOptions.Value);
+
+                // 删除旧数据。
+                for (int i = 0; i < downNode.Value.Length; i++)
+                { this.transaction.Delete(downNode.Value[i]); }// 加入事务，准备写入数据库。
+                this.transaction.Delete(downNode.Key);// 加入事务，准备写入数据库。
+
+                // 写入新数据。
+                for (int i = 0; i < dataBlocksForValue.Length; i++)
+                { this.transaction.Add(dataBlocksForValue[i]); }// 加入事务，准备写入数据库。
+            }
+
+            this.transaction.Commit();
             throw new NotImplementedException();
         }
 

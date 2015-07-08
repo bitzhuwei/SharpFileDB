@@ -54,14 +54,12 @@
     <Compile Include="Blocks\PageHeaderBlock.cs" />
     <Compile Include="Blocks\SkipListNodeBlock.cs" />
     <Compile Include="Blocks\TableBlock.cs" />
+    <Compile Include="FileDBContext_Common.cs" />
     <Compile Include="FileDBContext_Find.cs" />
     <Compile Include="FileDBContext_Update.cs" />
     <Compile Include="FileDBContext_Insert.cs" />
     <Compile Include="FileDBContext_Ctor.cs" />
     <Compile Include="FileDBContext_Delete.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="FileDBContext_Field.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\ILinkedNodeHelper.cs" />
@@ -86,8 +84,16 @@
     <Compile Include="Utilities\DBHeaderBlockHelper.cs" />
     <Compile Include="Utilities\FileDBContextHelper.cs" />
     <Compile Include="Utilities\IComparableHelper.cs" />
+    <Compile Include="Utilities\IndexBlockHelper_Insert.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\IndexBlockHelper_Common.cs" />
     <Compile Include="Utilities\IndexBlockHelper.cs" />
     <Compile Include="SharpFileDBHelper\SharpFileDBHelper.cs" />
+    <Compile Include="Utilities\IndexBlockHelper_Update.cs" />
+    <Compile Include="Utilities\IndexBlockHelper_Delete.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utilities\Int64Helper.cs" />
     <Compile Include="Utilities\TableHelper.cs" />
     <Compile Include="Transaction.cs" />

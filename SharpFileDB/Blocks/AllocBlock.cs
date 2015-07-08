@@ -15,7 +15,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 可申请、回收的块。
         /// </summary>
-        internal AllocBlock() : base() { }
+        public AllocBlock() : base() { }
 
         protected AllocBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)

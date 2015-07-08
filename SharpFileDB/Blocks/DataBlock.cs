@@ -15,14 +15,14 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 一个或多个数据块代表的对象序列化后所占用的字节总数。用此值便于<code>byte[] bytes = new byte[DataBlock.ObjectLength];</code>。
         /// </summary>
-        internal Int32 ObjectLength { get; set; }// RULE: 一个Table序列化后的最大长度为Int32.MaxValue个字节。
+        public Int32 ObjectLength { get; set; }// RULE: 一个Table序列化后的最大长度为Int32.MaxValue个字节。
 
         /// <summary>
         /// 数据块。
         /// </summary>
-        internal byte[] Data { get; set; }
+        public byte[] Data { get; set; }
 
-        internal override bool ArrangePos()
+        public override bool ArrangePos()
         {
             bool allArranged = true;
 
@@ -40,7 +40,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 存储到数据库文件中的一块数据。由于一页只有4KB，所以一个对象可能需要多页存储。所以我们用<see cref="DataBlock"/>来一部分一部分地存储。
         /// </summary>
-        internal DataBlock() { }
+        public DataBlock() { }
 
         const string strObjectLength = "L";
         const string strData = "D";

@@ -18,22 +18,22 @@ namespace SharpFileDB.Blocks
         /// 此页剩余的可用字节数。剩余的可用字节都在页的末尾。
         /// <para>剩余可用字节数+被使用的字节数+页中间那些七零八落的空白字节数（由删除操作造成）=页长度（4KB）</para>
         /// </summary>
-        internal Int16 AvailableBytes { get; set; }
+        public Int16 AvailableBytes { get; set; }
 
         /// <summary>
         /// 此页内已被使用的字节数。
         /// <para>剩余可用字节数+被使用的字节数+页中间那些七零八落的空白字节数（由删除操作造成）=页长度（4KB）</para>
         /// </summary>
-        internal Int16 OccupiedBytes { get; set; }
+        public Int16 OccupiedBytes { get; set; }
 
         /// <summary>
         /// 此页的下一页的位置。
         /// <para>只有当此页为空白页时，此值才有效。</para>
         /// </summary>
-        internal long NextPagePos { get; set; }
+        public long NextPagePos { get; set; }
 
 
-        internal override bool ArrangePos()
+        public override bool ArrangePos()
         {
             return true;// 此类型比较特殊，应该在创建时就为其安排好NextPagePos等属性。
         }
@@ -41,7 +41,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 页的头部，可代表一个页。此块应在每个页的最开始处。
         /// </summary>
-        internal PageHeaderBlock() { }
+        public PageHeaderBlock() { }
 
         const string strAvailableBytes = "A";
         const string strOccupiedBytes = "O";

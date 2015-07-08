@@ -15,19 +15,19 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此表的数据类型。必须是继承自<see cref="Table"/>的类型。
         /// </summary>
-        internal Type TableType { get; set; }
+        public Type TableType { get; set; }
 
         /// <summary>
         /// 此表的Index的头结点的位置。
         /// </summary>
-        internal long IndexBlockHeadPos { get; set; }
+        public long IndexBlockHeadPos { get; set; }
 
         /// <summary>
         /// 此表的Index的头结点。
         /// </summary>
-        internal IndexBlock IndexBlockHead { get; set; }
+        public IndexBlock IndexBlockHead { get; set; }
 
-        internal override bool ArrangePos()
+        public override bool ArrangePos()
         {
             bool allArranged = true;
 
@@ -53,7 +53,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 存储数据库表信息的块。
         /// </summary>
-        internal TableBlock() { }
+        public TableBlock() { }
 
         const string strTableType = "T";
         const string strIndexBlockHeadPos = "I";

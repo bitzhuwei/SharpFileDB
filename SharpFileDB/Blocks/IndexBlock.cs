@@ -16,7 +16,7 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 此Index代表的Skip List的头结点列的最上方的结点（this.SkipListHeadNodes.Last()）的位置。
         /// </summary>
-        internal long SkipListHeadNodePos { get; set; }
+        public long SkipListHeadNodePos { get; set; }
 
         /// <summary>
         /// 此索引的第一列skip list结点。是skip list的头结点。
@@ -28,19 +28,19 @@ namespace SharpFileDB.Blocks
         /// <para>/*SkipListNodes[1]↓*/</para>
         /// <para>/*SkipListNodes[0] */</para>
         /// </summary>
-        internal SkipListNodeBlock[] SkipListHeadNodes { get; set; }
+        public SkipListNodeBlock[] SkipListHeadNodes { get; set; }
 
         /// <summary>
         /// 此Index代表的Skip List的尾结点（this.SkipListHeadNode）的位置。
         /// </summary>
-        internal long SkipListTailNodePos { get; set; }
+        public long SkipListTailNodePos { get; set; }
 
         /// <summary>
         /// 此索引的最后一个skip list结点。是skip list的尾结点。
         /// </summary>
-        internal SkipListNodeBlock SkipListTailNode { get; set; }
+        public SkipListNodeBlock SkipListTailNode { get; set; }
 
-        internal override bool ArrangePos()
+        public override bool ArrangePos()
         {
             bool allArranged = true;
 
@@ -79,17 +79,17 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 用于加速skip list的增删。
         /// </summary>
-        internal int CurrentLevel { get; set; }
+        public int CurrentLevel { get; set; }
 
         /// <summary>
         /// 此Index代表的表的成员（字段/属性）名。
         /// </summary>
-        internal string BindMember { get; set; }
+        public string BindMember { get; set; }
 
         /// <summary>
         /// 存储索引的块。
         /// </summary>
-        internal IndexBlock() { }
+        public IndexBlock() { }
 
         const string strSkipListHeadNodePos = "H";
         const string strSkipListTailNodePos = "T";

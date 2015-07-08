@@ -48,11 +48,11 @@ namespace SharpFileDB
             {
                 record.Id = ObjectId.NewId();
 
-                DataBlock[] dataBlocksForValue = CreateDataBlocks(record);
+                DataBlock[] dataBlocksForValue = record.ToDataBlocks();
 
                 foreach (KeyValuePair<string, IndexBlock> item in this.tableIndexBlockDict[type])
                 {
-                    item.Value.Add(record, dataBlocksForValue, this);
+                    item.Value.Insert(record, dataBlocksForValue, this);
                     this.transaction.Add(item.Value);
                 }
 
@@ -63,37 +63,6 @@ namespace SharpFileDB
             this.transaction.Commit();
         }
 
-        private DataBlock[] CreateDataBlocks(Table item)
-        {
-            byte[] bytes = item.ToBytes();
-
-            // 准备data blocks。
-            int dataBlockCount = (bytes.Length - 1) / Consts.maxDataBytes + 1;
-            if (dataBlockCount <= 0)
-            { throw new Exception(string.Format("no data block for [{0}]", item)); }
-            DataBlock[] dataBlocks = new DataBlock[dataBlockCount];
-            // 准备好最后一个data block。
-            DataBlock lastDataBlock = new DataBlock() { ObjectLength = bytes.Length, };
-            int lastLength = bytes.Length % Consts.maxDataBytes;
-            if (lastLength == 0) { lastLength = Consts.maxDataBytes; }
-            lastDataBlock.Data = new byte[lastLength];
-            for (int i = bytes.Length - lastLength, j = 0; i < bytes.Length; i++, j++)
-            { lastDataBlock.Data[j] = bytes[i]; }
-            dataBlocks[dataBlockCount - 1] = lastDataBlock;
-            // 准备其它data blocks。
-            for (int i = dataBlockCount - 1 - 1; i >= 0; i--)
-            {
-                DataBlock block = new DataBlock() { ObjectLength = bytes.Length, };
-                block.NextObj = dataBlocks[i + 1];
-                block.Data = new byte[Consts.maxDataBytes];
-                for (int p = i * Consts.maxDataBytes, q = 0; q < Consts.maxDataBytes; p++, q++)
-                { block.Data[q] = bytes[p]; }
-                dataBlocks[i] = block;
-            }
-
-            // dataBlocks[0] -> [1] -> [2] -> ... -> [dataBlockCount - 1] -> null
-            return dataBlocks;
-        }
 
         private Dictionary<string, IndexBlock> CreateIndexBlocks(Type type, IndexBlock indexBlockHead)
         {
