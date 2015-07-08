@@ -60,11 +60,11 @@ namespace SharpFileDB.TestConsole
             cat.KittyName = "小白 " + random.Next();
             db.Update(cat);
 
-            foreach (var item in cats)
-            {
-                db.Delete(item);
-            }
-            //db.Delete(cat);
+            //foreach (var item in cats)
+            //{
+            //    db.Delete(item);
+            //}
+            db.Delete(cat);
             //if (cats.Count > 0)
             //{
             //    Cat first = cats[0];

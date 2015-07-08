@@ -39,6 +39,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.openSharpFileDB = new System.Windows.Forms.OpenFileDialog();
+            this.btnDetail = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtFullname
@@ -149,6 +150,17 @@
             this.openSharpFileDB.FileName = "open SharpFileDB";
             this.openSharpFileDB.Filter = "(SharpFileDB文件*.db)|*.db";
             // 
+            // btnDetail
+            // 
+            this.btnDetail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDetail.Location = new System.Drawing.Point(654, 39);
+            this.btnDetail.Name = "btnDetail";
+            this.btnDetail.Size = new System.Drawing.Size(75, 23);
+            this.btnDetail.TabIndex = 2;
+            this.btnDetail.Text = "Detail";
+            this.btnDetail.UseVisualStyleBackColor = true;
+            this.btnDetail.Click += new System.EventHandler(this.btnDetail_Click);
+            // 
             // FormViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -157,6 +169,7 @@
             this.Controls.Add(this.lstRecord);
             this.Controls.Add(this.lstIndex);
             this.Controls.Add(this.lstTable);
+            this.Controls.Add(this.btnDetail);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.label4);
@@ -184,5 +197,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.OpenFileDialog openSharpFileDB;
+        private System.Windows.Forms.Button btnDetail;
     }
 }

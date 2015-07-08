@@ -74,5 +74,17 @@ namespace SharpFileDB.Viewer
             //SharpFileDB.SharpFileDBHelper.TableInfo
             //SharpFileDB.SharpFileDBHelper.IndexInfo
         }
+
+        private void btnDetail_Click(object sender, EventArgs e)
+        {
+            string str = string.Empty;
+
+            using (SharpFileDB.FileDBContext db = new FileDBContext(this.txtFullname.Text, true))
+            {
+                str = db.Print();
+            }
+
+            (new FormTip(str)).ShowDialog();
+        }
     }
 }
