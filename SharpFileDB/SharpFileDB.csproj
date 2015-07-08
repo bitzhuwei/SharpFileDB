@@ -54,6 +54,7 @@
     <Compile Include="Blocks\PageHeaderBlock.cs" />
     <Compile Include="Blocks\SkipListNodeBlock.cs" />
     <Compile Include="Blocks\TableBlock.cs" />
+    <Compile Include="FileDBContext_Find.cs" />
     <Compile Include="FileDBContext_Update.cs" />
     <Compile Include="FileDBContext_Insert.cs" />
     <Compile Include="FileDBContext_Ctor.cs" />
