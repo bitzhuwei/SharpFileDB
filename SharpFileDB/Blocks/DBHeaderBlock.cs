@@ -161,6 +161,8 @@ namespace SharpFileDB.Blocks
 
         public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
         {
+            base.GetObjectData(info, context);
+
             info.AddValue(strFirstTablePagePos, this.FirstTablePagePos);
             info.AddValue(strFirstIndexPagePos, this.FirstIndexPagePos);
             info.AddValue(strFirstSkipListNodePagePos, this.FirstSkipListNodePagePos);
