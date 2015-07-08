@@ -35,6 +35,8 @@ namespace SharpFileDB
             {
                 IndexBlock indexBlock = this.tableIndexBlockDict[type][Consts.TableIdString];
                 SkipListNodeBlock downNode = FindSkipListNode(fileStream, record.Id, indexBlock);
+                downNode.TryLoadProperties(fileStream, LoadOptions.Value);
+                DataBlock[] oldValue = downNode.Value;
 
                 if (downNode == null)// 此记录根本不存在或已经被删除了。
                 { throw new Exception(string.Format("no data blocks for [{0}]", record)); }
@@ -46,12 +48,10 @@ namespace SharpFileDB
                     item.Value.Update(record, dataBlocksForValue, this);
                 }
 
-                downNode.TryLoadRightDownObj(fileStream, LoadOptions.Key | LoadOptions.Value);
-
                 // 删除旧数据。
-                for (int i = 0; i < downNode.Value.Length; i++)
-                { this.transaction.Delete(downNode.Value[i]); }// 加入事务，准备写入数据库。
-                this.transaction.Delete(downNode.Key);// 加入事务，准备写入数据库。
+                for (int i = 0; i < oldValue.Length; i++)
+                { this.transaction.Delete(oldValue[i]); }// 加入事务，准备写入数据库。
+                //this.transaction.Delete(downNode.Key);// 加入事务，准备写入数据库。
 
                 // 写入新数据。
                 for (int i = 0; i < dataBlocksForValue.Length; i++)
@@ -59,7 +59,6 @@ namespace SharpFileDB
             }
 
             this.transaction.Commit();
-            throw new NotImplementedException();
         }
 
     }

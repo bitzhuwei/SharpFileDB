@@ -53,8 +53,8 @@ namespace SharpFileDB.Utilities
             IComparable rightKey = null;
             if (rightNodes[0].RightPos != indexBlock.SkipListTailNode.ThisPos)
             {
-                rightNodes[0].TryLoadRightDownObj(fs, LoadOptions.RightObj);
-                rightNodes[0].RightObj.TryLoadRightDownObj(fs, LoadOptions.Key);
+                rightNodes[0].TryLoadProperties(fs, LoadOptions.RightObj);
+                rightNodes[0].RightObj.TryLoadProperties(fs, LoadOptions.Key);
                 rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs);
             }
             else

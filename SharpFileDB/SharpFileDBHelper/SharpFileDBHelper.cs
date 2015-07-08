@@ -172,17 +172,17 @@ namespace SharpFileDB.SharpFileDBHelper
                     {
                         long currentHeadNodePos = indexBlock.SkipListHeadNodePos;
                         SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
-                        currentHeadNode.TryLoadRightDownObj(fs, LoadOptions.DownObj);
+                        currentHeadNode.TryLoadProperties(fs, LoadOptions.DownObj);
                         while (currentHeadNode.DownObj != null)
                         {
-                            currentHeadNode.DownObj.TryLoadRightDownObj(fs, LoadOptions.DownObj);
+                            currentHeadNode.DownObj.TryLoadProperties(fs, LoadOptions.DownObj);
                             currentHeadNode = currentHeadNode.DownObj;
                         }
                         SkipListNodeBlock current = currentHeadNode;
-                        current.TryLoadRightDownObj(fs, LoadOptions.RightObj);
+                        current.TryLoadProperties(fs, LoadOptions.RightObj);
                         while (current.RightObj.RightPos != 0)
                         {
-                            current.RightObj.TryLoadRightDownObj(fs, LoadOptions.Value);
+                            current.RightObj.TryLoadProperties(fs, LoadOptions.Value);
                             Table item = current.RightObj.Value.GetObject<Table>(db);
 
                             tableInfo.Add(item);

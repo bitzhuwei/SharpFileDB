@@ -33,7 +33,7 @@ namespace SharpFileDB.Utilities
         /// <param name="fileStream"></param>
         /// <param name="options">指定需要加载的属性对象，可组合使用。</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void TryLoadRightDownObj(this SkipListNodeBlock node, FileStream fileStream, LoadOptions options = LoadOptions.RightObj |LoadOptions.DownObj | LoadOptions.Key | LoadOptions.Value)// where T : SkipListNodeBlock//, ISkipListNode<T>
+        public static void TryLoadProperties(this SkipListNodeBlock node, FileStream fileStream, LoadOptions options = LoadOptions.RightObj |LoadOptions.DownObj | LoadOptions.Key | LoadOptions.Value)// where T : SkipListNodeBlock//, ISkipListNode<T>
         {
             if (node.RightPos != 0 && node.RightObj == null && (options & LoadOptions.RightObj) == LoadOptions.RightObj)
             {

@@ -43,7 +43,7 @@ namespace SharpFileDB
                     item.Value.Delete(record, this);
                 }
 
-                downNode.TryLoadRightDownObj(fileStream, LoadOptions.Key | LoadOptions.Value);
+                downNode.TryLoadProperties(fileStream, LoadOptions.Key | LoadOptions.Value);
 
                 for (int i = 0; i < downNode.Value.Length; i++)
                 { this.transaction.Delete(downNode.Value[i]); }// 加入事务，准备写入数据库。

@@ -107,6 +107,10 @@ namespace SharpFileDB.Demo.MyNote
                 if (frmEditNote.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     database.Update(note);
+
+                    UpdateAllNotes();
+
+                    UpdateSelectingUI();
                 }
             }
 
