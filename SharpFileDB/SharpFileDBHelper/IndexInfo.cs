@@ -9,7 +9,7 @@ namespace SharpFileDB.SharpFileDBHelper
     {
         private Blocks.IndexBlock indexBlock;
 
-        internal IndexInfo(Blocks.IndexBlock indexBlock)
+        public IndexInfo(Blocks.IndexBlock indexBlock)
         {
             // TODO: Complete member initialization
             this.indexBlock = indexBlock;

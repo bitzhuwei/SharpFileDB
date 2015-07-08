@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 存储到数据库文件中的一块数据。由于一页只有4KB，所以一个对象可能需要多页存储。所以我们用<see cref="DataBlock"/>来一部分一部分地存储。
     /// </summary>
     [Serializable]
-    internal class DataBlock : AllocBlock, ILinkedNode<DataBlock>
+    public class DataBlock : AllocBlock, ILinkedNode<DataBlock>
     {
         /// <summary>
         /// 一个或多个数据块代表的对象序列化后所占用的字节总数。用此值便于<code>byte[] bytes = new byte[DataBlock.ObjectLength];</code>。

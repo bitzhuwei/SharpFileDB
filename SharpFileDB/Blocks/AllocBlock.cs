@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 可申请、回收的块。
     /// </summary>
     [Serializable]
-    internal abstract class AllocBlock : Block
+    public abstract class AllocBlock : Block
     {
         /// <summary>
         /// 可申请、回收的块。

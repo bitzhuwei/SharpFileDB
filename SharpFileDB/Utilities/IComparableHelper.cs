@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    internal static class IComparableHelper
+    public static class IComparableHelper
     {
 
         /// <summary>
@@ -16,7 +16,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        internal static byte[] ToBytes(this IComparable key)
+        public static byte[] ToBytes(this IComparable key)
         {
             byte[] result;
             using (MemoryStream ms = new MemoryStream())

@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// <summary>
     /// 页里存放的内容的类型。一个页的内容只存放一种类型的块。（第一个页除外）
     /// </summary>
-    internal enum AllocPageTypes
+    public enum AllocPageTypes
     {
 
         //DBHeader,

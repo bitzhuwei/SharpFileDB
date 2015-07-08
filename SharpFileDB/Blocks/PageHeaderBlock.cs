@@ -11,7 +11,7 @@ namespace SharpFileDB.Blocks
     /// 页的头部，可代表一个页。此块应在每个页的最开始处。
     /// </summary>
     [Serializable]
-    internal class PageHeaderBlock : Block//, IUpdatable
+    public class PageHeaderBlock : Block//, IUpdatable
     {
 
         /// <summary>

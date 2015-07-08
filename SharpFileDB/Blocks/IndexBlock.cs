@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 存储索引的块。此块在内存中充当skip list。
     /// </summary>
     [Serializable]
-    internal class IndexBlock : AllocBlock, ILinkedNode<IndexBlock>
+    public class IndexBlock : AllocBlock, ILinkedNode<IndexBlock>
     {
 
         /// <summary>

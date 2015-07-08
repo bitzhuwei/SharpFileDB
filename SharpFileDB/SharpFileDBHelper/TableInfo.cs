@@ -12,7 +12,7 @@ namespace SharpFileDB.SharpFileDBHelper
         public List<IndexInfo> indexInfoList = new List<IndexInfo>();
         public List<Table> recordList = new List<Table>();
 
-        internal TableInfo(Blocks.TableBlock tableBlock)
+        public TableInfo(Blocks.TableBlock tableBlock)
         {
             this.tableBlock = tableBlock;
             this.TableType = tableBlock.TableType;
@@ -20,7 +20,7 @@ namespace SharpFileDB.SharpFileDBHelper
 
         public Type TableType { get; set; }
 
-        internal void Add(Blocks.IndexBlock indexBlock)
+        public void Add(Blocks.IndexBlock indexBlock)
         {
             IndexInfo indexInfo = new IndexInfo(indexBlock);
 
@@ -33,7 +33,7 @@ namespace SharpFileDB.SharpFileDBHelper
             //return base.ToString();
         }
 
-        internal void Add(Table item)
+        public void Add(Table item)
         {
             this.recordList.Add(item);
         }

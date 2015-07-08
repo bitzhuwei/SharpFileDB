@@ -11,7 +11,7 @@ namespace SharpFileDB.Blocks
     /// 存储到数据库文件的一块内容。
     /// </summary>
     [Serializable]
-    internal abstract class Block : ISerializable
+    public abstract class Block : ISerializable
     {
 #if DEBUG
         protected static long IDCounter = 0;

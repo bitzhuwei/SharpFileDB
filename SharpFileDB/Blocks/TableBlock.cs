@@ -9,7 +9,7 @@ namespace SharpFileDB.Blocks
     /// 存储数据库表信息的块。
     /// </summary>
     [Serializable]
-    internal class TableBlock : AllocBlock, ILinkedNode<TableBlock>
+    public class TableBlock : AllocBlock, ILinkedNode<TableBlock>
     {
 
         /// <summary>

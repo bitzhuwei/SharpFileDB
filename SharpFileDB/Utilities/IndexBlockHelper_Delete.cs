@@ -12,7 +12,7 @@ namespace SharpFileDB.Utilities
     /// <summary>
     /// IndexBlock充当了skip list node block的skip list角色。
     /// </summary>
-    internal static partial class IndexBlockHelper
+    public static partial class IndexBlockHelper
     {
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace SharpFileDB.Utilities
         /// <param name="indexBlock">索引。</param>
         /// <param name="record">要删除的记录。</param>
         /// <param name="db">数据库上下文。</param>
-        internal static void Delete(this IndexBlock indexBlock, Table record, FileDBContext db)
+        public static void Delete(this IndexBlock indexBlock, Table record, FileDBContext db)
         {
             Type type = record.GetType();
             PropertyInfo property = type.GetProperty(indexBlock.BindMember);

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    internal static class FileDBContextHelper
+    public static class FileDBContextHelper
     {
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace SharpFileDB.Utilities
         /// <param name="length"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        internal static IList<AllocatedSpace> Alloc(this FileDBContext db, long length, AllocPageTypes type)
+        public static IList<AllocatedSpace> Alloc(this FileDBContext db, long length, AllocPageTypes type)
         {
             // 由于一页能用的空间很有限，所以可能需要从多个页上获取空间。
             IList<AllocatedSpace> result = new List<AllocatedSpace>();
@@ -196,17 +196,17 @@ namespace SharpFileDB.Utilities
     /// <summary>
     /// 把从给定位置开始的给定长度作为空闲空间标记出来。 
     /// </summary>
-    internal class AllocatedSpace
+    public class AllocatedSpace
     {
         /// <summary>
         /// 空闲空间的起始位置。
         /// </summary>
-        internal long position;
+        public long position;
 
         /// <summary>
         /// 空闲空间的长度。
         /// </summary>
-        internal Int16 length;
+        public Int16 length;
 
         /// <summary>
         /// 把从给定位置开始的给定长度作为空闲空间标记出来。
@@ -214,7 +214,7 @@ namespace SharpFileDB.Utilities
         /// <param name="position"></param>
         /// <param name="length"></param>
 
-        internal AllocatedSpace(long position, Int16 length)
+        public AllocatedSpace(long position, Int16 length)
         {
             this.position = position;
             this.length = length;

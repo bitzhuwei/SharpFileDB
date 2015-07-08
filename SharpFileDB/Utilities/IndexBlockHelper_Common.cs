@@ -12,7 +12,7 @@ namespace SharpFileDB.Utilities
     /// <summary>
     /// IndexBlock充当了<see cref="SkipListNodeBlock"/>的skip list角色。
     /// </summary>
-    internal static partial class IndexBlockHelper
+    public static partial class IndexBlockHelper
     {
 
         /// <summary>

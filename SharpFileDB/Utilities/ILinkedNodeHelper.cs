@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
 {
-    internal static class ILinkedNodeHelper
+    public static class ILinkedNodeHelper
     {
         /// <summary>
         /// 如果尚未加载<see cref="ILinkedNode&lt;T&gt;.NextObj"/>，就用<see cref="ILinkedNode&lt;T&gt;.NextPos"/>加载之。
@@ -18,7 +18,7 @@ namespace SharpFileDB.Utilities
         /// <param name="node"></param>
         /// <param name="fileStream"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void TryLoadNextObj<T>(this T node, FileStream fileStream) where T : Block, ILinkedNode<T>
+        public static void TryLoadNextObj<T>(this T node, FileStream fileStream) where T : Block, ILinkedNode<T>
         {
             if (node.NextPos != 0 && node.NextObj == null)
             {
@@ -33,7 +33,7 @@ namespace SharpFileDB.Utilities
         /// <param name="fileStream"></param>
         /// <param name="options">指定需要加载的属性对象，可组合使用。</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void TryLoadRightDownObj(this SkipListNodeBlock node, FileStream fileStream, LoadOptions options = LoadOptions.RightObj |LoadOptions.DownObj | LoadOptions.Key | LoadOptions.Value)// where T : SkipListNodeBlock//, ISkipListNode<T>
+        public static void TryLoadRightDownObj(this SkipListNodeBlock node, FileStream fileStream, LoadOptions options = LoadOptions.RightObj |LoadOptions.DownObj | LoadOptions.Key | LoadOptions.Value)// where T : SkipListNodeBlock//, ISkipListNode<T>
         {
             if (node.RightPos != 0 && node.RightObj == null && (options & LoadOptions.RightObj) == LoadOptions.RightObj)
             {
@@ -62,7 +62,7 @@ namespace SharpFileDB.Utilities
     /// 标识要加载的属性，可以组合。
     /// </summary>
     [Flags]
-    internal enum LoadOptions
+    public enum LoadOptions
     {
 
         /// <summary>

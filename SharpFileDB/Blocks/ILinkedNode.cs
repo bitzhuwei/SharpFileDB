@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 用于内存中的对象，便于把前后元素保存到数据库文件。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    internal interface ILinkedNode<T>
+    public interface ILinkedNode<T>
     {
 
         /// <summary>

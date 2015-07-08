@@ -33,7 +33,7 @@ namespace SharpFileDB
         /// 事务。执行一系列的数据库文件修改动作。
         /// </summary>
         /// <param name="fileDBContext"></param>
-        internal Transaction(FileDBContext fileDBContext)
+        public Transaction(FileDBContext fileDBContext)
         {
             this.fileDBContext = fileDBContext;
         }
@@ -42,7 +42,7 @@ namespace SharpFileDB
         /// 添加一个准备写入数据库的块。
         /// </summary>
         /// <param name="block"></param>
-        internal void Add(AllocBlock block)
+        public void Add(AllocBlock block)
         {
             if (block.ThisPos == 0)// 这是一个新建的块。
             {
@@ -62,7 +62,7 @@ namespace SharpFileDB
             }
         }
 
-        internal void Delete(AllocBlock block)
+        public void Delete(AllocBlock block)
         {
             if (block.ThisPos == 0)// 尝试删除一个连在文件里的位置都没有的块。这个块似乎在文件里根本不存在。
             { throw new Exception("Deleting [{0}] but it's position still not set!"); }
@@ -79,7 +79,7 @@ namespace SharpFileDB
         /// <summary>
         /// 执行事务。
         /// </summary>
-        internal void Commit()
+        public void Commit()
         {
             lock (syn)
             {

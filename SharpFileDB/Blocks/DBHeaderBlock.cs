@@ -10,7 +10,7 @@ namespace SharpFileDB.Blocks
     /// 数据库文件的头部。应该放在数据库文件的第一个页。
     /// </summary>
     [Serializable]
-    internal class DBHeaderBlock : Block//, IUpdatable
+    public class DBHeaderBlock : Block//, IUpdatable
     {
 
         private long firstTablePagePos;
