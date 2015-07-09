@@ -51,9 +51,22 @@ namespace SharpFileDB.TestConsole
             db.Insert(lion);
 
             //IList<Cat> cats = db.Find<Cat>(x => x.KittyName == name);
-            System.Linq.Expressions.Expression<Func<Cat, bool>> pre =
-                (x => (x.KittyName == name && x.Price < 10) || (x.KittyName == "kitty2" && x.Price > 10));
+            System.Linq.Expressions.Expression<Func<Cat, bool>> pre = null;
+
+            pre = x => x.Price == 10;
+            pre = x => x.Price < 10;
+            pre = x => x.Price > 10;
+            pre = x => x.Price < 10 || x.Price > 20;
+            pre = x => 10 < x.Price && x.Price < 20;
+            pre = x => x.KittyName.Contains("2");
+            pre = x => x.KittyName.StartsWith("kitty");
+            pre = x => x.KittyName.EndsWith("2");
+
+            pre = (x => (x.KittyName == name && x.Price < 10) || (x.KittyName == "kitty2" && x.Price > 10));
+
+
             IList<Cat> cats = db.Find<Cat>(pre);
+
 
             cats = db.FindAll<Cat>();
 
