@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using SharpFileDB.Blocks;
 using SharpFileDB.Utilities;
 using System.Reflection;
@@ -63,7 +63,8 @@ namespace SharpFileDB
         /// <param name="key"></param>
         /// <param name="indexBlock"></param>
         /// <returns></returns>
-        private SkipListNodeBlock FindSkipListNode(FileStream fileStream, IComparable key, IndexBlock indexBlock)
+        //private SkipListNodeBlock FindSkipListNode(FileStream fileStream, IComparable key, IndexBlock indexBlock)
+        private SkipListNodeBlock FindSkipListNode(FileStream fileStream, IndexBlock indexBlock, IComparable key)
         {
             // Start at the top list header node
             SkipListNodeBlock currentNode = indexBlock.SkipListHeadNodes[indexBlock.CurrentLevel];

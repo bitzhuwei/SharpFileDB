@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 
 namespace SharpFileDB.Blocks
 {
@@ -12,6 +12,26 @@ namespace SharpFileDB.Blocks
     [Serializable]
     public class DBHeaderBlock : Block//, IUpdatable
     {
+#if DEBUG
+        private long blockCount;
+
+        /// <summary>
+        /// 到目前为止通过new XxxBlock()创建的Block总数。
+        /// </summary>
+
+        public long BlockCount
+        {
+            get { return blockCount; }
+            set
+            {
+                if (blockCount != value)
+                {
+                    blockCount = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
+#endif
 
         private long firstTablePagePos;
         private long firstIndexPagePos;
@@ -149,6 +169,9 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public DBHeaderBlock() { }
 
+#if DEBUG
+        const string strBlockCount="C";
+#endif
         const string strFirstTablePagePos = "T";
         const string strFirstIndexPagePos = "I";
         const string strFirstSkipListNodePagePos = "S";
@@ -166,6 +189,9 @@ namespace SharpFileDB.Blocks
         {
             base.GetObjectData(info, context);
 
+#if DEBUG
+            info.AddValue(strBlockCount, this.blockCount);
+#endif
             info.AddValue(strFirstTablePagePos, this.FirstTablePagePos);
             info.AddValue(strFirstIndexPagePos, this.FirstIndexPagePos);
             info.AddValue(strFirstSkipListNodePagePos, this.FirstSkipListNodePagePos);
@@ -183,6 +209,9 @@ namespace SharpFileDB.Blocks
         protected DBHeaderBlock(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
+#if DEBUG
+            this.blockCount=info.GetInt64(strBlockCount);
+#endif
             this.FirstTablePagePos = info.GetInt64(strFirstTablePagePos);
             this.FirstIndexPagePos = info.GetInt64(strFirstIndexPagePos);
             this.FirstSkipListNodePagePos = info.GetInt64(strFirstSkipListNodePagePos);
@@ -193,14 +222,14 @@ namespace SharpFileDB.Blocks
         }
 
 
-        #region IUpdatable 成员
+        //#region IUpdatable 成员
 
         /// <summary>
         /// 标识此块是否需要重新写入数据库文件。
         /// </summary>
         public bool IsDirty { get; set; }
 
-        #endregion
+        //#endregion
 
         /// <summary>
         /// 显示此块的信息，便于调试。

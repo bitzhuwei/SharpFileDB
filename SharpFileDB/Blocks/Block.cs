@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 
 namespace SharpFileDB.Blocks
 {
@@ -14,7 +14,7 @@ namespace SharpFileDB.Blocks
     public abstract class Block : ISerializable
     {
 #if DEBUG
-        private static long IDCounter = 0;
+        internal static long IDCounter = 0;
         /// <summary>
         /// 用于给此块标记一个编号，仅为便于调试之用。
         /// </summary>

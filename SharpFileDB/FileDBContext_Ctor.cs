@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using SharpFileDB.Blocks;
 using SharpFileDB.Utilities;
 using System.Reflection;
@@ -68,6 +68,7 @@ namespace SharpFileDB
             // 准备数据库头部块。
             PageHeaderBlock pageHeaderBlock = fileStream.ReadBlock<PageHeaderBlock>(0);
             DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(fileStream.Position);
+            Block.IDCounter = headerBlock.BlockCount;
             this.headerBlock = headerBlock;
             // 准备数据库表块，保存到字典。
             TableBlock currentTableBlock = fileStream.ReadBlock<TableBlock>(fileStream.Position); //headerBlock.TableBlockHead;
@@ -100,7 +101,7 @@ namespace SharpFileDB
             {
                 SkipListNodeBlock[] headNodes = GetHeadNodesOfSkipListNodeBlock(fileStream, currentIndexBlock.NextObj);
                 currentIndexBlock.NextObj.SkipListHeadNodes = headNodes;
-                SkipListNodeBlock tailNode = GetTailNodesOfSkipListNodeBlock(fileStream, currentIndexBlock.NextObj);
+                SkipListNodeBlock tailNode = GetTailNodeOfSkipListNodeBlock(fileStream, currentIndexBlock.NextObj);
                 currentIndexBlock.NextObj.SkipListTailNode = tailNode;
                 foreach (SkipListNodeBlock headNode in currentIndexBlock.NextObj.SkipListHeadNodes)
                 {
@@ -117,7 +118,7 @@ namespace SharpFileDB
             return indexDict;
         }
 
-        private SkipListNodeBlock GetTailNodesOfSkipListNodeBlock(FileStream fileStream, IndexBlock indexBlock)
+        private SkipListNodeBlock GetTailNodeOfSkipListNodeBlock(FileStream fileStream, IndexBlock indexBlock)
         {
             long currentSkipListNodeBlockPos = indexBlock.SkipListTailNodePos;
             if (currentSkipListNodeBlockPos == 0)

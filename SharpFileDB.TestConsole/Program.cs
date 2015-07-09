@@ -61,11 +61,13 @@ namespace SharpFileDB.TestConsole
             pre = x => x.KittyName.Contains("2");
             pre = x => x.KittyName.StartsWith("kitty");
             pre = x => x.KittyName.EndsWith("2");
+            pre = x => x.Price == 10 || x.Price < 20 && x.Price > 5;
 
             pre = (x => (x.KittyName == name && x.Price < 10) || (x.KittyName == "kitty2" && x.Price > 10));
 
 
-            IList<Cat> cats = db.Find<Cat>(pre);
+            IList<Cat> cats = null;
+            //cats = db.Find<Cat>(pre);
 
 
             cats = db.FindAll<Cat>();

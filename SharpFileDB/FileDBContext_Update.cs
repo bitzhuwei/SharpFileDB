@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using SharpFileDB.Blocks;
 using SharpFileDB.Utilities;
 using System.Reflection;
@@ -34,7 +34,7 @@ namespace SharpFileDB
             // 更新record。
             {
                 IndexBlock indexBlock = this.tableIndexBlockDict[type][Consts.TableIdString];
-                SkipListNodeBlock downNode = FindSkipListNode(fileStream, record.Id, indexBlock);
+                SkipListNodeBlock downNode = FindSkipListNode(fileStream, indexBlock, record.Id);
                 downNode.TryLoadProperties(fileStream, LoadOptions.Value);
                 DataBlock[] oldValue = downNode.Value;
 

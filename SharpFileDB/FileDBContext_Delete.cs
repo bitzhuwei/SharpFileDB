@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using SharpFileDB.Blocks;
 using SharpFileDB.Utilities;
 using System.Reflection;
@@ -33,7 +33,7 @@ namespace SharpFileDB
             // 删除record。
             {
                 IndexBlock indexBlock = this.tableIndexBlockDict[type][Consts.TableIdString];
-                SkipListNodeBlock downNode = FindSkipListNode(fileStream, record.Id, indexBlock);
+                SkipListNodeBlock downNode = FindSkipListNode(fileStream, indexBlock, record.Id);
 
                 if (downNode == null)// 此记录根本不存在或已经被删除过一次了。
                 { throw new Exception(string.Format("no data blocks for [{0}]", record)); }
