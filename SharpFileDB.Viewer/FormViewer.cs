@@ -157,13 +157,14 @@ namespace SharpFileDB.Viewer
         Font font = new Font("宋体",10);
         Brush brush = new SolidBrush(Color.Black);
         Pen boundPen = new Pen(Color.Red);
+        Pen rightPosPen = new Pen(Color.DeepSkyBlue);
 
         private void SaveToImage(TableBlock table, IndexBlock index, List<List<SkipListNodeBlock>> skipList, Dictionary<long, DataBlock> keyDict, Dictionary<long, DataBlock> valueDict, string dir, FileDBContext db)
         {
             const int leftMargin = 25;
             const int topMargin = 13;
-            const int nodeWidth = 50;
-            const int nodeHeight = 50;
+            const int nodeWidth = 150;
+            const int nodeHeight = 30;
             const int arrowLength = 30;
             const int keyValueHeight = 20;
             const int keyValueInterval = 5;
@@ -189,15 +190,58 @@ namespace SharpFileDB.Viewer
                     if (j + 1 == line.Count) { widthStep = lastLine.Count - 1; }
                     else
                     {
-                        widthStep = j;
+                        while (lastLine[widthStep].KeyPos != line[j].KeyPos)
+                        {
+                            widthStep++;
+                        }
                     }
                     SkipListNodeBlock node = line[j];
-                    graphics.DrawString(string.Format("[{0}]", node.ThisPos), font, brush,
+                    graphics.DrawString(string.Format("[{0}: {1}, {2}]", node.ThisPos, node.KeyPos, node.ValuePos), font, brush,
                         leftMargin + widthStep * (nodeWidth + arrowLength),
                         i * (nodeHeight + arrowLength) + 2);
                 }
             }
 
+            // 画RightPos箭头。
+            for (int i = 0; i < skipList.Count; i++)
+            {
+                List<SkipListNodeBlock> line = skipList[i];
+                for (int j = 0; j < line.Count - 1; j++)
+                {
+                    int leftWidthStep = 0, rightWidthStep = 0;
+                    while (lastLine[leftWidthStep].KeyPos != line[j].KeyPos)
+                    {
+                        leftWidthStep++;
+                    }
+                    if (j + 1 + 1 == line.Count) { rightWidthStep = lastLine.Count - 1; }
+                    else
+                    {
+                        while (lastLine[rightWidthStep].KeyPos != line[j + 1].KeyPos)
+                        {
+                            rightWidthStep++;
+                        }
+                    }
+                    graphics.DrawLine(rightPosPen,
+                        leftMargin + leftWidthStep * (nodeWidth + arrowLength) + nodeWidth / 2,
+                        i * (nodeHeight + arrowLength),
+                        leftMargin + rightWidthStep * (nodeWidth + arrowLength),
+                        i * (nodeHeight + arrowLength)
+                        );
+                    graphics.DrawLine(rightPosPen,
+                        leftMargin + rightWidthStep * (nodeWidth + arrowLength) - 5,
+                        i * (nodeHeight + arrowLength) - 5,
+                        leftMargin + rightWidthStep * (nodeWidth + arrowLength),
+                        i * (nodeHeight + arrowLength));
+                    graphics.DrawLine(rightPosPen,
+                        leftMargin + rightWidthStep * (nodeWidth + arrowLength) - 5,
+                        i * (nodeHeight + arrowLength) + 5,
+                        leftMargin + rightWidthStep * (nodeWidth + arrowLength),
+                        i * (nodeHeight + arrowLength));
+
+                }
+            }
+
+            // 画边框。
             graphics.DrawRectangle(boundPen, 0, 0, width - 1, height - 1);
 
             string fullname = Path.Combine(dir, table.TableType.FullName + "-" + index.BindMember + ".bmp");
