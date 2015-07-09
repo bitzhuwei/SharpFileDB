@@ -22,7 +22,9 @@ namespace SharpFileDB
         /// </summary>
         /// <param name="fullname">数据库文件据对路径。</param>
         /// <param name="read">只读方式打开。</param>
-        public FileDBContext(string fullname, bool read = false)
+        /// <param name="maxLevelOfSkipList">SkipList的最大层数。只有在新建数据库时此参数才会发挥作用。</param>
+        /// <param name="probability">SkipList的随机阈值。只有在新建数据库时此参数才会发挥作用。</param>
+        public FileDBContext(string fullname, bool read = false, int maxLevelOfSkipList = 32, double probability = 0.5)
         {
             this.transaction = new Transaction(this);
 
@@ -32,7 +34,7 @@ namespace SharpFileDB
             {
                 if (!File.Exists(fullname))
                 {
-                    CreateDB(fullname);
+                    CreateDB(fullname, maxLevelOfSkipList, probability);
                 }
 
                 InitializeDB(fullname, read);
@@ -152,7 +154,7 @@ namespace SharpFileDB
         /// 创建初始状态的数据库文件。
         /// </summary>
         /// <param name="fullname">数据库文件据对路径。</param>
-        private void CreateDB(string fullname)
+        private void CreateDB(string fullname, int maxLevel, double probability)
         {
             FileInfo fileInfo = new FileInfo(fullname);
             Directory.CreateDirectory(fileInfo.DirectoryName);
@@ -161,7 +163,7 @@ namespace SharpFileDB
                 PageHeaderBlock pageHeaderBlock = new PageHeaderBlock() { OccupiedBytes = Consts.pageSize, AvailableBytes = 0, };
                 fs.WriteBlock(pageHeaderBlock);
 
-                DBHeaderBlock headerBlock = new DBHeaderBlock() { MaxLevelOfSkipList = 4, ProbabilityOfSkipList = 0.5, ThisPos = fs.Position };
+                DBHeaderBlock headerBlock = new DBHeaderBlock() { MaxLevelOfSkipList = maxLevel, ProbabilityOfSkipList = probability, ThisPos = fs.Position };
                 fs.WriteBlock(headerBlock);
 
                 TableBlock tableBlockHead = new TableBlock() { ThisPos = fs.Position, };

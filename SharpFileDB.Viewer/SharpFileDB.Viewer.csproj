@@ -94,6 +94,10 @@
       <Project>{bad47f8b-5cc9-45a7-9815-432d0f43694d}</Project>
       <Name>SharpFileDB.DebugHelper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SharpFileDB.Demo.MyNote.Tables\SharpFileDB.Demo.MyNote.Tables.csproj">
+      <Project>{3af67358-fcf4-4b80-952f-7f97cfbecd9b}</Project>
+      <Name>SharpFileDB.Demo.MyNote.Tables</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharpFileDB.Zoo\SharpFileDB.Zoo.csproj">
       <Project>{a3b24709-839d-41ad-a623-e58f50ba6bad}</Project>
       <Name>SharpFileDB.Zoo</Name>

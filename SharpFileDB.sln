@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonFIles", "CommonFIles"
 		SharpFileDB.CommonFiles\SharpFileDB.png = SharpFileDB.CommonFiles\SharpFileDB.png
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFileDB.Demo.MyNote.Tables", "SharpFileDB.Demo.MyNote.Tables\SharpFileDB.Demo.MyNote.Tables.csproj", "{3AF67358-FCF4-4B80-952F-7F97CFBECD9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,10 @@ Global
 		{BAD47F8B-5CC9-45A7-9815-432D0F43694D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAD47F8B-5CC9-45A7-9815-432D0F43694D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAD47F8B-5CC9-45A7-9815-432D0F43694D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AF67358-FCF4-4B80-952F-7F97CFBECD9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF67358-FCF4-4B80-952F-7F97CFBECD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF67358-FCF4-4B80-952F-7F97CFBECD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF67358-FCF4-4B80-952F-7F97CFBECD9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

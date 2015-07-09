@@ -79,7 +79,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tables\Note.cs" />
     <EmbeddedResource Include="FormAddNote.resx">
       <DependentUpon>FormAddNote.cs</DependentUpon>
     </EmbeddedResource>
@@ -118,6 +117,10 @@
     <ProjectReference Include="..\SharpFileDB.DebugHelper\SharpFileDB.DebugHelper.csproj">
       <Project>{bad47f8b-5cc9-45a7-9815-432d0f43694d}</Project>
       <Name>SharpFileDB.DebugHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpFileDB.Demo.MyNote.Tables\SharpFileDB.Demo.MyNote.Tables.csproj">
+      <Project>{3af67358-fcf4-4b80-952f-7f97cfbecd9b}</Project>
+      <Name>SharpFileDB.Demo.MyNote.Tables</Name>
     </ProjectReference>
     <ProjectReference Include="..\SharpFileDB\SharpFileDB.csproj">
       <Project>{e5c7d3c7-1dd6-4c4a-b9b5-0abc33031cd1}</Project>

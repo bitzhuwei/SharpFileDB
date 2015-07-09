@@ -170,11 +170,11 @@ namespace SharpFileDB.Viewer
             const int nodeHeight = 30;
             const int arrowLength = 30;
             const int keyValueHeight = 20;
-            const int keyValueInterval = 5;
+            //const int keyValueInterval = 5;
             const int bottomLargin = 30;
 
             int width = skipList[skipList.Count - 1].Count * (nodeWidth + arrowLength) + leftMargin;
-            int height = skipList.Count * (nodeHeight + arrowLength) + keyDict.Count * (keyValueHeight + keyValueInterval) + topMargin + bottomLargin;
+            int height = skipList.Count * (nodeHeight + arrowLength) + keyDict.Count * keyValueHeight * 2 + topMargin + bottomLargin;
             Bitmap bmp = new Bitmap(width, height);
             Graphics graphics = Graphics.FromImage(bmp);
 
