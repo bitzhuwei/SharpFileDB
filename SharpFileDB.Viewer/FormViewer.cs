@@ -145,12 +145,14 @@ namespace SharpFileDB.Viewer
             List<List<SkipListNodeBlock>> skipList;
             Dictionary<long, DataBlock> keyDict;
             Dictionary<long, DataBlock> valueDict;
-            GetSkipListInfo(index, db, out skipList, out keyDict, out valueDict);
+            Dictionary<long, SkipListNodeBlock> skipListNodeDict;
+
+            GetSkipListInfo(index, db, out skipList, out keyDict, out valueDict, out skipListNodeDict);
 
             if (keyDict.Count != valueDict.Count)
             { throw new Exception(); }
 
-            SaveToImage(table, index, skipList, keyDict, valueDict, dir, db);
+            SaveToImage(table, index, skipList, keyDict, valueDict, skipListNodeDict, dir, db);
 
         }
 
@@ -158,8 +160,9 @@ namespace SharpFileDB.Viewer
         Brush brush = new SolidBrush(Color.Black);
         Pen boundPen = new Pen(Color.Red);
         Pen rightPosPen = new Pen(Color.DeepSkyBlue);
+        Pen downPosPen = new Pen(Color.BlueViolet);
 
-        private void SaveToImage(TableBlock table, IndexBlock index, List<List<SkipListNodeBlock>> skipList, Dictionary<long, DataBlock> keyDict, Dictionary<long, DataBlock> valueDict, string dir, FileDBContext db)
+        private void SaveToImage(TableBlock table, IndexBlock index, List<List<SkipListNodeBlock>> skipList, Dictionary<long, DataBlock> keyDict, Dictionary<long, DataBlock> valueDict, Dictionary<long, SkipListNodeBlock> skipListNodeDict, string dir, FileDBContext db)
         {
             const int leftMargin = 25;
             const int topMargin = 13;
@@ -198,7 +201,7 @@ namespace SharpFileDB.Viewer
                     SkipListNodeBlock node = line[j];
                     graphics.DrawString(string.Format("[{0}: {1}, {2}]", node.ThisPos, node.KeyPos, node.ValuePos), font, brush,
                         leftMargin + widthStep * (nodeWidth + arrowLength),
-                        i * (nodeHeight + arrowLength) + 2);
+                        i * (nodeHeight + arrowLength) + topMargin);
                 }
             }
 
@@ -223,20 +226,104 @@ namespace SharpFileDB.Viewer
                     }
                     graphics.DrawLine(rightPosPen,
                         leftMargin + leftWidthStep * (nodeWidth + arrowLength) + nodeWidth / 2,
-                        i * (nodeHeight + arrowLength),
+                        topMargin + i * (nodeHeight + arrowLength),
                         leftMargin + rightWidthStep * (nodeWidth + arrowLength),
-                        i * (nodeHeight + arrowLength)
+                        topMargin + i * (nodeHeight + arrowLength)
                         );
                     graphics.DrawLine(rightPosPen,
                         leftMargin + rightWidthStep * (nodeWidth + arrowLength) - 5,
-                        i * (nodeHeight + arrowLength) - 5,
+                        topMargin + i * (nodeHeight + arrowLength) - 5,
                         leftMargin + rightWidthStep * (nodeWidth + arrowLength),
-                        i * (nodeHeight + arrowLength));
+                        topMargin + i * (nodeHeight + arrowLength));
                     graphics.DrawLine(rightPosPen,
                         leftMargin + rightWidthStep * (nodeWidth + arrowLength) - 5,
-                        i * (nodeHeight + arrowLength) + 5,
+                        topMargin + i * (nodeHeight + arrowLength) + 5,
                         leftMargin + rightWidthStep * (nodeWidth + arrowLength),
-                        i * (nodeHeight + arrowLength));
+                        topMargin + i * (nodeHeight + arrowLength));
+
+                }
+            }
+
+            // 画DownPos箭头。
+            for (int i = 0; i < skipList.Count; i++)
+            {
+                List<SkipListNodeBlock> line = skipList[i];
+                for (int j = 0; j < line.Count; j++)
+                {
+                    SkipListNodeBlock node = line[j];
+                    if (node.DownPos != 0)
+                    {
+                        SkipListNodeBlock downNode = skipListNodeDict[node.DownPos];
+                        int topWidthStep = 0, topHeightStep = 0, downWidthStep = 0, downHeightStep = 0;
+                        while (lastLine[topWidthStep].KeyPos != node.KeyPos)
+                        {
+                            topWidthStep++;
+                        }
+                        topHeightStep = i;
+                        while (lastLine[downWidthStep].KeyPos != downNode.KeyPos)
+                        {
+                            downWidthStep++;
+                        }
+                        for (int k = 0; k < skipList.Count; k++)
+                        {
+                            if (skipList[k].Contains(downNode))
+                            {
+                                downHeightStep = k;
+                                break;
+                            }
+                        }
+                        graphics.DrawLine(downPosPen,
+                            leftMargin + topWidthStep * (nodeWidth + arrowLength) + nodeWidth / 2,
+                            topMargin + topHeightStep * (nodeHeight + arrowLength) + nodeHeight / 2,
+                            leftMargin + downWidthStep * (nodeWidth + arrowLength) + nodeWidth / 2,
+                            topMargin + downHeightStep * (nodeHeight + arrowLength) - 2
+                            );
+                        graphics.DrawLine(downPosPen,
+                            leftMargin + downWidthStep * (nodeWidth + arrowLength) + nodeWidth / 2 + 5,
+                            topMargin + downHeightStep * (nodeHeight + arrowLength) - 2 - 5,
+                            leftMargin + downWidthStep * (nodeWidth + arrowLength) + nodeWidth / 2,
+                            topMargin + downHeightStep * (nodeHeight + arrowLength) - 2
+                            );
+                        graphics.DrawLine(downPosPen,
+                            leftMargin + downWidthStep * (nodeWidth + arrowLength) + nodeWidth / 2 - 5,
+                            topMargin + downHeightStep * (nodeHeight + arrowLength) - 2 - 5,
+                            leftMargin + downWidthStep * (nodeWidth + arrowLength) + nodeWidth / 2,
+                            topMargin + downHeightStep * (nodeHeight + arrowLength) - 2
+                            );
+                    }
+                }
+
+                for (int j = 0; j < line.Count - 1; j++)
+                {
+                    int leftWidthStep = 0, rightWidthStep = 0;
+                    while (lastLine[leftWidthStep].KeyPos != line[j].KeyPos)
+                    {
+                        leftWidthStep++;
+                    }
+                    if (j + 1 + 1 == line.Count) { rightWidthStep = lastLine.Count - 1; }
+                    else
+                    {
+                        while (lastLine[rightWidthStep].KeyPos != line[j + 1].KeyPos)
+                        {
+                            rightWidthStep++;
+                        }
+                    }
+                    graphics.DrawLine(rightPosPen,
+                        leftMargin + leftWidthStep * (nodeWidth + arrowLength) + nodeWidth / 2,
+                        topMargin + i * (nodeHeight + arrowLength),
+                        leftMargin + rightWidthStep * (nodeWidth + arrowLength),
+                        topMargin + i * (nodeHeight + arrowLength)
+                        );
+                    graphics.DrawLine(rightPosPen,
+                        leftMargin + rightWidthStep * (nodeWidth + arrowLength) - 5,
+                        topMargin + i * (nodeHeight + arrowLength) - 5,
+                        leftMargin + rightWidthStep * (nodeWidth + arrowLength),
+                        topMargin + i * (nodeHeight + arrowLength));
+                    graphics.DrawLine(rightPosPen,
+                        leftMargin + rightWidthStep * (nodeWidth + arrowLength) - 5,
+                        topMargin + i * (nodeHeight + arrowLength) + 5,
+                        leftMargin + rightWidthStep * (nodeWidth + arrowLength),
+                        topMargin + i * (nodeHeight + arrowLength));
 
                 }
             }
@@ -250,14 +337,14 @@ namespace SharpFileDB.Viewer
             bmp.Dispose();
         }
 
-        private void GetSkipListInfo(IndexBlock indexBlock, FileDBContext db, out List<List<SkipListNodeBlock>> skipList, out Dictionary<long, DataBlock> keyDict, out Dictionary<long, DataBlock> valueDict)
+        private void GetSkipListInfo(IndexBlock indexBlock, FileDBContext db, out List<List<SkipListNodeBlock>> skipList, out Dictionary<long, DataBlock> keyDict, out Dictionary<long, DataBlock> valueDict, out Dictionary<long, SkipListNodeBlock> skipListNodeDict)
         {
             FileStream fs = db.GetFileStream();
 
             skipList = new List<List<SkipListNodeBlock>>();
-            Dictionary<long, SkipListNodeBlock> nodeDict = new Dictionary<long, SkipListNodeBlock>();
             keyDict = new Dictionary<long, DataBlock>();
             valueDict = new Dictionary<long, DataBlock>();
+            skipListNodeDict = new Dictionary<long, SkipListNodeBlock>();
 
             long headNodePos = indexBlock.SkipListHeadNodePos;
             long currentHeadNodePos = headNodePos;
@@ -270,8 +357,9 @@ namespace SharpFileDB.Viewer
                 {
                     SkipListNodeBlock currentNode = fs.ReadBlock<SkipListNodeBlock>(currentNodePos);
                     line.Add(currentNode);
-                    if (!nodeDict.ContainsKey(currentNode.ThisPos))
-                    { nodeDict.Add(currentNode.ThisPos, currentNode); }
+
+                    if (!skipListNodeDict.ContainsKey(currentNode.ThisPos))
+                    { skipListNodeDict.Add(currentNode.ThisPos, currentNode); }
                     if (currentNode.KeyPos != 0)
                     {
                         if (!keyDict.ContainsKey(currentNode.KeyPos))
@@ -295,7 +383,7 @@ namespace SharpFileDB.Viewer
 
                 skipList.Add(line);
 
-                currentHeadNodePos = nodeDict[currentHeadNodePos].DownPos;
+                currentHeadNodePos = skipListNodeDict[currentHeadNodePos].DownPos;
             }
         }
 
