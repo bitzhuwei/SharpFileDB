@@ -16,20 +16,9 @@ namespace SharpFileDB.TestConsole
 
         static void Main(string[] args)
         {
-
-            //DemoStringAndBytesLengthOfDocument.TypcialScene();
-            //DemoTypeSerialization.TypicalScene();
-            //DemoDocumentMeta.TypicalScene();
-            //DemoSingleFileDB.TypicalScene2();
-            //DemoSingleFileDB.TypicalScene();
-            //DemoMaxFilesInDirectory.TypicalScene();
-            //DemoGuid.TypicalScene();
-            //DemoTcpMsg.TypicalScene();
-
-            //IPersistence ipersistence = new DefaultPersistence();
-            string fullname = Path.Combine(Environment.CurrentDirectory, "TestDatabase", "test.db");
             //string fullname = @"D:\360云盘\文档\TestDatabase\test.db";
             //string fullname = @"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\TestDatabase\test.db";
+            string fullname = Path.Combine(Environment.CurrentDirectory, "TestDatabase", "test.db");
 
             // common cases to use SharpFileDB.
             FileDBContext db = new FileDBContext(fullname);
@@ -50,8 +39,7 @@ namespace SharpFileDB.TestConsole
             db.Insert(cat);
             //db.Insert(lion);
 
-            ////IList<Cat> cats = db.Find<Cat>(x => x.KittyName == name);
-            //System.Linq.Expressions.Expression<Func<Cat, bool>> pre = null;
+            System.Linq.Expressions.Expression<Func<Cat, bool>> pre = null;
 
             //pre = x => x.Price == 10;
             //pre = x => x.Price < 10;
@@ -63,11 +51,14 @@ namespace SharpFileDB.TestConsole
             //pre = x => x.KittyName.EndsWith("2");
             //pre = x => x.Price == 10 || x.Price < 20 && x.Price > 5;
 
-            //pre = (x => (x.KittyName == name && x.Price < 10) || (x.KittyName == "kitty2" && x.Price > 10));
+            pre = (x =>
+                (x.KittyName == "oh" || (x.KittyName == name && x.Id.ToString() != string.Empty))
+                || (x.KittyName.Contains("kitty2") && x.Price > 10)
+                );
 
 
-            //IList<Cat> cats = null;
-            ////cats = db.Find<Cat>(pre);
+            IList<Cat> cats = null;
+            cats = db.Find<Cat>(pre);
 
 
             //cats = db.FindAll<Cat>();

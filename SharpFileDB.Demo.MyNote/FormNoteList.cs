@@ -23,7 +23,7 @@ namespace SharpFileDB.Demo.MyNote
 
             //string fullname = Path.Combine(@"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\SharpFileDB.Demo.MyNote\noteDatabase\note.db");
             string fullname = Path.Combine(Environment.CurrentDirectory, "MyNote.db");
-            this.database = new FileDBContext(fullname);
+            this.database = new FileDBContext(fullname, false, 8, 0.5);
         }
 
         private void FormNoteList_Load(object sender, EventArgs e)
