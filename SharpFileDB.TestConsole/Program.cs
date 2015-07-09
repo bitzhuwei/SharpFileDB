@@ -16,6 +16,7 @@ namespace SharpFileDB.TestConsole
 
         static void Main(string[] args)
         {
+
             //string fullname = @"D:\360云盘\文档\TestDatabase\test.db";
             //string fullname = @"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\TestDatabase\test.db";
             string fullname = Path.Combine(Environment.CurrentDirectory, "TestDatabase", "test.db");
@@ -24,12 +25,9 @@ namespace SharpFileDB.TestConsole
             FileDBContext db = new FileDBContext(fullname);
 
             Cat cat = new Cat();
-            string name = "kitty白 " + random.Next();
+            string name = "kitty " + random.Next();
             cat.KittyName = name;
-            cat.Price = random.Next(1, 10);
-            //cat.FavoriteFood = new Food() { FoodName = "小黄鱼", };
-            //cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
-            //cat.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };
+            cat.Price = random.Next(1, 100);
             //Lion lion = new Lion();
             //lion.KittyName = "狮子 " + random.Next();
             //lion.Price = random.Next(1, 10);
@@ -58,7 +56,7 @@ namespace SharpFileDB.TestConsole
 
 
             IList<Cat> cats = null;
-            cats = db.Find<Cat>(pre);
+            //cats = db.Find<Cat>(pre);
 
 
             //cats = db.FindAll<Cat>();

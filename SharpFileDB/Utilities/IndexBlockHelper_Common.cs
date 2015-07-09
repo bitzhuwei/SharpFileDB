@@ -36,23 +36,23 @@ namespace SharpFileDB.Utilities
 
             for (int i = indexBlock.CurrentLevel; i >= 0; i--)
             {
-                while (true)
+                IComparable rightKey = db.GetRightObjKey(db.fileStream, indexBlock, currentNode);
+                while ((currentNode.RightObj != indexBlock.SkipListTailNode) && (rightKey.CompareTo(key) < 0))
                 {
-                    currentNode.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
-                    if (currentNode.RightObj == indexBlock.SkipListTailNode) { break; }
-                    currentNode.RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.Key);
-                    IComparable rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fs);
-                    if (!(rightKey.CompareTo(key) < 0)) { break; }
-
                     currentNode = currentNode.RightObj;
+
+                    rightKey = db.GetRightObjKey(db.fileStream, indexBlock, currentNode);
                 }
+
                 rightNodes[i] = currentNode;
+
                 if (i > 0)
                 {
                     currentNode.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
                     currentNode = currentNode.DownObj;
                 }
             }
+
             return rightNodes;
         }
 

@@ -30,49 +30,26 @@ namespace SharpFileDB.Utilities
         {
             Type type = item.GetType();
             PropertyInfo property = type.GetProperty(indexBlock.BindMember);
-            //if(members.Length != 1)
-            //{
-            //    throw new Exception(string.Format("[{0}] items named with index key's name [{1}]", members.Length, indexBlock.BindMember)); 
-            //}
             TableIndexAttribute attr = property.GetCustomAttribute<TableIndexAttribute>();
             if (attr == null)
             { throw new Exception(string.Format("No TableIndexAttribute binded!")); }
 
             // 准备Key。
-            var key = property.GetValue(item) as IComparable;
+            IComparable key = property.GetValue(item) as IComparable;
             byte[] keyBytes = key.ToBytes();
-            if (keyBytes.Length > Consts.maxDataBytes)
-            { throw new Exception(string.Format("Toooo long is the key [{0}]", key)); }
+            if (keyBytes.Length > Consts.maxDataBytes) { throw new Exception(string.Format("Toooo long is the key [{0}]", key)); }
             DataBlock dataBlockForKey = new DataBlock() { ObjectLength = keyBytes.Length, Data = keyBytes, };
 
             SkipListNodeBlock[] rightNodes = FindRightMostNodes(key, indexBlock, db);
 
-            //// Check if the item allready exists in the list.  If it does, throw an exception -
-            //// we will not allow duplicate items here.
+            // Check if the item allready exists in the list.  If it does, throw an exception -
+            // we will not allow duplicate items here.
             FileStream fs = db.fileStream;
             int maxLevel = db.headerBlock.MaxLevelOfSkipList;
 
-            IComparable rightKey = null;
-            //rightNodes[0].TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
-            //if(rightNodes[0].RightObj!=indexBlock.SkipListTailNode)
-            //{
-            //    rightNodes[0].RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.Key);
-            //    rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs);
-            //}
-            if (rightNodes[0].RightPos != indexBlock.SkipListTailNodePos)
-            {
-                rightNodes[0].TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
-                rightNodes[0].RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.Key);
-                rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs);
-            }
-            else
-            {
-                if (indexBlock.SkipListTailNode == null) { throw new Exception(); }
-                rightNodes[0].RightObj = indexBlock.SkipListTailNode;
-            }
+            IComparable rightKey = db.GetRightObjKey(fs, indexBlock, rightNodes[0]);
 
-
-            if ((rightNodes[0].RightPos != indexBlock.SkipListTailNodePos)
+            if ((rightNodes[0].RightObj != indexBlock.SkipListTailNode)
                 && (rightKey.CompareTo(key) == 0))// key相等，说明Value相同。此处不再使用NGenerics的Comparer<TKey>.Default这种可指定外部比较工具的模式，是因为那会由于忘记编写合适的比较工具而带来隐藏地很深的bug。
             {
                 throw new Exception("Item Already In List");
@@ -134,7 +111,9 @@ namespace SharpFileDB.Utilities
             int maxLevel = db.headerBlock.MaxLevelOfSkipList;
             double probability = db.headerBlock.ProbabilityOfSkipList;
 
-            while ((rand.NextDouble() < probability) && (randomLevel <= indexBlock.CurrentLevel + 1) && (randomLevel < maxLevel))
+            while ((rand.NextDouble() < probability)
+                //&& (randomLevel <= indexBlock.CurrentLevel + 1)
+                && (randomLevel < maxLevel))
             {
                 randomLevel++;
             }

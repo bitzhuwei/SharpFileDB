@@ -17,7 +17,6 @@ namespace SharpFileDB
     public partial class FileDBContext : IDisposable
     {
 
-
         /// <summary>
         /// 更新数据库内的一条记录。
         /// </summary>

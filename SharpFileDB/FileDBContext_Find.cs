@@ -30,30 +30,52 @@ namespace SharpFileDB
 
             List<T> result = new List<T>();
 
-            Find(result, predicate);
+            var body = predicate.Body as LambdaExpression;
+            this.Find(result, body);
 
             return result;
         }
 
-        private void Find<T>(List<T> result, Expression<Func<T, bool>> predicate) where T : Table, new()
+        private void Find<T>(List<T> result, Expression expr)where T : Table, new()
         {
-            switch (predicate.NodeType)
+            switch (expr.NodeType)
             {
-                case ExpressionType.Add:
+                case ExpressionType.Add://
                     break;
-                case ExpressionType.AddAssign:
+                case ExpressionType.AddAssign://
                     break;
-                case ExpressionType.AddAssignChecked:
+                case ExpressionType.AddAssignChecked://
                     break;
-                case ExpressionType.AddChecked:
+                case ExpressionType.AddChecked://
                     break;
-                case ExpressionType.And:
+                case ExpressionType.And://
                     break;
                 case ExpressionType.AndAlso:
+                    {
+                        List<T> leftResult = new List<T>();
+                        BinaryExpression exp = expr as BinaryExpression;
+                        Find(leftResult, exp.Left);
+                        if (leftResult.Count > 0)
+                        {
+                            List<T> rightResult = new List<T>();
+                            Find(rightResult, exp.Right);
+                            foreach (var left in leftResult)
+                            {
+                                foreach (var right in rightResult)
+                                {
+                                    if (left.Id == right.Id)
+                                    {
+                                        result.Add(left);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                     break;
-                case ExpressionType.AndAssign:
+                case ExpressionType.AndAssign://
                     break;
-                case ExpressionType.ArrayIndex:
+                case ExpressionType.ArrayIndex://
                     break;
                 case ExpressionType.ArrayLength:
                     break;
@@ -86,6 +108,10 @@ namespace SharpFileDB
                 case ExpressionType.Dynamic:
                     break;
                 case ExpressionType.Equal:
+                    {
+                        var bin = expr as BinaryExpression;
+                        //TODO:
+                    }
                     break;
                 case ExpressionType.ExclusiveOr:
                     break;
@@ -162,6 +188,11 @@ namespace SharpFileDB
                 case ExpressionType.OrAssign:
                     break;
                 case ExpressionType.OrElse:
+                    {
+                        BinaryExpression exp = expr as BinaryExpression;
+                        Find(result, exp.Left);
+                        Find(result, exp.Right);
+                    }
                     break;
                 case ExpressionType.Parameter:
                     break;

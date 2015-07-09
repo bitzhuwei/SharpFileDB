@@ -8,6 +8,7 @@ using SharpFileDB.Blocks;
 using SharpFileDB.Utilities;
 using System.Reflection;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace SharpFileDB
 {
@@ -73,26 +74,13 @@ namespace SharpFileDB
 
             while (true)
             {
-                if (currentNode.RightPos != indexBlock.SkipListTailNode.ThisPos)
-                {
-                    currentNode.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.RightObj);
-                    currentNode.RightObj.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.Key);
-                    rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fileStream);
-                }
-                else
-                { currentNode.RightObj = indexBlock.SkipListTailNode; }
+                rightKey = GetRightObjKey(fileStream, indexBlock, currentNode);
 
                 while ((currentNode.RightObj != indexBlock.SkipListTailNode) && (rightKey.CompareTo(key) < 0))
                 {
                     currentNode = currentNode.RightObj;
-                    if (currentNode.RightPos != indexBlock.SkipListTailNode.ThisPos)
-                    {
-                        currentNode.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.RightObj);
-                        currentNode.RightObj.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.Key);
-                        rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fileStream);
-                    }
-                    else
-                    { currentNode.RightObj = indexBlock.SkipListTailNode; }
+
+                    rightKey = GetRightObjKey(fileStream, indexBlock, currentNode);
                 }
 
                 // Check if there is a next level, and if there is move down.
@@ -115,6 +103,28 @@ namespace SharpFileDB
             }
             else
             { return null; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileStream"></param>
+        /// <param name="indexBlock"></param>
+        /// <param name="currentNode"></param>
+        /// <returns></returns>
+        [MethodImpl( MethodImplOptions.AggressiveInlining)]
+        internal IComparable GetRightObjKey(FileStream fileStream, IndexBlock indexBlock, SkipListNodeBlock currentNode)
+        {
+            IComparable rightKey = null;
+            if (currentNode.RightPos == indexBlock.SkipListTailNodePos)
+            { currentNode.RightObj = indexBlock.SkipListTailNode; }
+            else
+            {
+                currentNode.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.RightObj);
+                currentNode.RightObj.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.Key);
+                rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fileStream);
+            }
+            return rightKey;
         }
 
 

@@ -28,10 +28,6 @@ namespace SharpFileDB.Utilities
         {
             Type type = record.GetType();
             PropertyInfo property = type.GetProperty(indexBlock.BindMember);
-            //if(members.Length != 1)
-            //{
-            //    throw new Exception(string.Format("[{0}] items named with index key's name [{1}]", members.Length, indexBlock.BindMember)); 
-            //}
             TableIndexAttribute attr = property.GetCustomAttribute<TableIndexAttribute>();
             if (attr == null)
             { throw new Exception(string.Format("No TableIndexAttribute binded!")); }
@@ -42,15 +38,7 @@ namespace SharpFileDB.Utilities
 
             SkipListNodeBlock[] rightNodes = FindRightMostNodes(key, indexBlock, db);
 
-            IComparable rightKey = null;
-            if (rightNodes[0].RightPos != indexBlock.SkipListTailNode.ThisPos)
-            {
-                rightNodes[0].TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
-                rightNodes[0].RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.Key);
-                rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs);
-            }
-            else
-            { rightNodes[0].RightObj = indexBlock.SkipListTailNode; }
+            IComparable rightKey = db.GetRightObjKey(fs, indexBlock, rightNodes[0]);
 
             // See if we actually found the node
             if ((rightNodes[0].RightObj != indexBlock.SkipListTailNode) && (rightKey.CompareTo(key) == 0))
@@ -59,22 +47,14 @@ namespace SharpFileDB.Utilities
                 {
                     // Since the node is consecutive levels, as soon as we don't find it on the next
                     // level, we can stop.
-                    if (rightNodes[i].RightPos == indexBlock.SkipListTailNode.ThisPos)
-                    {
-                        continue;
-                        //throw new Exception(string.Format("[{0}].RightPos should point to a valid node!", rightNodes[i]));
-                    }
-
-                    rightNodes[i].TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
+                    if (rightNodes[i].RightObj == indexBlock.SkipListTailNode) { break; }
+                    rightNodes[i].RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.Key);
                     rightKey = rightNodes[i].RightObj.Key.GetObject<IComparable>(fs);
-                    if ((rightNodes[i].RightObj != indexBlock.SkipListTailNode) && (rightKey.CompareTo(key) == 0))
-                    {
-                        rightNodes[i].RightObj.Value = dataBlocksForValue;
+                    if (rightKey.CompareTo(key) != 0) { break; }// 要删除的结点的高度比CurrentLevel低，所以会走到这里。
 
-                        db.transaction.Add(rightNodes[i].RightObj);
-                    }
-                    else// 要删除的结点的高度比CurrentLevel低，所以会走到这里。
-                    { break; }
+                    rightNodes[i].RightObj.Value = dataBlocksForValue;
+
+                    db.transaction.Add(rightNodes[i].RightObj);
                 }
 
                 //return true;
