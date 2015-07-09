@@ -171,8 +171,10 @@ namespace SharpFileDB.Viewer
             const int arrowLength = 30;
             const int keyValueHeight = 20;
             const int keyValueInterval = 5;
+            const int bottomLargin = 30;
+
             int width = skipList[skipList.Count - 1].Count * (nodeWidth + arrowLength) + leftMargin;
-            int height = skipList.Count * (nodeHeight + arrowLength) + keyDict.Count * (keyValueHeight + keyValueInterval) + topMargin;
+            int height = skipList.Count * (nodeHeight + arrowLength) + keyDict.Count * (keyValueHeight + keyValueInterval) + topMargin + bottomLargin;
             Bitmap bmp = new Bitmap(width, height);
             Graphics graphics = Graphics.FromImage(bmp);
 
@@ -186,7 +188,7 @@ namespace SharpFileDB.Viewer
             {
                 List<SkipListNodeBlock> line = skipList[i];
                 graphics.DrawString(string.Format("{0}:", skipList.Count - i - 1), font, brush,
-                    2, (i) * (nodeHeight + arrowLength) + 2);
+                    2, (i) * (nodeHeight + arrowLength) + topMargin);
                 for (int j = 0; j < line.Count; j++)
                 {
                     int widthStep = 0;
@@ -199,7 +201,7 @@ namespace SharpFileDB.Viewer
                         }
                     }
                     SkipListNodeBlock node = line[j];
-                    graphics.DrawString(string.Format("[{0}: {1}, {2}]", node.ThisPos, node.KeyPos, node.ValuePos), font, brush,
+                    graphics.DrawString(string.Format("[@[{0}]: {1}, {2}]", node.ThisPos, node.KeyPos, node.ValuePos), font, brush,
                         leftMargin + widthStep * (nodeWidth + arrowLength),
                         i * (nodeHeight + arrowLength) + topMargin);
                 }
@@ -293,38 +295,26 @@ namespace SharpFileDB.Viewer
                     }
                 }
 
-                for (int j = 0; j < line.Count - 1; j++)
-                {
-                    int leftWidthStep = 0, rightWidthStep = 0;
-                    while (lastLine[leftWidthStep].KeyPos != line[j].KeyPos)
-                    {
-                        leftWidthStep++;
-                    }
-                    if (j + 1 + 1 == line.Count) { rightWidthStep = lastLine.Count - 1; }
-                    else
-                    {
-                        while (lastLine[rightWidthStep].KeyPos != line[j + 1].KeyPos)
-                        {
-                            rightWidthStep++;
-                        }
-                    }
-                    graphics.DrawLine(rightPosPen,
-                        leftMargin + leftWidthStep * (nodeWidth + arrowLength) + nodeWidth / 2,
-                        topMargin + i * (nodeHeight + arrowLength),
-                        leftMargin + rightWidthStep * (nodeWidth + arrowLength),
-                        topMargin + i * (nodeHeight + arrowLength)
-                        );
-                    graphics.DrawLine(rightPosPen,
-                        leftMargin + rightWidthStep * (nodeWidth + arrowLength) - 5,
-                        topMargin + i * (nodeHeight + arrowLength) - 5,
-                        leftMargin + rightWidthStep * (nodeWidth + arrowLength),
-                        topMargin + i * (nodeHeight + arrowLength));
-                    graphics.DrawLine(rightPosPen,
-                        leftMargin + rightWidthStep * (nodeWidth + arrowLength) - 5,
-                        topMargin + i * (nodeHeight + arrowLength) + 5,
-                        leftMargin + rightWidthStep * (nodeWidth + arrowLength),
-                        topMargin + i * (nodeHeight + arrowLength));
+            }
 
+            // 画Key和Value。
+            for (int i = 0; i < lastLine.Count; i++)
+            {
+                SkipListNodeBlock node = lastLine[i];
+                if ((node.KeyPos == 0 && node.ValuePos != 0) || (node.KeyPos != 0 && node.ValuePos == 0))
+                { throw new Exception(); }
+                if (node.KeyPos != 0)
+                {
+                    DataBlock keyDataBlock = keyDict[node.KeyPos];
+                    IComparable key = keyDataBlock.GetObject<IComparable>(db.GetFileStream());
+                    graphics.DrawString(string.Format("Key: @[{0}]: {{{1}}}", node.KeyPos, key),
+                        font, brush, leftMargin,
+                        (skipList.Count - 1) * (nodeHeight + arrowLength) + topMargin + (keyValueHeight) * i * 2);
+                    DataBlock valueDataBlock = valueDict[node.ValuePos];
+                    Table value = valueDataBlock.GetObject<Table>(db.GetFileStream());
+                    graphics.DrawString(string.Format("Value: @[{0}]: {{{1}}}", node.ValuePos, value),
+                        font, brush, leftMargin,
+                        (skipList.Count - 1) * (nodeHeight + arrowLength) + topMargin + (keyValueHeight) * (i * 2 + 1));
                 }
             }
 
