@@ -45,7 +45,7 @@
             this.lstNotes.Location = new System.Drawing.Point(12, 9);
             this.lstNotes.Name = "lstNotes";
             this.lstNotes.Size = new System.Drawing.Size(398, 316);
-            this.lstNotes.TabIndex = 0;
+            this.lstNotes.TabIndex = 2;
             this.lstNotes.SelectedIndexChanged += new System.EventHandler(this.lstNotes_SelectedIndexChanged);
             this.lstNotes.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lstNotes_MouseDoubleClick);
             // 
@@ -55,7 +55,7 @@
             this.btnAddNote.Location = new System.Drawing.Point(227, 337);
             this.btnAddNote.Name = "btnAddNote";
             this.btnAddNote.Size = new System.Drawing.Size(102, 23);
-            this.btnAddNote.TabIndex = 1;
+            this.btnAddNote.TabIndex = 0;
             this.btnAddNote.Text = "Add Note...";
             this.btnAddNote.UseVisualStyleBackColor = true;
             this.btnAddNote.Click += new System.EventHandler(this.btnAddNote_Click);

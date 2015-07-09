@@ -51,7 +51,7 @@
             this.txtFullname.Name = "txtFullname";
             this.txtFullname.ReadOnly = true;
             this.txtFullname.Size = new System.Drawing.Size(634, 21);
-            this.txtFullname.TabIndex = 0;
+            this.txtFullname.TabIndex = 7;
             // 
             // label1
             // 
@@ -68,7 +68,7 @@
             this.btnBrowse.Location = new System.Drawing.Point(735, 10);
             this.btnBrowse.Name = "btnBrowse";
             this.btnBrowse.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowse.TabIndex = 2;
+            this.btnBrowse.TabIndex = 0;
             this.btnBrowse.Text = "browse...";
             this.btnBrowse.UseVisualStyleBackColor = true;
             this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
@@ -82,7 +82,7 @@
             this.lstTable.Location = new System.Drawing.Point(14, 71);
             this.lstTable.Name = "lstTable";
             this.lstTable.Size = new System.Drawing.Size(120, 184);
-            this.lstTable.TabIndex = 3;
+            this.lstTable.TabIndex = 4;
             this.lstTable.SelectedIndexChanged += new System.EventHandler(this.lstTable_SelectedIndexChanged);
             // 
             // label2
@@ -103,7 +103,7 @@
             this.lstIndex.Location = new System.Drawing.Point(140, 71);
             this.lstIndex.Name = "lstIndex";
             this.lstIndex.Size = new System.Drawing.Size(120, 184);
-            this.lstIndex.TabIndex = 3;
+            this.lstIndex.TabIndex = 5;
             // 
             // lstRecord
             // 
@@ -115,7 +115,7 @@
             this.lstRecord.Location = new System.Drawing.Point(266, 71);
             this.lstRecord.Name = "lstRecord";
             this.lstRecord.Size = new System.Drawing.Size(544, 184);
-            this.lstRecord.TabIndex = 3;
+            this.lstRecord.TabIndex = 6;
             // 
             // label3
             // 
@@ -142,7 +142,7 @@
             this.btnRefresh.Location = new System.Drawing.Point(735, 39);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 23);
-            this.btnRefresh.TabIndex = 2;
+            this.btnRefresh.TabIndex = 3;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
@@ -162,6 +162,7 @@
             this.btnDetail.TabIndex = 2;
             this.btnDetail.Text = "Detail";
             this.btnDetail.UseVisualStyleBackColor = true;
+            this.btnDetail.Visible = false;
             this.btnDetail.Click += new System.EventHandler(this.btnDetail_Click);
             // 
             // btnSkipLists
@@ -171,7 +172,7 @@
             this.btnSkipLists.Location = new System.Drawing.Point(573, 39);
             this.btnSkipLists.Name = "btnSkipLists";
             this.btnSkipLists.Size = new System.Drawing.Size(75, 23);
-            this.btnSkipLists.TabIndex = 2;
+            this.btnSkipLists.TabIndex = 1;
             this.btnSkipLists.Text = "Skip Lists";
             this.btnSkipLists.UseVisualStyleBackColor = true;
             this.btnSkipLists.Click += new System.EventHandler(this.btnSkipLists_Click);

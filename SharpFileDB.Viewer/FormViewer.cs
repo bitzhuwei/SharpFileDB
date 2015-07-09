@@ -166,7 +166,7 @@ namespace SharpFileDB.Viewer
         {
             const int leftMargin = 25;
             const int topMargin = 13;
-            const int nodeWidth = 150;
+            const int nodeWidth = 200;
             const int nodeHeight = 30;
             const int arrowLength = 30;
             const int keyValueHeight = 20;
