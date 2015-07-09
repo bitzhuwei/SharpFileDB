@@ -23,6 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFileDB.DebugHelper", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonFIles", "CommonFIles", "{5535EBC7-A60D-4A42-9D16-7AE1DFEEEFD0}"
 	ProjectSection(SolutionItems) = preProject
+		SharpFileDB.CommonFiles\SharpFileDB.icns = SharpFileDB.CommonFiles\SharpFileDB.icns
 		SharpFileDB.CommonFiles\SharpFileDB.ico = SharpFileDB.CommonFiles\SharpFileDB.ico
 		SharpFileDB.CommonFiles\SharpFileDB.png = SharpFileDB.CommonFiles\SharpFileDB.png
 	EndProjectSection
