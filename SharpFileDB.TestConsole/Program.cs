@@ -38,17 +38,17 @@ namespace SharpFileDB.TestConsole
             string name = "kitty白 " + random.Next();
             cat.KittyName = name;
             cat.Price = random.Next(1, 10);
-            cat.FavoriteFood = new Food() { FoodName = "小黄鱼", };
-            cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
-            cat.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };
-            Lion lion = new Lion();
-            lion.KittyName = "狮子 " + random.Next();
-            lion.Price = random.Next(1, 10);
-            lion.FavoriteFood = new Food() { FoodName = "小黄鱼", };
-            lion.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
-            lion.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };
+            //cat.FavoriteFood = new Food() { FoodName = "小黄鱼", };
+            //cat.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
+            //cat.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };
+            //Lion lion = new Lion();
+            //lion.KittyName = "狮子 " + random.Next();
+            //lion.Price = random.Next(1, 10);
+            //lion.FavoriteFood = new Food() { FoodName = "小黄鱼", };
+            //lion.HeadPortrait = Image.FromFile(@"CatHeadPortrait.png");
+            //lion.OwnHobby = new Hobby() { Note = "this takes some time", SportHour = 2.5 };
             db.Insert(cat);
-            db.Insert(lion);
+            //db.Insert(lion);
 
             ////IList<Cat> cats = db.Find<Cat>(x => x.KittyName == name);
             //System.Linq.Expressions.Expression<Func<Cat, bool>> pre = null;

@@ -154,17 +154,17 @@ namespace SharpFileDB.Viewer
 
         }
 
-        Font font = new Font("宋体",8);
+        Font font = new Font("宋体",10);
         Brush brush = new SolidBrush(Color.Black);
         Pen boundPen = new Pen(Color.Red);
 
         private void SaveToImage(TableBlock table, IndexBlock index, List<List<SkipListNodeBlock>> skipList, Dictionary<long, DataBlock> keyDict, Dictionary<long, DataBlock> valueDict, string dir, FileDBContext db)
         {
-            const int leftMargin = 20;
-            const int topMargin = 10;
-            const int nodeWidth = 40;
-            const int nodeHeight = 40;
-            const int arrowLength = 20;
+            const int leftMargin = 25;
+            const int topMargin = 13;
+            const int nodeWidth = 50;
+            const int nodeHeight = 50;
+            const int arrowLength = 30;
             const int keyValueHeight = 20;
             const int keyValueInterval = 5;
             int width = skipList[skipList.Count - 1].Count * (nodeWidth + arrowLength) + leftMargin;
@@ -176,6 +176,8 @@ namespace SharpFileDB.Viewer
             if (maxLevel != skipList.Count) { throw new Exception(); }
 
             // 画 skip list node.
+            List<SkipListNodeBlock> lastLine = skipList[skipList.Count - 1];
+
             for (int i = 0; i < skipList.Count; i++)
             {
                 List<SkipListNodeBlock> line = skipList[i];
@@ -183,9 +185,15 @@ namespace SharpFileDB.Viewer
                     2, (i) * (nodeHeight + arrowLength) + 2);
                 for (int j = 0; j < line.Count; j++)
                 {
+                    int widthStep = 0;
+                    if (j + 1 == line.Count) { widthStep = lastLine.Count - 1; }
+                    else
+                    {
+                        widthStep = j;
+                    }
                     SkipListNodeBlock node = line[j];
                     graphics.DrawString(string.Format("[{0}]", node.ThisPos), font, brush,
-                        leftMargin + j * (nodeWidth + arrowLength),
+                        leftMargin + widthStep * (nodeWidth + arrowLength),
                         i * (nodeHeight + arrowLength) + 2);
                 }
             }
