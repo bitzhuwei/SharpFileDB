@@ -75,8 +75,8 @@ namespace SharpFileDB
             {
                 if (currentNode.RightPos != indexBlock.SkipListTailNode.ThisPos)
                 {
-                    currentNode.TryLoadProperties(fileStream, LoadOptions.RightObj);
-                    currentNode.RightObj.TryLoadProperties(fileStream, LoadOptions.Key);
+                    currentNode.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.RightObj);
+                    currentNode.RightObj.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.Key);
                     rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fileStream);
                 }
                 else
@@ -87,8 +87,8 @@ namespace SharpFileDB
                     currentNode = currentNode.RightObj;
                     if (currentNode.RightPos != indexBlock.SkipListTailNode.ThisPos)
                     {
-                        currentNode.TryLoadProperties(fileStream, LoadOptions.RightObj);
-                        currentNode.RightObj.TryLoadProperties(fileStream, LoadOptions.Key);
+                        currentNode.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.RightObj);
+                        currentNode.RightObj.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.Key);
                         rightKey = currentNode.RightObj.Key.GetObject<IComparable>(fileStream);
                     }
                     else
@@ -102,7 +102,7 @@ namespace SharpFileDB
                 }
                 else
                 {
-                    currentNode.TryLoadProperties(fileStream, LoadOptions.DownObj);
+                    currentNode.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.DownObj);
                     currentNode = currentNode.DownObj;
                 }
             }

@@ -37,7 +37,7 @@ namespace SharpFileDB.Blocks
 #endif
         }
 
-        const string strBlockID = "";
+        const string strBlockID = "~";
 
         #region ISerializable 成员
 

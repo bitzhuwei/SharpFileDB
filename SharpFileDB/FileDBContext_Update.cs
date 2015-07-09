@@ -35,7 +35,7 @@ namespace SharpFileDB
             {
                 IndexBlock indexBlock = this.tableIndexBlockDict[type][Consts.TableIdString];
                 SkipListNodeBlock downNode = FindSkipListNode(fileStream, indexBlock, record.Id);
-                downNode.TryLoadProperties(fileStream, LoadOptions.Value);
+                downNode.TryLoadProperties(fileStream, SkipListNodeBlockLoadOptions.Value);
                 DataBlock[] oldValue = downNode.Value;
 
                 if (downNode == null)// 此记录根本不存在或已经被删除了。

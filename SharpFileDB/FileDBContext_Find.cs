@@ -51,10 +51,10 @@ namespace SharpFileDB
                 { throw new Exception("DB Error: There is no skip list node head stored!"); }
                 FileStream fs = this.fileStream;
                 SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
-                currentHeadNode.TryLoadProperties(fs, LoadOptions.DownObj);
+                currentHeadNode.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
                 while (currentHeadNode.DownObj != null)
                 {
-                    currentHeadNode.DownObj.TryLoadProperties(fs, LoadOptions.DownObj);
+                    currentHeadNode.DownObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
                     currentHeadNode = currentHeadNode.DownObj;
                 }
 
@@ -62,10 +62,10 @@ namespace SharpFileDB
 
                 while (current.RightPos != 0)
                 {
-                    current.TryLoadProperties(fs, LoadOptions.RightObj);
+                    current.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
                     if (current.RightObj.RightPos == 0)
                     { break; }
-                    current.RightObj.TryLoadProperties(fs, LoadOptions.RightObj | LoadOptions.Value);
+                    current.RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj | SkipListNodeBlockLoadOptions.Value);
                     T item = current.RightObj.Value.GetObject<T>(this);
                     result.Add(item);
 

@@ -50,41 +50,41 @@ namespace SharpFileDB.TestConsole
             db.Insert(cat);
             db.Insert(lion);
 
-            //IList<Cat> cats = db.Find<Cat>(x => x.KittyName == name);
-            System.Linq.Expressions.Expression<Func<Cat, bool>> pre = null;
+            ////IList<Cat> cats = db.Find<Cat>(x => x.KittyName == name);
+            //System.Linq.Expressions.Expression<Func<Cat, bool>> pre = null;
 
-            pre = x => x.Price == 10;
-            pre = x => x.Price < 10;
-            pre = x => x.Price > 10;
-            pre = x => x.Price < 10 || x.Price > 20;
-            pre = x => 10 < x.Price && x.Price < 20;
-            pre = x => x.KittyName.Contains("2");
-            pre = x => x.KittyName.StartsWith("kitty");
-            pre = x => x.KittyName.EndsWith("2");
-            pre = x => x.Price == 10 || x.Price < 20 && x.Price > 5;
+            //pre = x => x.Price == 10;
+            //pre = x => x.Price < 10;
+            //pre = x => x.Price > 10;
+            //pre = x => x.Price < 10 || x.Price > 20;
+            //pre = x => 10 < x.Price && x.Price < 20;
+            //pre = x => x.KittyName.Contains("2");
+            //pre = x => x.KittyName.StartsWith("kitty");
+            //pre = x => x.KittyName.EndsWith("2");
+            //pre = x => x.Price == 10 || x.Price < 20 && x.Price > 5;
 
-            pre = (x => (x.KittyName == name && x.Price < 10) || (x.KittyName == "kitty2" && x.Price > 10));
-
-
-            IList<Cat> cats = null;
-            //cats = db.Find<Cat>(pre);
+            //pre = (x => (x.KittyName == name && x.Price < 10) || (x.KittyName == "kitty2" && x.Price > 10));
 
 
-            cats = db.FindAll<Cat>();
+            //IList<Cat> cats = null;
+            ////cats = db.Find<Cat>(pre);
 
-            cat.KittyName = "小白 " + random.Next();
-            db.Update(cat);
 
-            //foreach (var item in cats)
-            //{
-            //    db.Delete(item);
-            //}
-            db.Delete(cat);
-            //if (cats.Count > 0)
-            //{
-            //    Cat first = cats[0];
-            //    db.Delete(first);
-            //}
+            //cats = db.FindAll<Cat>();
+
+            //cat.KittyName = "小白 " + random.Next();
+            //db.Update(cat);
+
+            ////foreach (var item in cats)
+            ////{
+            ////    db.Delete(item);
+            ////}
+            //db.Delete(cat);
+            ////if (cats.Count > 0)
+            ////{
+            ////    Cat first = cats[0];
+            ////    db.Delete(first);
+            ////}
         }
     }
 }

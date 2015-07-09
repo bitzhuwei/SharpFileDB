@@ -45,8 +45,8 @@ namespace SharpFileDB.Utilities
             IComparable rightKey = null;
             if (rightNodes[0].RightPos != indexBlock.SkipListTailNode.ThisPos)
             {
-                rightNodes[0].TryLoadProperties(fs, LoadOptions.RightObj);
-                rightNodes[0].RightObj.TryLoadProperties(fs, LoadOptions.Key);
+                rightNodes[0].TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
+                rightNodes[0].RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.Key);
                 rightKey = rightNodes[0].RightObj.Key.GetObject<IComparable>(fs);
             }
             else
@@ -65,7 +65,7 @@ namespace SharpFileDB.Utilities
                         //throw new Exception(string.Format("[{0}].RightPos should point to a valid node!", rightNodes[i]));
                     }
 
-                    rightNodes[i].TryLoadProperties(fs, LoadOptions.RightObj);
+                    rightNodes[i].TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
                     rightKey = rightNodes[i].RightObj.Key.GetObject<IComparable>(fs);
                     if ((rightNodes[i].RightObj != indexBlock.SkipListTailNode) && (rightKey.CompareTo(key) == 0))
                     {

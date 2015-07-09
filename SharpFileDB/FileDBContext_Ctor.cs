@@ -68,7 +68,9 @@ namespace SharpFileDB
             // 准备数据库头部块。
             PageHeaderBlock pageHeaderBlock = fileStream.ReadBlock<PageHeaderBlock>(0);
             DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(fileStream.Position);
+#if DEBUG
             Block.IDCounter = headerBlock.BlockCount;
+#endif
             this.headerBlock = headerBlock;
             // 准备数据库表块，保存到字典。
             TableBlock currentTableBlock = fileStream.ReadBlock<TableBlock>(fileStream.Position); //headerBlock.TableBlockHead;
@@ -159,7 +161,7 @@ namespace SharpFileDB
                 PageHeaderBlock pageHeaderBlock = new PageHeaderBlock() { OccupiedBytes = Consts.pageSize, AvailableBytes = 0, };
                 fs.WriteBlock(pageHeaderBlock);
 
-                DBHeaderBlock headerBlock = new DBHeaderBlock() { MaxLevelOfSkipList = 32, ProbabilityOfSkipList = 0.5, ThisPos = fs.Position };
+                DBHeaderBlock headerBlock = new DBHeaderBlock() { MaxLevelOfSkipList = 4, ProbabilityOfSkipList = 0.5, ThisPos = fs.Position };
                 fs.WriteBlock(headerBlock);
 
                 TableBlock tableBlockHead = new TableBlock() { ThisPos = fs.Position, };

@@ -185,23 +185,33 @@ namespace SharpFileDB.DebugHelper
                     {
                         long currentHeadNodePos = indexBlock.SkipListHeadNodePos;
                         SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
-                        currentHeadNode.TryLoadProperties(fs, LoadOptions.DownObj);
+                        currentHeadNode.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
                         while (currentHeadNode.DownObj != null)
                         {
-                            currentHeadNode.DownObj.TryLoadProperties(fs, LoadOptions.DownObj);
+                            currentHeadNode.DownObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
                             currentHeadNode = currentHeadNode.DownObj;
                         }
                         SkipListNodeBlock current = currentHeadNode;
-                        current.TryLoadProperties(fs, LoadOptions.RightObj);
-                        while (current.RightObj.RightPos != 0)
+                        current.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
+                        while (current.RightObj != null && current.RightObj.ThisPos != indexBlock.SkipListTailNodePos)
                         {
-                            current.RightObj.TryLoadProperties(fs, LoadOptions.Value);
+                            current.RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.Value);
                             Table item = current.RightObj.Value.GetObject<Table>(db);
 
                             tableInfo.Add(item);
 
                             current = current.RightObj;
+                            current.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
                         }
+                        //while (current.RightObj.RightPos != 0)
+                        //{
+                        //    current.RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.Value);
+                        //    Table item = current.RightObj.Value.GetObject<Table>(db);
+
+                        //    tableInfo.Add(item);
+
+                        //    current = current.RightObj;
+                        //}
 
                         primaryKey = false;
                     }

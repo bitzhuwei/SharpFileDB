@@ -40,6 +40,7 @@
             this.btnRefresh = new System.Windows.Forms.Button();
             this.openSharpFileDB = new System.Windows.Forms.OpenFileDialog();
             this.btnDetail = new System.Windows.Forms.Button();
+            this.btnSkipLists = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtFullname
@@ -137,6 +138,7 @@
             // btnRefresh
             // 
             this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh.Enabled = false;
             this.btnRefresh.Location = new System.Drawing.Point(735, 39);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(75, 23);
@@ -153,6 +155,7 @@
             // btnDetail
             // 
             this.btnDetail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDetail.Enabled = false;
             this.btnDetail.Location = new System.Drawing.Point(654, 39);
             this.btnDetail.Name = "btnDetail";
             this.btnDetail.Size = new System.Drawing.Size(75, 23);
@@ -160,6 +163,18 @@
             this.btnDetail.Text = "Detail";
             this.btnDetail.UseVisualStyleBackColor = true;
             this.btnDetail.Click += new System.EventHandler(this.btnDetail_Click);
+            // 
+            // btnSkipLists
+            // 
+            this.btnSkipLists.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSkipLists.Enabled = false;
+            this.btnSkipLists.Location = new System.Drawing.Point(573, 39);
+            this.btnSkipLists.Name = "btnSkipLists";
+            this.btnSkipLists.Size = new System.Drawing.Size(75, 23);
+            this.btnSkipLists.TabIndex = 2;
+            this.btnSkipLists.Text = "Skip Lists";
+            this.btnSkipLists.UseVisualStyleBackColor = true;
+            this.btnSkipLists.Click += new System.EventHandler(this.btnSkipLists_Click);
             // 
             // FormViewer
             // 
@@ -169,6 +184,7 @@
             this.Controls.Add(this.lstRecord);
             this.Controls.Add(this.lstIndex);
             this.Controls.Add(this.lstTable);
+            this.Controls.Add(this.btnSkipLists);
             this.Controls.Add(this.btnDetail);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnBrowse);
@@ -198,5 +214,6 @@
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.OpenFileDialog openSharpFileDB;
         private System.Windows.Forms.Button btnDetail;
+        private System.Windows.Forms.Button btnSkipLists;
     }
 }
