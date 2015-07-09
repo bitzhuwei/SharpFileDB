@@ -21,6 +21,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFileDB.VisualDesigner"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFileDB.DebugHelper", "SharpFileDB.DebugHelper\SharpFileDB.DebugHelper.csproj", "{BAD47F8B-5CC9-45A7-9815-432D0F43694D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonFIles", "CommonFIles", "{5535EBC7-A60D-4A42-9D16-7AE1DFEEEFD0}"
+	ProjectSection(SolutionItems) = preProject
+		SharpFileDB.CommonFiles\SharpFileDB.ico = SharpFileDB.CommonFiles\SharpFileDB.ico
+		SharpFileDB.CommonFiles\SharpFileDB.png = SharpFileDB.CommonFiles\SharpFileDB.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
