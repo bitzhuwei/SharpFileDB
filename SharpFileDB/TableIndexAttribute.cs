@@ -42,7 +42,8 @@ namespace SharpFileDB
         public override string ToString()
         {
             //return string.Format("Unique: {0}, Ascending: {1}", this.Unique, this.Ascending);
-            return string.Format("Unique: {0}", this.Unique);
+            //return string.Format("Unique: {0}", this.Unique);
+            return string.Format("{0}", this.GetType().FullName);
         }
     }
 }
