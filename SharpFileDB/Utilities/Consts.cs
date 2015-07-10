@@ -51,48 +51,38 @@ namespace SharpFileDB.Utilities
         /// <summary>
         /// <see cref="DBHeaderBlock"/>序列化后的长度。
         /// </summary>
-        public static Int16 dbHeaderLength;
+        public static Int16 dbHeaderBlockLength;
 
         /// <summary>
         /// <see cref="PageHeaderBlock"/>序列化后的长度。
         /// </summary>
-        public static Int16 pageHeaderLength;
+        public static Int16 pageHeaderBlockLength;
+
+        /// <summary>
+        /// <see cref="TableBlock"/>序列化后的长度。
+        /// </summary>
+        public static Int16 tableBlockLength;
+
+        /// <summary>
+        /// <see cref="IndexBlock"/>序列化后的长度。
+        /// </summary>
+        public static Int16 indexBlockLength;
+
+        /// <summary>
+        /// <see cref="SkipListNodeBlock"/>序列化后的长度。
+        /// </summary>
+        public static Int16 skipListNodeBlockLength;
+
+        /// <summary>
+        /// <see cref="DataBlock"/>序列化后的长度。
+        /// </summary>
+        public static Int16 dataBlockLength;
 
         /// <summary>
         /// 系统启动时初始化各项常量。
         /// </summary>
         static Consts()
         {
-            {
-                PageHeaderBlock page = new PageHeaderBlock();
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    formatter.Serialize(ms, page);
-                    if (ms.Length > Consts.pageSize / 10)
-                    { throw new Exception("Page header block takes too much space!"); }
-                    Consts.pageHeaderLength = (Int16)ms.Length;
-                    Consts.maxAvailableSpaceInPage = (Int16)(Consts.pageSize - ms.Length);
-                    Consts.minOccupiedBytes = (Int16)(Consts.pageSize - Consts.maxAvailableSpaceInPage);
-                }
-                BlockCache.TryRemoveFloatingBlock(page);
-            }
-            {
-                PageHeaderBlock page = new PageHeaderBlock();
-                DataBlock dataBlock = new DataBlock();
-                dataBlock.Data = new byte[0];
-                Int16 minValue;
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    formatter.Serialize(ms, page);
-                    formatter.Serialize(ms, dataBlock);
-                    if (ms.Length > Consts.pageSize / 10)
-                    { throw new Exception("data block's metadata takes too much space!"); }
-                    minValue = (Int16)ms.Length;
-                }
-                Consts.maxDataBytes = (Int16)(Consts.pageSize - minValue);
-                BlockCache.TryRemoveFloatingBlock(page);
-                BlockCache.TryRemoveFloatingBlock(dataBlock);
-            }
             {
                 PropertyInfo[] properties = typeof(Table).GetProperties();
                 foreach (var property in properties)
@@ -107,6 +97,21 @@ namespace SharpFileDB.Utilities
             }
             {
                 PageHeaderBlock page = new PageHeaderBlock();
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    formatter.Serialize(ms, page);
+                    if (ms.Length > Consts.pageSize / 10)
+                    { throw new Exception("Page header block takes too much space!"); }
+                    Consts.pageHeaderBlockLength = (Int16)ms.Length;
+                    Consts.maxAvailableSpaceInPage = (Int16)(Consts.pageSize - ms.Length);
+                    Consts.minOccupiedBytes = (Int16)(Consts.pageSize - Consts.maxAvailableSpaceInPage);
+                }
+                BlockCache.TryRemoveFloatingBlock(page);
+            }
+
+
+            {
+                PageHeaderBlock page = new PageHeaderBlock();
                 DBHeaderBlock dbHeader = new DBHeaderBlock();
                 TableBlock tableHead = new TableBlock();
                 Int16 usedSpaceInFirstPage;
@@ -116,8 +121,9 @@ namespace SharpFileDB.Utilities
                     dbHeader.ThisPos = ms.Length;
                     formatter.Serialize(ms, dbHeader);
                     tableHead.ThisPos = ms.Length;
-                    Consts.dbHeaderLength = (Int16)(ms.Length - Consts.pageHeaderLength);
+                    Consts.dbHeaderBlockLength = (Int16)(ms.Length - Consts.pageHeaderBlockLength);
                     formatter.Serialize(ms, tableHead);
+                    Consts.tableBlockLength = (Int16)(ms.Length - tableHead.ThisPos);
                     usedSpaceInFirstPage = (Int16)ms.Length;
                 }
 
@@ -128,6 +134,41 @@ namespace SharpFileDB.Utilities
                 BlockCache.TryRemoveFloatingBlock(page);
                 BlockCache.TryRemoveFloatingBlock(dbHeader);
                 BlockCache.TryRemoveFloatingBlock(tableHead);
+            }
+            {
+                IndexBlock block = new IndexBlock();
+                int length = block.ToBytes().Length;
+                if (length > Consts.pageSize / 10)
+                { throw new Exception("index block takes too much space!"); }
+                Consts.indexBlockLength = (Int16)length;
+                BlockCache.TryRemoveFloatingBlock(block);
+            }
+            {
+                SkipListNodeBlock block = new SkipListNodeBlock();
+                int length = block.ToBytes().Length;
+                if (length > Consts.pageSize / 10)
+                { throw new Exception("index block takes too much space!"); }
+                Consts.skipListNodeBlockLength = (Int16)length;
+                BlockCache.TryRemoveFloatingBlock(block);
+            }
+            {
+                PageHeaderBlock page = new PageHeaderBlock();
+                DataBlock dataBlock = new DataBlock();
+                dataBlock.Data = new byte[0];
+                Int16 minValue;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    formatter.Serialize(ms, page);
+                    long pos = ms.Length;
+                    formatter.Serialize(ms, dataBlock);
+                    Consts.dataBlockLength = (Int16)(ms.Length - pos);
+                    if (ms.Length > Consts.pageSize / 10)
+                    { throw new Exception("data block's metadata takes too much space!"); }
+                    minValue = (Int16)ms.Length;
+                }
+                Consts.maxDataBytes = (Int16)(Consts.pageSize - minValue);
+                BlockCache.TryRemoveFloatingBlock(page);
+                BlockCache.TryRemoveFloatingBlock(dataBlock);
             }
         }
 

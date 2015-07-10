@@ -19,7 +19,7 @@ namespace SharpFileDB.DebugHelper
         /// <param name="db"></param>
         /// <param name="directory"></param>
         /// <param name="prefix">图片文件名前缀</param>
-        public static void SnapShot(this FileDBContext db, string directory, string prefix = "")
+        public static void SkipListShot(this FileDBContext db, string directory, string prefix = "")
         {
             string dir = Path.Combine(directory, "skiplists");
             Directory.CreateDirectory(dir);

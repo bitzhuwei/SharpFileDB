@@ -23,7 +23,7 @@ namespace SharpFileDB.Utilities
         /// <param name="block"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static byte[] ToBytes(this Block block)
+        public static byte[] ToBytes(this Block block)
         {
             byte[] result;
             using (MemoryStream ms = new MemoryStream())
@@ -43,7 +43,7 @@ namespace SharpFileDB.Utilities
         /// <param name="block"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static AllocPageTypes BelongedPageType(this AllocBlock block)
+        public static AllocPageTypes BelongedPageType(this AllocBlock block)
         {
             AllocPageTypes pageType;
             Type type = block.GetType();

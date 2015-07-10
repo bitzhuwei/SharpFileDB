@@ -70,14 +70,14 @@ namespace SharpFileDB
             }
             // 准备数据库头部块。
             //PageHeaderBlock pageHeaderBlock = fileStream.ReadBlock<PageHeaderBlock>(0);
-            DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(Consts.pageHeaderLength);
+            DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(Consts.pageHeaderBlockLength);
 #if DEBUG
             Block.IDCounter = headerBlock.BlockCount;
 #endif
             BlockCache.MaxSunkCountInMemory = headerBlock.MaxSunkCountInMemory;
             this.headerBlock = headerBlock;
             // 准备数据库表块，保存到字典。
-            TableBlock currentTableBlock = fileStream.ReadBlock<TableBlock>(Consts.pageHeaderLength + Consts.dbHeaderLength); 
+            TableBlock currentTableBlock = fileStream.ReadBlock<TableBlock>(Consts.pageHeaderBlockLength + Consts.dbHeaderBlockLength); 
             this.tableBlockHead = currentTableBlock;
             while (currentTableBlock.NextPos != 0)
             {

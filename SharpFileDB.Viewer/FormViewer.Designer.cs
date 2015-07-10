@@ -42,6 +42,7 @@
             this.openSharpFileDB = new System.Windows.Forms.OpenFileDialog();
             this.btnDetail = new System.Windows.Forms.Button();
             this.btnSkipLists = new System.Windows.Forms.Button();
+            this.btnBlocks = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtFullname
@@ -178,6 +179,18 @@
             this.btnSkipLists.UseVisualStyleBackColor = true;
             this.btnSkipLists.Click += new System.EventHandler(this.btnSkipLists_Click);
             // 
+            // btnBlocks
+            // 
+            this.btnBlocks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBlocks.Enabled = false;
+            this.btnBlocks.Location = new System.Drawing.Point(492, 39);
+            this.btnBlocks.Name = "btnBlocks";
+            this.btnBlocks.Size = new System.Drawing.Size(75, 23);
+            this.btnBlocks.TabIndex = 1;
+            this.btnBlocks.Text = "Blocks";
+            this.btnBlocks.UseVisualStyleBackColor = true;
+            this.btnBlocks.Click += new System.EventHandler(this.btnBLocks_Click);
+            // 
             // FormViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -186,6 +199,7 @@
             this.Controls.Add(this.lstRecord);
             this.Controls.Add(this.lstIndex);
             this.Controls.Add(this.lstTable);
+            this.Controls.Add(this.btnBlocks);
             this.Controls.Add(this.btnSkipLists);
             this.Controls.Add(this.btnDetail);
             this.Controls.Add(this.btnRefresh);
@@ -218,5 +232,6 @@
         private System.Windows.Forms.OpenFileDialog openSharpFileDB;
         private System.Windows.Forms.Button btnDetail;
         private System.Windows.Forms.Button btnSkipLists;
+        private System.Windows.Forms.Button btnBlocks;
     }
 }

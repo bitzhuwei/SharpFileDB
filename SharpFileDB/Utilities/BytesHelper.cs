@@ -22,7 +22,7 @@ namespace SharpFileDB.Utilities
         /// <param name="bytes"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static T ToObject<T>(this byte[] bytes)
+        public static T ToObject<T>(this byte[] bytes)
         {
             T result;
             using (MemoryStream ms = new MemoryStream(bytes))

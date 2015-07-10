@@ -34,6 +34,7 @@ namespace SharpFileDB.Viewer
                 this.btnRefresh.Enabled = true;
                 this.btnDetail.Enabled = true;
                 this.btnSkipLists.Enabled = true;
+                this.btnBlocks.Enabled = true;
             }
         }
 
@@ -97,9 +98,21 @@ namespace SharpFileDB.Viewer
 
         private void btnSkipLists_Click(object sender, EventArgs e)
         {
-            using (FileDBContext db = new FileDBContext(this.txtFullname.Text, true))
+            string fullname = this.txtFullname.Text;
+            using (FileDBContext db = new FileDBContext(fullname, true))
             {
-                db.SnapShot(Environment.CurrentDirectory);
+                db.SkipListShot(Environment.CurrentDirectory);
+            }
+
+            Process.Start("explorer", Environment.CurrentDirectory);
+        }
+
+        private void btnBLocks_Click(object sender, EventArgs e)
+        {
+            string fullname = this.txtFullname.Text;
+            using (FileDBContext db = new FileDBContext(fullname, true))
+            {
+                db.BlocksShot(Environment.CurrentDirectory, "page");
             }
 
             Process.Start("explorer", Environment.CurrentDirectory);
