@@ -8,6 +8,11 @@ namespace SharpFileDB.VisualDesigner
     public class PropertyDesigner
     {
 
+        public override string ToString()
+        {
+            return string.Format("{0} {1} {{ get; set; }} //({2})", this.PropertyType, this.PropertyName, this.IndexType);
+        }
+
         public IndexTypes IndexType { get; set; }
 
         public string PropertyType { get; set; }
@@ -33,12 +38,12 @@ namespace SharpFileDB.VisualDesigner
                     break;
                 case IndexTypes.UniqueIndex:
                     builder.PrintTabSpace(tabSpace);
-                    builder.AppendLine("[TableIndex(true)]");
+                    builder.AppendLine("[TableIndex]");
                     break;
-                case IndexTypes.NonUniqueIndex:
-                    builder.PrintTabSpace(tabSpace);
-                    builder.AppendLine("[TableIndex(false)]");
-                    break;
+                //case IndexTypes.NonUniqueIndex:
+                //    builder.PrintTabSpace(tabSpace);
+                //    builder.AppendLine("[TableIndex]");
+                //    break;
                 default:
                     throw new NotImplementedException();
             }
@@ -66,9 +71,9 @@ namespace SharpFileDB.VisualDesigner
         /// </summary>
         UniqueIndex,
 
-        /// <summary>
-        /// 非唯一索引。
-        /// </summary>
-        NonUniqueIndex,
+        ///// <summary>
+        ///// 非唯一索引。
+        ///// </summary>
+        //NonUniqueIndex,
     }
 }

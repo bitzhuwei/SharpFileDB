@@ -6,19 +6,30 @@ using System.Threading.Tasks;
 
 namespace SharpFileDB.VisualDesigner
 {
-    class TableDesigner
+    public class TableDesigner
     {
+
+        public override string ToString()
+        {
+            return string.Format("{0}", Name);
+        }
+
         /// <summary>
-        /// 包括了命名空间的全名。
+        /// 表类型的类型名（不包含命名空间）。
         /// </summary>
-        public string Fullname { get; set; }
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 表类型的Xml注释。
+        /// </summary>
+        public string XmlNote { get; set; }
 
         /// <summary>
         /// 不包括Table.Id在内的属性。
         /// </summary>
-        List<PropertyDesigner> PropertyDesignerList = new List<PropertyDesigner>();
+        public List<PropertyDesigner> PropertyDesignerList = new List<PropertyDesigner>();
 
-        public string ToCSharpCode()
+        public string ToCSharpCode(string _namespace)
         {
             StringBuilder builder = new StringBuilder();
 
@@ -31,21 +42,29 @@ namespace SharpFileDB.VisualDesigner
             builder.AppendLine("");
 
             int tabSpace = 0;
-            string _namespace = this.Fullname.GetNameSpace();
+            //string _namespace = this.Name.GetNameSpace();
             if (!string.IsNullOrEmpty(_namespace))
             {
                 builder.AppendLine("namespace " + _namespace);
                 builder.AppendLine("{");
+                tabSpace += 4;
             }
-            else
-            { tabSpace += 4; }
 
             builder.PrintTabSpace(tabSpace);
-            builder.AppendLine("public partial class " + this.Fullname.GetClassName() + " : Table");
+            builder.AppendLine("/// <summary>");
+            builder.PrintTabSpace(tabSpace);
+            builder.AppendLine("/// " + this.XmlNote);
+            builder.PrintTabSpace(tabSpace);
+            builder.AppendLine("/// </summary>");
+            builder.PrintTabSpace(tabSpace);
+            builder.AppendLine("[Serializable]");
+            builder.PrintTabSpace(tabSpace);
+            builder.AppendLine("public partial class " + this.Name + " : Table");
             builder.PrintTabSpace(tabSpace);
             builder.AppendLine("{");// public partial class Xxx : Table {
 
             tabSpace += 4;
+
             foreach (var item in this.PropertyDesignerList)
             {
                 item.ToCSharpCode(builder, tabSpace);
@@ -54,15 +73,19 @@ namespace SharpFileDB.VisualDesigner
             tabSpace -= 4;
 
             builder.PrintTabSpace(tabSpace);
+            builder.AppendLine("}");// public partial class Xxx : Table {
+
             if (!string.IsNullOrEmpty(_namespace))
-            { builder.AppendLine("}"); }// }// end of class
-            else
-            { tabSpace -= 4; }
+            {
+                tabSpace -= 4;
+                builder.PrintTabSpace(tabSpace);
+                builder.AppendLine("}");
+            }// }// end of namespace
 
             return builder.ToString();
         }
 
-     
+
     }
 
     static class TableDesignerHelper
@@ -71,25 +94,25 @@ namespace SharpFileDB.VisualDesigner
         public static void PrintTabSpace(this StringBuilder builder, int tabSpace)
         {
             for (int i = 0; i < tabSpace; i++)
-            { builder.Append(' '); }
+            { builder.Append(" "); }
         }
 
-        public static string GetNameSpace(this string fullname)
-        {
-            int index = fullname.LastIndexOf('.');
-            if (index >= 0)
-            { return fullname.Substring(0, index); }
-            else
-            { return string.Empty; }
-        }
+        //public static string GetNameSpace(this string fullname)
+        //{
+        //    int index = fullname.LastIndexOf('.');
+        //    if (index >= 0)
+        //    { return fullname.Substring(0, index); }
+        //    else
+        //    { return string.Empty; }
+        //}
 
-        public static string GetClassName(this string fullname)
-        {
-            int index = fullname.LastIndexOf('.');
-            if (index >= 0)
-            { return fullname.Substring(index); }
-            else
-            { return fullname; }
-        }
+        //public static string GetClassName(this string fullname)
+        //{
+        //    int index = fullname.LastIndexOf('.');
+        //    if (index >= 0)
+        //    { return fullname.Substring(index); }
+        //    else
+        //    { return fullname; }
+        //}
     }
 }

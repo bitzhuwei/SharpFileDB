@@ -47,6 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormAddProperty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAddProperty.Designer.cs">
+      <DependentUpon>FormAddProperty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormAddTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAddTable.Designer.cs">
+      <DependentUpon>FormAddTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -57,6 +69,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyDesigner.cs" />
     <Compile Include="TableDesigner.cs" />
+    <EmbeddedResource Include="FormAddProperty.resx">
+      <DependentUpon>FormAddProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormAddTable.resx">
+      <DependentUpon>FormAddTable.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
