@@ -83,9 +83,9 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public SkipListNodeBlock() { }
 
-        const string strKeyPos = "K";
-        const string strValuePos = "V";
-        const string strRightPos = "R";
+        const string strKeyPos = "A";
+        const string strValuePos = "B";
+        const string strRightPos = "C";
         const string strDownPos = "D";
 
         /// <summary>

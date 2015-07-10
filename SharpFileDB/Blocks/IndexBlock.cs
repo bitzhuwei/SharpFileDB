@@ -95,12 +95,12 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public IndexBlock() { }
 
-        const string strSkipListHeadNodePos = "H";
-        const string strSkipListTailNodePos = "T";
+        const string strSkipListHeadNodePos = "A";
+        const string strSkipListTailNodePos = "B";
         const string strCurrentLevel = "C";
-        const string strBindMember = "M";
+        const string strBindMember = "D";
 
-        const string strNext = "N";
+        const string strNext = "E";
 
         /// <summary>
         /// 序列化时系统会调用此方法。

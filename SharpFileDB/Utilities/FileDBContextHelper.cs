@@ -20,6 +20,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FileStream GetFileStream(this FileDBContext db)
         {
             return db.fileStream;
@@ -30,6 +31,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Transaction GetTransaction(this FileDBContext db)
         {
             return db.transaction;
@@ -40,6 +42,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DBHeaderBlock GetDBHeaderBlock(this FileDBContext db)
         {
             return db.headerBlock;
@@ -50,6 +53,7 @@ namespace SharpFileDB.Utilities
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TableBlock GetTableBlockHeadNode(this FileDBContext db)
         {
             return db.tableBlockHead;
@@ -215,7 +219,10 @@ namespace SharpFileDB.Utilities
             if (ts.affectedPages.ContainsKey(pagePos))
             { page = ts.affectedPages[pagePos]; }
             else
-            { page = fs.ReadBlock<PageHeaderBlock>(pagePos); }
+            {
+                page = fs.ReadBlock<PageHeaderBlock>(pagePos);
+                ts.affectedPages.Add(page.ThisPos, page);
+            }
             return page;
         }
 

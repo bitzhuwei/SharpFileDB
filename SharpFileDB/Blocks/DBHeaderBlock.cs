@@ -41,6 +41,7 @@ namespace SharpFileDB.Blocks
 
         private int maxLevelOfSkipList;
         private double probabilityOfSkipList;
+        private long maxSunkCountInMemory;
 
         /// <summary>
         /// 第一个存储<see cref="TableBlock"/>的页的位置。
@@ -156,6 +157,22 @@ namespace SharpFileDB.Blocks
         }
 
         /// <summary>
+        /// <see cref="Block.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。
+        /// </summary>
+        public long MaxSunkCountInMemory
+        {
+            get { return maxSunkCountInMemory; }
+            set
+            {
+                if (maxSunkCountInMemory != value)
+                {
+                    maxSunkCountInMemory = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
+
+        /// <summary>
         /// 安排所有文件指针。如果全部安排完毕，返回true，否则返回false。
         /// </summary>
         /// <returns></returns>
@@ -170,15 +187,16 @@ namespace SharpFileDB.Blocks
         public DBHeaderBlock() { }
 
 #if DEBUG
-        const string strBlockCount="C";
+        const string strBlockCount = "A";
 #endif
-        const string strFirstTablePagePos = "T";
-        const string strFirstIndexPagePos = "I";
-        const string strFirstSkipListNodePagePos = "S";
-        const string strFirstDataPagePos = "D";
-        const string strFirstEmptyPagePos = "E";
-        const string strMaxLevel = "M";
-        const string strProbability = "P";
+        const string strFirstTablePagePos = "B";
+        const string strFirstIndexPagePos = "C";
+        const string strFirstSkipListNodePagePos = "D";
+        const string strFirstDataPagePos = "E";
+        const string strFirstEmptyPagePos = "F";
+        const string strMaxLevel = "G";
+        const string strProbability = "H";
+        const string strMaxSunkCountInMemory = "I";
 
         /// <summary>
         /// 序列化时系统会调用此方法。
@@ -199,6 +217,7 @@ namespace SharpFileDB.Blocks
             info.AddValue(strFirstEmptyPagePos, this.FirstEmptyPagePos);
             info.AddValue(strMaxLevel, this.MaxLevelOfSkipList);
             info.AddValue(strProbability, this.ProbabilityOfSkipList);
+            info.AddValue(strMaxSunkCountInMemory, this.MaxSunkCountInMemory);
         }
 
         /// <summary>
@@ -210,7 +229,7 @@ namespace SharpFileDB.Blocks
             : base(info, context)
         {
 #if DEBUG
-            this.blockCount=info.GetInt64(strBlockCount);
+            this.blockCount = info.GetInt64(strBlockCount);
 #endif
             this.FirstTablePagePos = info.GetInt64(strFirstTablePagePos);
             this.FirstIndexPagePos = info.GetInt64(strFirstIndexPagePos);
@@ -219,6 +238,9 @@ namespace SharpFileDB.Blocks
             this.FirstEmptyPagePos = info.GetInt64(strFirstEmptyPagePos);
             this.MaxLevelOfSkipList = info.GetInt32(strMaxLevel);
             this.ProbabilityOfSkipList = info.GetDouble(strProbability);
+            this.MaxSunkCountInMemory = info.GetInt64(strMaxSunkCountInMemory);
+
+            this.IsDirty = false;
         }
 
 
@@ -237,7 +259,7 @@ namespace SharpFileDB.Blocks
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("{0}, FirstTablePagePos: {1}, FirstIndexPagePos: {2}, FirstSkipListNodePagePos: {3}, FirstDataPagePos: {4}, FirstEmptyPagePos: {5}, MaxLevelOfSkipList: {6}, ProbabilityOfSkipList: {7}",
+            return string.Format("{0}, FirstTablePagePos: {1}, FirstIndexPagePos: {2}, FirstSkipListNodePagePos: {3}, FirstDataPagePos: {4}, FirstEmptyPagePos: {5}, MaxLevelOfSkipList: {6}, ProbabilityOfSkipList: {7}, MaxSunkCountInMemory: {8}",
                 base.ToString(),
                 this.FirstTablePagePos,
                 this.FirstIndexPagePos,
@@ -245,7 +267,8 @@ namespace SharpFileDB.Blocks
                 this.FirstDataPagePos,
                 this.FirstEmptyPagePos,
                 this.MaxLevelOfSkipList,
-                this.ProbabilityOfSkipList
+                this.ProbabilityOfSkipList,
+                this.MaxSunkCountInMemory
                 );
         }
     }

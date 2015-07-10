@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 //using System.Threading.Tasks;
@@ -13,8 +14,14 @@ namespace SharpFileDB.Blocks
     [Serializable]
     public abstract class Block : ISerializable
     {
+
 #if DEBUG
+
+        /// <summary>
+        /// 创建新<see cref="Block"/>时应设置其<see cref="Block.blockID"/>为计数器，并增长此计数器值。
+        /// </summary>
         internal static long IDCounter = 0;
+
         /// <summary>
         /// 用于给此块标记一个编号，仅为便于调试之用。
         /// </summary>
@@ -30,14 +37,17 @@ namespace SharpFileDB.Blocks
         /// <summary>
         /// 存储到数据库文件的一块内容。
         /// </summary>
-        internal Block()
+        public Block()
         {
 #if DEBUG
             this.blockID = IDCounter++;
 #endif
+            BlockCache.AddFloatingBlock(this);
         }
 
-        const string strBlockID = "~";
+#if DEBUG
+        const string strBlockID = "";
+#endif
 
         #region ISerializable 成员
 
@@ -74,7 +84,7 @@ namespace SharpFileDB.Blocks
         public override string ToString()
         {
 #if DEBUG
-            return string.Format("{0}: ID:{1}, Pos: {2}",this.GetType().Name, this.blockID, this.ThisPos);
+            return string.Format("{0}: ID:{1}, Pos: {2}", this.GetType().Name, this.blockID, this.ThisPos);
 #else
             return string.Format("{0}: Pos: {1}", this.GetType().Name, this.ThisPos);
 #endif

@@ -14,23 +14,62 @@ namespace SharpFileDB.Blocks
     public class PageHeaderBlock : Block//, IUpdatable
     {
 
+        private Int16 availableBytes;
+        private Int16 occupiedBytes;
+        private long nextPagePos;
+
         /// <summary>
         /// 此页剩余的可用字节数。剩余的可用字节都在页的末尾。
         /// <para>剩余可用字节数+被使用的字节数+页中间那些七零八落的空白字节数（由删除操作造成）=页长度（4KB）</para>
         /// </summary>
-        public Int16 AvailableBytes { get; set; }
+        public Int16 AvailableBytes
+        {
+            get { return availableBytes; }
+            set
+            {
+                if (availableBytes != value)
+                {
+                    availableBytes = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
 
         /// <summary>
         /// 此页内已被使用的字节数。
         /// <para>剩余可用字节数+被使用的字节数+页中间那些七零八落的空白字节数（由删除操作造成）=页长度（4KB）</para>
         /// </summary>
-        public Int16 OccupiedBytes { get; set; }
+        public Int16 OccupiedBytes
+        {
+            get { return occupiedBytes; }
+            set
+            {
+                if (occupiedBytes != value)
+                {
+                    occupiedBytes = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
 
         /// <summary>
         /// 此页的下一页的位置。
         /// <para>只有当此页为空白页时，此值才有效。</para>
         /// </summary>
-        public long NextPagePos { get; set; }
+        public long NextPagePos
+        {
+            get { return nextPagePos; }
+            set
+            {
+                if (nextPagePos != value)
+                {
+                    nextPagePos = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
+
+        public bool IsDirty { get; set; }
 
         /// <summary>
         /// 安排所有文件指针。如果全部安排完毕，返回true，否则返回false。
@@ -47,8 +86,8 @@ namespace SharpFileDB.Blocks
         public PageHeaderBlock() { }
 
         const string strAvailableBytes = "A";
-        const string strOccupiedBytes = "O";
-        const string strNextPagePos = "N";
+        const string strOccupiedBytes = "B";
+        const string strNextPagePos = "C";
 
         /// <summary>
         /// 序列化时系统会调用此方法。
@@ -75,6 +114,8 @@ namespace SharpFileDB.Blocks
             this.AvailableBytes = info.GetInt16(strAvailableBytes);
             this.OccupiedBytes = info.GetInt16(strOccupiedBytes);
             this.NextPagePos = info.GetInt64(strNextPagePos);
+
+            this.IsDirty = false;
         }
 
         /// <summary>

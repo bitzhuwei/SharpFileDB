@@ -68,6 +68,7 @@ namespace SharpFileDB
                                         result.Add(left);
                                         break;
                                     }
+
                                 }
                             }
                         }

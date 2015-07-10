@@ -27,9 +27,16 @@ namespace SharpFileDB.Utilities
             byte[] bytes = new byte[dataBlock.ObjectLength];
 
             int index = 0;// index == dataBlock.ObjectLength - 1时，dataBlock.NextDataBlockPos也就正好应该等于0了。
-            for (int i = 0; i < dataBlock.Data.Length; i++)
-            { bytes[index++] = dataBlock.Data[i]; }
+            // 复制第一个dataBlock的内容到bytes。
+            {
+                byte[] data = dataBlock.Data;
+                for (int i = 0; i < dataBlock.Data.Length; i++)
+                {
+                    bytes[index++] = dataBlock.Data[i];
+                }
+            }
 
+            // 复制后续dataBlock的内容到bytes。
             for (dataBlock.TryLoadNextObj(fileStream); dataBlock.NextObj != null; dataBlock = dataBlock.NextObj, dataBlock.TryLoadNextObj(fileStream))
             {
                 byte[] data = dataBlock.NextObj.Data;
@@ -38,32 +45,6 @@ namespace SharpFileDB.Utilities
                     bytes[index++] = data[i];
                 }
             }
-            //dataBlock.TryLoadNextObj(fileStream);
-            //while (dataBlock.NextObj!=null)
-            //{
-            //    for (int i = 0; i < dataBlock.NextObj.Data.Length; i++)
-            //    {
-            //        bytes[index++] = dataBlock.NextObj.Data[i];
-            //    }
-
-            //    dataBlock = dataBlock.NextObj;
-            //    dataBlock.TryLoadNextObj(fileStream);
-            //}
-            //while (dataBlock.NextPos != 0)
-            //{
-            //    dataBlock.TryLoadNextObj(fileStream);
-            //    DataBlock next = dataBlock.NextObj;
-            //    for (int i = 0; i < next.Data.Length; i++)
-            //    { bytes[index++] = dataBlock.Data[i]; }
-
-            //    dataBlock = next;
-            //}
-            //while (dataBlock.NextPos != 0)
-            //{
-            //    dataBlock = fileStream.ReadBlock<DataBlock>(dataBlock.NextPos);
-            //    for (int i = 0; i < dataBlock.Data.Length; i++)
-            //    { bytes[index++] = dataBlock.Data[i]; }
-            //}
 
             T obj = bytes.ToObject<T>();
 

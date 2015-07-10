@@ -24,7 +24,8 @@ namespace SharpFileDB
         /// <param name="onlyRead">只读方式打开。</param>
         /// <param name="maxLevelOfSkipList">SkipList的最大层数。只有在新建数据库时此参数才会发挥作用。</param>
         /// <param name="probability">SkipList的随机阈值。只有在新建数据库时此参数才会发挥作用。</param>
-        public FileDBContext(string fullname, bool onlyRead = false, int maxLevelOfSkipList = 32, double probability = 0.5)
+        /// <param name="maxSunkCountInMemory"><see cref="Block.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。如果达到最大值，就会清空<see cref="Block.sunkBlocksInMomery"/>。只有在新建数据库时此参数才会发挥作用。</param>
+        public FileDBContext(string fullname, bool onlyRead = false, int maxLevelOfSkipList = 32, double probability = 0.5, long maxSunkCountInMemory = 10001)
         {
             this.transaction = new Transaction(this);
 
@@ -34,7 +35,7 @@ namespace SharpFileDB
             {
                 if (!File.Exists(fullname))
                 {
-                    CreateDB(fullname, maxLevelOfSkipList, probability);
+                    CreateDB(fullname, maxLevelOfSkipList, probability, maxSunkCountInMemory);
                 }
 
                 InitializeDB(fullname, onlyRead);
@@ -72,6 +73,7 @@ namespace SharpFileDB
             DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(fileStream.Position);
 #if DEBUG
             Block.IDCounter = headerBlock.BlockCount;
+            BlockCache.MaxSunkCountInMemory = headerBlock.MaxSunkCountInMemory;
 #endif
             this.headerBlock = headerBlock;
             // 准备数据库表块，保存到字典。
@@ -154,23 +156,33 @@ namespace SharpFileDB
         /// 创建初始状态的数据库文件。
         /// </summary>
         /// <param name="fullname">数据库文件据对路径。</param>
-        private void CreateDB(string fullname, int maxLevel, double probability)
+        /// <param name="maxLevelOfSkipList">SkipList的最大层数。只有在新建数据库时此参数才会发挥作用。</param>
+        /// <param name="probability">SkipList的随机阈值。只有在新建数据库时此参数才会发挥作用。</param>
+        /// <param name="maxSunkCountInMemory"><see cref="Block.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。如果达到最大值，就会清空<see cref="Block.sunkBlocksInMomery"/>。只有在新建数据库时此参数才会发挥作用。</param>
+        private void CreateDB(string fullname, int maxLevelOfSkipList, double probability, long maxSunkCountInMemory)
         {
             FileInfo fileInfo = new FileInfo(fullname);
             Directory.CreateDirectory(fileInfo.DirectoryName);
             using (FileStream fs = new FileStream(fullname, FileMode.CreateNew, FileAccess.Write, FileShare.None, Consts.pageSize))
             {
-                PageHeaderBlock pageHeaderBlock = new PageHeaderBlock() { OccupiedBytes = Consts.pageSize, AvailableBytes = 0, };
-                fs.WriteBlock(pageHeaderBlock);
+                PageHeaderBlock page = new PageHeaderBlock() { OccupiedBytes = Consts.pageSize, AvailableBytes = 0, };
+                fs.WriteBlock(page);
 
-                DBHeaderBlock headerBlock = new DBHeaderBlock() { MaxLevelOfSkipList = maxLevel, ProbabilityOfSkipList = probability, ThisPos = fs.Position };
-                fs.WriteBlock(headerBlock);
+                DBHeaderBlock dbHeader = new DBHeaderBlock() { MaxLevelOfSkipList = maxLevelOfSkipList, ProbabilityOfSkipList = probability, MaxSunkCountInMemory = maxSunkCountInMemory, ThisPos = fs.Position };
+                fs.WriteBlock(dbHeader);
 
-                TableBlock tableBlockHead = new TableBlock() { ThisPos = fs.Position, };
-                fs.WriteBlock(tableBlockHead);
+                TableBlock tableHead = new TableBlock() { ThisPos = fs.Position, };
+                fs.WriteBlock(tableHead);
 
                 byte[] leftSpace = new byte[Consts.pageSize - fs.Length];
                 fs.Write(leftSpace, 0, leftSpace.Length);
+
+                BlockCache.TryRemoveFloatingBlock(page);
+                BlockCache.TryRemoveFloatingBlock(dbHeader);
+                BlockCache.TryRemoveFloatingBlock(tableHead);
+                BlockCache.TryRemoveSunkBlock(page);
+                BlockCache.TryRemoveSunkBlock(dbHeader);
+                BlockCache.TryRemoveSunkBlock(tableHead);
             }
         }
 

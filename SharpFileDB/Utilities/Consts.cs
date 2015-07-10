@@ -54,30 +54,33 @@ namespace SharpFileDB.Utilities
         static Consts()
         {
             {
-                PageHeaderBlock block = new PageHeaderBlock();
+                PageHeaderBlock page = new PageHeaderBlock();
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    formatter.Serialize(ms, block);
+                    formatter.Serialize(ms, page);
                     if (ms.Length > Consts.pageSize / 10)
                     { throw new Exception("Page header block takes too much space!"); }
                     Consts.maxAvailableSpaceInPage = (Int16)(Consts.pageSize - ms.Length);
                     Consts.minOccupiedBytes = (Int16)(Consts.pageSize - Consts.maxAvailableSpaceInPage);
                 }
+                BlockCache.TryRemoveFloatingBlock(page);
             }
             {
-                PageHeaderBlock pageHeader = new PageHeaderBlock();
-                DataBlock block = new DataBlock();
-                block.Data = new byte[0];
+                PageHeaderBlock page = new PageHeaderBlock();
+                DataBlock dataBlock = new DataBlock();
+                dataBlock.Data = new byte[0];
                 Int16 minValue;
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    formatter.Serialize(ms, pageHeader);
-                    formatter.Serialize(ms, block);
+                    formatter.Serialize(ms, page);
+                    formatter.Serialize(ms, dataBlock);
                     if (ms.Length > Consts.pageSize / 10)
                     { throw new Exception("data block's metadata takes too much space!"); }
                     minValue = (Int16)ms.Length;
                 }
                 Consts.maxDataBytes = (Int16)(Consts.pageSize - minValue);
+                BlockCache.TryRemoveFloatingBlock(page);
+                BlockCache.TryRemoveFloatingBlock(dataBlock);
             }
             {
                 PropertyInfo[] properties = typeof(Table).GetProperties();
@@ -92,17 +95,17 @@ namespace SharpFileDB.Utilities
                 }
             }
             {
-                PageHeaderBlock pageHeader = new PageHeaderBlock();
+                PageHeaderBlock page = new PageHeaderBlock();
                 DBHeaderBlock dbHeader = new DBHeaderBlock();
-                TableBlock tableBlock = new TableBlock();
+                TableBlock tableHead = new TableBlock();
                 Int16 usedSpaceInFirstPage;
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    formatter.Serialize(ms, pageHeader);
+                    formatter.Serialize(ms, page);
                     dbHeader.ThisPos = ms.Length;
                     formatter.Serialize(ms, dbHeader);
-                    tableBlock.ThisPos = ms.Length;
-                    formatter.Serialize(ms, tableBlock);
+                    tableHead.ThisPos = ms.Length;
+                    formatter.Serialize(ms, tableHead);
                     usedSpaceInFirstPage = (Int16)ms.Length;
                 }
 
@@ -110,6 +113,9 @@ namespace SharpFileDB.Utilities
                 {
                     throw new Exception("First page is full!");
                 }
+                BlockCache.TryRemoveFloatingBlock(page);
+                BlockCache.TryRemoveFloatingBlock(dbHeader);
+                BlockCache.TryRemoveFloatingBlock(tableHead);
             }
         }
 

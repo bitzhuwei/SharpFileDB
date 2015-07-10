@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAEAQAAAAAgAAAAAACAAAAAAAQAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAEAAEAQAAAAAgAAAAAECAAAAAAAQAAAA=</HashCode>
       <FileName>Blocks\Block.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -56,20 +56,12 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SharpFileDB.Blocks.DBHeaderBlock">
-    <Position X="5.5" Y="4.25" Width="5" />
+    <Position X="5.5" Y="3.75" Width="5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
-    <InheritanceLine Type="SharpFileDB.Blocks.Block" ManuallyRouted="true">
-      <Path>
-        <Point X="3" Y="3.068" />
-        <Point X="3" Y="3.944" />
-        <Point X="8" Y="3.944" />
-        <Point X="8" Y="4.25" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAEQAQIBJSAAAQAEAYAAIAAgAyAAAAEAAAIBAABIAAA=</HashCode>
+      <HashCode>AAEQAQIBJSAAAQBGAYAAIAAgAyAAAAEAgEIBACBIAAA=</HashCode>
       <FileName>Blocks\DBHeaderBlock.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -81,25 +73,17 @@
     </TypeIdentifier>
   </Class>
   <Class Name="SharpFileDB.Blocks.PageHeaderBlock">
-    <Position X="10.75" Y="4.25" Width="5" />
+    <Position X="10.75" Y="3.75" Width="5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
-    <InheritanceLine Type="SharpFileDB.Blocks.Block" ManuallyRouted="true">
-      <Path>
-        <Point X="3" Y="3.068" />
-        <Point X="3" Y="3.933" />
-        <Point X="13.25" Y="3.933" />
-        <Point X="13.25" Y="4.25" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAIACEAAAAUAUAAAAAgAAAgAAAAAAAAAAAAAEA=</HashCode>
+      <HashCode>AAgAAAAIACAAQAAUAUAAAAAgAAAgAAAAIAABAAAAAEA=</HashCode>
       <FileName>Blocks\PageHeaderBlock.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SharpFileDB.Blocks.AllocBlock">
-    <Position X="0.75" Y="4.25" Width="4.5" />
+    <Position X="0.75" Y="3.75" Width="4.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Blocks\AllocBlock.cs</FileName>

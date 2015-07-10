@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Blocks\AllocBlock.cs" />
     <Compile Include="Blocks\Block.cs" />
+    <Compile Include="Blocks\BlockCache.cs" />
     <Compile Include="Blocks\DataBlock.cs" />
     <Compile Include="Blocks\DBHeaderBlock.cs">
       <SubType>Code</SubType>

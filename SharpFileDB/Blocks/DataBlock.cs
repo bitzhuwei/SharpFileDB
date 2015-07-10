@@ -46,10 +46,10 @@ namespace SharpFileDB.Blocks
         /// </summary>
         public DataBlock() { }
 
-        const string strObjectLength = "L";
-        const string strData = "D";
+        const string strObjectLength = "A";
+        const string strData = "B";
 
-        const string strNextPos = "N";
+        const string strNextPos = "C";
 
         /// <summary>
         /// 序列化时系统会调用此方法。

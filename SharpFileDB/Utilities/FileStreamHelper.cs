@@ -31,6 +31,9 @@ namespace SharpFileDB.Utilities
             }
             fileStream.Seek(block.ThisPos, SeekOrigin.Begin);
             Consts.formatter.Serialize(fileStream, block);
+
+            BlockCache.TryRemoveFloatingBlock(block);// 如果是new Block()，需要在此时从floating列表移除
+            BlockCache.AddSunkBlock(block);// 如果是new Block()，需要在此时加入sunk字典
         }
 
         /// <summary>
@@ -43,11 +46,26 @@ namespace SharpFileDB.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ReadBlock<T>(this FileStream fileStream, long position) where T : Block
         {
-            fileStream.Seek(position, SeekOrigin.Begin);
-            object obj = Consts.formatter.Deserialize(fileStream);
-            T result = obj as T;
-            result.ThisPos = position;
-            return result;
+            T block = null;
+
+            Block b = BlockCache.TryGetSunkBlock(position);// 如果已经从数据库读出来过，就不应再读了。
+            if(b != null)
+            {
+                block = b as T;
+                if (block == null)
+                { throw new Exception("Two types of Block exists in the same position!"); }
+            }
+            else
+            {
+                fileStream.Seek(position, SeekOrigin.Begin);
+                object obj = Consts.formatter.Deserialize(fileStream);
+                block = obj as T;
+                block.ThisPos = position;
+
+                BlockCache.AddSunkBlock(block);
+            }
+
+            return block ;
         }
 
         /// <summary>
@@ -74,23 +92,5 @@ namespace SharpFileDB.Utilities
             return list.ToArray();
         }
 
-
-        ///// <summary>
-        ///// 从文件流中给定的位置读取一个对象。
-        ///// </summary>
-        ///// <typeparam name="T">对象的类型。</typeparam>
-        ///// <param name="fileStream"></param>
-        ///// <param name="position">对象所在位置。</param>
-        ///// <returns></returns>
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static T ReadObject<T>(this FileStream fileStream, long position)
-        //{
-        //    if (position < 0)
-        //    { return default(T); }
-        //    fileStream.Seek(position, SeekOrigin.Begin);
-        //    object obj = Consts.formatter.Deserialize(fileStream);
-        //    T result = (T)obj;
-        //    return result;
-        //}
     }
 }
