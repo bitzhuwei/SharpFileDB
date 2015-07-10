@@ -34,6 +34,10 @@
             this.btnDeleteTable = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtNamespace = new System.Windows.Forms.TextBox();
+            this.lstProperty = new System.Windows.Forms.ListBox();
+            this.btnAddProperty = new System.Windows.Forms.Button();
+            this.btnDeleteProperty = new System.Windows.Forms.Button();
+            this.btnGenerateCode = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAddTable
@@ -47,14 +51,13 @@
             // 
             // lstTable
             // 
-            this.lstTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstTable.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.lstTable.FormattingEnabled = true;
             this.lstTable.ItemHeight = 12;
             this.lstTable.Location = new System.Drawing.Point(12, 65);
             this.lstTable.Name = "lstTable";
-            this.lstTable.Size = new System.Drawing.Size(774, 304);
+            this.lstTable.Size = new System.Drawing.Size(143, 304);
             this.lstTable.TabIndex = 2;
             // 
             // btnDeleteTable
@@ -81,6 +84,47 @@
             this.txtNamespace.Name = "txtNamespace";
             this.txtNamespace.Size = new System.Drawing.Size(170, 21);
             this.txtNamespace.TabIndex = 5;
+            this.txtNamespace.Text = "SharpFileDB.ExampleDB";
+            // 
+            // lstProperty
+            // 
+            this.lstProperty.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstProperty.FormattingEnabled = true;
+            this.lstProperty.ItemHeight = 12;
+            this.lstProperty.Location = new System.Drawing.Point(161, 65);
+            this.lstProperty.Name = "lstProperty";
+            this.lstProperty.Size = new System.Drawing.Size(625, 304);
+            this.lstProperty.TabIndex = 2;
+            // 
+            // btnAddProperty
+            // 
+            this.btnAddProperty.Location = new System.Drawing.Point(310, 39);
+            this.btnAddProperty.Name = "btnAddProperty";
+            this.btnAddProperty.Size = new System.Drawing.Size(173, 23);
+            this.btnAddProperty.TabIndex = 3;
+            this.btnAddProperty.Text = "添加属性(Add Property)";
+            this.btnAddProperty.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteProperty
+            // 
+            this.btnDeleteProperty.Location = new System.Drawing.Point(489, 39);
+            this.btnDeleteProperty.Name = "btnDeleteProperty";
+            this.btnDeleteProperty.Size = new System.Drawing.Size(173, 23);
+            this.btnDeleteProperty.TabIndex = 3;
+            this.btnDeleteProperty.Text = "删除属性(Delete Property)";
+            this.btnDeleteProperty.UseVisualStyleBackColor = true;
+            // 
+            // btnGenerateCode
+            // 
+            this.btnGenerateCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGenerateCode.Location = new System.Drawing.Point(613, 12);
+            this.btnGenerateCode.Name = "btnGenerateCode";
+            this.btnGenerateCode.Size = new System.Drawing.Size(173, 21);
+            this.btnGenerateCode.TabIndex = 3;
+            this.btnGenerateCode.Text = "生成代码(Generate Code)";
+            this.btnGenerateCode.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
@@ -89,8 +133,12 @@
             this.ClientSize = new System.Drawing.Size(798, 385);
             this.Controls.Add(this.txtNamespace);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnGenerateCode);
+            this.Controls.Add(this.btnDeleteProperty);
             this.Controls.Add(this.btnDeleteTable);
+            this.Controls.Add(this.btnAddProperty);
             this.Controls.Add(this.btnAddTable);
+            this.Controls.Add(this.lstProperty);
             this.Controls.Add(this.lstTable);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
@@ -107,5 +155,9 @@
         private System.Windows.Forms.Button btnDeleteTable;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtNamespace;
+        private System.Windows.Forms.ListBox lstProperty;
+        private System.Windows.Forms.Button btnAddProperty;
+        private System.Windows.Forms.Button btnDeleteProperty;
+        private System.Windows.Forms.Button btnGenerateCode;
     }
 }
