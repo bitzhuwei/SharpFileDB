@@ -73,8 +73,8 @@ namespace SharpFileDB
             DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(fileStream.Position);
 #if DEBUG
             Block.IDCounter = headerBlock.BlockCount;
-            BlockCache.MaxSunkCountInMemory = headerBlock.MaxSunkCountInMemory;
 #endif
+            BlockCache.MaxSunkCountInMemory = headerBlock.MaxSunkCountInMemory;
             this.headerBlock = headerBlock;
             // 准备数据库表块，保存到字典。
             TableBlock currentTableBlock = fileStream.ReadBlock<TableBlock>(fileStream.Position); //headerBlock.TableBlockHead;

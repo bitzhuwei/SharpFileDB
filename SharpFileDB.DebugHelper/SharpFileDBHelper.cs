@@ -37,8 +37,8 @@ namespace SharpFileDB.DebugHelper
             StringBuilder builder = new StringBuilder();
             builder.AppendLine(db.Fullname);
             FileStream fs = db.GetFileStream();
-            PageHeaderBlock firstPage = fs.ReadBlock<PageHeaderBlock>(0);
-            DBHeaderBlock dbHeader = fs.ReadBlock<DBHeaderBlock>(fs.Position);
+            //PageHeaderBlock firstPage = fs.ReadBlock<PageHeaderBlock>(0);
+            DBHeaderBlock dbHeader = db.GetDBHeaderBlock();// fs.ReadBlock<DBHeaderBlock>(fs.Position);
 
             PrintSkipLists(db, builder, fs);
 
@@ -113,7 +113,7 @@ namespace SharpFileDB.DebugHelper
         private static void PrintSkipLists(FileDBContext db, StringBuilder builder, FileStream fs)
         {
 
-            TableBlock tableHead = fs.ReadBlock<TableBlock>(fs.Position);
+            TableBlock tableHead = db.GetTableBlockHeadNode();// fs.ReadBlock<TableBlock>(fs.Position);
             TableBlock currentTableBlock = tableHead;
             while (currentTableBlock.NextPos != 0)// 依次Print各个表
             {
@@ -165,10 +165,10 @@ namespace SharpFileDB.DebugHelper
             SharpFileDBInfo info = new SharpFileDBInfo();
 
             FileStream fs = db.GetFileStream();
-            fs.ReadBlock<PageHeaderBlock>(0);
-            fs.ReadBlock<DBHeaderBlock>(fs.Position);
-            TableBlock tableHead = fs.ReadBlock<TableBlock>(fs.Position);
-            TableBlock currentTableBlock = tableHead;
+            //fs.ReadBlock<PageHeaderBlock>(0);
+            //fs.ReadBlock<DBHeaderBlock>(fs.Position);
+            //TableBlock tableHead = fs.ReadBlock<TableBlock>(fs.Position);
+            TableBlock currentTableBlock = db.GetTableBlockHeadNode();// tableHead;
             while (currentTableBlock.NextPos != 0)
             {
                 TableBlock tableBlock = fs.ReadBlock<TableBlock>(currentTableBlock.NextPos);
