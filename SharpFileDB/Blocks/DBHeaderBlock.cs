@@ -157,7 +157,7 @@ namespace SharpFileDB.Blocks
         }
 
         /// <summary>
-        /// <see cref="Block.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。
+        /// <see cref="BlockCache.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。
         /// </summary>
         public long MaxSunkCountInMemory
         {

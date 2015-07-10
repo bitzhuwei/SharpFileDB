@@ -69,6 +69,9 @@ namespace SharpFileDB.Blocks
             }
         }
 
+        /// <summary>
+        /// 标识此块是否需要重新写入数据库文件。
+        /// </summary>
         public bool IsDirty { get; set; }
 
         /// <summary>

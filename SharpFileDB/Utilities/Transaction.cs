@@ -171,7 +171,10 @@ namespace SharpFileDB.Utilities
             }
             foreach (PageHeaderBlock block in this.affectedPages.Values)
             {
-                fs.WriteBlock(block);
+                if (block.IsDirty)
+                {
+                    fs.WriteBlock(block);
+                }
             }
             DBHeaderBlock dbHeaderBlock = this.fileDBContext.headerBlock;
             if (dbHeaderBlock.IsDirty)

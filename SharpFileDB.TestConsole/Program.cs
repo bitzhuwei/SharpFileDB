@@ -55,7 +55,7 @@ namespace SharpFileDB.TestConsole
                 );
 
 
-            IList<Cat> cats = null;
+            //IList<Cat> cats = null;
             //cats = db.Find<Cat>(pre);
 
 

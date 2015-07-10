@@ -24,7 +24,7 @@ namespace SharpFileDB
         /// <param name="onlyRead">只读方式打开。</param>
         /// <param name="maxLevelOfSkipList">SkipList的最大层数。只有在新建数据库时此参数才会发挥作用。</param>
         /// <param name="probability">SkipList的随机阈值。只有在新建数据库时此参数才会发挥作用。</param>
-        /// <param name="maxSunkCountInMemory"><see cref="Block.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。如果达到最大值，就会清空<see cref="Block.sunkBlocksInMomery"/>。只有在新建数据库时此参数才会发挥作用。</param>
+        /// <param name="maxSunkCountInMemory"><see cref="BlockCache.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。如果达到最大值，就会清空<see cref="BlockCache.sunkBlocksInMomery"/>。只有在新建数据库时此参数才会发挥作用。</param>
         public FileDBContext(string fullname, bool onlyRead = false, int maxLevelOfSkipList = 32, double probability = 0.5, long maxSunkCountInMemory = 10001)
         {
             this.transaction = new Transaction(this);
@@ -69,15 +69,15 @@ namespace SharpFileDB
                 this.fileStream = fileStream;
             }
             // 准备数据库头部块。
-            PageHeaderBlock pageHeaderBlock = fileStream.ReadBlock<PageHeaderBlock>(0);
-            DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(fileStream.Position);
+            //PageHeaderBlock pageHeaderBlock = fileStream.ReadBlock<PageHeaderBlock>(0);
+            DBHeaderBlock headerBlock = fileStream.ReadBlock<DBHeaderBlock>(Consts.pageHeaderLength);
 #if DEBUG
             Block.IDCounter = headerBlock.BlockCount;
 #endif
             BlockCache.MaxSunkCountInMemory = headerBlock.MaxSunkCountInMemory;
             this.headerBlock = headerBlock;
             // 准备数据库表块，保存到字典。
-            TableBlock currentTableBlock = fileStream.ReadBlock<TableBlock>(fileStream.Position); //headerBlock.TableBlockHead;
+            TableBlock currentTableBlock = fileStream.ReadBlock<TableBlock>(Consts.pageHeaderLength + Consts.dbHeaderLength); 
             this.tableBlockHead = currentTableBlock;
             while (currentTableBlock.NextPos != 0)
             {
@@ -158,7 +158,7 @@ namespace SharpFileDB
         /// <param name="fullname">数据库文件据对路径。</param>
         /// <param name="maxLevelOfSkipList">SkipList的最大层数。只有在新建数据库时此参数才会发挥作用。</param>
         /// <param name="probability">SkipList的随机阈值。只有在新建数据库时此参数才会发挥作用。</param>
-        /// <param name="maxSunkCountInMemory"><see cref="Block.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。如果达到最大值，就会清空<see cref="Block.sunkBlocksInMomery"/>。只有在新建数据库时此参数才会发挥作用。</param>
+        /// <param name="maxSunkCountInMemory"><see cref="BlockCache.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。如果达到最大值，就会清空<see cref="BlockCache.sunkBlocksInMomery"/>。只有在新建数据库时此参数才会发挥作用。</param>
         private void CreateDB(string fullname, int maxLevelOfSkipList, double probability, long maxSunkCountInMemory)
         {
             FileInfo fileInfo = new FileInfo(fullname);

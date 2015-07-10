@@ -92,6 +92,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\Int64Helper.cs" />
+    <Compile Include="Utilities\SkipListNodeBlockHelper.cs" />
     <Compile Include="Utilities\TableHelper.cs" />
     <Compile Include="Utilities\Transaction.cs" />
     <Compile Include="Utilities\Consts.cs" />

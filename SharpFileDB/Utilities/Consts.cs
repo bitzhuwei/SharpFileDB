@@ -49,6 +49,16 @@ namespace SharpFileDB.Utilities
         public static string TableIdString;
 
         /// <summary>
+        /// <see cref="DBHeaderBlock"/>序列化后的长度。
+        /// </summary>
+        public static Int16 dbHeaderLength;
+
+        /// <summary>
+        /// <see cref="PageHeaderBlock"/>序列化后的长度。
+        /// </summary>
+        public static Int16 pageHeaderLength;
+
+        /// <summary>
         /// 系统启动时初始化各项常量。
         /// </summary>
         static Consts()
@@ -60,6 +70,7 @@ namespace SharpFileDB.Utilities
                     formatter.Serialize(ms, page);
                     if (ms.Length > Consts.pageSize / 10)
                     { throw new Exception("Page header block takes too much space!"); }
+                    Consts.pageHeaderLength = (Int16)ms.Length;
                     Consts.maxAvailableSpaceInPage = (Int16)(Consts.pageSize - ms.Length);
                     Consts.minOccupiedBytes = (Int16)(Consts.pageSize - Consts.maxAvailableSpaceInPage);
                 }
@@ -105,6 +116,7 @@ namespace SharpFileDB.Utilities
                     dbHeader.ThisPos = ms.Length;
                     formatter.Serialize(ms, dbHeader);
                     tableHead.ThisPos = ms.Length;
+                    Consts.dbHeaderLength = (Int16)(ms.Length - Consts.pageHeaderLength);
                     formatter.Serialize(ms, tableHead);
                     usedSpaceInFirstPage = (Int16)ms.Length;
                 }
