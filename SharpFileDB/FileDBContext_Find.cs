@@ -17,25 +17,41 @@ namespace SharpFileDB
     public partial class FileDBContext : IDisposable
     {
 
-
         /// <summary>
         /// 查找数据库内的某些记录。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="predicate">符合此条件的记录会被取出。</param>
         /// <returns></returns>
-        public IList<T> Find<T>(Expression<Func<T, bool>> predicate) where T : Table, new()
+        public IEnumerable<T> Find<T>(Expression<Func<T, bool>> predicate) where T : Table, new()
         {
             if (predicate == null) { throw new ArgumentNullException("predicate"); }
 
-            List<T> result = new List<T>();
+            // 这是没有利用索引的版本。
+            Func<T, bool> func = predicate.Compile();
+            foreach (T item in this.FindAll<T>())
+            {
+                if(func(item))
+                {
+                    yield return item;
+                }
+            }
 
-            var body = predicate.Body as LambdaExpression;
-            this.Find(result, body);
+            // TODO: 这是利用索引的版本，尚未实现。
+            //List<T> result = new List<T>();
 
-            return result;
+            //var body = predicate.Body as LambdaExpression;
+            //this.Find(result, body);
+
+            //return result;
         }
 
+        /// <summary>
+        /// 分析表达式，利用索引来查找。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="result"></param>
+        /// <param name="expr"></param>
         private void Find<T>(List<T> result, Expression expr)where T : Table, new()
         {
             switch (expr.NodeType)
@@ -248,48 +264,77 @@ namespace SharpFileDB
         }
 
         /// <summary>
-        /// 查找数据库内所有给定类型的记录。
+        /// 查找数据库内所有指定类型的记录。
         /// </summary>
         /// <typeparam name="T">要查找的类型。</typeparam>
         /// <returns></returns>
-        public IList<T> FindAll<T>() where T : Table, new()
+        public IEnumerable<T> FindAll<T>() where T:Table, new()
         {
-            List<T> result = new List<T>();
-
             Type type = typeof(T);
             if (this.tableBlockDict.ContainsKey(type))
             {
                 TableBlock tableBlock = this.tableBlockDict[type];
                 IndexBlock firstIndex = tableBlock.IndexBlockHead.NextObj;// 第一个索引应该是Table.Id的索引。
-                //long currentHeadNodePos = firstIndex.SkipListHeadNodePos;
-                //if (currentHeadNodePos <= 0)
-                //{ throw new Exception("DB Error: There is no skip list node head stored!"); }
                 FileStream fs = this.fileStream;
-                //SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
-                //currentHeadNode.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
-                //while (currentHeadNode.DownObj != null)
-                //{
-                //    currentHeadNode.DownObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
-                //    currentHeadNode = currentHeadNode.DownObj;
-                //}
 
                 SkipListNodeBlock current = firstIndex.SkipListHeadNodes[0]; //currentHeadNode;
 
                 while (current.RightPos != firstIndex.SkipListTailNodePos)
                 {
                     current.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
-                    //if (current.RightObj.RightPos == 0)
-                    //{ break; }
                     current.RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj | SkipListNodeBlockLoadOptions.Value);
                     T item = current.RightObj.Value.GetObject<T>(this);
-                    result.Add(item);
+
+                    yield return item;
 
                     current = current.RightObj;
                 }
             }
-
-            return result;
         }
+
+        ///// <summary>
+        ///// 查找数据库内所有指定类型的记录。
+        ///// </summary>
+        ///// <typeparam name="T">要查找的类型。</typeparam>
+        ///// <returns></returns>
+        //public IList<T> FindAll<T>() where T : Table, new()
+        //{
+        //    List<T> result = new List<T>();
+
+        //    Type type = typeof(T);
+        //    if (this.tableBlockDict.ContainsKey(type))
+        //    {
+        //        TableBlock tableBlock = this.tableBlockDict[type];
+        //        IndexBlock firstIndex = tableBlock.IndexBlockHead.NextObj;// 第一个索引应该是Table.Id的索引。
+        //        //long currentHeadNodePos = firstIndex.SkipListHeadNodePos;
+        //        //if (currentHeadNodePos <= 0)
+        //        //{ throw new Exception("DB Error: There is no skip list node head stored!"); }
+        //        FileStream fs = this.fileStream;
+        //        //SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
+        //        //currentHeadNode.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
+        //        //while (currentHeadNode.DownObj != null)
+        //        //{
+        //        //    currentHeadNode.DownObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
+        //        //    currentHeadNode = currentHeadNode.DownObj;
+        //        //}
+
+        //        SkipListNodeBlock current = firstIndex.SkipListHeadNodes[0]; //currentHeadNode;
+
+        //        while (current.RightPos != firstIndex.SkipListTailNodePos)
+        //        {
+        //            current.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
+        //            //if (current.RightObj.RightPos == 0)
+        //            //{ break; }
+        //            current.RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj | SkipListNodeBlockLoadOptions.Value);
+        //            T item = current.RightObj.Value.GetObject<T>(this);
+        //            result.Add(item);
+
+        //            current = current.RightObj;
+        //        }
+        //    }
+
+        //    return result;
+        //}
 
     }
 }
