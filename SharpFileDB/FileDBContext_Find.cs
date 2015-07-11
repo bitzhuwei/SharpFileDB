@@ -69,6 +69,7 @@ namespace SharpFileDB
                                         break;
                                     }
 
+
                                 }
                             }
                         }
@@ -260,25 +261,25 @@ namespace SharpFileDB
             {
                 TableBlock tableBlock = this.tableBlockDict[type];
                 IndexBlock firstIndex = tableBlock.IndexBlockHead.NextObj;// 第一个索引应该是Table.Id的索引。
-                long currentHeadNodePos = firstIndex.SkipListHeadNodePos;
-                if (currentHeadNodePos <= 0)
-                { throw new Exception("DB Error: There is no skip list node head stored!"); }
+                //long currentHeadNodePos = firstIndex.SkipListHeadNodePos;
+                //if (currentHeadNodePos <= 0)
+                //{ throw new Exception("DB Error: There is no skip list node head stored!"); }
                 FileStream fs = this.fileStream;
-                SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
-                currentHeadNode.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
-                while (currentHeadNode.DownObj != null)
-                {
-                    currentHeadNode.DownObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
-                    currentHeadNode = currentHeadNode.DownObj;
-                }
+                //SkipListNodeBlock currentHeadNode = fs.ReadBlock<SkipListNodeBlock>(currentHeadNodePos);
+                //currentHeadNode.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
+                //while (currentHeadNode.DownObj != null)
+                //{
+                //    currentHeadNode.DownObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.DownObj);
+                //    currentHeadNode = currentHeadNode.DownObj;
+                //}
 
-                SkipListNodeBlock current = currentHeadNode;
+                SkipListNodeBlock current = firstIndex.SkipListHeadNodes[0]; //currentHeadNode;
 
-                while (current.RightPos != 0)
+                while (current.RightPos != firstIndex.SkipListTailNodePos)
                 {
                     current.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
-                    if (current.RightObj.RightPos == 0)
-                    { break; }
+                    //if (current.RightObj.RightPos == 0)
+                    //{ break; }
                     current.RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj | SkipListNodeBlockLoadOptions.Value);
                     T item = current.RightObj.Value.GetObject<T>(this);
                     result.Add(item);
