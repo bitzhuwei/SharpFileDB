@@ -11,7 +11,6 @@ namespace SharpFileDB.DebugHelper
 
         public IndexInfo(Blocks.IndexBlock indexBlock)
         {
-            // TODO: Complete member initialization
             this.indexBlock = indexBlock;
 
             this.IndexBindMember = indexBlock.BindMember;

@@ -26,6 +26,11 @@ namespace SharpFileDB
         public string Fullname { get; set; }
 
         /// <summary>
+        /// 临时日志文件名（全名）。
+        /// </summary>
+        internal string JournalFileName { get { return string.Format("{0}journal", this.Fullname); } }
+
+        /// <summary>
         /// 用于读写数据库文件的文件流。
         /// </summary>
         internal FileStream fileStream;
@@ -148,9 +153,9 @@ namespace SharpFileDB
 
             if (disposing)
             {
-                //TODO: Managed cleanup code here, while managed refs still valid
+                // Managed cleanup code here, while managed refs still valid
             }
-            //TODO: Unmanaged cleanup code here
+            // Unmanaged cleanup code here
             this.fileStream.Close();
             this.fileStream.Dispose();
 

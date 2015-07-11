@@ -21,7 +21,7 @@ namespace SharpFileDB
         /// 删除数据库内的一条记录。
         /// </summary>
         /// <param name="record"></param>
-        public void Delete(Table record)
+        public bool Delete(Table record)
         {
             if (record.Id == null)
             { throw new Exception(string.Format("[{0}] is a new record!", record)); }
@@ -30,8 +30,13 @@ namespace SharpFileDB
             if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
             { throw new Exception(string.Format("No Table for type [{0}] is set!", type)); }
 
-            // 删除record。
+            Transaction ts = this.transaction;
+
+            ts.Begin();
+
+            try
             {
+                // 删除record。
                 IndexBlock indexBlock = this.tableIndexBlockDict[type][Consts.TableIdString];
                 SkipListNodeBlock downNode = FindSkipListNode(fileStream, indexBlock, record.Id);
 
@@ -48,22 +53,37 @@ namespace SharpFileDB
                 for (int i = 0; i < downNode.Value.Length; i++)
                 { this.transaction.Delete(downNode.Value[i]); }// 加入事务，准备写入数据库。
                 this.transaction.Delete(downNode.Key);// 加入事务，准备写入数据库。
+
+                this.transaction.Commit();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ts.Rollback();
+                throw ex;
             }
 
-            this.transaction.Commit();
         }
 
         /// <summary>
         /// 删除数据库文件里的某个表及其所有索引、数据。
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public void DeleteTable<T>() where T : Table
+        public bool DeleteTable<T>() where T : Table
         {
             Type type = typeof(T);
-            if (this.tableBlockDict.ContainsKey(type))// 删除表、索引和数据。
+            if (!this.tableBlockDict.ContainsKey(type))
+            { return false; }
+
+            // 删除表、索引和数据。
+            FileStream fs = this.fileStream;
+            Transaction ts = this.transaction;
+
+            ts.Begin();
+
+            try
             {
-                FileStream fs = this.fileStream;
-                Transaction ts = this.transaction;
                 TableBlock table = this.tableBlockDict[type];
                 ts.Delete(table);
 
@@ -95,10 +115,22 @@ namespace SharpFileDB
                 this.tableIndexBlockDict.Remove(type);
 
                 ts.Commit();
+
+                return true;
             }
+            catch (Exception ex)
+            {
+                ts.Rollback();
+                throw ex;
+            }
+        }              
 
-        }
-
+        /// <summary>
+        /// 标记要删除的数据块。
+        /// </summary>
+        /// <param name="currentIndex"></param>
+        /// <param name="fs"></param>
+        /// <param name="ts"></param>
         private void DeleteDataBlocks(IndexBlock currentIndex, FileStream fs, Transaction ts)
         {
             SkipListNodeBlock current = currentIndex.SkipListHeadNodes[0];
@@ -116,6 +148,12 @@ namespace SharpFileDB
             }
         }
 
+        /// <summary>
+        /// 标记要删除的skip list node块。
+        /// </summary>
+        /// <param name="currentIndex"></param>
+        /// <param name="fs"></param>
+        /// <param name="ts"></param>
         private void DeleteSkipListNodes(IndexBlock currentIndex, FileStream fs, Transaction ts)
         {
             foreach (SkipListNodeBlock levelHead in currentIndex.SkipListHeadNodes)

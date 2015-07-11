@@ -44,7 +44,7 @@ namespace SharpFileDB.Viewer
             this.lstIndex.Items.Clear();
             this.lstRecord.Items.Clear();
 
-            using (SharpFileDB.FileDBContext db = new FileDBContext(this.txtFullname.Text, true))
+            using (SharpFileDB.FileDBContext db = new FileDBContext(this.txtFullname.Text, null, true))
             {
                 SharpFileDBInfo dbInfo = db.GetDBInfo();
                 foreach (TableInfo table in dbInfo.tableList)
@@ -87,8 +87,9 @@ namespace SharpFileDB.Viewer
         private void btnDetail_Click(object sender, EventArgs e)
         {
             string str = string.Empty;
+            string fullname = this.txtFullname.Text;
 
-            using (SharpFileDB.FileDBContext db = new FileDBContext(this.txtFullname.Text, true))
+            using (SharpFileDB.FileDBContext db = new FileDBContext(fullname, null, true))
             {
                 str = db.Print();
             }
@@ -99,7 +100,7 @@ namespace SharpFileDB.Viewer
         private void btnSkipLists_Click(object sender, EventArgs e)
         {
             string fullname = this.txtFullname.Text;
-            using (FileDBContext db = new FileDBContext(fullname, true))
+            using (FileDBContext db = new FileDBContext(fullname, null, true))
             {
                 db.SkipListShot(Environment.CurrentDirectory);
             }
@@ -110,7 +111,7 @@ namespace SharpFileDB.Viewer
         private void btnBLocks_Click(object sender, EventArgs e)
         {
             string fullname = this.txtFullname.Text;
-            using (FileDBContext db = new FileDBContext(fullname, true))
+            using (FileDBContext db = new FileDBContext(fullname, null, true))
             {
                 db.BlocksShot(Environment.CurrentDirectory, "page");
             }

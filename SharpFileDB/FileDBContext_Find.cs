@@ -128,7 +128,6 @@ namespace SharpFileDB
                 case ExpressionType.Equal:
                     {
                         var bin = expr as BinaryExpression;
-                        //TODO:
                     }
                     break;
                 case ExpressionType.ExclusiveOr:

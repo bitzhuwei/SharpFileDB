@@ -56,6 +56,7 @@
     <Compile Include="Blocks\PageHeaderBlock.cs" />
     <Compile Include="Blocks\SkipListNodeBlock.cs" />
     <Compile Include="Blocks\TableBlock.cs" />
+    <Compile Include="DBConfig.cs" />
     <Compile Include="FileDBContext_Common.cs" />
     <Compile Include="FileDBContext_Find.cs" />
     <Compile Include="FileDBContext_Update.cs" />
@@ -92,6 +93,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\Int64Helper.cs" />
+    <Compile Include="Utilities\IOExceptionHelper.cs" />
     <Compile Include="Utilities\SkipListNodeBlockHelper.cs" />
     <Compile Include="Utilities\TableHelper.cs" />
     <Compile Include="Utilities\Transaction.cs" />

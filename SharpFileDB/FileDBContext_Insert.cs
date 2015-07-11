@@ -21,49 +21,68 @@ namespace SharpFileDB
         /// 向数据库新增一条记录。
         /// </summary>
         /// <param name="record"></param>
-        public void Insert(Table record)
+        public ObjectId Insert(Table record)
         {
             if (record.Id != null)
             { throw new Exception(string.Format("[{0}] is not a new record!", record)); }
 
-            Type type = record.GetType();
-            if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
+            Transaction ts = this.transaction;
+
+            ts.Begin();
+
+            try
             {
-                IndexBlock indexBlockHead = new IndexBlock();
-                TableBlock tableBlock = new TableBlock() { TableType = type, IndexBlockHead = indexBlockHead, };
-                tableBlock.NextObj = this.tableBlockHead.NextObj;
-                this.tableBlockHead.NextObj = tableBlock;
-
-                this.transaction.Add(this.tableBlockHead);// 加入事务，准备写入数据库。
-                this.transaction.Add(tableBlock);// 加入事务，准备写入数据库。
-                this.transaction.Add(indexBlockHead);// 加入事务，准备写入数据库。
-
-                Dictionary<string, IndexBlock> indexBlockDict = CreateIndexBlocks(type, indexBlockHead);
-
-                this.tableBlockDict.Add(type, tableBlock);
-                this.tableIndexBlockDict.Add(type, indexBlockDict);
-            }
-
-            // 添加record。
-            {
-                record.Id = ObjectId.NewId();
-
-                DataBlock[] dataBlocksForValue = record.ToDataBlocks();
-
-                foreach (KeyValuePair<string, IndexBlock> item in this.tableIndexBlockDict[type])
+                Type type = record.GetType();
+                if (!this.tableBlockDict.ContainsKey(type))// 添加表和索引数据。
                 {
-                    item.Value.Insert(record, dataBlocksForValue, this);
-                    this.transaction.Add(item.Value);
+                    IndexBlock indexBlockHead = new IndexBlock();
+                    TableBlock tableBlock = new TableBlock() { TableType = type, IndexBlockHead = indexBlockHead, };
+                    tableBlock.NextObj = this.tableBlockHead.NextObj;
+                    this.tableBlockHead.NextObj = tableBlock;
+
+                    ts.Add(this.tableBlockHead);// 加入事务，准备写入数据库。
+                    ts.Add(tableBlock);// 加入事务，准备写入数据库。
+                    ts.Add(indexBlockHead);// 加入事务，准备写入数据库。
+
+                    Dictionary<string, IndexBlock> indexBlockDict = CreateIndexBlocks(type, indexBlockHead);
+
+                    this.tableBlockDict.Add(type, tableBlock);
+                    this.tableIndexBlockDict.Add(type, indexBlockDict);
                 }
 
-                for (int i = 0; i < dataBlocksForValue.Length; i++)
-                { this.transaction.Add(dataBlocksForValue[i]); }// 加入事务，准备写入数据库。
-            }
+                // 添加record。
+                {
+                    record.Id = ObjectId.NewId();
 
-            this.transaction.Commit();
+                    DataBlock[] dataBlocksForValue = record.ToDataBlocks();
+
+                    foreach (KeyValuePair<string, IndexBlock> item in this.tableIndexBlockDict[type])
+                    {
+                        item.Value.Insert(record, dataBlocksForValue, this);
+                        ts.Add(item.Value);
+                    }
+
+                    for (int i = 0; i < dataBlocksForValue.Length; i++)
+                    { ts.Add(dataBlocksForValue[i]); }// 加入事务，准备写入数据库。
+                }
+
+                ts.Commit();
+
+                return record.Id;
+            }
+            catch (Exception ex)
+            {
+                ts.Rollback();
+                throw ex;
+            }
         }
 
-
+        /// <summary>
+        /// 根据[TableIndex]特性，为新表初始化索引。
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="indexBlockHead"></param>
+        /// <returns></returns>
         private Dictionary<string, IndexBlock> CreateIndexBlocks(Type type, IndexBlock indexBlockHead)
         {
             Dictionary<string, IndexBlock> indexBlockDict = new Dictionary<string, IndexBlock>();

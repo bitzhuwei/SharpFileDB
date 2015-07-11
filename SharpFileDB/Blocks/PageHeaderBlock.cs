@@ -118,7 +118,7 @@ namespace SharpFileDB.Blocks
             this.OccupiedBytes = info.GetInt16(strOccupiedBytes);
             this.NextPagePos = info.GetInt64(strNextPagePos);
 
-            this.IsDirty = false;
+            //this.IsDirty = false;
         }
 
         /// <summary>

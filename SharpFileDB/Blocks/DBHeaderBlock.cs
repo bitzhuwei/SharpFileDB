@@ -42,6 +42,7 @@ namespace SharpFileDB.Blocks
         private int maxLevelOfSkipList;
         private double probabilityOfSkipList;
         private long maxSunkCountInMemory;
+        private TimeSpan lockTimeout;
 
         /// <summary>
         /// 第一个存储<see cref="TableBlock"/>的页的位置。
@@ -173,6 +174,22 @@ namespace SharpFileDB.Blocks
         }
 
         /// <summary>
+        /// 等带解锁的时间长度。
+        /// </summary>
+        public TimeSpan LockTimeout
+        {
+            get { return lockTimeout; }
+            set
+            {
+                if (lockTimeout != value)
+                {
+                    lockTimeout = value;
+                    this.IsDirty = true;
+                }
+            }
+        }
+
+        /// <summary>
         /// 安排所有文件指针。如果全部安排完毕，返回true，否则返回false。
         /// </summary>
         /// <returns></returns>
@@ -197,6 +214,7 @@ namespace SharpFileDB.Blocks
         const string strMaxLevel = "G";
         const string strProbability = "H";
         const string strMaxSunkCountInMemory = "I";
+        const string strLockTimeout = "J";
 
         /// <summary>
         /// 序列化时系统会调用此方法。
@@ -218,6 +236,7 @@ namespace SharpFileDB.Blocks
             info.AddValue(strMaxLevel, this.MaxLevelOfSkipList);
             info.AddValue(strProbability, this.ProbabilityOfSkipList);
             info.AddValue(strMaxSunkCountInMemory, this.MaxSunkCountInMemory);
+            info.AddValue(strLockTimeout, this.LockTimeout);
         }
 
         /// <summary>
@@ -239,8 +258,9 @@ namespace SharpFileDB.Blocks
             this.MaxLevelOfSkipList = info.GetInt32(strMaxLevel);
             this.ProbabilityOfSkipList = info.GetDouble(strProbability);
             this.MaxSunkCountInMemory = info.GetInt64(strMaxSunkCountInMemory);
+            this.LockTimeout = (TimeSpan)info.GetValue(strLockTimeout, typeof(TimeSpan));
 
-            this.IsDirty = false;
+            //this.IsDirty = false;
         }
 
 
@@ -259,7 +279,7 @@ namespace SharpFileDB.Blocks
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("{0}, FirstTablePagePos: {1}, FirstIndexPagePos: {2}, FirstSkipListNodePagePos: {3}, FirstDataPagePos: {4}, FirstEmptyPagePos: {5}, MaxLevelOfSkipList: {6}, ProbabilityOfSkipList: {7}, MaxSunkCountInMemory: {8}",
+            return string.Format("{0}, FirstTablePagePos: {1}, FirstIndexPagePos: {2}, FirstSkipListNodePagePos: {3}, FirstDataPagePos: {4}, FirstEmptyPagePos: {5}, MaxLevelOfSkipList: {6}, ProbabilityOfSkipList: {7}, MaxSunkCountInMemory: {8}, LockTimeout: {9}",
                 base.ToString(),
                 this.FirstTablePagePos,
                 this.FirstIndexPagePos,
@@ -268,7 +288,8 @@ namespace SharpFileDB.Blocks
                 this.FirstEmptyPagePos,
                 this.MaxLevelOfSkipList,
                 this.ProbabilityOfSkipList,
-                this.MaxSunkCountInMemory
+                this.MaxSunkCountInMemory,
+                this.LockTimeout
                 );
         }
     }

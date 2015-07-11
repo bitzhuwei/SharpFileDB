@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 //using System.Threading.Tasks;
 
 namespace SharpFileDB.Utilities
@@ -27,6 +28,7 @@ namespace SharpFileDB.Utilities
         /// 执行Commit()期间动用过的所有页。
         /// </summary>
         internal Dictionary<long, PageHeaderBlock> affectedPages = new Dictionary<long, PageHeaderBlock>();
+        private int level;
 
         /// <summary>
         /// 事务。执行一系列的数据库文件修改动作。
@@ -84,25 +86,25 @@ namespace SharpFileDB.Utilities
         /// </summary>
         public void Commit()
         {
-            lock (syn)
+            if (level == 1)
             {
-                DoCommit();
+                lock (syn)
+                {
+                    DoCommit();
+                }
             }
+            else
+            { level--; }
         }
 
 
         private void DoCommit()
         {
+            DBHeaderBlock dbHeaderBlock = this.fileDBContext.headerBlock;
+            FileStream fs = this.fileDBContext.fileStream;
+
             // 给所有的块安排数据库文件中的位置。
             List<Block> arrangedBlocks = new List<Block>();
-            //StringBuilder builder = new StringBuilder();
-            //builder.AppendLine(string.Format("{0} items:", this.blockList.Count));
-            //foreach (var item in this.blockList)
-            //{
-            //    builder.AppendLine(item.ToString());
-            //}
-            //string str = builder.ToString();
-
             while (arrangedBlocks.Count < this.addlingBlockList.Count)
             {
                 for (int i = this.addlingBlockList.Count - 1; i >= 0; i--)// 后加入列表的先处理。
@@ -127,9 +129,6 @@ namespace SharpFileDB.Utilities
                     }
                 }
             }
-
-            FileStream fs = this.fileDBContext.fileStream;
-
 
             // 根据要删除的块，更新文件头。
             foreach (var block in this.deletingBlockList)
@@ -156,13 +155,32 @@ namespace SharpFileDB.Utilities
                 if (page.OccupiedBytes == Consts.minOccupiedBytes)// 此页已成为新的空白页。
                 {
                     // page 加入空白页链表。
-                    DBHeaderBlock dbHeader = this.fileDBContext.headerBlock;
-                    page.NextPagePos = dbHeader.FirstEmptyPagePos;
-                    dbHeader.FirstEmptyPagePos = page.ThisPos;
+                    //DBHeaderBlock dbHeader = this.fileDBContext.headerBlock;
+                    page.NextPagePos = dbHeaderBlock.FirstEmptyPagePos;
+                    dbHeaderBlock.FirstEmptyPagePos = page.ThisPos;
                 }
             }
 
-            // TODO: 准备恢复文件。
+            // 准备恢复文件。
+            string journalFilename = this.fileDBContext.JournalFileName;
+            FileStream journalFile = new FileStream(journalFilename,
+                    FileMode.Create, FileAccess.ReadWrite, FileShare.None, Consts.pageSize);
+            foreach (Block block in this.addlingBlockList)
+            {
+                Consts.formatter.Serialize(journalFile, block);
+            }
+            foreach (PageHeaderBlock block in this.affectedPages.Values)
+            {
+                if(block.IsDirty)
+                {
+                    Consts.formatter.Serialize(journalFile, block);
+                }
+            }
+            if(dbHeaderBlock.IsDirty)
+            {
+                Consts.formatter.Serialize(journalFile, dbHeaderBlock);
+            }
+            journalFile.Flush();
 
             // 写入所有的更改。
             foreach (Block block in this.addlingBlockList)
@@ -174,18 +192,20 @@ namespace SharpFileDB.Utilities
                 if (block.IsDirty)
                 {
                     fs.WriteBlock(block);
+                    block.IsDirty = false;
                 }
             }
-            DBHeaderBlock dbHeaderBlock = this.fileDBContext.headerBlock;
             if (dbHeaderBlock.IsDirty)
             {
                 fs.WriteBlock(dbHeaderBlock);
                 dbHeaderBlock.IsDirty = false;
             }
-
             fs.Flush();
 
-            // TODO: 删除恢复文件。
+            // 删除恢复文件。
+            journalFile.Close();
+            journalFile.Dispose();
+            File.Delete(journalFilename);
 
             // 恢复Transaction最初的状态。
             this.addlingBlockList.Clear();
@@ -194,6 +214,78 @@ namespace SharpFileDB.Utilities
             this.oldDeletingBlockPositions.Clear();
             this.affectedPages.Clear();
 
+            //if (actUnlockDB == null) { actUnlockDB = new Action(UnlockDB); }
+            UnlockDB();
+
+            this.level = 0;
+        }
+
+        Action actLockDB;
+        private void LockDB()
+        {
+            this.fileDBContext.fileStream.Lock(0, 1);
+        }
+        Action actUnlockDB;
+        private void UnlockDB()
+        {
+            this.fileDBContext.fileStream.Unlock(0, 1);
+        }
+
+        internal void Begin()
+        {
+            if (this.level == 0)
+            {
+                FileStream fs = this.fileDBContext.fileStream;
+                TimeSpan timeout = this.fileDBContext.headerBlock.LockTimeout;
+                if (actLockDB == null) { actLockDB = new Action(LockDB); }
+                TryExec(timeout, actLockDB);
+            }
+
+            this.level++;
+        }
+
+        /// <summary>
+        /// Try execute a block of code until timeout when IO lock exception occurs OR access denind
+        /// </summary>
+        public static void TryExec(TimeSpan timeout, Action action)
+        {
+            var timer = DateTime.Now.Add(timeout);
+
+            while (DateTime.Now < timer)
+            {
+                try
+                {
+                    action();
+                    return;
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    Thread.Sleep(250);
+                }
+                catch (IOException ex)
+                {
+                    ex.WaitIfLocked(250);
+                }
+            }
+
+            throw new Exception("Lock timeout");// LiteException.LockTimeout(timeout);
+        }
+
+        public void Rollback()
+        {
+            if (level == 0) return;
+
+            // 恢复Transaction最初的状态。
+            this.addlingBlockList.Clear();
+            this.oldAddingBlockPositions.Clear();
+            this.deletingBlockList.Clear();
+            this.oldDeletingBlockPositions.Clear();
+            this.affectedPages.Clear();
+
+            // Unlock datafile
+            UnlockDB();
+
+            level = 0;
         }
     }
 }

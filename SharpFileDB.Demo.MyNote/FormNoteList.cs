@@ -23,7 +23,8 @@ namespace SharpFileDB.Demo.MyNote
 
             //string fullname = Path.Combine(@"C:\Users\DELL\Documents\百度云同步盘\SharpFileDB\SharpFileDB.Demo.MyNote\noteDatabase\note.db");
             string fullname = Path.Combine(Environment.CurrentDirectory, "MyNote.db");
-            this.database = new FileDBContext(fullname, false, 8, 0.5);
+            DBConfig config = new DBConfig() { MaxLevelOfSkipList = 8, ProbabilityOfSkipList = 0.5 };
+            this.database = new FileDBContext(fullname, config, false);
         }
 
         private void FormNoteList_Load(object sender, EventArgs e)
@@ -33,7 +34,7 @@ namespace SharpFileDB.Demo.MyNote
 
         private void UpdateAllNotes()
         {
-            IList<MyNote.Tables.Note> noteList;
+            IEnumerable<MyNote.Tables.Note> noteList;
             //Predicate<MyNote.Tables.Note> selectAll = new Predicate<MyNote.Tables.Note>(x => true);
             //IList<MyNote.Tables.Note> noteList = this.database.Find(selectAll);
             // 下面的方式都是可以的。
@@ -44,7 +45,7 @@ namespace SharpFileDB.Demo.MyNote
             this.lstNotes.Items.Clear();
 
             this.lstNotes.Items.AddRange(noteList.ToArray());
-            this.lblNoteCount.Text = string.Format("{0} notes", noteList.Count);
+            this.lblNoteCount.Text = string.Format("{0} notes", noteList.Count());
         }
 
         private void btnAddNote_Click(object sender, EventArgs e)

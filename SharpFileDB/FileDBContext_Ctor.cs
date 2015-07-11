@@ -21,11 +21,9 @@ namespace SharpFileDB
         /// 单文件数据库上下文，代表一个单文件数据库。SharpFileDB的核心类型。
         /// </summary>
         /// <param name="fullname">数据库文件据对路径。</param>
+        /// <param name="config">数据库配置信息。只有在新建数据库时此参数才会发挥作用。</param>
         /// <param name="onlyRead">只读方式打开。</param>
-        /// <param name="maxLevelOfSkipList">SkipList的最大层数。只有在新建数据库时此参数才会发挥作用。</param>
-        /// <param name="probability">SkipList的随机阈值。只有在新建数据库时此参数才会发挥作用。</param>
-        /// <param name="maxSunkCountInMemory"><see cref="BlockCache.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。如果达到最大值，就会清空<see cref="BlockCache.sunkBlocksInMomery"/>。只有在新建数据库时此参数才会发挥作用。</param>
-        public FileDBContext(string fullname, bool onlyRead = false, int maxLevelOfSkipList = 32, double probability = 0.5, long maxSunkCountInMemory = 10001)
+        public FileDBContext(string fullname, DBConfig config = null, bool onlyRead = false)
         {
             this.transaction = new Transaction(this);
 
@@ -35,7 +33,8 @@ namespace SharpFileDB
             {
                 if (!File.Exists(fullname))
                 {
-                    CreateDB(fullname, maxLevelOfSkipList, probability, maxSunkCountInMemory);
+                    if (config == null) { config = new DBConfig(); }
+                    CreateDB(fullname, config);
                 }
 
                 InitializeDB(fullname, onlyRead);
@@ -53,7 +52,24 @@ namespace SharpFileDB
         /// <param name="read">只读方式打开。</param>
         private void InitializeDB(string fullname, bool read)
         {
-            // TODO:尝试恢复数据库文件。
+            // 尝试恢复数据库文件。
+            string journalFilename = this.JournalFileName;
+            if (File.Exists(journalFilename))
+            {
+                using (FileStream journal = new FileStream(journalFilename, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                {
+                    using (FileStream fs = new FileStream(fullname, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                    {
+                        while (journal.Position < journal.Length)
+                        {
+                            object obj = Consts.formatter.Deserialize(journal);
+                            Block block = obj as Block;
+                            fs.WriteBlock(block);
+                        }
+                    }
+                }
+                File.Delete(journalFilename);
+            }
 
             // 准备各项工作。
             // 准备数据库文件流。
@@ -156,10 +172,8 @@ namespace SharpFileDB
         /// 创建初始状态的数据库文件。
         /// </summary>
         /// <param name="fullname">数据库文件据对路径。</param>
-        /// <param name="maxLevelOfSkipList">SkipList的最大层数。只有在新建数据库时此参数才会发挥作用。</param>
-        /// <param name="probability">SkipList的随机阈值。只有在新建数据库时此参数才会发挥作用。</param>
-        /// <param name="maxSunkCountInMemory"><see cref="BlockCache.sunkBlocksInMomery"/>能存储的<see cref="Block"/>数目的最大值。如果达到最大值，就会清空<see cref="BlockCache.sunkBlocksInMomery"/>。只有在新建数据库时此参数才会发挥作用。</param>
-        private void CreateDB(string fullname, int maxLevelOfSkipList, double probability, long maxSunkCountInMemory)
+        /// <param name="config">数据库配置信息。</param>
+        private void CreateDB(string fullname, DBConfig config)
         {
             FileInfo fileInfo = new FileInfo(fullname);
             Directory.CreateDirectory(fileInfo.DirectoryName);
@@ -168,7 +182,7 @@ namespace SharpFileDB
                 PageHeaderBlock page = new PageHeaderBlock() { OccupiedBytes = Consts.pageSize, AvailableBytes = 0, };
                 fs.WriteBlock(page);
 
-                DBHeaderBlock dbHeader = new DBHeaderBlock() { MaxLevelOfSkipList = maxLevelOfSkipList, ProbabilityOfSkipList = probability, MaxSunkCountInMemory = maxSunkCountInMemory, ThisPos = fs.Position };
+                DBHeaderBlock dbHeader = new DBHeaderBlock() { MaxLevelOfSkipList = config.MaxLevelOfSkipList, ProbabilityOfSkipList = config.ProbabilityOfSkipList , MaxSunkCountInMemory = config.MaxSunkCountInMemory, LockTimeout = config.LockTimeout, ThisPos = fs.Position };
                 fs.WriteBlock(dbHeader);
 
                 TableBlock tableHead = new TableBlock() { ThisPos = fs.Position, };
