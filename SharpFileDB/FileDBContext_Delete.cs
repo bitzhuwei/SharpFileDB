@@ -52,5 +52,86 @@ namespace SharpFileDB
 
             this.transaction.Commit();
         }
+
+        /// <summary>
+        /// 删除数据库文件里的某个表及其所有索引、数据。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void DeleteTable<T>() where T : Table
+        {
+            Type type = typeof(T);
+            if (this.tableBlockDict.ContainsKey(type))// 删除表、索引和数据。
+            {
+                FileStream fs = this.fileStream;
+                Transaction ts = this.transaction;
+                TableBlock table = this.tableBlockDict[type];
+                ts.Delete(table);
+
+                long currentIndexPos = table.IndexBlockHeadPos;
+                IndexBlock IndexHead = fs.ReadBlock<IndexBlock>(currentIndexPos);// 此时指向IndexBlock头结点
+                ts.Delete(IndexHead);
+                // 删除数据块。
+                {
+                    IndexHead.TryLoadNextObj(fs);
+                    IndexBlock currentIndex = IndexHead.NextObj;// 此时指向PK
+                    ts.Delete(currentIndex);
+                    DeleteDataBlocks(currentIndex, fs, ts);
+                }
+                // 删除索引块和skip list node块。
+                {
+                    IndexBlock currentIndex = IndexHead;
+                    while (currentIndex.NextPos != 0)
+                    {
+                        currentIndex.TryLoadNextObj(fs);
+                        ts.Delete(currentIndex.NextObj);
+
+                        DeleteSkipListNodes(currentIndex, fs, ts);
+
+                        currentIndex = currentIndex.NextObj;
+                    }
+                }
+
+                this.tableBlockDict.Remove(type);
+                this.tableIndexBlockDict.Remove(type);
+
+                ts.Commit();
+            }
+
+        }
+
+        private void DeleteDataBlocks(IndexBlock currentIndex, FileStream fs, Transaction ts)
+        {
+            SkipListNodeBlock current = currentIndex.SkipListHeadNodes[0];
+            while (current.RightPos != currentIndex.SkipListTailNodePos)
+            {
+                current.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
+                current.RightObj.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.Key | SkipListNodeBlockLoadOptions.Value);
+                ts.Delete(current.RightObj.Key);
+                foreach (var item in current.RightObj.Value)
+                {
+                    ts.Delete(item);
+                }
+
+                current = current.RightObj;
+            }
+        }
+
+        private void DeleteSkipListNodes(IndexBlock currentIndex, FileStream fs, Transaction ts)
+        {
+            foreach (SkipListNodeBlock levelHead in currentIndex.SkipListHeadNodes)
+            {
+                SkipListNodeBlock current = levelHead;
+                while (current.ThisPos != currentIndex.SkipListTailNodePos)
+                {
+                    ts.Delete(levelHead);
+
+                    current.TryLoadProperties(fs, SkipListNodeBlockLoadOptions.RightObj);
+                    current = levelHead.RightObj;
+                }
+            }
+
+            ts.Delete(currentIndex.SkipListTailNode);
+        }
+
     }
 }
